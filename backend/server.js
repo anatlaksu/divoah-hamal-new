@@ -19,7 +19,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 // Configure Mongo
-const db = "mongodb://127.0.0.1/DivoahDB";
+const db = "mongodb://localhost:27017/DivoahDB";
 
 // Connect to Mongo with Mongoose
 mongoose

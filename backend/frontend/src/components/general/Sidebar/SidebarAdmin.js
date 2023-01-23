@@ -318,7 +318,7 @@ function SidebarAdmin(props) {
 					</li>
 				) : null}
 
-				<li>
+				{/* <li>
 					<NavLink
 						to="/odot"
 						style={{ margin: "0px" }}
@@ -363,7 +363,7 @@ function SidebarAdmin(props) {
 							</Col>
 						</Row>
 					</NavLink>
-				</li>
+				</li> */}
 				<li>
 					<NavLink
 						to={`/summarizingreport`}

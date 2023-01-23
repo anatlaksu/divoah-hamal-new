@@ -431,6 +431,14 @@ const datagdod = {
     loadGdods(data.hativa);
   }, [data.hativa]);
 
+function getname(idnum,arr){
+  for(let i=0;i<arr.length;i++)
+  {
+    if(arr[i]._id==idnum)
+    return arr[i].name;
+  }
+}
+
   return (
     <div>
       <Container className="mt--8 pb-5">
@@ -444,7 +452,7 @@ const datagdod = {
                 <table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th className="text-center">יחידה</th>
+                      <th className="text-center">פיקוד</th>
                       <th className="text-center">סוג אירוע</th>
                       <th className="text-center">פירוט האירוע</th>
                     </tr>
@@ -453,7 +461,7 @@ const datagdod = {
                     {reportDB.map((report, index) => (
                       <tr>
                         <td>
-                          <p>{report.pikod}</p>
+                          <p>{getname(report.pikod,pikods)}</p>
                         </td>
                         <td>{eventTypeArray[report.typevent]}</td>
                         <td>{report.pirot}</td>
