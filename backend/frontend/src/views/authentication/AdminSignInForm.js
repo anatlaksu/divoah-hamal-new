@@ -75,7 +75,7 @@ function AdminSignInForm() {
 					history.push(`/dashamal`);
 				}
 				if (user.role === "2") {
-					history.push(`/dashamal`);
+					history.push(`/dashadmin`);
 				}
 			} else {
 				toast.success("משתמש לא מאושר מערכת");

@@ -46,6 +46,7 @@ import Logo100_white from "assets/img/team100_white.png";
 
 import SidebarAdmin from "components/general/Sidebar/SidebarAdmin";
 import SidebarAll from "components/general/Sidebar/SidebarAll";
+import SidebarHamal from "components/general/Sidebar/SidebarHamal";
 
 import { signout } from "auth/index";
 
@@ -92,7 +93,7 @@ function Sidebar() {
 					{user.role === "0" ? (
 						<SidebarAll theme={color} />
 					) : user.role === "1" ? (
-						<SidebarAdmin theme={color} />
+						<SidebarHamal theme={color} />
 					) : user.role === "2" ? (
 						<SidebarAdmin theme={color} />
 					) : null}

@@ -22,13 +22,9 @@ import history from "history.js";
 import { toast } from "react-toastify";
 import { Line, Pie, Doughnut, PolarArea } from 'react-chartjs-2';
 import Select from 'components/general/Select/AnimatedSelect'
-import { isAuthenticated } from "auth";
 
 
 const AdminSignInForm = () => {
-
-  const { user } = isAuthenticated();
-
   const [reportDB, setReportDB] = useState([]);
   const [isError, setIsError] = useState(false);
 
@@ -222,6 +218,62 @@ const dataevent = {
   ],
 };
 
+function sumpikods(arr1,arr2){
+  let sumallpikods= [];
+  for(let i=0;i<arr1.length;i++){
+    let sum=0;
+    for(let j=0;j<arr2.length;j++){
+      if(arr2[j].pikod == arr1[i]._id)
+         sum ++;
+    }
+    sumallpikods[i]=sum;
+  }
+  return sumallpikods;
+}
+
+
+const datapikod = {
+  labels: pikods.map((pikod,index)=> pikod.name),
+  datasets: [
+      {
+          label: '# of Votes',
+          data: sumpikods(pikods,reportDB),
+          backgroundColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(157, 241, 223, 1)',
+            'rgba(130, 0, 0, 1)',
+            'rgba(78, 108, 80, 1)',
+            'rgba(207, 77, 206, 1)',
+            'rgba(61, 23, 102, 1)',
+            'rgba(0, 255, 246, 1)',
+            'rgba(255, 173, 188, 1)',
+        ],
+          borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(157, 241, 223, 1)',
+              'rgba(130, 0, 0, 1)',
+              'rgba(78, 108, 80, 1)',
+              'rgba(207, 77, 206, 1)',
+              'rgba(61, 23, 102, 1)',
+              'rgba(0, 255, 246, 1)',
+              'rgba(255, 173, 188, 1)',
+
+          ],
+          borderWidth: 1,
+      },
+  ],
+};
+
 function getcolor(){
   const r = Math.floor(Math.random() * 255);
   const g = Math.floor(Math.random() * 255);
@@ -356,17 +408,12 @@ const datagdod = {
   ],
 };
 
-const initWithUserData = () => {
-  setData({
-    ...data,
-    pikod: user.pikod,
-  });
-  loadReports();
-  loadPikods();
-};
+
+
 
   useEffect(() => {
-    initWithUserData();
+    loadReports();
+    loadPikods();
   }, []);
 
   useEffect(() => {
@@ -392,8 +439,6 @@ function getname(idnum,arr){
   }
 }
 
-const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
-
   return (
     <div>
       <Container className="mt--8 pb-5">
@@ -413,7 +458,7 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                     </tr>
                   </thead>
                   <tbody>
-                    {reportbypikod.map((report, index) => (
+                    {reportDB.map((report, index) => (
                       <tr>
                         <td>
                           <p>{getname(report.pikod,pikods)}</p>
@@ -427,7 +472,7 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
               </CardBody>
             </Card>
           </Col>
-          <Col lg="6">
+          <Col lg="3">
                 <Card className="card-chart">
                 <CardHeader>
                     <h3 className="card-category text-center">
@@ -440,6 +485,20 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                   </CardBody>
                 </Card>
           </Col>
+
+          <Col lg="3">
+                <Card className="card-chart">
+                  <CardHeader>
+                    <h3 className="card-category text-center">
+                      {" "}
+                      מספר אירועים לפי פיקוד
+                    </h3>
+                  </CardHeader>
+                  <CardBody>
+                  <Doughnut data={datapikod} options={options}/>
+                  </CardBody>
+                </Card>
+              </Col>
           </Row>
           <Row>
           <div style={{ width: '100%', margin: 'auto', textAlign: 'right' }}>
@@ -449,6 +508,21 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                     <Row style={{ margin: '0px' }}>
                     <Col xs={12} md={8} style={{ textAlign: 'right' }}>
                         <Row style={{ paddingTop: '10px', marginBottom: '15px' }}>
+                        {(!(data.ogda)) ?
+                      <Col style={{ justifyContent: 'right', alignContent: 'right', textAlign: 'right' }}>
+                        <h6>פיקוד</h6>
+                        <Select data={pikods}
+                         handleChange2={handleChange2}
+                          name={'pikod'} val={data.pikod ? data.pikod : undefined} />
+                      </Col> :
+                      <Col style={{ justifyContent: 'right', alignContent: 'right', textAlign: 'right' }}>
+                        <h6>פיקוד</h6>
+                        <Select data={pikods} 
+                        handleChange2={handleChange2} 
+                        name={'pikod'} val={data.pikod ? data.pikod : undefined} isDisabled={true} />
+                      </Col>}
+
+                  <>
                     {((data.pikod) && !(data.hativa)) ?
                       <Col style={{ justifyContent: 'right', alignContent: 'right', textAlign: 'right' }}>
                         <h6>אוגדה</h6>
@@ -462,6 +536,8 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                          handleChange2={handleChange2}
                           name={'ogda'} val={data.ogda ? data.ogda : undefined} isDisabled={true} />
                       </Col>}
+                  </>
+
                   <>
                     {((data.ogda) && !(data.gdod)) ?
                       <Col style={{ justifyContent: 'right', alignContent: 'right', textAlign: 'right' }}>

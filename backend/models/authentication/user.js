@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema(
 		lastname: { type: String, trim: true, required: true },
 		personalnumber: { type: String, trim: true, unique: true, require: true },
 		role: { type: String, default: "0" },
-		pikodid: { type: String, default: "" },
+		pikod: { type: String, default: "" },
 		validated: { type: Boolean, default: true },
 	},
 	{ timestamps: true }
