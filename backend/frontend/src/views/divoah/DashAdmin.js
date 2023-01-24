@@ -562,6 +562,7 @@ function getname(idnum,arr){
           </Row>
 
               <Row>
+              {((data.pikod) && !(data.ogda) && !(data.hativa)) ?
               <Col lg="4">
                 <Card className="card-chart">
                   <CardHeader>
@@ -574,8 +575,9 @@ function getname(idnum,arr){
                   <Doughnut data={dataogda} options={options}/>
                   </CardBody>
                 </Card>
-              </Col>
-
+              </Col>:null}
+              <>
+              {((data.ogda) && !(data.hativa)) ?
               <Col lg="4">
                 <Card className="card-chart">
                   <CardHeader>
@@ -588,7 +590,10 @@ function getname(idnum,arr){
                   <Doughnut data={datahativa} options={options}/>
                   </CardBody>
                 </Card>
-              </Col>
+              </Col>:null}
+              </>
+              <>
+              {(data.hativa) ?
               <Col lg="4">
                 <Card className="card-chart">
                   <CardHeader>
@@ -601,7 +606,8 @@ function getname(idnum,arr){
                   <Doughnut data={datagdod} options={options} />
                   </CardBody>
                 </Card>
-              </Col>
+              </Col>:null}
+              </>
             </Row>
 
       </Container>

@@ -427,7 +427,7 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
               </CardBody>
             </Card>
           </Col>
-          <Col lg="6">
+          <Col lg="3">
                 <Card className="card-chart">
                 <CardHeader>
                     <h3 className="card-category text-center">
@@ -440,6 +440,19 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                   </CardBody>
                 </Card>
           </Col>
+          <Col lg="3">
+                <Card className="card-chart">
+                  <CardHeader>
+                    <h3 className="card-category text-center">
+                      {" "}
+                      מספר אירועים לפי אוגדה
+                    </h3>
+                  </CardHeader>
+                  <CardBody>
+                  <Doughnut data={dataogda} options={options}/>
+                  </CardBody>
+                </Card>
+              </Col>
           </Row>
           <Row>
           <div style={{ width: '100%', margin: 'auto', textAlign: 'right' }}>
@@ -486,21 +499,8 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
           </Row>
 
               <Row>
-              <Col lg="4">
-                <Card className="card-chart">
-                  <CardHeader>
-                    <h3 className="card-category text-center">
-                      {" "}
-                      מספר אירועים לפי אוגדה
-                    </h3>
-                  </CardHeader>
-                  <CardBody>
-                  <Doughnut data={dataogda} options={options}/>
-                  </CardBody>
-                </Card>
-              </Col>
-
-              <Col lg="4">
+              {((data.pikod) && (data.ogda) && !(data.hativa)) ?
+              <Col lg="6">
                 <Card className="card-chart">
                   <CardHeader>
                     <h3 className="card-category text-center">
@@ -512,8 +512,10 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                   <Doughnut data={datahativa} options={options}/>
                   </CardBody>
                 </Card>
-              </Col>
-              <Col lg="4">
+              </Col> : null}
+              <>
+             {((data.ogda) && (data.hativa)) ?
+              <Col lg="6">
                 <Card className="card-chart">
                   <CardHeader>
                     <h3 className="card-category text-center">
@@ -525,7 +527,8 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                   <Doughnut data={datagdod} options={options} />
                   </CardBody>
                 </Card>
-              </Col>
+              </Col> :null}
+              </>
             </Row>
 
       </Container>
