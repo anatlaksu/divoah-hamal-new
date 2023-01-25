@@ -9,10 +9,17 @@ const {
 	findById,
 	update,
 	mkabazsbymagad,
-	mkabazsbymataf,
+	mkabazsbymatafcre,
+	mkabazsbymatafengine,
+	mkabazsbyrekem,
 } = require("../../controllers/cartypes/mkabaz");
 
 router.post("/mkabaz", create);
+//! on tets /:id
+router.get("/mkabaz/mkabazsbymatafcre", mkabazsbymatafcre);
+router.get("/mkabaz/mkabazsbymatafengine", mkabazsbymatafengine);
+// * ----------------------------------------------------------------
+router.get("/mkabaz/mkabazsbyrekem/:id", mkabazsbyrekem);
 
 router.get("/mkabaz/:id", findById);
 router.get("/mkabaz", find);
@@ -24,7 +31,5 @@ router.post("/mkabaz/update", update);
 router.post("/mkabaz/remove/:id", remove);
 
 router.get("/mkabaz/mkabazsbymagad/:magadid", mkabazsbymagad);
-
-router.get("/mkabaz/mkabazsbymataf", mkabazsbymataf);
 
 module.exports = router;

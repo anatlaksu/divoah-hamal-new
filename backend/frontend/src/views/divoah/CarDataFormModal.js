@@ -39,6 +39,11 @@ const CarDataFormModal = (match) => {
 		personalnumber: "",
 		cellphone: "",
 		typevent: "",
+		// pikod: "",
+		// ogda: "",
+		// hativa: "",
+		gdod: "",
+		mkabazs: "",
 		resevent: "",
 		yn: "",
 		status: "",
@@ -552,13 +557,13 @@ const CarDataFormModal = (match) => {
 			lastname: data.lastname,
 			personalnumber: data.personalnumber,
 			cellphone: data.cellphone,
-			pikod: data.pikod,
-			ogda: data.ogda,
-			hativa: data.hativa,
+			// pikod: data.pikod,
+			// ogda: data.ogda,
+			// hativa: data.hativa,
 			gdod: data.gdod,
 			typevent: data.typevent,
 			resevent: data.resevent,
-			magadal: data.magadal,
+			// magadal: data.magadal,
 			// magad:data.magad,
 			mkabaz: data.mkabaz,
 			yn: data.yn,
@@ -596,8 +601,11 @@ const CarDataFormModal = (match) => {
 		axios
 			.get(`http://localhost:8000/report/${reportid}`)
 			.then((response) => {
-				let tempuser = { ...response.data };
-				setData(tempuser);
+				// console.log(response);
+				// let tempuser = { ...response.data };
+				// setData(tempuser);
+				let tempcardata = response.data[0];
+				setData(tempcardata);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -607,6 +615,7 @@ const CarDataFormModal = (match) => {
 	};
 
 	useEffect(() => {
+		// let isMounted = true;
 		if (match.isOpen == true) init();
 	}, [match.isOpen]);
 
@@ -678,10 +687,7 @@ const CarDataFormModal = (match) => {
 						<div>
 							<Container className="mt--8 pb-5">
 								<Row className="justify-content-center">
-									<Col
-										lg="20"
-										md="7"
-									>
+
 										<Card className="shadow border-0">
 											{data.typevent != "רק'ם" ? (
 												<CardBody
@@ -2496,7 +2502,6 @@ const CarDataFormModal = (match) => {
 												</CardBody>
 											)}
 										</Card>
-									</Col>
 								</Row>
 							</Container>
 						</div>
