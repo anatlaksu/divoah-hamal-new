@@ -393,6 +393,7 @@ function getname(idnum,arr){
 }
 
 const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
+const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.datevent) - new Date(report2.datevent)).reverse();
 
   return (
     <div>
@@ -407,19 +408,19 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                 <table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th className="text-center">פיקוד</th>
-                      <th className="text-center">סוג אירוע</th>
-                      <th className="text-center">פירוט האירוע</th>
+                      <th className="text-center" style={{width:"20%"}}>פיקוד</th>
+                      <th className="text-center" style={{width:"30%"}}>סוג אירוע</th>
+                      <th className="text-center" style={{width:"50%"}}>פירוט האירוע</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {reportbypikod.map((report, index) => (
+                    {sortreport.map((report, index) => (
                       <tr>
                         <td>
                           <p>{getname(report.pikod,pikods)}</p>
                         </td>
                         <td>{eventTypeArray[report.typevent]}</td>
-                        <td>{report.pirot}</td>
+                        <td><div style={{width:"100%",height:"50px",margin:"0",padding:"0",overflow:"auto"}}>{report.pirot}</div></td>
                       </tr>
                     ))}
                   </tbody>
