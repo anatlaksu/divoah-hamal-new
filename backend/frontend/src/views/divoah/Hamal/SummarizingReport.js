@@ -39,7 +39,7 @@ const SummarizingReport = (props) => {
 									tag="h4"
 									style={{ direction: "rtl", textAlign: "right" }}
 								>
-									היסטוריית דיווחים
+									סיכום דיווחים
 								</CardTitle>
 								{/*headline*/}
 							</CardHeader>

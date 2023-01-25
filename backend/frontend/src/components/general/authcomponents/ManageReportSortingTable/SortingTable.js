@@ -16,7 +16,6 @@ import history from "history.js";
 import CarDataFormModalView from "views/divoah/CarDataFormModalView";
 import CarDataFormModal from "views/divoah/CarDataFormModal";
 
-
 const SortingTable = ({ match }) => {
 	const columns = useMemo(() => COLUMNS, []);
 	const { user } = isAuthenticated();
@@ -174,7 +173,7 @@ const SortingTable = ({ match }) => {
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th>
+									<th style={{width:"30%"}}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -202,7 +201,7 @@ const SortingTable = ({ match }) => {
 						{page.map((row) => {
 							prepareRow(row);
 							return (
-								<tr {...row.getRowProps()}>
+								<tr {...row.getRowProps()} >
 									{row.cells.map((cell) => {
 										if (
 											cell.column.id != "typevent" &&
@@ -233,7 +232,7 @@ const SortingTable = ({ match }) => {
 												if (cell.value == "רק'ם") return <td>רק"ם</td>;
 											}
 											if (cell.column.id == "pirot") {
-												return <td>{cell.value}</td>;
+												return <td><div style={{width:"100%",height:"40px",margin:"0",padding:"0",overflow:"auto"}}>{cell.value}</div></td>;
 											}
 
 											if (cell.column.id == "datevent") {

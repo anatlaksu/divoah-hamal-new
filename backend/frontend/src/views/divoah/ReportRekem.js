@@ -367,7 +367,15 @@ const Report = ({ props }) => {
 				console.log(res);
 				setData({ ...data, loading: false, error: false, successmsg: true });
 				toast.success(` הדיווח נשלח בהצלחה`);
-				history.push(`/dash`);
+				if(user.role=="0")
+				{
+					history.push(`/dash`);
+				}else if(user.role=="1")
+				{
+					history.push(`/dashamal`);
+				}else if(user.role=="2"){
+					history.push(`/dashadmin`);
+				}
 				console.log(res.data);
 				console.groupEnd();
 			})

@@ -452,9 +452,9 @@ function getname(idnum,arr){
                 <table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th className="text-center">פיקוד</th>
-                      <th className="text-center">סוג אירוע</th>
-                      <th className="text-center">פירוט האירוע</th>
+                      <th className="text-center" style={{width:"20%"}}>פיקוד</th>
+                      <th className="text-center" style={{width:"30%"}}>סוג אירוע</th>
+                      <th className="text-center" style={{width:"50%"}}>פירוט האירוע</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -464,7 +464,7 @@ function getname(idnum,arr){
                           <p>{getname(report.pikod,pikods)}</p>
                         </td>
                         <td>{eventTypeArray[report.typevent]}</td>
-                        <td>{report.pirot}</td>
+                        <td><div style={{width:"100%",height:"50px",margin:"0",padding:"0",overflow:"auto"}}>{report.pirot}</div></td>
                       </tr>
                     ))}
                   </tbody>
