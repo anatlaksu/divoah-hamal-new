@@ -84,6 +84,14 @@ let readtipul = [
 
 let readtipulnotype = [
 	{
+		$lookup: {
+			from: "mkabazs",
+			localField: "mkabazs",
+			foreignField: "_id",
+			as: "mkabaz_data",
+		},
+	},
+	{
 		$set: {
 			mkabaz: { $arrayElemAt: ["$mkabaz_data._id", 0] },
 		},

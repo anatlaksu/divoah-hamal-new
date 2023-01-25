@@ -140,12 +140,15 @@ const AdminSignInForm = () => {
 	};
 
 	const loadReports = () => {
+		//* help tool for checking if ReportDB is an array so the map function will work on him
 		let arrayTester = [];
+		//* geting all the reports
 		axios
 			.get(`http://localhost:8000/report/`)
 			.then((res) => {
 				res.data.map((item, index) => {
 					// console.log(res.data[index]._id);
+					//* taking the id of etch report and geting all its data (like in the cardatamodal)
 					axios
 						.get(`http://localhost:8000/report/${res.data[index]._id}`)
 						.then((response) => {
