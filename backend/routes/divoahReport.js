@@ -116,65 +116,6 @@ let readtipulnotype = [
 	},
 ];
 
-//   exports.read = async (req, res) => {
-// 	let tipulfindquerry = readtipul.slice();
-// 	let finalquerry = tipulfindquerry;
-
-// 	let andquery = [];
-
-// 	andquery.push({ "_id": mongoose.Types.ObjectId(req.params.id) });
-
-// 	if (andquery.length != 0) {
-// 	  let matchquerry = {
-// 		"$match": {
-// 		  "$and": andquery
-// 		}
-// 	  };
-// 	  finalquerry.push(matchquerry)
-// 	}
-
-// console.log(matchquerry)
-//console.log(andquery)
-
-// 	Cardata.aggregate(finalquerry)
-// 	  .then((result) => {
-// 		if (result.length != 0) {
-// 		  res.json(result);
-// 		}
-// 		else {
-// 		  let tipulfindquerry = readtipulnotype.slice();
-// 		  let finalquerry = tipulfindquerry;
-
-// 		  let andquery = [];
-
-// 		  andquery.push({ "_id": mongoose.Types.ObjectId(req.params.id) });
-
-// 		  if (andquery.length != 0) {
-// 			let matchquerry = {
-// 			  "$match": {
-// 				"$and": andquery
-// 			  }
-// 			};
-// 			finalquerry.push(matchquerry)
-// 		  }
-
-// 		  // console.log(matchquerry)
-// 		  //console.log(andquery)
-
-// 		  Cardata.aggregate(finalquerry)
-// 			.then((result) => {
-// 			  res.json(result);
-// 			})
-// 			.catch((error) => {
-// 			  res.status(400).json('Error: ' + error);
-// 			});
-// 		}
-// 	  })
-// 	  .catch((error) => {
-// 		res.status(400).json('Error: ' + error);
-// 	  });
-//   }
-
 router.route("/").get((req, res) => {
 	Report.find()
 		.then((request) => res.json(request))
