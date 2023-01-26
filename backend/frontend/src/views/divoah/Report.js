@@ -37,7 +37,7 @@ const Report = ({ match }) => {
 		mkabazs: "",
 		typevent: "0",
 		resevent: "0",
-		yn: "",
+		yn: "0",
 		selneshek: "0",
 		whap: "0",
 		amlahtype: "",
