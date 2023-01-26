@@ -134,18 +134,44 @@ const loadGdods = async (hativaids) => {
   setGdods(temphativasgdods);
 } 
 
-const loadReports = () => {
-  axios
-  .get(`http://localhost:8000/report/`)
-  .then((response) => {
-    console.log(response.data);
-    setReportDB(response.data);
-  })
-  .catch((error) => {
-    console.log(error);
-    setIsError(true);
-  });
-};
+	const loadReports = () => {
+		//* help tool for checking if ReportDB is an array so the map function will work on him
+		let arrayTester = [];
+		//* geting all the reports
+		axios
+			.get(`http://localhost:8000/report/`)
+			.then((res) => {
+				res.data.map((item, index) => {
+					// console.log(res.data[index]._id);
+					//* taking the id of etch report and geting all its data (like in the cardatamodal)
+					axios
+						.get(`http://localhost:8000/report/${res.data[index]._id}`)
+						.then((response) => {
+							// console.log(response);
+							// let tempuser = { ...response.data };
+							// setData(tempuser);
+							let tempcardata = response.data[0];
+							console.log(tempcardata);
+							arrayTester.push(tempcardata);
+							// tempcardata.slice();
+							if (arrayTester.length === res.data.length) {
+								setReportDB(arrayTester);
+							}
+						})
+						.catch((error) => {
+							console.log(error);
+						});
+					loadPikods();
+				});
+				// console.log(response.data);
+				// console.log(reportDBItem);
+				// setReportDB(reportDBItem);
+			})
+			.catch((error) => {
+				console.log(error);
+				setIsError(true);
+			});
+	};
 
 function handleChange2(selectedOption, name) {
   if (!(selectedOption.value == "בחר"))

@@ -216,19 +216,13 @@ const EditUserForm = ({ match }) => {
 													alignContent: "right",
 													textAlign: "right",
 												}}>
-												<Input
-													type="select"
-													name="pikodid"
-													value={data.pikodid}
-													onChange={handleChange}
-												>
 												<h6>פיקוד</h6>
 												<Select
 													data={pikods}
 													handleChange2={handleChange2}
 													name={"pikod"}
 													val={data.pikod ? data.pikod : undefined}
-												/>
+													/>
 											</FormGroup>
 										</>
 									) : null}
