@@ -29,19 +29,18 @@ import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
 
 const EditUserForm = ({ match }) => {
-
 	const [pikods, setPikods] = useState([]);
 
 	const loadPikods = async () => {
-		await axios.get("http://localhost:8000/api/pikod",)
-			.then(response => {
+		await axios
+			.get("http://localhost:8000/api/pikod")
+			.then((response) => {
 				setPikods(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
-			})
-	  }
-	  
+			});
+	};
 
 	const [data, setData] = useState({
 		name: "",
@@ -204,17 +203,25 @@ const EditUserForm = ({ match }) => {
 											<option value="">הרשאה</option>
 											<option value="0">משתמש רגיל</option>
 											<option value="1">משתמש חמ"ל</option>
-											<option value="2">מנהל מערכת</option>
+											<option value="2"> מנהל מערכת</option>
 										</Input>
-									</FormGroup>
-
-									<FormGroup
-												style={{
+									</FormGroup >
+									{data.role != "0" ? (
+										<>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												פיקוד
+											</div>
+											<FormGroup 			style={{
 													justifyContent: "right",
 													alignContent: "right",
 													textAlign: "right",
-												}}
-											>
+												}}>
+												<Input
+													type="select"
+													name="pikodid"
+													value={data.pikodid}
+													onChange={handleChange}
+												>
 												<h6>פיקוד</h6>
 												<Select
 													data={pikods}
@@ -222,7 +229,9 @@ const EditUserForm = ({ match }) => {
 													name={"pikod"}
 													val={data.pikod ? data.pikod : undefined}
 												/>
-									</FormGroup>
+											</FormGroup>
+										</>
+									) : null}
 
 									<div className="text-center">
 										<button

@@ -31,7 +31,11 @@ const Report = ({ props }) => {
 		lastname: "",
 		personalnumber: "",
 		cellphone: "",
-		pikod: "",
+		// pikod: "",
+		// ogda: "",
+		// hativa: "",
+		gdod: "",
+		mkabazs: "",
 		typevent: "רק'ם",
 		resevent: "0",
 		cli: "0",
@@ -98,7 +102,8 @@ const Report = ({ props }) => {
 		let tempmagadmkabazs = [];
 		if (magadid != undefined) {
 			await axios
-				.get(`http://localhost:8000/api/mkabaz/mkabazsbymagad/${magadid}`)
+				//? should work need to test on real db
+				.get(`http://localhost:8000/api/mkabaz/mkabazsbyrekem/${magadid}`)
 				.then((response) => {
 					for (let j = 0; j < response.data.length; j++)
 						tempmagadmkabazs.push(response.data[j]);
@@ -106,6 +111,7 @@ const Report = ({ props }) => {
 				.catch((error) => {
 					console.log(error);
 				});
+			console.log(tempmagadmkabazs);
 			setMkabazs(tempmagadmkabazs);
 		}
 	};
@@ -332,10 +338,10 @@ const Report = ({ props }) => {
 			lastname: data.lastname,
 			personalnumber: data.personalnumber,
 			cellphone: data.cellphone,
-			pikod: data.pikod,
+			// pikod: data.pikod,
 			// ogda:data.ogda,
 			// hativa:data.hativa,
-			// gdod:data.gdod,
+			gdod: data.gdod,
 			status: data.dt,
 			typevent: data.typevent,
 			resevent: data.resevent,
@@ -422,6 +428,11 @@ const Report = ({ props }) => {
 		setGdods([]);
 		loadGdods(data.hativa);
 	}, [data.hativa]);
+
+	useEffect(() => {
+		setMkabazs([]);
+		getMkabazs();
+	}, [data.mkabaz]);
 
 	return (
 		<div>

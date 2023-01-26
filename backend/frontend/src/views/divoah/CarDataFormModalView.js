@@ -38,6 +38,9 @@ const CarDataFormModalView = (match) => {
 		lastname: "",
 		personalnumber: "",
 		cellphone: "",
+		pikod: "",
+		ogda: "",
+		hativa: "",
 		typevent: "",
 		resevent: "",
 		yn: "",
@@ -260,8 +263,8 @@ const CarDataFormModalView = (match) => {
 		axios
 			.get(`http://localhost:8000/report/${reportid}`)
 			.then((response) => {
-				let tempuser = { ...response.data };
-				setData(tempuser);
+				let tempcardata = response.data[0];
+				setData(tempcardata);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -342,10 +345,7 @@ const CarDataFormModalView = (match) => {
 						<div>
 							<Container className="mt--8 pb-5">
 								<Row className="justify-content-center">
-									<Col
-										lg="20"
-										md="7"
-									>
+
 										<Card className="shadow border-0">
 											{data.typevent != "רק'ם" ? (
 												<CardBody className="px-lg-5 py-lg-5">
@@ -2212,7 +2212,6 @@ const CarDataFormModalView = (match) => {
 												</button>
 											</div>
 										</Card>
-									</Col>
 								</Row>
 							</Container>
 						</div>

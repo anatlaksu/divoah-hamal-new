@@ -1,5 +1,128 @@
 const router = require("express").Router();
 const Report = require("../models/Report.model");
+const mongoose = require("mongoose");
+
+let readtipul = [
+	{
+		$lookup: {
+			from: "gdods",
+			localField: "gdod",
+			foreignField: "_id",
+			as: "gdod_data",
+		},
+	},
+	{
+		$unwind: "$gdod_data",
+	},
+	{
+		$lookup: {
+			from: "hativas",
+			localField: "gdod_data.hativa",
+			foreignField: "_id",
+			as: "hativa_data",
+		},
+	},
+	{
+		$set: {
+			hativa: { $arrayElemAt: ["$hativa_data._id", 0] },
+		},
+	},
+	{
+		$lookup: {
+			from: "ogdas",
+			localField: "hativa_data.ogda",
+			foreignField: "_id",
+			as: "ogda_data",
+		},
+	},
+	{
+		$set: {
+			ogda: { $arrayElemAt: ["$ogda_data._id", 0] },
+		},
+	},
+	{
+		$lookup: {
+			from: "pikods",
+			localField: "ogda_data.pikod",
+			foreignField: "_id",
+			as: "pikod_data",
+		},
+	},
+	{
+		$set: {
+			pikod: { $arrayElemAt: ["$pikod_data._id", 0] },
+		},
+	},
+
+	{
+		$lookup: {
+			from: "magads",
+			localField: "mkabaz_data.magad",
+			foreignField: "_id",
+			as: "magad_data",
+		},
+	},
+	{
+		$set: {
+			magad: { $arrayElemAt: ["$magad_data._id", 0] },
+		},
+	},
+	{
+		$lookup: {
+			from: "magadals",
+			localField: "magad_data.magadal",
+			foreignField: "_id",
+			as: "magadal_data",
+		},
+	},
+	{
+		$set: {
+			magadal: { $arrayElemAt: ["$magadal_data._id", 0] },
+		},
+	},
+];
+
+let readtipulnotype = [
+	{
+		$lookup: {
+			from: "mkabazs",
+			localField: "mkabazs",
+			foreignField: "_id",
+			as: "mkabaz_data",
+		},
+	},
+	{
+		$set: {
+			mkabaz: { $arrayElemAt: ["$mkabaz_data._id", 0] },
+		},
+	},
+	{
+		$lookup: {
+			from: "magads",
+			localField: "mkabaz_data.magad",
+			foreignField: "_id",
+			as: "magad_data",
+		},
+	},
+	{
+		$set: {
+			magad: { $arrayElemAt: ["$magad_data._id", 0] },
+		},
+	},
+	{
+		$lookup: {
+			from: "magadals",
+			localField: "magad_data.magadal",
+			foreignField: "_id",
+			as: "magadal_data",
+		},
+	},
+	{
+		$set: {
+			magadal: { $arrayElemAt: ["$magadal_data._id", 0] },
+		},
+	},
+];
 
 router.route("/").get((req, res) => {
 	Report.find()
@@ -21,12 +144,12 @@ router.route("/add").post((req, res) => {
 	const lastname = req.body.lastname;
 	const personalnumber = req.body.personalnumber;
 	const cellphone = req.body.cellphone;
-	const pikod = req.body.pikod;
-	const ogda = req.body.ogda;
-	const hativa = req.body.hativa;
+	// const pikod = req.body.pikod;
+	// const ogda = req.body.ogda;
+	// const hativa = req.body.hativa;
 	const gdod = req.body.gdod;
-	const magadal = req.body.magadal;
-	const magad = req.body.magad;
+	// const magadal = req.body.magadal;
+	// const magad = req.body.magad;
 	const mkabaz = req.body.mkabaz;
 	const typevent = req.body.typevent;
 	const resevent = req.body.resevent;
@@ -52,12 +175,12 @@ router.route("/add").post((req, res) => {
 		lastname,
 		personalnumber,
 		cellphone,
-		pikod,
-		ogda,
-		hativa,
+		// pikod,
+		// ogda,
+		// hativa,
 		gdod,
-		magadal,
-		magad,
+		// magadal,
+		// magad,
 		mkabaz,
 		typevent,
 		resevent,
@@ -113,9 +236,57 @@ router.route("/requestByPersonalnumber/:personalnumber").get((req, res) => {
 // });
 
 router.route("/:id").get((req, res) => {
-	Report.findById(req.params.id)
-		.then((request) => res.json(request))
-		.catch((err) => res.status(400).json("Error: " + err));
+	// Report.findById(req.params.id)
+	// 	.then((request) => res.json(request))
+	// 	.catch((err) => res.status(400).json("Error: " + err));
+	let tipulfindquerry = readtipul.slice();
+	let finalquerry = tipulfindquerry;
+	let andquery = [];
+	andquery.push({ _id: mongoose.Types.ObjectId(req.params.id) });
+	if (andquery.length != 0) {
+		let matchquerry = {
+			$match: {
+				$and: andquery,
+			},
+		};
+		finalquerry.push(matchquerry);
+	}
+	// console.log(matchquerry);
+	// console.log(andquery);
+	Report.aggregate(finalquerry)
+		.then((result) => {
+			console.log(result);
+			if (result.length != 0) {
+				res.json(result);
+			} else {
+				let tipulfindquerry = readtipulnotype.slice();
+				let finalquerry = tipulfindquerry;
+				let andquery = [];
+				andquery.push({ _id: mongoose.Types.ObjectId(req.params.id) });
+				if (andquery.length != 0) {
+					let matchquerry = {
+						$match: {
+							$and: andquery,
+						},
+					};
+					finalquerry.push(matchquerry);
+				}
+				// console.log(matchquerry);
+				// console.log(andquery);
+				Report.aggregate(finalquerry)
+					.then((result) => {
+						res.json(result);
+					})
+					.catch((error) => {
+						res.status(400).json("Error: " + error);
+						console.log(error);
+					});
+			}
+		})
+		.catch((error) => {
+			res.status(400).json("Error: " + error);
+			console.log(error);
+		});
 });
 
 router.route("/:id").delete((req, res) => {
@@ -131,12 +302,12 @@ router.route("/update/:id").put((req, res) => {
 			request.lastname = req.body.lastname;
 			request.personalnumber = req.body.personalnumber;
 			request.cellphone = req.body.cellphone;
-			request.pikod = req.body.pikod;
-			request.ogda = req.body.ogda;
-			request.hativa = req.body.hativa;
+			// request.pikod = req.body.pikod;
+			// request.ogda = req.body.ogda;
+			// request.hativa = req.body.hativa;
 			request.gdod = req.body.gdod;
-			request.magadal = req.body.magadal;
-			request.magad = req.body.magad;
+			// request.magadal = req.body.magadal;
+			// request.magad = req.body.magad;
 			request.mkabaz = req.body.mkabaz;
 			request.typevent = req.body.typevent;
 			request.resevent = req.body.resevent;
@@ -164,5 +335,45 @@ router.route("/update/:id").put((req, res) => {
 		})
 		.catch((err) => res.status(400).json("Error: " + err));
 });
+
+// exports.cardatabyunittypeandunitid = (req, res) => {
+// 	let tipulfindquerry = readtipul.slice();
+// 	let finalquerry = tipulfindquerry;
+
+// 	let andquery = [];
+
+// 	switch (req.params.unittype) {
+// 	  case 'admin':
+// 		break;
+// 	  case 'pikod': andquery.push({ "pikod_data._id": req.params.unitid });
+// 		break;
+// 	  case 'ogda': andquery.push({ "ogda_data._id": req.params.unitid });
+// 		break;
+// 	  case 'hativa': andquery.push({ "hativa_data._id": req.params.unitid });
+// 		break;
+// 	  case 'gdod': andquery.push({ "gdod_data._id": req.params.unitid });
+// 		break;
+// 	}
+
+// 	if (andquery.length != 0) {
+// 	  let matchquerry = {
+// 		"$match": {
+// 		  "$and": andquery
+// 		}
+// 	  };
+// 	  finalquerry.push(matchquerry)
+// 	}
+
+// 	// console.log(matchquerry)
+// 	//console.log(andquery)
+
+// 	Cardata.aggregate(finalquerry)
+// 	  .then((result) => {
+// 		res.json(result);
+// 	  })
+// 	  .catch((error) => {
+// 		res.status(400).json('Error: ' + error);
+// 	  });
+//   };
 
 module.exports = router;
