@@ -91,12 +91,12 @@ const SortingTableHamal = ({ match }) => {
 		} else {
 			setViewmodalid(evt.currentTarget.value);
 		}
-		setisviewmodalopen(!iscardataformopen);
+		setisviewmodalopen(!isviewmodalopen);
 		// console.log(cardataidformodal);
 	}
 
 	function ToggleForModalView(evt) {
-		setisviewmodalopen(!iscardataformopen);
+		setisviewmodalopen(!isviewmodalopen);
 		window.location.reload();
 	}
 

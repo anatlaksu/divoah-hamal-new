@@ -516,7 +516,7 @@ const Report = ({ match }) => {
 			resevent: data.resevent,
 			// magadal: data.magadal,
 			// magad:data.magad,
-			mkabaz: data.mkabaz,
+			mkabazs: data.mkabaz,
 			yn: data.yn,
 			status:
 				data.dt /* //?if there is no need for the status button ==> data.dt != undefined || null ? data.dt : "0",*/,
@@ -547,13 +547,11 @@ const Report = ({ match }) => {
 				console.log(res);
 				setData({ ...data, loading: false, error: false, successmsg: true });
 				toast.success(` הדיווח נשלח בהצלחה`);
-				if(user.role=="0")
-				{
+				if (user.role == "0") {
 					history.push(`/dash`);
-				}else if(user.role=="1")
-				{
+				} else if (user.role == "1") {
 					history.push(`/dashamal`);
-				}else if(user.role=="2"){
+				} else if (user.role == "2") {
 					history.push(`/dashadmin`);
 				}
 				console.log(res.data);
@@ -1230,7 +1228,7 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 
-												{!data.magadal && !data.mkabaz ? (
+												{data.magadal && !data.mkabaz ? (
 													<Col
 														style={{
 															justifyContent: "right",
@@ -1265,7 +1263,7 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 
-												{!data.magad && !data.makat ? (
+												{data.magad && !data.makat ? (
 													<Col
 														style={{
 															justifyContent: "right",
@@ -1275,10 +1273,10 @@ const Report = ({ match }) => {
 													>
 														<h6>מקבץ</h6>
 														<Select
-															data={mkabazsRekem}
-															handleChange2={matafHandleChange}
+															data={mkabazs}
+															handleChange2={handleChange2}
+															name={"mkabaz"}
 															val={data.mkabaz ? data.mkabaz : undefined}
-															id="mkabazM"
 														/>
 													</Col>
 												) : (
@@ -1291,11 +1289,11 @@ const Report = ({ match }) => {
 													>
 														<h6>מקבץ</h6>
 														<Select
-															data={mkabazsRekem}
-															handleChange2={matafHandleChange}
+															data={mkabazs}
+															handleChange2={handleChange2}
+															name={"mkabaz"}
 															val={data.mkabaz ? data.mkabaz : undefined}
 															isDisabled={true}
-															id="mkabazM"
 														/>
 													</Col>
 												)}
@@ -1310,8 +1308,7 @@ const Report = ({ match }) => {
 												{console.log(mkabazsMataf[indexM].matafCre)} */}
 
 												{mkabazsRekem[indexM] ==
-												undefined ? null : mkabazsRekem[indexM].matafEngine &&
-												  mkabazsRekem[indexM].matafCre ? (
+												undefined ? null : mkabazsRekem[indexM] == true ? (
 													<Input
 														type="select"
 														name="mataftype"
@@ -1324,39 +1321,20 @@ const Report = ({ match }) => {
 														<option value={"2"}>תא צוות</option>
 														<option value={"3"}>תא מנוע ותא צוות</option>
 													</Input>
-												) : mkabazsRekem[indexM].matafEngine ? (
-													<Input
-														type="select"
-														name="mataftype"
-														value={data.mataftype}
-														onChange={handleChange}
-														id="mataf"
-													>
-														<option value={"0"}>בחר</option>
-														<option value={"1"}>תא מנוע</option>
-													</Input>
-												) : mkabazsRekem[indexM].matafCre ? (
-													<Input
-														type="select"
-														name="mataftype"
-														value={data.mataftype}
-														onChange={handleChange}
-														id="mataf"
-													>
-														<option value={"0"}>בחר</option>
-														<option value={"2"}>תא צוות</option>
-													</Input>
 												) : (
-													<Input
-														type="select"
-														name="mataftype"
-														value={data.mataftype}
-														onChange={handleChange}
-														id="mataf"
-													>
-														<option value={"0"}>בחר</option>
-														<option value={""}>לא נמצאו כלים </option>
-													</Input>
+													mkabazsRekem[indexM] ==
+													false(
+														<Input
+															type="select"
+															name="mataftype"
+															value={data.mataftype}
+															onChange={handleChange}
+															id="mataf"
+														>
+															<option value={"0"}>בחר</option>
+															<option value={""}>לא נמצאו כלים </option>
+														</Input>
+													)
 												)}
 											</FormGroup>
 											{/* //! to be checked */}

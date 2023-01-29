@@ -55,25 +55,25 @@ exports.mkabazsbymagad = (req, res) => {
 		.catch((err) => res.status(400).json("Error: " + err));
 };
 
-exports.mkabazsbymatafcre = async (req, res) => {
-	//! on test { magad: req.params.magadid }
-	Mkabaz.find({ matafCre: true })
-		.sort({ index: 1 })
-		.then((mkabaz) => res.json(mkabaz))
-		.catch((err) => res.status(400).json("Error: " + err));
-};
+// exports.mkabazsbymatafcre = async (req, res) => {
+// 	//! on test { magad: req.params.magadid }
+// 	Mkabaz.find({ matafCre: true })
+// 		.sort({ index: 1 })
+// 		.then((mkabaz) => res.json(mkabaz))
+// 		.catch((err) => res.status(400).json("Error: " + err));
+// };
 
-exports.mkabazsbymatafengine = async (req, res) => {
-	//! on test { magad: req.params.magadid }
-	Mkabaz.find({ matafEngine: true })
-		.sort({ index: 1 })
-		.then((mkabaz) => res.json(mkabaz))
-		.catch((err) => res.status(400).json("Error: " + err));
-};
+// exports.mkabazsbymatafengine = async (req, res) => {
+// 	//! on test { magad: req.params.magadid }
+// 	Mkabaz.find({ matafEngine: true })
+// 		.sort({ index: 1 })
+// 		.then((mkabaz) => res.json(mkabaz))
+// 		.catch((err) => res.status(400).json("Error: " + err));
+// };
 
 exports.mkabazsbyrekem = async (req, res) => {
 	//{ magad: req.params.magadid }
-	Mkabaz.find({ magad: req.params.magadid }, { isRekem: true })
+	Mkabaz.find({ magad: req.params.magadid, isRekem: true })
 		.sort({ index: 1 })
 		.then((mkabaz) => res.json(mkabaz))
 		.catch((err) => res.status(400).json("Error: " + err));
