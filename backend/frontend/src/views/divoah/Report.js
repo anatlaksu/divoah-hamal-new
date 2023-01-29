@@ -37,7 +37,7 @@ const Report = ({ match }) => {
 		mkabazs: "",
 		typevent: "0",
 		resevent: "0",
-		yn: "",
+		yn: "0",
 		selneshek: "0",
 		whap: "0",
 		amlahtype: "",
@@ -68,8 +68,8 @@ const Report = ({ match }) => {
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
-	// ? for magad that have matafim
-	const [mkabazsMataf, setMkabazsMataf] = useState([]);
+	//* isRekem
+	const [mkabazsRekem, setRekem] = useState([]);
 	const [indexM, setIndexM] = useState(0);
 
 	const getMagadals = async () => {
@@ -115,34 +115,22 @@ const Report = ({ match }) => {
 		}
 	};
 
-	const getMkabazsMataf = async () => {
-		await axios
-			.get(`http://localhost:8000/api/mkabaz/mkabazsbymatafcre`)
-			.then((response) => {
-				const tempdatacre = response.data;
-				// console.log(response.data);
-				axios
-					.get(`http://localhost:8000/api/mkabaz/mkabazsbymatafengine`)
-					.then((response) => {
-						const tempdataengine = response.data;
-						let filtered = tempdatacre;
-						// console.log(response.data);
-						tempdatacre.map((item, index) => {
-							if (tempdataengine[index].name !== tempdatacre[index].name) {
-								filtered.push(tempdataengine[index]);
-							}
-						});
-						console.log(filtered);
-
-						setMkabazsMataf(filtered);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+	const getRekem = async (magadid) => {
+		let tempmagadmkabazs = [];
+		if (magadid != undefined) {
+			await axios
+				//? should work need to test on real db
+				.get(`http://localhost:8000/api/mkabaz/mkabazsbyrekem/${magadid}`)
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						tempmagadmkabazs.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+			console.log(tempmagadmkabazs);
+			setRekem(tempmagadmkabazs);
+		}
 	};
 
 	const loadPikods = async () => {
@@ -236,8 +224,8 @@ const Report = ({ match }) => {
 
 	async function matafHandleChange(selectedOption, name) {
 		if (!(selectedOption.value == "בחר")) {
-			let i = mkabazsMataf.map((item, index) => {
-				return mkabazsMataf[index].name;
+			let i = mkabazsRekem.map((item, index) => {
+				return mkabazsRekem[index].name;
 			});
 			console.log(1);
 			let nameIndex = await i.indexOf(selectedOption.label);
@@ -246,8 +234,8 @@ const Report = ({ match }) => {
 			await setIndexM(nameIndex);
 			// console.log(mkabazsMataf[nameIndex]);
 			console.log(indexM);
-			console.log(mkabazsMataf[indexM].matafEngine);
-			console.log(mkabazsMataf[indexM].matafCre);
+			console.log(mkabazsRekem[indexM].matafEngine);
+			console.log(mkabazsRekem[indexM].matafCre);
 
 			setData({ ...data, [name]: selectedOption.value });
 		} else {
@@ -559,7 +547,15 @@ const Report = ({ match }) => {
 				console.log(res);
 				setData({ ...data, loading: false, error: false, successmsg: true });
 				toast.success(` הדיווח נשלח בהצלחה`);
-				history.push(`/dash`);
+				if(user.role=="0")
+				{
+					history.push(`/dash`);
+				}else if(user.role=="1")
+				{
+					history.push(`/dashamal`);
+				}else if(user.role=="2"){
+					history.push(`/dashadmin`);
+				}
 				console.log(res.data);
 				console.groupEnd();
 			})
@@ -619,8 +615,8 @@ const Report = ({ match }) => {
 	}, [data.magad]);
 
 	useEffect(() => {
-		setMkabazsMataf([]);
-		getMkabazsMataf();
+		setRekem([]);
+		getRekem();
 	}, [data.mkabaz]);
 
 	// useEffect(() => {
@@ -1279,7 +1275,7 @@ const Report = ({ match }) => {
 													>
 														<h6>מקבץ</h6>
 														<Select
-															data={mkabazsMataf}
+															data={mkabazsRekem}
 															handleChange2={matafHandleChange}
 															val={data.mkabaz ? data.mkabaz : undefined}
 															id="mkabazM"
@@ -1295,7 +1291,7 @@ const Report = ({ match }) => {
 													>
 														<h6>מקבץ</h6>
 														<Select
-															data={mkabazsMataf}
+															data={mkabazsRekem}
 															handleChange2={matafHandleChange}
 															val={data.mkabaz ? data.mkabaz : undefined}
 															isDisabled={true}
@@ -1313,9 +1309,9 @@ const Report = ({ match }) => {
 												{console.log(mkabazsMataf[indexM].matafEngine)}
 												{console.log(mkabazsMataf[indexM].matafCre)} */}
 
-												{mkabazsMataf[indexM] ==
-												undefined ? null : mkabazsMataf[indexM].matafEngine &&
-												  mkabazsMataf[indexM].matafCre ? (
+												{mkabazsRekem[indexM] ==
+												undefined ? null : mkabazsRekem[indexM].matafEngine &&
+												  mkabazsRekem[indexM].matafCre ? (
 													<Input
 														type="select"
 														name="mataftype"
@@ -1328,7 +1324,7 @@ const Report = ({ match }) => {
 														<option value={"2"}>תא צוות</option>
 														<option value={"3"}>תא מנוע ותא צוות</option>
 													</Input>
-												) : mkabazsMataf[indexM].matafEngine ? (
+												) : mkabazsRekem[indexM].matafEngine ? (
 													<Input
 														type="select"
 														name="mataftype"
@@ -1339,7 +1335,7 @@ const Report = ({ match }) => {
 														<option value={"0"}>בחר</option>
 														<option value={"1"}>תא מנוע</option>
 													</Input>
-												) : mkabazsMataf[indexM].matafCre ? (
+												) : mkabazsRekem[indexM].matafCre ? (
 													<Input
 														type="select"
 														name="mataftype"
