@@ -470,58 +470,52 @@ const AdminSignInForm = () => {
 		}
 	}
 
-	return (
-		<div>
-			<Container className="mt--8 pb-5">
-				<Row>
-					<Col lg="6">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">טבלת אירועים</h3>
-							</CardHeader>
-							<CardBody>
-								<table
-									className="tablesorter"
-									responsive
-								>
-									<thead className="text-primary">
-										<tr>
-											<th className="text-center">פיקוד</th>
-											<th className="text-center">סוג אירוע</th>
-											<th className="text-center">פירוט האירוע</th>
-										</tr>
-									</thead>
-									<tbody>
-										{reportDB.map((report, index) => (
-											<tr>
-												<td>
-													<p>{getname(report.pikod, pikods)}</p>
-												</td>
-												<td>{eventTypeArray[report.typevent]}</td>
-												<td>{report.pirot}</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									אירועים לפי סוג אירוע
-								</h3>
-							</CardHeader>
-							<CardBody>
-								<Doughnut
-									data={dataevent}
-									options={options}
-								/>
-							</CardBody>
-						</Card>
-					</Col>
+  return (
+    <div>
+      <Container className="mt--8 pb-5">
+        <Row>
+          <Col lg="6">
+            <Card className="card-chart">
+              <CardHeader>
+                <h3 className="card-category text-center">טבלת אירועים</h3>
+              </CardHeader>
+              <CardBody>
+                <table className="tablesorter" responsive>
+                  <thead className="text-primary">
+                    <tr>
+                      <th className="text-center" style={{width:"20%"}}>פיקוד</th>
+                      <th className="text-center" style={{width:"30%"}}>סוג אירוע</th>
+                      <th className="text-center" style={{width:"50%"}}>פירוט האירוע</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reportDB.map((report, index) => (
+                      <tr>
+                        <td>
+                          <p>{getname(report.pikod,pikods)}</p>
+                        </td>
+                        <td>{eventTypeArray[report.typevent]}</td>
+                        <td><div style={{width:"100%",height:"50px",margin:"0",padding:"0",overflow:"auto"}}>{report.pirot}</div></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col lg="3">
+                <Card className="card-chart">
+                <CardHeader>
+                    <h3 className="card-category text-center">
+                      {" "}
+                      אירועים לפי סוג אירוע
+                    </h3>
+                  </CardHeader>
+                  <CardBody>
+                  <Doughnut data={dataevent} options={options}/>
+                  </CardBody>
+                </Card>
+          </Col>
 
 					<Col lg="3">
 						<Card className="card-chart">

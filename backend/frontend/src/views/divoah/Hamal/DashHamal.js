@@ -134,18 +134,44 @@ const loadGdods = async (hativaids) => {
   setGdods(temphativasgdods);
 } 
 
-const loadReports = () => {
-  axios
-  .get(`http://localhost:8000/report/`)
-  .then((response) => {
-    console.log(response.data);
-    setReportDB(response.data);
-  })
-  .catch((error) => {
-    console.log(error);
-    setIsError(true);
-  });
-};
+	const loadReports = () => {
+		//* help tool for checking if ReportDB is an array so the map function will work on him
+		let arrayTester = [];
+		//* geting all the reports
+		axios
+			.get(`http://localhost:8000/report/`)
+			.then((res) => {
+				res.data.map((item, index) => {
+					// console.log(res.data[index]._id);
+					//* taking the id of etch report and geting all its data (like in the cardatamodal)
+					axios
+						.get(`http://localhost:8000/report/${res.data[index]._id}`)
+						.then((response) => {
+							// console.log(response);
+							// let tempuser = { ...response.data };
+							// setData(tempuser);
+							let tempcardata = response.data[0];
+							console.log(tempcardata);
+							arrayTester.push(tempcardata);
+							// tempcardata.slice();
+							if (arrayTester.length === res.data.length) {
+								setReportDB(arrayTester);
+							}
+						})
+						.catch((error) => {
+							console.log(error);
+						});
+					loadPikods();
+				});
+				// console.log(response.data);
+				// console.log(reportDBItem);
+				// setReportDB(reportDBItem);
+			})
+			.catch((error) => {
+				console.log(error);
+				setIsError(true);
+			});
+	};
 
 function handleChange2(selectedOption, name) {
   if (!(selectedOption.value == "בחר"))
@@ -393,6 +419,7 @@ function getname(idnum,arr){
 }
 
 const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
+const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.datevent) - new Date(report2.datevent)).reverse();
 
   return (
     <div>
@@ -407,19 +434,19 @@ const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
                 <table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th className="text-center">פיקוד</th>
-                      <th className="text-center">סוג אירוע</th>
-                      <th className="text-center">פירוט האירוע</th>
+                      <th className="text-center" style={{width:"20%"}}>פיקוד</th>
+                      <th className="text-center" style={{width:"30%"}}>סוג אירוע</th>
+                      <th className="text-center" style={{width:"50%"}}>פירוט האירוע</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {reportbypikod.map((report, index) => (
+                    {sortreport.map((report, index) => (
                       <tr>
                         <td>
                           <p>{getname(report.pikod,pikods)}</p>
                         </td>
                         <td>{eventTypeArray[report.typevent]}</td>
-                        <td>{report.pirot}</td>
+                        <td><div style={{width:"100%",height:"50px",margin:"0",padding:"0",overflow:"auto"}}>{report.pirot}</div></td>
                       </tr>
                     ))}
                   </tbody>

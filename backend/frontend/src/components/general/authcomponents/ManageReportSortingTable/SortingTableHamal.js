@@ -151,9 +151,9 @@ const SortingTableHamal = ({ match }) => {
 						setIsError(true);
 					})
 			: axios
-					.get(`http://localhost:8000/report/pikod/${user.pikodid}`)
+					.get(`http://localhost:8000/report/pikod/${user.pikod}`)
 					.then((response) => {
-						console.log(user.pikodid);
+						console.log(user.pikod);
 						console.log(response.data);
 						setData(response.data);
 					})
@@ -196,6 +196,18 @@ const SortingTableHamal = ({ match }) => {
 
 	return (
 		<>
+		      <div style={{ float: 'right', paddingBottom: '5px' }}>
+        <ReactHTMLTableToExcel
+          id="test-table-xls-button"
+          className="btn-green"
+          table="table-to-xls"
+          filename="קובץ - סיכום דיווחים"
+          sheet="קובץ - סיכום דיווחים"
+          buttonText="הורד כקובץ אקסל"
+          style={{ float: 'right' }}
+        />
+        </div>
+
 			{/*//* ----- modals --------------------------------
 				//? ++ unittype={props.unittype} unitid={props.unitid} */}
 			<CarDataFormModal
@@ -220,14 +232,14 @@ const SortingTableHamal = ({ match }) => {
 				style={{ overflow: "auto" }}
 			>
 				<table
-					id="table-to-xls-users"
+					id="table-to-xls"
 					{...getTableProps()}
 				>
 					<thead>
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th>
+									<th style={{width:"20%"}}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -289,7 +301,7 @@ const SortingTableHamal = ({ match }) => {
 												if (cell.value == "רק'ם") return <td>רק"ם</td>;
 											}
 											if (cell.column.id == "pirot") {
-												return <td>{cell.value}</td>;
+												return <td><div style={{width:"100%",height:"60px",margin:"0",padding:"0",overflow:"auto"}}>{cell.value}</div></td>;
 											}
 
 											if (cell.column.id == "datevent") {
