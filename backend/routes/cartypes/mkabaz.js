@@ -16,8 +16,8 @@ const {
 
 router.post("/mkabaz", create);
 //! on tets /:id
-router.get("/mkabaz/mkabazsbymatafcre", mkabazsbymatafcre);
-router.get("/mkabaz/mkabazsbymatafengine", mkabazsbymatafengine);
+// router.get("/mkabaz/mkabazsbymatafcre", mkabazsbymatafcre);
+// router.get("/mkabaz/mkabazsbymatafengine", mkabazsbymatafengine);
 // * ----------------------------------------------------------------
 router.get("/mkabaz/mkabazsbyrekem/:id", mkabazsbyrekem);
 

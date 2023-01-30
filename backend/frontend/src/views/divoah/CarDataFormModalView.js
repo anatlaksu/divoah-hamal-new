@@ -345,75 +345,112 @@ const CarDataFormModalView = (match) => {
 						<div>
 							<Container className="mt--8 pb-5">
 								<Row className="justify-content-center">
+									<Card className="shadow border-0">
+										{data.typevent != "רק'ם" ? (
+											<CardBody className="px-lg-5 py-lg-5">
+												<div className="text-center text-muted mb-4">
+													<big>עדכון דיווח</big>
+												</div>
+												<div className="text-center text-muted mb-4">
+													<small>פרטי מדווח</small>
+												</div>
+												<Form role="form">
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="שם פרטי"
+															name="name"
+															type="text"
+															value={data.name}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
 
-										<Card className="shadow border-0">
-											{data.typevent != "רק'ם" ? (
-												<CardBody className="px-lg-5 py-lg-5">
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="שם משפחה"
+															name="lastname"
+															type="text"
+															value={data.lastname}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
+													<FormGroup
+														className="mb-3"
+														dir="rtl"
+													>
+														<Input
+															placeholder="מספר אישי"
+															name="personalnumber"
+															type="string"
+															maxlength="7"
+															value={data.personalnumber}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
+													<FormGroup
+														className="mb-3"
+														dir="rtl"
+													>
+														<Input
+															placeholder="טלפון נייד"
+															name="cellphone"
+															type="tel"
+															maxlength="10"
+															value={data.cellphone}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
 													<div className="text-center text-muted mb-4">
-														<big>עדכון דיווח</big>
+														<small>פרטי יחידה מדווחת</small>
 													</div>
-													<div className="text-center text-muted mb-4">
-														<small>פרטי מדווח</small>
-													</div>
-													<Form role="form">
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="שם פרטי"
-																name="name"
-																type="text"
-																value={data.name}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
 
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="שם משפחה"
-																name="lastname"
-																type="text"
-																value={data.lastname}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
+													<Row style={{ paddingTop: "2px" }}>
+														{!data.ogda ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	disabled
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
 
-														<FormGroup
-															className="mb-3"
-															dir="rtl"
-														>
-															<Input
-																placeholder="מספר אישי"
-																name="personalnumber"
-																type="string"
-																maxlength="7"
-																value={data.personalnumber}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-
-														<FormGroup
-															className="mb-3"
-															dir="rtl"
-														>
-															<Input
-																placeholder="טלפון נייד"
-																name="cellphone"
-																type="tel"
-																maxlength="10"
-																value={data.cellphone}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-
-														<div className="text-center text-muted mb-4">
-															<small>פרטי יחידה מדווחת</small>
-														</div>
-
-														<Row style={{ paddingTop: "2px" }}>
-															{!data.ogda ? (
+														<>
+															{data.pikod && !data.hativa ? (
 																<Col
 																	style={{
 																		justifyContent: "right",
@@ -421,12 +458,12 @@ const CarDataFormModalView = (match) => {
 																		textAlign: "right",
 																	}}
 																>
-																	<h6>פיקוד</h6>
+																	<h6>אוגדה</h6>
 																	<Select
-																		data={pikods}
+																		data={ogdas}
 																		handleChange2={handleChange2}
-																		name={"pikod"}
-																		val={data.pikod ? data.pikod : undefined}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
 																		isDisabled={true}
 																	/>
 																</Col>
@@ -438,1049 +475,987 @@ const CarDataFormModalView = (match) => {
 																		textAlign: "right",
 																	}}
 																>
-																	<h6>פיקוד</h6>
+																	<h6>אוגדה</h6>
 																	<Select
-																		disabled
-																		data={pikods}
+																		data={ogdas}
 																		handleChange2={handleChange2}
-																		name={"pikod"}
-																		val={data.pikod ? data.pikod : undefined}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
 																		isDisabled={true}
 																	/>
 																</Col>
 															)}
+														</>
 
-															<>
-																{data.pikod && !data.hativa ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>אוגדה</h6>
-																		<Select
-																			data={ogdas}
-																			handleChange2={handleChange2}
-																			name={"ogda"}
-																			val={data.ogda ? data.ogda : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>אוגדה</h6>
-																		<Select
-																			data={ogdas}
-																			handleChange2={handleChange2}
-																			name={"ogda"}
-																			val={data.ogda ? data.ogda : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-															</>
+														<>
+															{data.ogda && !data.gdod ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-															<>
-																{data.ogda && !data.gdod ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>חטיבה</h6>
-																		<Select
-																			data={hativas}
-																			handleChange2={handleChange2}
-																			name={"hativa"}
-																			val={
-																				data.hativa ? data.hativa : undefined
-																			}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>חטיבה</h6>
-																		<Select
-																			data={hativas}
-																			handleChange2={handleChange2}
-																			name={"hativa"}
-																			val={
-																				data.hativa ? data.hativa : undefined
-																			}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-															</>
+														<>
+															{data.hativa ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+													</Row>
 
-															<>
-																{data.hativa ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>גדוד</h6>
-																		<Select
-																			data={gdods}
-																			handleChange2={handleChange2}
-																			name={"gdod"}
-																			val={data.gdod ? data.gdod : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>גדוד</h6>
-																		<Select
-																			data={gdods}
-																			handleChange2={handleChange2}
-																			name={"gdod"}
-																			val={data.gdod ? data.gdod : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-															</>
-														</Row>
+													<div
+														className="text-center text-muted mb-4"
+														style={{ paddingTop: "20px" }}
+													>
+														<small>פרטי אירוע</small>
+													</div>
 
-														<div
-															className="text-center text-muted mb-4"
-															style={{ paddingTop: "20px" }}
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														סוג אירוע
+													</div>
+													<FormGroup>
+														<Input
+															placeholder="סוג אירוע"
+															type="select"
+															name="typevent"
+															value={data.typevent}
+															onChange={handleChange}
+															id="seltype"
+															disabled
 														>
-															<small>פרטי אירוע</small>
-														</div>
+															<option value={"בחר"}>בחר</option>
+															<option value={"1"}>תאונת כלי רכב</option>
+															<option value={"2"}>התהפכות</option>
+															<option value={"3"}>הנתקות גלגל</option>
+															<option value={"4"}>שריפה</option>
+															<option value={"5"}>אירועי נשק / תחמושת</option>
+															<option value={"6"}>תאונת עבודה אנשי טנ"א</option>
+															<option value={"7"}>פריקת מטפים</option>
+															<option value={"8"}>אפידמיה</option>
+															<option value={"9"}>חילוץ</option>
+															<option value={"10"}>
+																נזק לתשתיות אחזקה / הח"י
+															</option>
+															<option value={"11"}>אי קיום שגרת אחזקה</option>
+															<option value={"12"}>אחר</option>
+														</Input>
+													</FormGroup>
 
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
-														>
-															סוג אירוע
-														</div>
-														<FormGroup>
-															<Input
-																placeholder="סוג אירוע"
-																type="select"
-																name="typevent"
-																value={data.typevent}
-																onChange={handleChange}
-																id="seltype"
-																disabled
+													{/* תאונת כלי רכב, שריפה, הנתקות גלגל,התהפכות */}
+
+													{(data.typevent === "1" ||
+														data.typevent === "2" ||
+														data.typevent === "3" ||
+														data.typevent === "4") && (
+														<>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
 															>
-																<option value={"בחר"}>בחר</option>
-																<option value={"1"}>תאונת כלי רכב</option>
-																<option value={"2"}>התהפכות</option>
-																<option value={"3"}>הנתקות גלגל</option>
-																<option value={"4"}>שריפה</option>
-																<option value={"5"}>אירועי נשק / תחמושת</option>
-																<option value={"6"}>
-																	תאונת עבודה אנשי טנ"א
-																</option>
-																<option value={"7"}>פריקת מטפים</option>
-																<option value={"8"}>אפידמיה</option>
-																<option value={"9"}>חילוץ</option>
-																<option value={"10"}>
-																	נזק לתשתיות אחזקה / הח"י
-																</option>
-																<option value={"11"}>אי קיום שגרת אחזקה</option>
-																<option value={"12"}>אחר</option>
-															</Input>
-														</FormGroup>
-
-														{/* תאונת כלי רכב, שריפה, הנתקות גלגל,התהפכות */}
-
-														{(data.typevent === "1" ||
-															data.typevent === "2" ||
-															data.typevent === "3" ||
-															data.typevent === "4") && (
-															<>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
+																סיבת האירוע
+															</div>
+															<FormGroup>
+																<Input
+																	type="select"
+																	name="resevent"
+																	value={data.resevent}
+																	onChange={handleChange}
+																	id="res"
+																	disabled
 																>
-																	סיבת האירוע
-																</div>
-																<FormGroup>
-																	<Input
-																		type="select"
-																		name="resevent"
-																		value={data.resevent}
-																		onChange={handleChange}
-																		id="res"
-																		disabled
+																	<option value={"0"}>בחר</option>
+																	<option value={"1"}>תאונה</option>
+																	<option value={"2"}>כשל טכני</option>
+																	<option value={"3"}>טעות אנוש</option>
+																	<option value={"4"}>לא ידוע</option>
+																</Input>
+															</FormGroup>
+
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																סוג הכלי
+															</div>
+															<Row>
+																{!data.magad ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
 																	>
-																		<option value={"0"}>בחר</option>
-																		<option value={"1"}>תאונה</option>
-																		<option value={"2"}>כשל טכני</option>
-																		<option value={"3"}>טעות אנוש</option>
-																		<option value={"4"}>לא ידוע</option>
-																	</Input>
+																		<h6>מאגד על</h6>
+																		<Select
+																			data={magadals}
+																			handleChange2={handleChange2}
+																			name={"magadal"}
+																			val={
+																				data.magadal ? data.magadal : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד על</h6>
+																		<Select
+																			data={magadals}
+																			handleChange2={handleChange2}
+																			name={"magadal"}
+																			val={
+																				data.magadal ? data.magadal : undefined
+																			}
+																			disabled
+																		/>
+																	</Col>
+																)}
+
+																{data.magadal && !data.mkabaz ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד</h6>
+																		<Select
+																			data={magads}
+																			handleChange2={handleChange2}
+																			name={"magad"}
+																			val={data.magad ? data.magad : undefined}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד</h6>
+																		<Select
+																			data={magads}
+																			handleChange2={handleChange2}
+																			name={"magad"}
+																			val={data.magad ? data.magad : undefined}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																)}
+
+																{data.magad && !data.makat ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מקבץ</h6>
+																		<Select
+																			data={mkabazs}
+																			handleChange2={handleChange2}
+																			name={"mkabaz"}
+																			val={
+																				data.mkabaz ? data.mkabaz : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מקבץ</h6>
+																		<Select
+																			data={mkabazs}
+																			handleChange2={handleChange2}
+																			name={"mkabaz"}
+																			val={
+																				data.mkabaz ? data.mkabaz : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																)}
+															</Row>
+
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																האם נגרם נזק לכלי
+															</div>
+															<div style={{ textAlign: "right" }}>
+																<FormGroup
+																	check
+																	inline
+																>
+																	<div
+																		style={{
+																			textAlign: "right",
+																			paddingTop: "10px",
+																		}}
+																	>
+																		<Input
+																			checked={data.yn == true}
+																			type="radio"
+																			name="yn"
+																			value={true}
+																			onChange={handleChange}
+																			id="YES"
+																			disabled
+																		/>
+																		כן
+																	</div>
 																</FormGroup>
 
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
+																<FormGroup
+																	check
+																	inline
 																>
-																	סוג הכלי
-																</div>
-																<Row>
-																	{!data.magad ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד על</h6>
-																			<Select
-																				data={magadals}
-																				handleChange2={handleChange2}
-																				name={"magadal"}
-																				val={
-																					data.magadal
-																						? data.magadal
-																						: undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד על</h6>
-																			<Select
-																				data={magadals}
-																				handleChange2={handleChange2}
-																				name={"magadal"}
-																				val={
-																					data.magadal
-																						? data.magadal
-																						: undefined
-																				}
-																				disabled
-																			/>
-																		</Col>
-																	)}
+																	<div
+																		style={{
+																			textAlign: "right",
+																			paddingTop: "10px",
+																		}}
+																	>
+																		<Input
+																			checked={data.yn == false}
+																			type="radio"
+																			id="NO"
+																			name="yn"
+																			value={false}
+																			onChange={handleChange}
+																			disabled
+																		/>
+																		לא
+																	</div>
+																</FormGroup>
+															</div>
+														</>
+													)}
 
-																	{data.magadal && !data.mkabaz ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד</h6>
-																			<Select
-																				data={magads}
-																				handleChange2={handleChange2}
-																				name={"magad"}
-																				val={
-																					data.magad ? data.magad : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד</h6>
-																			<Select
-																				data={magads}
-																				handleChange2={handleChange2}
-																				name={"magad"}
-																				val={
-																					data.magad ? data.magad : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	)}
+													{/* אירוע נשק */}
 
-																	{data.magad && !data.makat ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מקבץ</h6>
-																			<Select
-																				data={mkabazs}
-																				handleChange2={handleChange2}
-																				name={"mkabaz"}
-																				val={
-																					data.mkabaz ? data.mkabaz : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מקבץ</h6>
-																			<Select
-																				data={mkabazs}
-																				handleChange2={handleChange2}
-																				name={"mkabaz"}
-																				val={
-																					data.mkabaz ? data.mkabaz : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	)}
-																</Row>
-
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
+													{data.typevent === "5" && (
+														<>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																סוג הנשק
+															</div>
+															<FormGroup>
+																<Input
+																	type="select"
+																	name="selneshek"
+																	value={data.selneshek}
+																	onChange={handleChange}
+																	id="neshek"
+																	disabled
 																>
-																	האם נגרם נזק לכלי
-																</div>
-																<div style={{ textAlign: "right" }}>
-																	<FormGroup
-																		check
-																		inline
-																	>
-																		<div
-																			style={{
-																				textAlign: "right",
-																				paddingTop: "10px",
-																			}}
-																		>
-																			<Input
-																				type="radio"
-																				name="yn"
-																				value={true}
-																				onChange={handleChange}
-																				id="YES"
-																				disabled
-																			/>
-																			כן
-																		</div>
-																	</FormGroup>
+																	<option value={"0"}>בחר</option>
+																</Input>
+															</FormGroup>
 
-																	<FormGroup
-																		check
-																		inline
-																	>
-																		<div
-																			style={{
-																				textAlign: "right",
-																				paddingTop: "10px",
-																			}}
-																		>
-																			<Input
-																				type="radio"
-																				id="NO"
-																				name="yn"
-																				value={false}
-																				onChange={handleChange}
-																				disabled
-																			/>
-																			לא
-																		</div>
-																	</FormGroup>
-																</div>
-															</>
-														)}
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																האם נגרם נזק לנשק
+															</div>
 
-														{/* אירוע נשק */}
-
-														{data.typevent === "5" && (
-															<>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
+															<div style={{ textAlign: "right" }}>
+																<FormGroup
+																	check
+																	inline
 																>
-																	סוג הנשק
-																</div>
-																<FormGroup>
-																	<Input
-																		type="select"
-																		name="selneshek"
-																		value={data.selneshek}
-																		onChange={handleChange}
-																		id="neshek"
-																		disabled
+																	<div
+																		style={{
+																			textAlign: "right",
+																			paddingTop: "10px",
+																		}}
 																	>
-																		<option value={"0"}>בחר</option>
-																	</Input>
+																		<Input
+																			checked={data.yn == true}
+																			type="radio"
+																			name="yn"
+																			value={true}
+																			onChange={handleChange}
+																			id="YES"
+																			disabled
+																		/>
+																		כן
+																	</div>
 																</FormGroup>
 
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
+																<FormGroup
+																	check
+																	inline
 																>
-																	האם נגרם נזק לנשק
-																</div>
-
-																<div style={{ textAlign: "right" }}>
-																	<FormGroup
-																		check
-																		inline
+																	<div
+																		style={{
+																			textAlign: "right",
+																			paddingTop: "10px",
+																		}}
 																	>
-																		<div
-																			style={{
-																				textAlign: "right",
-																				paddingTop: "10px",
-																			}}
-																		>
-																			<Input
-																				type="radio"
-																				name="yn"
-																				value={true}
-																				onChange={handleChange}
-																				id="YES"
-																				disabled
-																			/>
-																			כן
-																		</div>
-																	</FormGroup>
-
-																	<FormGroup
-																		check
-																		inline
-																	>
-																		<div
-																			style={{
-																				textAlign: "right",
-																				paddingTop: "10px",
-																			}}
-																		>
-																			<Input
-																				type="radio"
-																				id="NO"
-																				name="yn"
-																				value={false}
-																				onChange={handleChange}
-																				disabled
-																			/>
-																			לא
-																		</div>
-																	</FormGroup>
-																</div>
-
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	מה התרחש באירוע
-																</div>
-																<FormGroup>
-																	<Input
-																		type="select"
-																		name="whap"
-																		value={data.whap}
-																		onChange={handleChange}
-																		id="what"
-																		disabled
-																	>
-																		<option value={"0"}>בחר</option>
-																		<option value={"1"}>פיצוץ נשק</option>
-																		<option value={"2"}>פיצוץ תחמושת</option>
-																		<option value={"3"}>פליטת כדור</option>
-																		<option value={"4"}>גרימת נזק לנשק</option>
-																		<option value={"5"}>אחר</option>
-																	</Input>
+																		<Input
+																			checked={data.yn == false}
+																			type="radio"
+																			id="NO"
+																			name="yn"
+																			value={false}
+																			onChange={handleChange}
+																			disabled
+																		/>
+																		לא
+																	</div>
 																</FormGroup>
-															</>
-														)}
+															</div>
 
-														{/*  תאונת עבודה אנשי טנ"א */}
-
-														{data.typevent === "6" && (
-															<>
-																<p
-																	style={{
-																		textAlign: "right",
-																		color: "red",
-																		fontSize: "10px",
-																	}}
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																מה התרחש באירוע
+															</div>
+															<FormGroup>
+																<Input
+																	type="select"
+																	name="whap"
+																	value={data.whap}
+																	onChange={handleChange}
+																	id="what"
+																	disabled
 																>
-																	{" "}
-																	*תאונת עבודה - כל אירוע בו קיים ימי מחלה (מיום
-																	מחלה אחד ומעלה)
-																</p>
+																	<option value={"0"}>בחר</option>
+																	<option value={"1"}>פיצוץ נשק</option>
+																	<option value={"2"}>פיצוץ תחמושת</option>
+																	<option value={"3"}>פליטת כדור</option>
+																	<option value={"4"}>גרימת נזק לנשק</option>
+																	<option value={"5"}>אחר</option>
+																</Input>
+															</FormGroup>
+														</>
+													)}
 
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
+													{/*  תאונת עבודה אנשי טנ"א */}
+
+													{data.typevent === "6" && (
+														<>
+															<p
+																style={{
+																	textAlign: "right",
+																	color: "red",
+																	fontSize: "10px",
+																}}
+															>
+																{" "}
+																*תאונת עבודה - כל אירוע בו קיים ימי מחלה (מיום
+																מחלה אחד ומעלה)
+															</p>
+
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																מתי נפגע
+															</div>
+															<FormGroup>
+																<Input
+																	type="select"
+																	name="wnifga"
+																	value={data.wnifga}
+																	onChange={handleChange}
+																	id="when"
+																	disabled
 																>
-																	מתי נפגע
-																</div>
-																<FormGroup>
-																	<Input
-																		type="select"
-																		name="wnifga"
-																		value={data.wnifga}
-																		onChange={handleChange}
-																		id="when"
-																		disabled
+																	<option value={"0"}>בחר</option>
+																	<option value={"1"}>
+																		במהלך פעילות אחזקתית
+																	</option>
+																	<option value={"2"}>
+																		במהלך פעילות שגרתית
+																	</option>
+																	<option value={"3"}>תרגיל</option>
+																	<option value={"4"}>פעילות מבצעית</option>
+																	<option value={"5"}>אחר</option>
+																</Input>
+															</FormGroup>
+
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																ממה נפגע
+															</div>
+															<FormGroup>
+																<Input
+																	type="text"
+																	name="amlahtype"
+																	value={data.amlahtype}
+																	onChange={handleChange}
+																	id="amlah"
+																	disabled
+																></Input>
+															</FormGroup>
+														</>
+													)}
+
+													{/* פריקת מטפים*/}
+
+													{/*//* ------- פריקת מטפים ------------------*/}
+
+													{data.typevent === "7" && (
+														<>
+															<Row>
+																{!data.magad ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
 																	>
-																		<option value={"0"}>בחר</option>
-																		<option value={"1"}>
-																			במהלך פעילות אחזקתית
-																		</option>
-																		<option value={"2"}>
-																			במהלך פעילות שגרתית
-																		</option>
-																		<option value={"3"}>תרגיל</option>
-																		<option value={"4"}>פעילות מבצעית</option>
-																		<option value={"5"}>אחר</option>
-																	</Input>
-																</FormGroup>
+																		<h6>מאגד על</h6>
+																		<Select
+																			data={magadals}
+																			handleChange2={handleChange2}
+																			name={"magadal"}
+																			val={
+																				data.magadal ? data.magadal : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד על</h6>
+																		<Select
+																			data={magadals}
+																			handleChange2={handleChange2}
+																			name={"magadal"}
+																			val={
+																				data.magadal ? data.magadal : undefined
+																			}
+																			disabled
+																		/>
+																	</Col>
+																)}
 
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	ממה נפגע
-																</div>
-																<FormGroup>
-																	<Input
-																		type="text"
-																		name="amlahtype"
-																		value={data.amlahtype}
-																		onChange={handleChange}
-																		id="amlah"
-																		disabled
-																	></Input>
-																</FormGroup>
-															</>
-														)}
+																{data.magadal && !data.mkabaz ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד</h6>
+																		<Select
+																			data={magads}
+																			handleChange2={handleChange2}
+																			name={"magad"}
+																			val={data.magad ? data.magad : undefined}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד</h6>
+																		<Select
+																			data={magads}
+																			handleChange2={handleChange2}
+																			name={"magad"}
+																			val={data.magad ? data.magad : undefined}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																)}
 
-														{/* פריקת מטפים*/}
-
-														{/*//* ------- פריקת מטפים ------------------*/}
-
-														{data.typevent === "7" && (
-															<>
-																<Row>
-																	{!data.magad ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד על</h6>
-																			<Select
-																				data={magadals}
-																				handleChange2={handleChange2}
-																				name={"magadal"}
-																				val={
-																					data.magadal
-																						? data.magadal
-																						: undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד על</h6>
-																			<Select
-																				data={magadals}
-																				handleChange2={handleChange2}
-																				name={"magadal"}
-																				val={
-																					data.magadal
-																						? data.magadal
-																						: undefined
-																				}
-																				disabled
-																			/>
-																		</Col>
-																	)}
-
-																	{data.magadal && !data.mkabaz ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד</h6>
-																			<Select
-																				data={magads}
-																				handleChange2={handleChange2}
-																				name={"magad"}
-																				val={
-																					data.magad ? data.magad : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד</h6>
-																			<Select
-																				data={magads}
-																				handleChange2={handleChange2}
-																				name={"magad"}
-																				val={
-																					data.magad ? data.magad : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	)}
-
-																	{data.magad && !data.makat ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מקבץ</h6>
-																			<Select
-																				data={mkabazs}
-																				handleChange2={handleChange2}
-																				name={"mkabaz"}
-																				val={
-																					data.mkabaz ? data.mkabaz : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מקבץ</h6>
-																			<Select
-																				data={mkabazs}
-																				handleChange2={handleChange2}
-																				name={"mkabaz"}
-																				val={
-																					data.mkabaz ? data.mkabaz : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	)}
-																</Row>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	סוג המטף
-																</div>
-																<FormGroup>
-																	{/* {console.log(mkabazsMataf)} */}
-																	{/* {console.log(mkabazsMataf[indexM])}
+																{data.magad && !data.makat ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מקבץ</h6>
+																		<Select
+																			data={mkabazs}
+																			handleChange2={handleChange2}
+																			name={"mkabaz"}
+																			val={
+																				data.mkabaz ? data.mkabaz : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מקבץ</h6>
+																		<Select
+																			data={mkabazs}
+																			handleChange2={handleChange2}
+																			name={"mkabaz"}
+																			val={
+																				data.mkabaz ? data.mkabaz : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																)}
+															</Row>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																סוג המטף
+															</div>
+															<FormGroup>
+																{/* {console.log(mkabazsMataf)} */}
+																{/* {console.log(mkabazsMataf[indexM])}
 												{console.log(mkabazsMataf[indexM].matafEngine)}
 												{console.log(mkabazsMataf[indexM].matafCre)} */}
 
-																	{mkabazsMataf[indexM] ==
-																	undefined ? null : mkabazsMataf[indexM]
-																			.matafEngine &&
-																	  mkabazsMataf[indexM].matafCre ? (
-																		<Input
-																			type="select"
-																			name="mataftype"
-																			value={data.mataftype}
-																			onChange={handleChange}
-																			id="mataf"
-																			disabled
-																		>
-																			<option value={"0"}>בחר</option>
-																			<option value={"1"}>תא מנוע</option>
-																			<option value={"2"}>תא צוות</option>
-																			<option value={"3"}>
-																				תא מנוע ותא צוות
-																			</option>
-																		</Input>
-																	) : mkabazsMataf[indexM].matafEngine ? (
-																		<Input
-																			type="select"
-																			name="mataftype"
-																			value={data.mataftype}
-																			onChange={handleChange}
-																			id="mataf"
-																			disabled
-																		>
-																			<option value={"0"}>בחר</option>
-																			<option value={"1"}>תא מנוע</option>
-																		</Input>
-																	) : mkabazsMataf[indexM].matafCre ? (
-																		<Input
-																			type="select"
-																			name="mataftype"
-																			value={data.mataftype}
-																			onChange={handleChange}
-																			id="mataf"
-																			disabled
-																		>
-																			<option value={"0"}>בחר</option>
-																			<option value={"2"}>תא צוות</option>
-																		</Input>
-																	) : (
-																		<Input
-																			type="select"
-																			name="mataftype"
-																			value={data.mataftype}
-																			onChange={handleChange}
-																			id="mataf"
-																			disabled
-																		>
-																			<option value={"0"}>בחר</option>
-																			<option value={""}>לא נמצאו כלים </option>
-																		</Input>
-																	)}
-																</FormGroup>
-
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	מצב הרק"ם במהלך הפריקה
-																</div>
-																<FormGroup>
+																{mkabazsMataf[indexM] ==
+																undefined ? null : mkabazsMataf[indexM]
+																		.matafEngine &&
+																  mkabazsMataf[indexM].matafCre ? (
 																	<Input
 																		type="select"
-																		name="mazavrekem"
-																		value={data.mazavrekem}
+																		name="mataftype"
+																		value={data.mataftype}
 																		onChange={handleChange}
-																		id="mazav"
+																		id="mataf"
 																		disabled
 																	>
 																		<option value={"0"}>בחר</option>
-																		<option value={"1"}>סטטי</option>
-																		<option value={"2"}>בתנועה</option>
+																		<option value={"1"}>תא מנוע</option>
+																		<option value={"2"}>תא צוות</option>
+																		<option value={"3"}>
+																			תא מנוע ותא צוות
+																		</option>
 																	</Input>
-																</FormGroup>
-
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	האם בוצע במהלך עבודה
-																</div>
-																<FormGroup>
+																) : mkabazsMataf[indexM].matafEngine ? (
 																	<Input
 																		type="select"
-																		name="dwork"
-																		value={data.dwork}
+																		name="mataftype"
+																		value={data.mataftype}
 																		onChange={handleChange}
-																		id="dwork"
+																		id="mataf"
 																		disabled
 																	>
 																		<option value={"0"}>בחר</option>
-																		<option value={"1"}>אחזקתית טנ"א</option>
-																		<option value={"2"}>תקשוב</option>
+																		<option value={"1"}>תא מנוע</option>
 																	</Input>
-																</FormGroup>
-
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	במהלך פירוק / הרכבה
-																</div>
-
-																<div style={{ textAlign: "right" }}>
-																	<FormGroup
-																		check
-																		inline
-																	>
-																		<div
-																			style={{
-																				textAlign: "right",
-																				paddingTop: "10px",
-																			}}
-																		>
-																			<Input
-																				type="radio"
-																				name="yn"
-																				value={true}
-																				onChange={handleChange}
-																				id="YES"
-																				disabled
-																			/>
-																			כן
-																		</div>
-																	</FormGroup>
-
-																	<FormGroup
-																		check
-																		inline
-																	>
-																		<div
-																			style={{
-																				textAlign: "right",
-																				paddingTop: "10px",
-																			}}
-																		>
-																			<Input
-																				type="radio"
-																				id="NO"
-																				name="yn"
-																				value={false}
-																				onChange={handleChange}
-																				disabled
-																			/>
-																			לא
-																		</div>
-																	</FormGroup>
-																</div>
-															</>
-														)}
-
-														{/* אפידמיה */}
-
-														{data.typevent === "8" && (
-															<>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	סוג האפידמיה
-																</div>
-																<FormGroup>
+																) : mkabazsMataf[indexM].matafCre ? (
 																	<Input
 																		type="select"
-																		name="apitype"
-																		value={data.apitype}
+																		name="mataftype"
+																		value={data.mataftype}
 																		onChange={handleChange}
-																		id="apidmia"
+																		id="mataf"
 																		disabled
 																	>
 																		<option value={"0"}>בחר</option>
-																		<option value={"1"}>תפעולית</option>
-																		<option value={"2"}>אחזקתית</option>
+																		<option value={"2"}>תא צוות</option>
 																	</Input>
-																</FormGroup>
-															</>
-														)}
+																) : (
+																	<Input
+																		type="select"
+																		name="mataftype"
+																		value={data.mataftype}
+																		onChange={handleChange}
+																		id="mataf"
+																		disabled
+																	>
+																		<option value={"0"}>בחר</option>
+																		<option value={""}>לא נמצאו כלים </option>
+																	</Input>
+																)}
+															</FormGroup>
 
-														{/*//* -------------- חילוץ  ----------*/}
-
-														{data.typevent === "9" && (
-															<>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																מצב הרק"ם במהלך הפריקה
+															</div>
+															<FormGroup>
+																<Input
+																	type="select"
+																	name="mazavrekem"
+																	value={data.mazavrekem}
+																	onChange={handleChange}
+																	id="mazav"
+																	disabled
 																>
-																	סוג הכלי המחולץ
-																</div>
-																<Row>
-																	{!data.magad ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד על</h6>
-																			<Select
-																				data={magadals}
-																				handleChange2={handleChange2}
-																				name={"magadal"}
-																				val={
-																					data.magadal
-																						? data.magadal
-																						: undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד על</h6>
-																			<Select
-																				data={magadals}
-																				handleChange2={handleChange2}
-																				name={"magadal"}
-																				val={
-																					data.magadal
-																						? data.magadal
-																						: undefined
-																				}
-																				disabled
-																			/>
-																		</Col>
-																	)}
+																	<option value={"0"}>בחר</option>
+																	<option value={"1"}>סטטי</option>
+																	<option value={"2"}>בתנועה</option>
+																</Input>
+															</FormGroup>
 
-																	{data.magadal && !data.mkabaz ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד</h6>
-																			<Select
-																				data={magads}
-																				handleChange2={handleChange2}
-																				name={"magad"}
-																				val={
-																					data.magad ? data.magad : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מאגד</h6>
-																			<Select
-																				data={magads}
-																				handleChange2={handleChange2}
-																				name={"magad"}
-																				val={
-																					data.magad ? data.magad : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	)}
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																האם בוצע במהלך עבודה
+															</div>
+															<FormGroup>
+																<Input
+																	type="select"
+																	name="dwork"
+																	value={data.dwork}
+																	onChange={handleChange}
+																	id="dwork"
+																	disabled
+																>
+																	<option value={"0"}>בחר</option>
+																	<option value={"1"}>אחזקתית טנ"א</option>
+																	<option value={"2"}>תקשוב</option>
+																</Input>
+															</FormGroup>
 
-																	{data.magad && !data.makat ? (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מקבץ</h6>
-																			<Select
-																				data={mkabazs}
-																				handleChange2={handleChange2}
-																				name={"mkabaz"}
-																				val={
-																					data.mkabaz ? data.mkabaz : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	) : (
-																		<Col
-																			style={{
-																				justifyContent: "right",
-																				alignContent: "right",
-																				textAlign: "right",
-																			}}
-																		>
-																			<h6>מקבץ</h6>
-																			<Select
-																				data={mkabazs}
-																				handleChange2={handleChange2}
-																				name={"mkabaz"}
-																				val={
-																					data.mkabaz ? data.mkabaz : undefined
-																				}
-																				isDisabled={true}
-																			/>
-																		</Col>
-																	)}
-																</Row>
-																{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																במהלך פירוק / הרכבה
+															</div>
+
+															<div style={{ textAlign: "right" }}>
+																<FormGroup
+																	check
+																	inline
+																>
+																	<div
+																		style={{
+																			textAlign: "right",
+																			paddingTop: "10px",
+																		}}
+																	>
+																		<Input
+																			checked={data.yn == true}
+																			type="radio"
+																			name="yn"
+																			value={true}
+																			onChange={handleChange}
+																			id="YES"
+																			disabled
+																		/>
+																		כן
+																	</div>
+																</FormGroup>
+
+																<FormGroup
+																	check
+																	inline
+																>
+																	<div
+																		style={{
+																			textAlign: "right",
+																			paddingTop: "10px",
+																		}}
+																	>
+																		<Input
+																			checked={data.yn == false}
+																			type="radio"
+																			id="NO"
+																			name="yn"
+																			value={false}
+																			onChange={handleChange}
+																			disabled
+																		/>
+																		לא
+																	</div>
+																</FormGroup>
+															</div>
+														</>
+													)}
+
+													{/* אפידמיה */}
+
+													{data.typevent === "8" && (
+														<>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																סוג האפידמיה
+															</div>
+															<FormGroup>
+																<Input
+																	type="select"
+																	name="apitype"
+																	value={data.apitype}
+																	onChange={handleChange}
+																	id="apidmia"
+																	disabled
+																>
+																	<option value={"0"}>בחר</option>
+																	<option value={"1"}>תפעולית</option>
+																	<option value={"2"}>אחזקתית</option>
+																</Input>
+															</FormGroup>
+														</>
+													)}
+
+													{/*//* -------------- חילוץ  ----------*/}
+
+													{data.typevent === "9" && (
+														<>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																סוג הכלי המחולץ
+															</div>
+															<Row>
+																{!data.magad ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד על</h6>
+																		<Select
+																			data={magadals}
+																			handleChange2={handleChange2}
+																			name={"magadal"}
+																			val={
+																				data.magadal ? data.magadal : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד על</h6>
+																		<Select
+																			data={magadals}
+																			handleChange2={handleChange2}
+																			name={"magadal"}
+																			val={
+																				data.magadal ? data.magadal : undefined
+																			}
+																			disabled
+																		/>
+																	</Col>
+																)}
+
+																{data.magadal && !data.mkabaz ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד</h6>
+																		<Select
+																			data={magads}
+																			handleChange2={handleChange2}
+																			name={"magad"}
+																			val={data.magad ? data.magad : undefined}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מאגד</h6>
+																		<Select
+																			data={magads}
+																			handleChange2={handleChange2}
+																			name={"magad"}
+																			val={data.magad ? data.magad : undefined}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																)}
+
+																{data.magad && !data.makat ? (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מקבץ</h6>
+																		<Select
+																			data={mkabazs}
+																			handleChange2={handleChange2}
+																			name={"mkabaz"}
+																			val={
+																				data.mkabaz ? data.mkabaz : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																) : (
+																	<Col
+																		style={{
+																			justifyContent: "right",
+																			alignContent: "right",
+																			textAlign: "right",
+																		}}
+																	>
+																		<h6>מקבץ</h6>
+																		<Select
+																			data={mkabazs}
+																			handleChange2={handleChange2}
+																			name={"mkabaz"}
+																			val={
+																				data.mkabaz ? data.mkabaz : undefined
+																			}
+																			isDisabled={true}
+																		/>
+																	</Col>
+																)}
+															</Row>
+															{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
         סוג הכלי המחלץ
       </div>
      <FormGroup>
@@ -1495,109 +1470,111 @@ const CarDataFormModalView = (match) => {
         </Input>
       </FormGroup>
 */}
-															</>
-														)}
-														{/*//* ------------- status checker ------------------ */}
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
+														</>
+													)}
+													{/*//* ------------- status checker ------------------ */}
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														סטטוס
+													</div>
+													<div style={{ textAlign: "right" }}>
+														<FormGroup
+															check
+															inline
 														>
-															סטטוס
-														</div>
-														<div style={{ textAlign: "right" }}>
-															<FormGroup
-																check
-																inline
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
 															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		name="dt"
-																		value="1"
-																		onChange={handleChange}
-																		id="delt"
-																		disabled
-																	/>
-																	סגור
-																</div>
-															</FormGroup>
-
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		id="notDelt"
-																		name="dt"
-																		value="0"
-																		onChange={handleChange}
-																		disabled
-																	/>
-																	בטיפול
-																</div>
-															</FormGroup>
-														</div>
-
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="פירוט האירוע"
-																name="pirot"
-																type="textarea"
-																value={data.pirot}
-																onChange={handleChange}
-																disabled
-															/>
+																<Input
+																	checked={data.status == 1}
+																	type="radio"
+																	name="dt"
+																	value="1"
+																	onChange={handleChange}
+																	id="delt"
+																	disabled
+																/>
+																סגור
+															</div>
 														</FormGroup>
 
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
+														<FormGroup
+															check
+															inline
 														>
-															תאריך אירוע
-														</div>
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="תאריך אירוע"
-																name="datevent"
-																type="datetime-local"
-																value={data.datevent.slice(0, 21)}
-																onChange={handleChange}
-																disabled
-															/>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.status == 0}
+																	type="radio"
+																	id="notDelt"
+																	name="dt"
+																	value="0"
+																	onChange={handleChange}
+																	disabled
+																/>
+																בטיפול
+															</div>
 														</FormGroup>
+													</div>
 
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="מיקום האירוע"
-																name="mikom"
-																type="string"
-																value={data.mikom}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="פירוט האירוע"
+															name="pirot"
+															type="textarea"
+															value={data.pirot}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
 
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="כמה נפגעים היו באירוע"
-																name="nifga"
-																type="number"
-																value={data.nifga}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-														{/* 
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														תאריך אירוע
+													</div>
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="תאריך אירוע"
+															name="datevent"
+															type="datetime-local"
+															value={data.datevent.slice(0, 21)}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="מיקום האירוע"
+															name="mikom"
+															type="string"
+															value={data.mikom}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="כמה נפגעים היו באירוע"
+															name="nifga"
+															type="number"
+															value={data.nifga}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+													{/* 
        {data.nifga > "0" && (
         <>
           <div style={{ textAlign: "right", paddingTop: "10px" }}>
@@ -1636,531 +1613,527 @@ const CarDataFormModalView = (match) => {
      </div>
       </>
       )} */}
-													</Form>
-												</CardBody>
-											) : (
-												<CardBody className="px-lg-5 py-lg-5">
-													<div className="text-center text-muted mb-4">
-														<big>עיכון דיווח</big>
-													</div>
-													<div className="text-center text-muted mb-4">
-														<small>פרטי מדווח</small>
-													</div>
-													<Form role="form">
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="שם פרטי"
-																name="name"
-																type="text"
-																value={data.name}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
+												</Form>
+											</CardBody>
+										) : (
+											<CardBody className="px-lg-5 py-lg-5">
+												<div className="text-center text-muted mb-4">
+													<big>עיכון דיווח</big>
+												</div>
+												<div className="text-center text-muted mb-4">
+													<small>פרטי מדווח</small>
+												</div>
+												<Form role="form">
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="שם פרטי"
+															name="name"
+															type="text"
+															value={data.name}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
 
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="שם משפחה"
-																name="lastname"
-																type="text"
-																value={data.lastname}
-																onChange={handleChange}
-																disabled
-															/>
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="שם משפחה"
+															name="lastname"
+															type="text"
+															value={data.lastname}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
+													<FormGroup
+														className="mb-3"
+														dir="rtl"
+													>
+														<Input
+															placeholder="מספר אישי"
+															name="personalnumber"
+															type="string"
+															maxlength="7"
+															value={data.personalnumber}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
+													<FormGroup
+														className="mb-3"
+														dir="rtl"
+													>
+														<Input
+															placeholder="טלפון נייד"
+															name="cellphone"
+															type="tel"
+															maxlength="10"
+															value={data.cellphone}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
+													<div className="text-center text-muted mb-4">
+														<small>פרטי יחידה מדווחת</small>
+													</div>
+
+													<Row style={{ paddingTop: "2px" }}>
+														{!data.ogda ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	disabled
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
+
+														<>
+															{data.pikod && !data.hativa ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdas}
+																		handleChange2={handleChange2}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdas}
+																		handleChange2={handleChange2}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+
+														<>
+															{data.ogda && !data.gdod ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+
+														<>
+															{data.hativa ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+													</Row>
+
+													<div
+														className="text-center text-muted mb-4"
+														style={{ paddingTop: "20px" }}
+													>
+														<small>פרטי אירוע</small>
+													</div>
+
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														סיבת האירוע
+													</div>
+													<FormGroup>
+														<Input
+															type="select"
+															name="resevent"
+															value={data.resevent}
+															onChange={handleChange}
+															id="res"
+															disabled
+														>
+															<option value={"0"}>בחר</option>
+															<option value={"1"}>תאונה</option>
+															<option value={"2"}>כשל טכני</option>
+															<option value={"4"}>טעות אנוש</option>
+															<option value={"3"}>לא ידוע</option>
+														</Input>
+													</FormGroup>
+
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														סוג הרק"ם
+													</div>
+													<Row>
+														{!data.magad ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>מאגד על</h6>
+																<Select
+																	data={magadals}
+																	handleChange2={handleChange2}
+																	name={"magadal"}
+																	val={data.magadal ? data.magadal : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>מאגד על</h6>
+																<Select
+																	data={magadals}
+																	handleChange2={handleChange2}
+																	name={"magadal"}
+																	val={data.magadal ? data.magadal : undefined}
+																	disabled
+																/>
+															</Col>
+														)}
+
+														{data.magadal && !data.mkabaz ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>מאגד</h6>
+																<Select
+																	data={magads}
+																	handleChange2={handleChange2}
+																	name={"magad"}
+																	val={data.magad ? data.magad : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>מאגד</h6>
+																<Select
+																	data={magads}
+																	handleChange2={handleChange2}
+																	name={"magad"}
+																	val={data.magad ? data.magad : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
+
+														{data.magad && !data.makat ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>מקבץ</h6>
+																<Select
+																	data={mkabazs}
+																	handleChange2={handleChange2}
+																	name={"mkabaz"}
+																	val={data.mkabaz ? data.mkabaz : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>מקבץ</h6>
+																<Select
+																	data={mkabazs}
+																	handleChange2={handleChange2}
+																	name={"mkabaz"}
+																	val={data.mkabaz ? data.mkabaz : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
+													</Row>
+
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														האם נגרם נזק לרק"ם
+													</div>
+
+													<div style={{ textAlign: "right" }}>
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.yn == true}
+																	type="radio"
+																	name="yn"
+																	value={true}
+																	onChange={handleChange}
+																	id="YES"
+																	disabled
+																/>
+																כן
+															</div>
 														</FormGroup>
 
 														<FormGroup
-															className="mb-3"
-															dir="rtl"
+															check
+															inline
 														>
-															<Input
-																placeholder="מספר אישי"
-																name="personalnumber"
-																type="string"
-																maxlength="7"
-																value={data.personalnumber}
-																onChange={handleChange}
-																disabled
-															/>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.yn == false}
+																	type="radio"
+																	id="NO"
+																	name="yn"
+																	value={false}
+																	onChange={handleChange}
+																	disabled
+																/>
+																לא
+															</div>
+														</FormGroup>
+													</div>
+													{/*//* ------------- status checker ------------------ */}
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														סטטוס
+													</div>
+													<div style={{ textAlign: "right" }}>
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.status == 1}
+																	type="radio"
+																	name="dt"
+																	value="1"
+																	onChange={handleChange}
+																	id="delt"
+																	disabled
+																/>
+																סגור
+															</div>
 														</FormGroup>
 
 														<FormGroup
-															className="mb-3"
-															dir="rtl"
+															check
+															inline
 														>
-															<Input
-																placeholder="טלפון נייד"
-																name="cellphone"
-																type="tel"
-																maxlength="10"
-																value={data.cellphone}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-
-														<div className="text-center text-muted mb-4">
-															<small>פרטי יחידה מדווחת</small>
-														</div>
-
-														<Row style={{ paddingTop: "2px" }}>
-															{!data.ogda ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>פיקוד</h6>
-																	<Select
-																		data={pikods}
-																		handleChange2={handleChange2}
-																		name={"pikod"}
-																		val={data.pikod ? data.pikod : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>פיקוד</h6>
-																	<Select
-																		disabled
-																		data={pikods}
-																		handleChange2={handleChange2}
-																		name={"pikod"}
-																		val={data.pikod ? data.pikod : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-
-															<>
-																{data.pikod && !data.hativa ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>אוגדה</h6>
-																		<Select
-																			data={ogdas}
-																			handleChange2={handleChange2}
-																			name={"ogda"}
-																			val={data.ogda ? data.ogda : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>אוגדה</h6>
-																		<Select
-																			data={ogdas}
-																			handleChange2={handleChange2}
-																			name={"ogda"}
-																			val={data.ogda ? data.ogda : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-															</>
-
-															<>
-																{data.ogda && !data.gdod ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>חטיבה</h6>
-																		<Select
-																			data={hativas}
-																			handleChange2={handleChange2}
-																			name={"hativa"}
-																			val={
-																				data.hativa ? data.hativa : undefined
-																			}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>חטיבה</h6>
-																		<Select
-																			data={hativas}
-																			handleChange2={handleChange2}
-																			name={"hativa"}
-																			val={
-																				data.hativa ? data.hativa : undefined
-																			}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-															</>
-
-															<>
-																{data.hativa ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>גדוד</h6>
-																		<Select
-																			data={gdods}
-																			handleChange2={handleChange2}
-																			name={"gdod"}
-																			val={data.gdod ? data.gdod : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>גדוד</h6>
-																		<Select
-																			data={gdods}
-																			handleChange2={handleChange2}
-																			name={"gdod"}
-																			val={data.gdod ? data.gdod : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-															</>
-														</Row>
-
-														<div
-															className="text-center text-muted mb-4"
-															style={{ paddingTop: "20px" }}
-														>
-															<small>פרטי אירוע</small>
-														</div>
-
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
-														>
-															סיבת האירוע
-														</div>
-														<FormGroup>
-															<Input
-																type="select"
-																name="resevent"
-																value={data.resevent}
-																onChange={handleChange}
-																id="res"
-																disabled
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
 															>
-																<option value={"0"}>בחר</option>
-																<option value={"1"}>תאונה</option>
-																<option value={"2"}>כשל טכני</option>
-																<option value={"4"}>טעות אנוש</option>
-																<option value={"3"}>לא ידוע</option>
-															</Input>
+																<Input
+																	checked={data.status == 0}
+																	type="radio"
+																	id="notDelt"
+																	name="dt"
+																	value="0"
+																	onChange={handleChange}
+																	disabled
+																/>
+																בטיפול
+															</div>
 														</FormGroup>
+													</div>
 
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
-														>
-															סוג הרק"ם
-														</div>
-														<Row>
-															{!data.magad ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>מאגד על</h6>
-																	<Select
-																		data={magadals}
-																		handleChange2={handleChange2}
-																		name={"magadal"}
-																		val={
-																			data.magadal ? data.magadal : undefined
-																		}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>מאגד על</h6>
-																	<Select
-																		data={magadals}
-																		handleChange2={handleChange2}
-																		name={"magadal"}
-																		val={
-																			data.magadal ? data.magadal : undefined
-																		}
-																		disabled
-																	/>
-																</Col>
-															)}
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="פירוט האירוע"
+															name="pirot"
+															type="textarea"
+															value={data.pirot}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
 
-															{data.magadal && !data.mkabaz ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>מאגד</h6>
-																	<Select
-																		data={magads}
-																		handleChange2={handleChange2}
-																		name={"magad"}
-																		val={data.magad ? data.magad : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>מאגד</h6>
-																	<Select
-																		data={magads}
-																		handleChange2={handleChange2}
-																		name={"magad"}
-																		val={data.magad ? data.magad : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														תאריך אירוע
+													</div>
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="תאריך אירוע"
+															name="datevent"
+															type="datetime-local"
+															value={data.datevent.slice(0, 21)}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
 
-															{data.magad && !data.makat ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>מקבץ</h6>
-																	<Select
-																		data={mkabazs}
-																		handleChange2={handleChange2}
-																		name={"mkabaz"}
-																		val={data.mkabaz ? data.mkabaz : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>מקבץ</h6>
-																	<Select
-																		data={mkabazs}
-																		handleChange2={handleChange2}
-																		name={"mkabaz"}
-																		val={data.mkabaz ? data.mkabaz : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-														</Row>
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="מיקום האירוע"
+															name="mikom"
+															type="string"
+															value={data.mikom}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
 
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
-														>
-															האם נגרם נזק לרק"ם
-														</div>
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="כמה נפגעים היו באירוע"
+															name="nifga"
+															type="number"
+															value={data.nifga}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
 
-														<div style={{ textAlign: "right" }}>
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		name="yn"
-																		value={true}
-																		onChange={handleChange}
-																		id="YES"
-																		disabled
-																	/>
-																	כן
-																</div>
-															</FormGroup>
-
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		id="NO"
-																		name="yn"
-																		value={false}
-																		onChange={handleChange}
-																		disabled
-																	/>
-																	לא
-																</div>
-															</FormGroup>
-														</div>
-														{/*//* ------------- status checker ------------------ */}
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
-														>
-															סטטוס
-														</div>
-														<div style={{ textAlign: "right" }}>
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		name="dt"
-																		value="1"
-																		onChange={handleChange}
-																		id="delt"
-																		disabled
-																	/>
-																	סגור
-																</div>
-															</FormGroup>
-
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		id="notDelt"
-																		name="dt"
-																		value="0"
-																		onChange={handleChange}
-																		disabled
-																	/>
-																	בטיפול
-																</div>
-															</FormGroup>
-														</div>
-
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="פירוט האירוע"
-																name="pirot"
-																type="textarea"
-																value={data.pirot}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-
-														<div
-															style={{ textAlign: "right", paddingTop: "10px" }}
-														>
-															תאריך אירוע
-														</div>
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="תאריך אירוע"
-																name="datevent"
-																type="datetime-local"
-																value={data.datevent.slice(0, 21)}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="מיקום האירוע"
-																name="mikom"
-																type="string"
-																value={data.mikom}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-
-														<FormGroup dir="rtl">
-															<Input
-																placeholder="כמה נפגעים היו באירוע"
-																name="nifga"
-																type="number"
-																value={data.nifga}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-
-														{/* {data.nifga > "0" && (
+													{/* {data.nifga > "0" && (
         <>
           <div style={{ textAlign: "right", paddingTop: "10px" }}>
             מצב הנפגע
@@ -2199,19 +2172,19 @@ const CarDataFormModalView = (match) => {
      </div>
       </>
       )} */}
-													</Form>
-												</CardBody>
-											)}
+												</Form>
+											</CardBody>
+										)}
 
-											<div className="text-center">
-												<button
-													onClick={clickSubmit}
-													className="btn-new-blue mb-3"
-												>
-													צא
-												</button>
-											</div>
-										</Card>
+										<div className="text-center">
+											<button
+												onClick={clickSubmit}
+												className="btn-new-blue mb-3"
+											>
+												צא
+											</button>
+										</div>
+									</Card>
 								</Row>
 							</Container>
 						</div>
