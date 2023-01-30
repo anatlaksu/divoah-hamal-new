@@ -14,6 +14,8 @@ const ReportSchema = new mongoose.Schema(
 		// hativa: String,
 		gdod: { type: String }, //*object
 		mkabaz: { type: String }, //*object
+		arraymkabaz: {type: Array},
+		zadik: String,
 		// magadal: String,
 		// magad: String,
 		// mkabaz: String,

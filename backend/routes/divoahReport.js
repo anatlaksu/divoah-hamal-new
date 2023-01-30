@@ -151,6 +151,8 @@ router.route("/add").post((req, res) => {
 	// const magadal = req.body.magadal;
 	// const magad = req.body.magad;
 	const mkabaz = req.body.mkabaz;
+	const arraymkabaz = req.body.arraymkabaz;
+	const zadik = req.body.zadik;
 	const typevent = req.body.typevent;
 	const resevent = req.body.resevent;
 	const yn = req.body.yn;
@@ -182,6 +184,8 @@ router.route("/add").post((req, res) => {
 		// magadal,
 		// magad,
 		mkabaz,
+		arraymkabaz,
+        zadik,
 		typevent,
 		resevent,
 		yn,
@@ -309,6 +313,8 @@ router.route("/update/:id").put((req, res) => {
 			// request.magadal = req.body.magadal;
 			// request.magad = req.body.magad;
 			request.mkabaz = req.body.mkabaz;
+			request.arraymkabaz = req.body.arraymkabaz;
+			request.zadik = req.body.zadik;
 			request.typevent = req.body.typevent;
 			request.resevent = req.body.resevent;
 			request.yn = req.body.yn;

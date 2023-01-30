@@ -36,6 +36,7 @@ const Report = ({ props }) => {
 		// hativa: "",
 		gdod: "",
 		mkabazs: "",
+		zadik: "",
 		typevent: "רק'ם",
 		resevent: "0",
 		cli: "0",
@@ -286,6 +287,10 @@ const Report = ({ props }) => {
 		// 	flag = false;
 		// 	ErrorReason += " ,סוג הרקם ריק \n";
 		// }
+		if (data.zadik == "") {
+			flag = false;
+			ErrorReason += "  צ' ריק\n";
+		}	
 		if (
 			!document.getElementById("YES").checked &&
 			!document.getElementById("NO").checked
@@ -342,6 +347,8 @@ const Report = ({ props }) => {
 			// ogda:data.ogda,
 			// hativa:data.hativa,
 			gdod: data.gdod,
+			mkabazs: data.mkabaz,
+			zadik: data.zadik,
 			status: data.dt,
 			typevent: data.typevent,
 			resevent: data.resevent,
@@ -408,6 +415,7 @@ const Report = ({ props }) => {
 			personalnumber: user.personalnumber,
 		});
 		loadPikods();
+		getMagadals();
 	};
 
 	useEffect(() => {
@@ -428,6 +436,16 @@ const Report = ({ props }) => {
 		setGdods([]);
 		loadGdods(data.hativa);
 	}, [data.hativa]);
+
+	useEffect(() => {
+		setMagads([]);
+		getMagads(data.magadal);
+	}, [data.magadal]);
+
+	useEffect(() => {
+		setMkabazs([]);
+		getMkabazs(data.magad);
+	}, [data.magad]);
 
 	useEffect(() => {
 		setMkabazs([]);
@@ -786,6 +804,19 @@ const Report = ({ props }) => {
 											</Col>
 										)}
 									</Row>
+
+									<FormGroup
+										className="mb-3"
+										dir="rtl"
+									>
+										<Input
+											placeholder="צ'"
+											name="zadik"
+											type="string"
+											value={data.zadik}
+											onChange={handleChange}
+										/>
+									</FormGroup>
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם נגרם נזק לרק"ם

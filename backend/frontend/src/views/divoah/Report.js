@@ -20,11 +20,17 @@ import {
 import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
+import { produce } from 'immer'
+import { generate } from 'shortid'
 import { isAuthenticated } from "auth";
 import Select from "components/general/Select/AnimatedSelect";
+import deletepic from "assets/img/delete.png";
+import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
 
 const Report = ({ match }) => {
 	const { user } = isAuthenticated();
+	const [cartypesfilterarray, setCartypesfilterarray] = useState([])
+
 	const [data, setData] = useState({
 		name: "",
 		lastname: "",
@@ -35,6 +41,8 @@ const Report = ({ match }) => {
 		// hativa: "",
 		gdod: "",
 		mkabazs: "",
+		arraymkabaz: [],
+		zadik: "",
 		typevent: "0",
 		resevent: "0",
 		yn: "0",
@@ -402,6 +410,10 @@ const Report = ({ match }) => {
 			}
 		}
 		if (data.typevent === "7") {
+			if (data.zadik == "") {
+				flag = false;
+				ErrorReason += "  צ' ריק\n";
+			}	
 			if (
 				document.getElementById("mataf").options[
 					document.getElementById("mataf").selectedIndex
@@ -461,6 +473,10 @@ const Report = ({ match }) => {
 				flag = false;
 				ErrorReason += "סוג הכלי המחולץ ריק \n";
 			}
+			if (data.zadik == "") {
+				flag = false;
+				ErrorReason += "  צ' ריק\n";
+			}	
 			// if (
 			//   document.getElementById("mhalz").options[
 			//     document.getElementById("mhalz").selectedIndex
@@ -517,6 +533,8 @@ const Report = ({ match }) => {
 			// magadal: data.magadal,
 			// magad:data.magad,
 			mkabazs: data.mkabaz,
+			arraymkabaz: cartypesfilterarray, 
+			zadik: data.zadik,
 			yn: data.yn,
 			status:
 				data.dt /* //?if there is no need for the status button ==> data.dt != undefined || null ? data.dt : "0",*/,
@@ -618,6 +636,10 @@ const Report = ({ match }) => {
 		setRekem([]);
 		getRekem();
 	}, [data.mkabaz]);
+
+	useEffect(() => {
+		setCartypesfilterarray([]);
+	}, []);
 
 	// useEffect(() => {
 	// 	setIndexM(0);
@@ -906,112 +928,17 @@ const Report = ({ match }) => {
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												סוג הכלי
 											</div>
-											<Row>
-												{!data.magad ? (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>מאגד על</h6>
-														<Select
-															data={magadals}
-															handleChange2={handleChange2}
-															name={"magadal"}
-															val={data.magadal ? data.magadal : undefined}
-														/>
-													</Col>
-												) : (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>מאגד על</h6>
-														<Select
-															data={magadals}
-															handleChange2={handleChange2}
-															name={"magadal"}
-															val={data.magadal ? data.magadal : undefined}
-															isDisabled={true}
-														/>
-													</Col>
-												)}
+											<Row style={{ padding: '0px' }}>
+                                              <Col style={{ display: 'flex', justifyContent: 'right', paddingTop: '15px', paddingRight: '0px' }}>
+                                                <Button style={{ width: '100px', padding: '10px' }} type="button" onClick={() => { setCartypesfilterarray(currentSpec => [...currentSpec, { id: generate() }]) }}>הוסף כלים</Button>
+                                              </Col>
+                                           </Row>
 
-												{data.magadal && !data.mkabaz ? (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>מאגד</h6>
-														<Select
-															data={magads}
-															handleChange2={handleChange2}
-															name={"magad"}
-															val={data.magad ? data.magad : undefined}
-														/>
-													</Col>
-												) : (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>מאגד</h6>
-														<Select
-															data={magads}
-															handleChange2={handleChange2}
-															name={"magad"}
-															val={data.magad ? data.magad : undefined}
-															isDisabled={true}
-														/>
-													</Col>
-												)}
-
-												{data.magad && !data.makat ? (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>מקבץ</h6>
-														<Select
-															data={mkabazs}
-															handleChange2={handleChange2}
-															name={"mkabaz"}
-															val={data.mkabaz ? data.mkabaz : undefined}
-														/>
-													</Col>
-												) : (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>מקבץ</h6>
-														<Select
-															data={mkabazs}
-															handleChange2={handleChange2}
-															name={"mkabaz"}
-															val={data.mkabaz ? data.mkabaz : undefined}
-															isDisabled={true}
-														/>
-													</Col>
-												)}
-											</Row>
+                                            {cartypesfilterarray.map((cartypesfilterobject, index) => {
+                                              return (
+                                               <CarTypesFilterObject user={user} cartypesfilterobject={cartypesfilterobject} index={index} setCartypesfilterarray={setCartypesfilterarray} />
+                                              )
+                                            })}
 
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												האם נגרם נזק לכלי
@@ -1300,6 +1227,19 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 											</Row>
+											<FormGroup
+										className="mb-3"
+										dir="rtl"
+									>
+										<Input
+											placeholder="צ'"
+											name="zadik"
+											type="string"
+											value={data.zadik}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												סוג המטף
 											</div>
@@ -1569,6 +1509,19 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 											</Row>
+											<FormGroup
+										className="mb-3"
+										dir="rtl"
+									>
+										<Input
+											placeholder="צ'"
+											name="zadik"
+											type="string"
+											value={data.zadik}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
 											{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
                     סוג הכלי המחלץ
                   </div>
