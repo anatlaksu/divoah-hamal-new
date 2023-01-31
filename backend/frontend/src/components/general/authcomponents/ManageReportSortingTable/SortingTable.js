@@ -20,13 +20,13 @@ const SortingTable = ({ match }) => {
 	const columns = useMemo(() => COLUMNS, []);
 	const { user } = isAuthenticated();
 	const [data, setData] = useState([]);
-		//*cardata form modal
-		const [iscardataformopen, setIscardataformopen] = useState(false);
-		const [cardataidformodal, setCardataidformodal] = useState(undefined);
-		//* view modal
-		const [isviewmodalopen, setisviewmodalopen] = useState(false);
-		const [viewmodalid, setViewmodalid] = useState(undefined);
-	
+	//*cardata form modal
+	const [iscardataformopen, setIscardataformopen] = useState(false);
+	const [cardataidformodal, setCardataidformodal] = useState(undefined);
+	//* view modal
+	const [isviewmodalopen, setisviewmodalopen] = useState(false);
+	const [viewmodalid, setViewmodalid] = useState(undefined);
+
 	//units
 
 	const UserDelete = (UserId) => {
@@ -101,12 +101,12 @@ const SortingTable = ({ match }) => {
 		} else {
 			setViewmodalid(evt.currentTarget.value);
 		}
-		setisviewmodalopen(!iscardataformopen);
+		setisviewmodalopen(!isviewmodalopen);
 		// console.log(cardataidformodal);
 	}
 
 	function ToggleForModalView(evt) {
-		setisviewmodalopen(!iscardataformopen);
+		setisviewmodalopen(!isviewmodalopen);
 		window.location.reload();
 	}
 
@@ -143,9 +143,9 @@ const SortingTable = ({ match }) => {
 
 	return (
 		<>
-		{/*//* ----- modals --------------------------------
+			{/*//* ----- modals --------------------------------
 				//? ++ unittype={props.unittype} unitid={props.unitid} */}
-				<CarDataFormModal
+			<CarDataFormModal
 				isOpen={iscardataformopen}
 				cardataid={cardataidformodal}
 				Toggle={Toggle}
@@ -173,7 +173,7 @@ const SortingTable = ({ match }) => {
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th style={{width:"30%"}}>
+									<th style={{ width: "30%" }}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -201,7 +201,7 @@ const SortingTable = ({ match }) => {
 						{page.map((row) => {
 							prepareRow(row);
 							return (
-								<tr {...row.getRowProps()} >
+								<tr {...row.getRowProps()}>
 									{row.cells.map((cell) => {
 										if (
 											cell.column.id != "typevent" &&
@@ -232,7 +232,21 @@ const SortingTable = ({ match }) => {
 												if (cell.value == "רק'ם") return <td>רק"ם</td>;
 											}
 											if (cell.column.id == "pirot") {
-												return <td><div style={{width:"100%",height:"40px",margin:"0",padding:"0",overflow:"auto"}}>{cell.value}</div></td>;
+												return (
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "40px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{cell.value}
+														</div>
+													</td>
+												);
 											}
 
 											if (cell.column.id == "datevent") {
@@ -312,7 +326,7 @@ const SortingTable = ({ match }) => {
                       >
                         צפייה
                       </button> */}
-					  <button
+												<button
 													value={row.original._id}
 													onClick={ToggleView}
 													className="btn-new-delete"
@@ -338,7 +352,7 @@ const SortingTable = ({ match }) => {
                       >
                         צפייה
                       </button> */}
-					  <button
+												<button
 													value={row.original._id}
 													onClick={ToggleView}
 													className="btn-new-delete"
