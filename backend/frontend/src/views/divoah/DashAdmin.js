@@ -257,7 +257,8 @@ const AdminSignInForm = () => {
 			// console.log(tempnames);
 			// console.log(name.name);
 			const obj = convertToObj(tempnames, tempvalues);
-			setData({ [name.name]: tempvalues });
+			setData({ ...data, [name.name]: tempvalues });
+			console.log(data);
 			// console.log(data.pikod.map((item,index) => {
 
 			// }));
@@ -428,7 +429,11 @@ const AdminSignInForm = () => {
 		return sumallogdas;
 	}
 
-	const arryogda = ogdas.filter((ogda) => ogda.pikod == data.pikod);
+	const arryogda = ogdas.filter((ogda, index) => {
+		if (data.pikod.includes(ogda.pikod)) {
+			return ogda.pikod;
+		}
+	});
 	console.log(arryogda);
 
 	const dataogda = {
@@ -470,7 +475,11 @@ const AdminSignInForm = () => {
 		return sumallhativas;
 	}
 
-	const arryhativa = hativas.filter((hativa) => hativa.ogda == data.ogda);
+	const arryhativa = hativas.filter((hativa, index) => {
+		if (data.ogda.includes(hativa.ogda)) {
+			return hativa.ogda;
+		}
+	});
 
 	const datahativa = {
 		labels: arryhativa.map((hativa) => hativa.name),
@@ -510,8 +519,16 @@ const AdminSignInForm = () => {
 		}
 		return sumallgdods;
 	}
-
-	const arrygdod = gdods.filter((gdod) => gdod.hativa == data.hativa);
+	// const arryhativa = hativas.filter((hativa, index) => {
+	// 	if (data.ogda.includes(hativa.ogda)) {
+	// 		return hativa.ogda;
+	// 	}
+	// });
+	const arrygdod = gdods.filter((gdod, index) => {
+		if (data.hativa.includes(gdod.hativa)) {
+			return gdod.hativa;
+		}
+	});
 
 	const datagdod = {
 		labels: arrygdod.map((gdod) => gdod.name),
