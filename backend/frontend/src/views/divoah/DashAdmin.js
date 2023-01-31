@@ -434,7 +434,93 @@ const AdminSignInForm = () => {
 			return ogda.pikod;
 		}
 	});
-	console.log(arryogda);
+
+	const reportDBPikod = reportDB.filter((report) =>
+		data.pikod.includes(report.pikod)
+	);
+
+	const dataeventPikod = {
+		labels: labels,
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumtypereport(labels, reportDBPikod, eventTypeArray),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const datapikodFilttered = {
+		labels: pikods.map((pikod, index) => pikod.name),
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumpikods(pikods, reportDBPikod),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderWidth: 1,
+			},
+		],
+	};
+	// console.log(arryogda);
 
 	const dataogda = {
 		labels: arryogda.map((ogda) => ogda.name),
@@ -578,100 +664,6 @@ const AdminSignInForm = () => {
 	return (
 		<div>
 			<Container className="mt--8 pb-5">
-				<Row>
-					<Col lg="6">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">טבלת אירועים</h3>
-							</CardHeader>
-							<CardBody>
-								<table
-									className="tablesorter"
-									responsive
-								>
-									<thead className="text-primary">
-										<tr>
-											<th
-												className="text-center"
-												style={{ width: "20%" }}
-											>
-												פיקוד
-											</th>
-											<th
-												className="text-center"
-												style={{ width: "30%" }}
-											>
-												סוג אירוע
-											</th>
-											<th
-												className="text-center"
-												style={{ width: "50%" }}
-											>
-												פירוט האירוע
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										{reportDB.map((report, index) => (
-											<tr>
-												<td>
-													<p>{getname(report.pikod, pikods)}</p>
-												</td>
-												<td>{eventTypeArray[report.typevent]}</td>
-												<td>
-													<div
-														style={{
-															width: "100%",
-															height: "50px",
-															margin: "0",
-															padding: "0",
-															overflow: "auto",
-														}}
-													>
-														{report.pirot}
-													</div>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									אירועים לפי סוג אירוע
-								</h3>
-							</CardHeader>
-							<CardBody>
-								<Doughnut
-									data={dataevent}
-									options={options}
-								/>
-							</CardBody>
-						</Card>
-					</Col>
-
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									מספר אירועים לפי פיקוד
-								</h3>
-							</CardHeader>
-							<CardBody>
-								<Doughnut
-									data={datapikod}
-									options={options}
-								/>
-							</CardBody>
-						</Card>
-					</Col>
-				</Row>
 				<Row>
 					<div style={{ width: "100%", margin: "auto", textAlign: "right" }}>
 						<Button
@@ -820,7 +812,142 @@ const AdminSignInForm = () => {
 						</Collapse>
 					</div>
 				</Row>
+				<Row>
+					<Col lg="6">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">טבלת אירועים</h3>
+							</CardHeader>
+							<CardBody>
+								<table
+									className="tablesorter"
+									responsive
+								>
+									<thead className="text-primary">
+										<tr>
+											<th
+												className="text-center"
+												style={{ width: "20%" }}
+											>
+												פיקוד
+											</th>
+											<th
+												className="text-center"
+												style={{ width: "30%" }}
+											>
+												סוג אירוע
+											</th>
+											<th
+												className="text-center"
+												style={{ width: "50%" }}
+											>
+												פירוט האירוע
+											</th>
+										</tr>
+									</thead>
+									{data.length == 0 ? (
+										<tbody>
+											{reportDB.map((report, index) => (
+												<tr>
+													<td>
+														<p>{getname(report.pikod, pikods)}</p>
+													</td>
+													<td>{eventTypeArray[report.typevent]}</td>
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "50px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{report.pirot}
+														</div>
+													</td>
+												</tr>
+											))}
+										</tbody>
+									) : (
+										<tbody>
+											{reportDB.map((report, index) =>
+												data.pikod.includes(report.pikod) ? (
+													<tr>
+														<td>
+															<p>{getname(report.pikod, pikods)}</p>
+														</td>
+														<td>{eventTypeArray[report.typevent]}</td>
+														<td>
+															<div
+																style={{
+																	width: "100%",
+																	height: "50px",
+																	margin: "0",
+																	padding: "0",
+																	overflow: "auto",
+																}}
+															>
+																{report.pirot}
+															</div>
+														</td>
+													</tr>
+												) : null
+											)}
+										</tbody>
+									)}
+								</table>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									אירועים לפי סוג אירוע
+								</h3>
+							</CardHeader>
+							<CardBody>
+								{data.length == 0 ? (
+									<Doughnut
+										data={dataevent}
+										options={options}
+									/>
+								) : (
+									<Doughnut
+										data={dataeventPikod}
+										options={options}
+									/>
+								)}
+							</CardBody>
+						</Card>
+					</Col>
 
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									מספר אירועים לפי פיקוד
+								</h3>
+							</CardHeader>
+							<CardBody>
+								{data.length == 0 ? (
+									<Doughnut
+										data={datapikod}
+										options={options}
+									/>
+								) : (
+									<Doughnut
+										data={datapikodFilttered}
+										options={options}
+									/>
+								)}
+							</CardBody>
+						</Card>
+					</Col>
+				</Row>
 				<Row>
 					{data.pikod && !data.ogda && !data.hativa ? (
 						<Col lg="4">
