@@ -29,6 +29,7 @@ const AdminSignInForm = () => {
 	const [isError, setIsError] = useState(false);
 
 	const [data, setData] = useState([]);
+	const [reportDBPikod, setReportDBPikod] = useState([]);
 
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
@@ -435,9 +436,9 @@ const AdminSignInForm = () => {
 		}
 	});
 
-	const reportDBPikod = reportDB.filter((report) =>
-		data.pikod.includes(report.pikod)
-	);
+	// const reportDBPikod = reportDB.filter((report) =>
+	// 	data.pikod.includes(report.pikod)
+	// );
 
 	const dataeventPikod = {
 		labels: labels,
@@ -628,6 +629,12 @@ const AdminSignInForm = () => {
 			},
 		],
 	};
+
+	useEffect(() => {
+		setReportDBPikod(
+			reportDB.filter((report) => data.pikod.includes(report.pikod))
+		);
+	}, [data]);
 
 	useEffect(() => {
 		loadReports();
