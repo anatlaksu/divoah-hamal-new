@@ -171,6 +171,7 @@ router.route("/add").post((req, res) => {
 	const datevent = Date.parse(req.body.datevent);
 	const mikom = req.body.mikom;
 	const nifga = Number(req.body.nifga);
+	const hurtarray= req.body.hurtarray;
 
 	const newReport = new Report({
 		name,
@@ -204,6 +205,7 @@ router.route("/add").post((req, res) => {
 		datevent,
 		mikom,
 		nifga,
+		hurtarray,
 	});
 	const formId = newReport.save((err, form) => {
 		console.groupCollapsed("formId");
@@ -333,6 +335,7 @@ router.route("/update/:id").put((req, res) => {
 			request.datevent = Date.parse(req.body.datevent);
 			request.mikom = req.body.mikom;
 			request.nifga = Number(req.body.nifga);
+			request.hurtarray = req.body.hurtarray;
 
 			request
 				.save()

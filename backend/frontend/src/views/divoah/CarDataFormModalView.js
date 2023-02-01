@@ -31,6 +31,8 @@ import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
+import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterforwach";
+
 
 const CarDataFormModalView = (match) => {
 	const [data, setData] = useState({
@@ -65,6 +67,9 @@ const CarDataFormModalView = (match) => {
 		redirectToReferrer: false,
 		//
 	});
+
+	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
+	const [infohurtarray, setinfohurtarray]= useState([]);
 
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
@@ -265,6 +270,8 @@ const CarDataFormModalView = (match) => {
 			.then((response) => {
 				let tempcardata = response.data[0];
 				setData(tempcardata);
+				setCartypesfilterarray(tempcardata.arraymkabaz);
+				setinfohurtarray(tempcardata.hurtarray);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -306,6 +313,11 @@ const CarDataFormModalView = (match) => {
 		setMkabazsMataf([]);
 		getMkabazsMataf();
 	}, [data.mkabaz]);
+
+	useEffect(() => {
+		setCartypesfilterarray([]);
+		setinfohurtarray([]);
+	}, []);
 
 	// todo: add a way to get the mkbatz
 
@@ -644,123 +656,12 @@ const CarDataFormModalView = (match) => {
 															>
 																סוג הכלי
 															</div>
-															<Row>
-																{!data.magad ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>מאגד על</h6>
-																		<Select
-																			data={magadals}
-																			handleChange2={handleChange2}
-																			name={"magadal"}
-																			val={
-																				data.magadal ? data.magadal : undefined
-																			}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>מאגד על</h6>
-																		<Select
-																			data={magadals}
-																			handleChange2={handleChange2}
-																			name={"magadal"}
-																			val={
-																				data.magadal ? data.magadal : undefined
-																			}
-																			disabled
-																		/>
-																	</Col>
-																)}
 
-																{data.magadal && !data.mkabaz ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>מאגד</h6>
-																		<Select
-																			data={magads}
-																			handleChange2={handleChange2}
-																			name={"magad"}
-																			val={data.magad ? data.magad : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>מאגד</h6>
-																		<Select
-																			data={magads}
-																			handleChange2={handleChange2}
-																			name={"magad"}
-																			val={data.magad ? data.magad : undefined}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-
-																{data.magad && !data.makat ? (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>מקבץ</h6>
-																		<Select
-																			data={mkabazs}
-																			handleChange2={handleChange2}
-																			name={"mkabaz"}
-																			val={
-																				data.mkabaz ? data.mkabaz : undefined
-																			}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																) : (
-																	<Col
-																		style={{
-																			justifyContent: "right",
-																			alignContent: "right",
-																			textAlign: "right",
-																		}}
-																	>
-																		<h6>מקבץ</h6>
-																		<Select
-																			data={mkabazs}
-																			handleChange2={handleChange2}
-																			name={"mkabaz"}
-																			val={
-																				data.mkabaz ? data.mkabaz : undefined
-																			}
-																			isDisabled={true}
-																		/>
-																	</Col>
-																)}
-															</Row>
+                                            {cartypesfilterarray.map((cartypesfilterobject, index) => {
+                                              return (
+                                               <CarTypesFilterObject cartypesfilterobject={cartypesfilterobject} index={index} setCartypesfilterarray={setCartypesfilterarray} />
+                                              )
+                                            })}
 
 															<div
 																style={{
@@ -833,17 +734,16 @@ const CarDataFormModalView = (match) => {
 																סוג הנשק
 															</div>
 															<FormGroup>
-																<Input
-																	type="select"
-																	name="selneshek"
-																	value={data.selneshek}
-																	onChange={handleChange}
-																	id="neshek"
-																	disabled
-																>
-																	<option value={"0"}>בחר</option>
-																</Input>
-															</FormGroup>
+												<Input
+													type="text"
+													name="selneshek"
+													value={data.selneshek}
+													onChange={handleChange}
+													id="selneshek"
+													disabled
+												>
+												</Input>
+											</FormGroup>
 
 															<div
 																style={{
@@ -1120,6 +1020,20 @@ const CarDataFormModalView = (match) => {
 																	</Col>
 																)}
 															</Row>
+															<FormGroup
+										className="mb-3"
+										dir="rtl"
+									>
+										<Input
+											placeholder="צ'"
+											name="zadik"
+											type="string"
+											value={data.zadik}
+											onChange={handleChange}
+											disabled
+										/>
+									</FormGroup>
+
 															<div
 																style={{
 																	textAlign: "right",
@@ -1455,6 +1369,20 @@ const CarDataFormModalView = (match) => {
 																	</Col>
 																)}
 															</Row>
+															<FormGroup
+										className="mb-3"
+										dir="rtl"
+									>
+										<Input
+											placeholder="צ'"
+											name="zadik"
+											type="string"
+											value={data.zadik}
+											onChange={handleChange}
+											disabled
+										/>
+									</FormGroup>
+
 															{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
         סוג הכלי המחלץ
       </div>
@@ -1574,46 +1502,53 @@ const CarDataFormModalView = (match) => {
 															disabled
 														/>
 													</FormGroup>
-													{/* 
-       {data.nifga > "0" && (
-        <>
-          <div style={{ textAlign: "right", paddingTop: "10px" }}>
-            מצב הנפגע
-          </div>
-          <FormGroup>
-            <Input
-              type="select"
-              name="mazavnifga"
-              value={data.mazavnifga}
-              onChange={handleChange}
-              id="mazav"
-            >
-              <option value={"0"}>בחר</option>
-              <option value={"1"}>קל</option>
-              <option value={"2"}>בינוני</option>
-              <option value={"3"}>קשה</option>
-              <option value={"4"}>נהרג</option>
-            </Input>
-          </FormGroup>
-          <FormGroup dir="rtl">
-        <Input
-          placeholder="מיקום הפגיעה בגוף"
-          name="mikompgia"
-          type="string"
-          value={data.mikompgia}
-          onChange={handleChange}
-        />
-      </FormGroup> 
-      <div style={{ textAlign: 'right', paddingTop: '10px' }}>
-      <button
-    //    onClick={clickSubmit} 
-       className="btn btn-primary">
-          +
-     </button>
-     </div>
-      </>
-      )} */}
 												</Form>
+												{data.nifga > "0" && (
+                    <>
+					<div>
+                    { infohurtarray.map((p, index) => {
+                        return (
+                          <div>
+							  {
+								  <Row>
+									<Col xs={12} md={4}>
+										<div>
+											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
+											<Input onChange={(e) => {
+												const dargahurt = e.target.value;
+												if (e.target.value != "בחר")
+												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
+												}}
+												value={p.dargahurt} type="select" placeholder="דרגת הפציעה" disabled>
+												<option value={"בחר"}>{"בחר"}</option>
+												<option value={'קל'}>{'קל'}</option>
+												<option value={'בינוני'}>{'בינוני'}</option>
+												<option value={'קשה'}>{'קשה'}</option>
+												<option value={'מת'}>{'מת'}</option>
+											</Input>
+										</div>
+									</Col>
+									<Col xs={12} md={4}>
+                                    <div>
+                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
+                                      <Input onChange={(e) => {
+                                        const mikomhurt = e.target.value;
+                                        if (e.target.value != "")
+                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
+                                      }}
+                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" disabled/>
+                                    </div>
+                                  </Col>
+
+									</Row> }
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                    </>
+                  )}
+
 											</CardBody>
 										) : (
 											<CardBody className="px-lg-5 py-lg-5">
@@ -1976,6 +1911,20 @@ const CarDataFormModalView = (match) => {
 															</Col>
 														)}
 													</Row>
+													<FormGroup
+										className="mb-3"
+										dir="rtl"
+									>
+										<Input
+											placeholder="צ'"
+											name="zadik"
+											type="string"
+											value={data.zadik}
+											onChange={handleChange}
+											disabled
+										/>
+									</FormGroup>
+
 
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
@@ -2133,46 +2082,54 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
-													{/* {data.nifga > "0" && (
-        <>
-          <div style={{ textAlign: "right", paddingTop: "10px" }}>
-            מצב הנפגע
-          </div>
-          <FormGroup>
-            <Input
-              type="select"
-              name="mazavnifga"
-              value={data.mazavnifga}
-              onChange={handleChange}
-              id="mazav"
-            >
-              <option value={"0"}>בחר</option>
-              <option value={"1"}>קל</option>
-              <option value={"2"}>בינוני</option>
-              <option value={"3"}>קשה</option>
-              <option value={"4"}>נהרג</option>
-            </Input>
-          </FormGroup>
-
-          <FormGroup dir="rtl">
-        <Input
-          placeholder="מיקום הפגיעה בגוף"
-          name="mikompgia"
-          type="string"
-          value={data.mikompgia}
-          onChange={handleChange}
-        />
-      </FormGroup> 
-      <div style={{ textAlign: 'right', paddingTop: '10px' }}>
-      <button
-      //  onClick={clickSubmit} 
-       className="btn btn-primary">
-          +
-     </button>
-     </div>
-      </>
-      )} */}
 												</Form>
+
+												{data.nifga > "0" && (
+                    <>
+					<div>
+                    { infohurtarray.map((p, index) => {
+                        return (
+                          <div>
+							  {
+								  <Row>
+									<Col xs={12} md={4}>
+										<div>
+											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
+											<Input onChange={(e) => {
+												const dargahurt = e.target.value;
+												if (e.target.value != "בחר")
+												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
+												}}
+												value={p.dargahurt} type="select" placeholder="דרגת הפציעה" disabled>
+												<option value={"בחר"}>{"בחר"}</option>
+												<option value={'קל'}>{'קל'}</option>
+												<option value={'בינוני'}>{'בינוני'}</option>
+												<option value={'קשה'}>{'קשה'}</option>
+												<option value={'מת'}>{'מת'}</option>
+											</Input>
+										</div>
+									</Col>
+									<Col xs={12} md={4}>
+                                    <div>
+                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
+                                      <Input onChange={(e) => {
+                                        const mikomhurt = e.target.value;
+                                        if (e.target.value != "")
+                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
+                                      }}
+                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" disabled/>
+                                    </div>
+                                  </Col>
+
+									</Row> }
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                    </>
+                  )}
+
 											</CardBody>
 										)}
 

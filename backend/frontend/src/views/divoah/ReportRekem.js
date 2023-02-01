@@ -19,12 +19,18 @@ import {
 import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
+import { produce } from 'immer'
+import { generate } from 'shortid'
 import { isAuthenticated } from "auth";
 import MultiSelect from "components/general/Select/AnimatedMultiSelect";
 import Select from "components/general/Select/AnimatedSelect";
+import deletepic from "assets/img/delete.png";
+import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
+
 
 const Report = ({ props }) => {
 	const { user } = isAuthenticated();
+	const [infohurtarray, setinfohurtarray]= useState([]);
 
 	const [data, setData] = useState({
 		name: "",
@@ -56,6 +62,7 @@ const Report = ({ props }) => {
 		mikom: "",
 		nifga: "",
 		status: "0",
+		hurtarray: [],
 
 		error: false,
 		successmsg: false,
@@ -367,6 +374,8 @@ const Report = ({ props }) => {
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
+			hurtarray: infohurtarray,
+
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData);
@@ -937,45 +946,65 @@ const Report = ({ props }) => {
 										/>
 									</FormGroup>
 
-									{/* {data.nifga > "0" && (
+									{data.nifga > "0" && (
                     <>
-                      <div style={{ textAlign: "right", paddingTop: "10px" }}>
-                        מצב הנפגע
-                      </div>
-                      <FormGroup>
-                        <Input
-                          type="select"
-                          name="mazavnifga"
-                          value={data.mazavnifga}
-                          onChange={handleChange}
-                          id="mazav"
-                        >
-                          <option value={"0"}>בחר</option>
-                          <option value={"1"}>קל</option>
-                          <option value={"2"}>בינוני</option>
-                          <option value={"3"}>קשה</option>
-                          <option value={"4"}>נהרג</option>
-                        </Input>
-                      </FormGroup>
+					<div>
+                    {infohurtarray.length == 0 ?
+                      <Row>
+                        <Col style={{ display: 'flex', textAlign: 'right' }}>
+                          <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
+                        </Col>
+                      </Row>
+                      : infohurtarray.map((p, index) => {
+                        return (
+                          <div>
+                            {index == 0 ?
+                              <Row>
+                                <Col style={{ display: 'flex', textAlign: 'right' }}>
+                                  <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate() }]) }}>הוסף נפגע</Button>
+                                </Col>
+                              </Row>
+                              : null}
+							  {
+								  <Row>
+									<Col xs={12} md={4}>
+										<div>
+											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
+											<Input onChange={(e) => {
+												const dargahurt = e.target.value;
+												if (e.target.value != "בחר")
+												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
+												}}
+												value={p.dargahurt} type="select" placeholder="דרגת הפציעה">
+												<option value={"בחר"}>{"בחר"}</option>
+												<option value={'קל'}>{'קל'}</option>
+												<option value={'בינוני'}>{'בינוני'}</option>
+												<option value={'קשה'}>{'קשה'}</option>
+												<option value={'מת'}>{'מת'}</option>
+											</Input>
+										</div>
+									</Col>
+									<Col xs={12} md={4}>
+                                    <div>
+                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
+                                      <Input onChange={(e) => {
+                                        const mikomhurt = e.target.value;
+                                        if (e.target.value != "")
+                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
+                                      }}
+                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" />
+                                    </div>
+                                  </Col>
 
-                      <FormGroup dir="rtl">
-                    <Input
-                      placeholder="מיקום הפגיעה בגוף"
-                      name="mikompgia"
-                      type="string"
-                      value={data.mikompgia}
-                      onChange={handleChange}
-                    />
-                  </FormGroup> 
-                  <div style={{ textAlign: 'right', paddingTop: '10px' }}>
-                  <button
-                  //  onClick={clickSubmit} 
-                   className="btn btn-primary">
-                      +
-                 </button>
-                 </div>
-                  </>
-                  )} */}
+									</Row> }
+							    <Button type="button" onClick={() => { setinfohurtarray(currentSpec => currentSpec.filter(x => x.id !== p.id)) }}><img src={deletepic} height='20px'></img></Button>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                    </>
+                  )}
 
 									<div className="text-center">
 										<button

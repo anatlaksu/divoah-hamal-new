@@ -37,6 +37,7 @@ const ReportSchema = new mongoose.Schema(
 		datevent: Date,
 		mikom: String,
 		nifga: { type: Number, default: 0 },
+		hurtarray:  {type: Array},
 	},
 	{ timestamps: true }
 );

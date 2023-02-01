@@ -29,7 +29,8 @@ import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilte
 
 const Report = ({ match }) => {
 	const { user } = isAuthenticated();
-	const [cartypesfilterarray, setCartypesfilterarray] = useState([])
+	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
+	const [infohurtarray, setinfohurtarray]= useState([]);
 
 	const [data, setData] = useState({
 		name: "",
@@ -46,7 +47,7 @@ const Report = ({ match }) => {
 		typevent: "0",
 		resevent: "0",
 		yn: "0",
-		selneshek: "0",
+		selneshek: "",
 		whap: "0",
 		amlahtype: "",
 		rekemtype: "0",
@@ -61,6 +62,7 @@ const Report = ({ match }) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		hurtarray: [],
 
 		error: false,
 		successmsg: false,
@@ -363,14 +365,10 @@ const Report = ({ match }) => {
 			}
 		}
 		if (data.typevent === "5") {
-			if (
-				document.getElementById("neshek").options[
-					document.getElementById("neshek").selectedIndex
-				].value == "0"
-			) {
+			if (data.selneshek == "") {
 				flag = false;
-				ErrorReason += "סוג הנשק ריק \n";
-			}
+				ErrorReason += " סוג הנשק ריק\n";
+			}	
 			if (
 				!document.getElementById("YES").checked &&
 				!document.getElementById("NO").checked
@@ -552,6 +550,8 @@ const Report = ({ match }) => {
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
+			hurtarray: infohurtarray,
+
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData.status);
@@ -992,13 +992,12 @@ const Report = ({ match }) => {
 											</div>
 											<FormGroup>
 												<Input
-													type="select"
+													type="text"
 													name="selneshek"
 													value={data.selneshek}
 													onChange={handleChange}
-													id="neshek"
+													id="selneshek"
 												>
-													<option value={"0"}>בחר</option>
 												</Input>
 											</FormGroup>
 
@@ -1620,46 +1619,66 @@ const Report = ({ match }) => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
-									{/* 
+									
                    {data.nifga > "0" && (
                     <>
-                      <div style={{ textAlign: "right", paddingTop: "10px" }}>
-                        מצב הנפגע
-                      </div>
-                      <FormGroup>
-                        <Input
-                          type="select"
-                          name="mazavnifga"
-                          value={data.mazavnifga}
-                          onChange={handleChange}
-                          id="mazav"
-                        >
-                          <option value={"0"}>בחר</option>
-                          <option value={"1"}>קל</option>
-                          <option value={"2"}>בינוני</option>
-                          <option value={"3"}>קשה</option>
-                          <option value={"4"}>נהרג</option>
-                        </Input>
-                      </FormGroup>
+					<div>
+                    {infohurtarray.length == 0 ?
+                      <Row>
+                        <Col style={{ display: 'flex', textAlign: 'right' }}>
+                          <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
+                        </Col>
+                      </Row>
+                      : infohurtarray.map((p, index) => {
+                        return (
+                          <div>
+                            {index == 0 ?
+                              <Row>
+                                <Col style={{ display: 'flex', textAlign: 'right' }}>
+                                  <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
+                                </Col>
+                              </Row>
+                              : null}
+							  {
+								  <Row>
+									<Col xs={12} md={4}>
+										<div>
+											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
+											<Input onChange={(e) => {
+												const dargahurt = e.target.value;
+												if (e.target.value != "בחר")
+												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
+												}}
+												value={p.dargahurt} type="select" placeholder="דרגת הפציעה">
+												<option value={"בחר"}>{"בחר"}</option>
+												<option value={'קל'}>{'קל'}</option>
+												<option value={'בינוני'}>{'בינוני'}</option>
+												<option value={'קשה'}>{'קשה'}</option>
+												<option value={'מת'}>{'מת'}</option>
+											</Input>
+										</div>
+									</Col>
+									<Col xs={12} md={4}>
+                                    <div>
+                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
+                                      <Input onChange={(e) => {
+                                        const mikomhurt = e.target.value;
+                                        if (e.target.value != "")
+                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
+                                      }}
+                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" />
+                                    </div>
+                                  </Col>
 
-                      <FormGroup dir="rtl">
-                    <Input
-                      placeholder="מיקום הפגיעה בגוף"
-                      name="mikompgia"
-                      type="string"
-                      value={data.mikompgia}
-                      onChange={handleChange}
-                    />
-                  </FormGroup> 
-                  <div style={{ textAlign: 'right', paddingTop: '10px' }}>
-                  <button
-                //    onClick={clickSubmit} 
-                   className="btn btn-primary">
-                      +
-                 </button>
-                 </div>
-                  </>
-                  )} */}
+									</Row> }
+							    <Button type="button" onClick={() => { setinfohurtarray(currentSpec => currentSpec.filter(x => x.id !== p.id)) }}><img src={deletepic} height='20px'></img></Button>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                    </>
+                  )}
 
 									<div className="text-center">
 										<button

@@ -171,7 +171,7 @@ async function getCurrentParentId(CurrentCarFilterType, CurrentCarFilterId) {
                 else {
                   props.setCartypesfilterarray(currentSpec => produce(currentSpec, v => { delete v[props.index].magadal }))
                 }
-              }} val={props.cartypesfilterobject.magadal ? props.cartypesfilterobject.magadal : undefined} />
+              }} val={props.cartypesfilterobject.magadal ? props.cartypesfilterobject.magadal : undefined} isDisabled={true}/>
           </Col> :
           <Col style={{ justifyContent: 'right', alignContent: 'right', textAlign: 'right' }}>
             <h6>מאגד על</h6>
@@ -197,7 +197,7 @@ async function getCurrentParentId(CurrentCarFilterType, CurrentCarFilterId) {
                 else {
                   props.setCartypesfilterarray(currentSpec => produce(currentSpec, v => { delete v[props.index].magad }))
                 }
-              }} val={props.cartypesfilterobject.magad ? props.cartypesfilterobject.magad : undefined} />
+              }} val={props.cartypesfilterobject.magad ? props.cartypesfilterobject.magad : undefined} isDisabled={true}/>
           </Col> :
           <Col style={{ justifyContent: 'right', alignContent: 'right', textAlign: 'right' }}>
             <h6>מאגד</h6>
@@ -223,7 +223,7 @@ async function getCurrentParentId(CurrentCarFilterType, CurrentCarFilterId) {
                 else {
                   props.setCartypesfilterarray(currentSpec => produce(currentSpec, v => { delete v[props.index].mkabaz }))
                 }
-              }} val={props.cartypesfilterobject.mkabaz ? props.cartypesfilterobject.mkabaz : undefined} />
+              }} val={props.cartypesfilterobject.mkabaz ? props.cartypesfilterobject.mkabaz : undefined} isDisabled={true}/>
           </Col> :
           <Col style={{ justifyContent: 'right', alignContent: 'right', textAlign: 'right' }}>
             <h6>מקבץ</h6>
@@ -247,10 +247,8 @@ async function getCurrentParentId(CurrentCarFilterType, CurrentCarFilterId) {
                                       if (e.target.value != "")
                                       props.setCartypesfilterarray(currentSpec => produce(currentSpec, v => { v[props.index].zadik = zadik }))
                                     }}
-                                      val={props.cartypesfilterobject.zadik} type="text" placeholder="צ'"/>
+                                      val={props.cartypesfilterobject.zadik} type="text" placeholder="צ'" disabled/>
 									</FormGroup>
-
-      <Button type="button" onClick={() => { props.setCartypesfilterarray(currentSpec => currentSpec.filter(x => x.id !== props.cartypesfilterobject.id)) }}><img src={deletepic} height='20px'></img></Button>
     </div>
   );
 }
