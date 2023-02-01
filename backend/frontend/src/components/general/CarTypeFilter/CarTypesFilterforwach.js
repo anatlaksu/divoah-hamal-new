@@ -238,17 +238,18 @@ async function getCurrentParentId(CurrentCarFilterType, CurrentCarFilterId) {
               }} val={props.cartypesfilterobject.mkabaz ? props.cartypesfilterobject.mkabaz : undefined} isDisabled={true} />
           </Col>}
       </Row>
-      <FormGroup
-										className="mb-3"
-										dir="rtl"
-									>
-										<Input onChange={(e) => {
-                                      const zadik = e.target.value;
-                                      if (e.target.value != "")
-                                      props.setCartypesfilterarray(currentSpec => produce(currentSpec, v => { v[props.index].zadik = zadik }))
-                                    }}
-                                      val={props.cartypesfilterobject.zadik} type="text" placeholder="צ'" disabled/>
-									</FormGroup>
+      <Row>
+      <div>
+                                      <p style={{ margin: '0px', float: 'right' }}>צ'</p>
+                                      <Input onChange={(e) => {
+                                        const zadik = e.target.value;
+                                        if (e.target.value != "")
+                                        props.setCartypesfilterarray(currentSpec => produce(currentSpec, v => { v[props.index].zadik = zadik }))
+                                      }}
+                                        value={props.cartypesfilterobject.zadik} type="text" placeholder="צ'" disabled/>
+                                    </div>
+
+      </Row>
     </div>
   );
 }
