@@ -630,7 +630,7 @@ const loadGdodsrep = async (hativaids) => {
 			gdodrep: data.gdodrep,
 			ogdarep:data.ogdarep,
 			hativarep:data.hativarep,
-			gdod:data.gdod,
+			pikodrep:data.pikodrep,
 			typevent: data.typevent,
 			resevent: data.resevent,
 			// magadal: data.magadal,
