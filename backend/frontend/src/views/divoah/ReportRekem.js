@@ -37,10 +37,11 @@ const Report = ({ props }) => {
 		lastname: "",
 		personalnumber: "",
 		cellphone: "",
-		// pikod: "",
-		// ogda: "",
-		// hativa: "",
+		pikodrep: "",
+		ogdarep: "",
+		hativarep: "",
 		gdod: "",
+		gdodrep: "",
 		mkabazs: "",
 		zadik: "",
 		typevent: "רק'ם",
@@ -70,11 +71,17 @@ const Report = ({ props }) => {
 		redirectToReferrer: false,
 	});
 
+	//* pikod data
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
 	const [ogdas, setOgdas] = useState([]);
 	const [pikods, setPikods] = useState([]);
-
+	//* pikodrep data
+	const [gdodsrep, setGdodsrep] = useState([]);
+	const [hativasrep, setHativasrep] = useState([]);
+	const [ogdasrep, setOgdasrep] = useState([]);
+	const [pikodsrep, setPikodsrep] = useState([]);
+	// * cardata
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
@@ -124,88 +131,185 @@ const Report = ({ props }) => {
 		}
 	};
 
-	const loadPikods = async () => {
+//* manmarit
+const loadPikods = async () => {
+	await axios
+		.get("http://localhost:8000/api/pikod")
+		.then((response) => {
+			setPikods(response.data);
+			// setPikodsrep(response.data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};
+
+const loadOgdas = async (pikodids) => {
+	let temppikodids = pikodids;
+	if (temppikodids != undefined && !temppikodids.isArray) {
+		temppikodids = [pikodids];
+	}
+	let temppikodsogdas = [];
+	if (temppikodids != undefined && temppikodids.length > 0) {
+		for (let i = 0; i < temppikodids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+					pikod: temppikodids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						temppikodsogdas.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	setOgdas(temppikodsogdas);
+	// setOgdasrep(temppikodsogdas);
+};
+
+const loadHativas = async (ogdaids) => {
+	let tempogdaids = ogdaids;
+	if (tempogdaids != undefined && !tempogdaids.isArray) {
+		tempogdaids = [ogdaids];
+	}
+	let tempogdashativas = [];
+	if (tempogdaids != undefined && tempogdaids.length > 0) {
+		for (let i = 0; i < tempogdaids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+					ogda: tempogdaids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						tempogdashativas.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	setHativas(tempogdashativas);
+	// setHativasrep(tempogdashativas)
+};
+
+const loadGdods = async (hativaids) => {
+	let temphativaids = hativaids;
+	if (temphativaids != undefined && !temphativaids.isArray) {
+		temphativaids = [hativaids];
+	}
+	let temphativasgdods = [];
+	if (temphativaids != undefined && temphativaids.length > 0) {
+		for (let i = 0; i < temphativaids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+					hativa: temphativaids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						temphativasgdods.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	setGdods(temphativasgdods);
+	// setGdodsrep(temphativasgdods);
+};
+
+//* rep
+
+const loadPikodsrep = async () => {
+await axios
+	.get("http://localhost:8000/api/pikod")
+	.then((response) => {
+		// setPikods(response.data);
+		setPikodsrep(response.data);
+	})
+	.catch((error) => {
+		console.log(error);
+	});
+};
+
+const loadOgdasrep = async (pikodids) => {
+let temppikodids = pikodids;
+if (temppikodids != undefined && !temppikodids.isArray) {
+	temppikodids = [pikodids];
+}
+let temppikodsogdas = [];
+if (temppikodids != undefined && temppikodids.length > 0) {
+	for (let i = 0; i < temppikodids.length; i++) {
 		await axios
-			.get("http://localhost:8000/api/pikod")
+			.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+				pikod: temppikodids[i],
+			})
 			.then((response) => {
-				setPikods(response.data);
+				for (let j = 0; j < response.data.length; j++)
+					temppikodsogdas.push(response.data[j]);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
-	};
+	}
+}
+// setOgdas(temppikodsogdas);
+setOgdasrep(temppikodsogdas);
+};
 
-	const loadOgdas = async (pikodids) => {
-		let temppikodids = pikodids;
-		if (temppikodids != undefined && !temppikodids.isArray) {
-			temppikodids = [pikodids];
-		}
-		let temppikodsogdas = [];
-		if (temppikodids != undefined && temppikodids.length > 0) {
-			for (let i = 0; i < temppikodids.length; i++) {
-				await axios
-					.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
-						pikod: temppikodids[i],
-					})
-					.then((response) => {
-						for (let j = 0; j < response.data.length; j++)
-							temppikodsogdas.push(response.data[j]);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			}
-		}
-		setOgdas(temppikodsogdas);
-	};
+const loadHativasrep = async (ogdaids) => {
+let tempogdaids = ogdaids;
+if (tempogdaids != undefined && !tempogdaids.isArray) {
+	tempogdaids = [ogdaids];
+}
+let tempogdashativas = [];
+if (tempogdaids != undefined && tempogdaids.length > 0) {
+	for (let i = 0; i < tempogdaids.length; i++) {
+		await axios
+			.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+				ogda: tempogdaids[i],
+			})
+			.then((response) => {
+				for (let j = 0; j < response.data.length; j++)
+					tempogdashativas.push(response.data[j]);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+}
+// setHativas(tempogdashativas);
+setHativasrep(tempogdashativas)
+};
 
-	const loadHativas = async (ogdaids) => {
-		let tempogdaids = ogdaids;
-		if (tempogdaids != undefined && !tempogdaids.isArray) {
-			tempogdaids = [ogdaids];
-		}
-		let tempogdashativas = [];
-		if (tempogdaids != undefined && tempogdaids.length > 0) {
-			for (let i = 0; i < tempogdaids.length; i++) {
-				await axios
-					.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
-						ogda: tempogdaids[i],
-					})
-					.then((response) => {
-						for (let j = 0; j < response.data.length; j++)
-							tempogdashativas.push(response.data[j]);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			}
-		}
-		setHativas(tempogdashativas);
-	};
+const loadGdodsrep = async (hativaids) => {
+let temphativaids = hativaids;
+if (temphativaids != undefined && !temphativaids.isArray) {
+	temphativaids = [hativaids];
+}
+let temphativasgdods = [];
+if (temphativaids != undefined && temphativaids.length > 0) {
+	for (let i = 0; i < temphativaids.length; i++) {
+		await axios
+			.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+				hativa: temphativaids[i],
+			})
+			.then((response) => {
+				for (let j = 0; j < response.data.length; j++)
+					temphativasgdods.push(response.data[j]);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+}
+// setGdods(temphativasgdods);
+setGdodsrep(temphativasgdods);
+};
 
-	const loadGdods = async (hativaids) => {
-		let temphativaids = hativaids;
-		if (temphativaids != undefined && !temphativaids.isArray) {
-			temphativaids = [hativaids];
-		}
-		let temphativasgdods = [];
-		if (temphativaids != undefined && temphativaids.length > 0) {
-			for (let i = 0; i < temphativaids.length; i++) {
-				await axios
-					.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
-						hativa: temphativaids[i],
-					})
-					.then((response) => {
-						for (let j = 0; j < response.data.length; j++)
-							temphativasgdods.push(response.data[j]);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			}
-		}
-		setGdods(temphativasgdods);
-	};
+//* handle changes
+
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -350,10 +454,11 @@ const Report = ({ props }) => {
 			lastname: data.lastname,
 			personalnumber: data.personalnumber,
 			cellphone: data.cellphone,
-			// pikod: data.pikod,
-			// ogda:data.ogda,
-			// hativa:data.hativa,
+			pikodrep: data.pikodrep,
+			ogdarep:data.ogdarep,
+			hativarep:data.hativarep,
 			gdod: data.gdod,
+			gdodrep: data.gdodrep,
 			mkabazs: data.mkabaz,
 			zadik: data.zadik,
 			status: data.dt,
@@ -424,6 +529,7 @@ const Report = ({ props }) => {
 			personalnumber: user.personalnumber,
 		});
 		loadPikods();
+		loadPikodsrep();
 		getMagadals();
 	};
 
@@ -431,21 +537,37 @@ const Report = ({ props }) => {
 		initWithUserData();
 	}, []);
 
-	useEffect(() => {
-		setOgdas([]);
-		loadOgdas(data.pikod);
-	}, [data.pikod]);
+// * ------ manmarit --------------------------------
+useEffect(() => {
+	setOgdas([]);
+	loadOgdas(data.pikod);
+}, [data.pikod]);
 
-	useEffect(() => {
-		setHativas([]);
-		loadHativas(data.ogda);
-	}, [data.ogda]);
+useEffect(() => {
+	setHativas([]);
+	loadHativas(data.ogda);
+}, [data.ogda]);
 
-	useEffect(() => {
-		setGdods([]);
-		loadGdods(data.hativa);
-	}, [data.hativa]);
+useEffect(() => {
+	setGdods([]);
+	loadGdods(data.hativa);
+}, [data.hativa]);
+//* ------ rep ----------------------------------------------------------------
+useEffect(() => {
+	setOgdasrep([]);
+	loadOgdasrep(data.pikodrep);
+}, [data.pikodrep]);
 
+useEffect(() => {
+	setHativasrep([]);
+	loadHativasrep(data.ogdarep);
+}, [data.ogdarep]);
+
+useEffect(() => {
+	setGdodsrep([]);
+	loadGdodsrep(data.hativarep);
+}, [data.hativarep]);
+//* ------ magdal .... --------------------------------
 	useEffect(() => {
 		setMagads([]);
 		getMagads(data.magadal);
@@ -526,8 +648,162 @@ const Report = ({ props }) => {
 										/>
 									</FormGroup>
 
-									<div className="text-center text-muted mb-4">
+{/*//* --------------------------------------- rep ------------------------------------------- */}
+<div className="text-center text-muted mb-4">
 										<small>פרטי יחידה מדווחת</small>
+									</div>
+
+									<Row style={{ paddingTop: "2px" }}>
+										{!data.ogdarep ? (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+												/>
+											</Col>
+										) : (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+													isDisabled={true}
+												/>
+											</Col>
+										)}
+
+										<>
+											{data.pikodrep && !data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.ogdarep && !data.gdodrep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+									</Row>
+{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+
+									<div className="text-center text-muted mb-4">
+										<small>פרטי יחידה מנמרית</small>
 									</div>
 
 									<Row style={{ paddingTop: "2px" }}>
@@ -677,6 +953,8 @@ const Report = ({ props }) => {
 											)}
 										</>
 									</Row>
+
+
 
 									<div
 										className="text-center text-muted mb-4"
@@ -867,7 +1145,7 @@ const Report = ({ props }) => {
 
 									{/* //* ------------------ status checker ----------------------- */}
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-										סטטוס
+										האם מצריך המשך טיפול
 									</div>
 									<div style={{ textAlign: "right" }}>
 										<FormGroup
@@ -882,7 +1160,7 @@ const Report = ({ props }) => {
 													onChange={handleChange}
 													id="delt"
 												/>
-												סגור
+												כן
 											</div>
 										</FormGroup>
 
@@ -898,7 +1176,7 @@ const Report = ({ props }) => {
 													value="0"
 													onChange={handleChange}
 												/>
-												בטיפול
+												לא
 											</div>
 										</FormGroup>
 									</div>

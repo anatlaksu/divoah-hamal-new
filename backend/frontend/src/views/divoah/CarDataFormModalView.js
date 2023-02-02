@@ -71,10 +71,17 @@ const CarDataFormModalView = (match) => {
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray]= useState([]);
 
+	//* pikod data
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
 	const [ogdas, setOgdas] = useState([]);
 	const [pikods, setPikods] = useState([]);
+	//* pikodrep data
+	const [gdodsrep, setGdodsrep] = useState([]);
+	const [hativasrep, setHativasrep] = useState([]);
+	const [ogdasrep, setOgdasrep] = useState([]);
+	const [pikodsrep, setPikodsrep] = useState([]);
+	
 	const [mkabazsMataf, setMkabazsMataf] = useState([]);
 	const [indexM, setIndexM] = useState(0);
 
@@ -137,6 +144,7 @@ const CarDataFormModalView = (match) => {
 			});
 	};
 
+//* manmarit
 	const loadPikods = async () => {
 		await axios
 			.get("http://localhost:8000/api/pikod")
@@ -220,6 +228,96 @@ const CarDataFormModalView = (match) => {
 		setGdods(temphativasgdods);
 	};
 
+	//* rep
+
+const loadPikodsrep = async () => {
+	await axios
+		.get("http://localhost:8000/api/pikod")
+		.then((response) => {
+			// setPikods(response.data);
+			setPikodsrep(response.data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+	};
+	
+	const loadOgdasrep = async (pikodids) => {
+	let temppikodids = pikodids;
+	if (temppikodids != undefined && !temppikodids.isArray) {
+		temppikodids = [pikodids];
+	}
+	let temppikodsogdas = [];
+	if (temppikodids != undefined && temppikodids.length > 0) {
+		for (let i = 0; i < temppikodids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+					pikod: temppikodids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						temppikodsogdas.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	// setOgdas(temppikodsogdas);
+	setOgdasrep(temppikodsogdas);
+	};
+	
+	const loadHativasrep = async (ogdaids) => {
+	let tempogdaids = ogdaids;
+	if (tempogdaids != undefined && !tempogdaids.isArray) {
+		tempogdaids = [ogdaids];
+	}
+	let tempogdashativas = [];
+	if (tempogdaids != undefined && tempogdaids.length > 0) {
+		for (let i = 0; i < tempogdaids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+					ogda: tempogdaids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						tempogdashativas.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	// setHativas(tempogdashativas);
+	setHativasrep(tempogdashativas)
+	};
+	
+	const loadGdodsrep = async (hativaids) => {
+	let temphativaids = hativaids;
+	if (temphativaids != undefined && !temphativaids.isArray) {
+		temphativaids = [hativaids];
+	}
+	let temphativasgdods = [];
+	if (temphativaids != undefined && temphativaids.length > 0) {
+		for (let i = 0; i < temphativaids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+					hativa: temphativaids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						temphativasgdods.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	// setGdods(temphativasgdods);
+	setGdodsrep(temphativasgdods);
+	};
+	
+//* handle changes
 	function handleChange(evt) {
 		const value = evt.target.value;
 		setData({ ...data, [evt.target.name]: value });
@@ -284,6 +382,7 @@ const CarDataFormModalView = (match) => {
 		if (match.isOpen == true) init();
 	}, [match.isOpen]);
 
+	// * ------ manmarit --------------------------------
 	useEffect(() => {
 		setOgdas([]);
 		loadOgdas(data.pikod);
@@ -298,7 +397,22 @@ const CarDataFormModalView = (match) => {
 		setGdods([]);
 		loadGdods(data.hativa);
 	}, [data.hativa]);
+//* ------ rep ----------------------------------------------------------------
+useEffect(() => {
+	setOgdasrep([]);
+	loadOgdasrep(data.pikodrep);
+}, [data.pikodrep]);
 
+useEffect(() => {
+	setHativasrep([]);
+	loadHativasrep(data.ogdarep);
+}, [data.ogdarep]);
+
+useEffect(() => {
+	setGdodsrep([]);
+	loadGdodsrep(data.hativarep);
+}, [data.hativarep]);
+//* ------ magdal .... --------------------------------
 	useEffect(() => {
 		setMagads([]);
 		getMagads(data.magadal);
@@ -420,161 +534,325 @@ const CarDataFormModalView = (match) => {
 													</FormGroup>
 
 													<div className="text-center text-muted mb-4">
-														<small>פרטי יחידה מדווחת</small>
-													</div>
+										<small>פרטי יחידה מדווחת</small>
+									</div>
 
-													<Row style={{ paddingTop: "2px" }}>
-														{!data.ogda ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>פיקוד</h6>
-																<Select
-																	data={pikods}
-																	handleChange2={handleChange2}
-																	name={"pikod"}
-																	val={data.pikod ? data.pikod : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>פיקוד</h6>
-																<Select
-																	disabled
-																	data={pikods}
-																	handleChange2={handleChange2}
-																	name={"pikod"}
-																	val={data.pikod ? data.pikod : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														)}
+									<Row style={{ paddingTop: "2px" }}>
+										{!data.ogdarep ? (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+													isDisabled={true}
 
-														<>
-															{data.pikod && !data.hativa ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>אוגדה</h6>
-																	<Select
-																		data={ogdas}
-																		handleChange2={handleChange2}
-																		name={"ogda"}
-																		val={data.ogda ? data.ogda : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>אוגדה</h6>
-																	<Select
-																		data={ogdas}
-																		handleChange2={handleChange2}
-																		name={"ogda"}
-																		val={data.ogda ? data.ogda : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-														</>
+												/>
+											</Col>
+										) : (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+													isDisabled={true}
+												/>
+											</Col>
+										)}
 
-														<>
-															{data.ogda && !data.gdod ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>חטיבה</h6>
-																	<Select
-																		data={hativas}
-																		handleChange2={handleChange2}
-																		name={"hativa"}
-																		val={data.hativa ? data.hativa : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>חטיבה</h6>
-																	<Select
-																		data={hativas}
-																		handleChange2={handleChange2}
-																		name={"hativa"}
-																		val={data.hativa ? data.hativa : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-														</>
+										<>
+											{data.pikodrep && !data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+														isDisabled={true}
 
-														<>
-															{data.hativa ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>גדוד</h6>
-																	<Select
-																		data={gdods}
-																		handleChange2={handleChange2}
-																		name={"gdod"}
-																		val={data.gdod ? data.gdod : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>גדוד</h6>
-																	<Select
-																		data={gdods}
-																		handleChange2={handleChange2}
-																		name={"gdod"}
-																		val={data.gdod ? data.gdod : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-														</>
-													</Row>
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.ogdarep && !data.gdodrep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+									</Row>
+{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+
+									<div className="text-center text-muted mb-4">
+										<small>פרטי יחידה מנמרית</small>
+									</div>
+
+									<Row style={{ paddingTop: "2px" }}>
+										{!data.ogda ? (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikods}
+													handleChange2={handleChange2}
+													name={"pikod"}
+													val={data.pikod ? data.pikod : undefined}
+													isDisabled={true}
+
+												/>
+											</Col>
+										) : (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikods}
+													handleChange2={handleChange2}
+													name={"pikod"}
+													val={data.pikod ? data.pikod : undefined}
+													isDisabled={true}
+												/>
+											</Col>
+										)}
+
+										<>
+											{data.pikod && !data.hativa ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdas}
+														handleChange2={handleChange2}
+														name={"ogda"}
+														val={data.ogda ? data.ogda : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdas}
+														handleChange2={handleChange2}
+														name={"ogda"}
+														val={data.ogda ? data.ogda : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.ogda && !data.gdod ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativas}
+														handleChange2={handleChange2}
+														name={"hativa"}
+														val={data.hativa ? data.hativa : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativas}
+														handleChange2={handleChange2}
+														name={"hativa"}
+														val={data.hativa ? data.hativa : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.hativa ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdods}
+														handleChange2={handleChange2}
+														name={"gdod"}
+														val={data.gdod ? data.gdod : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdods}
+														handleChange2={handleChange2}
+														name={"gdod"}
+														val={data.gdod ? data.gdod : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+									</Row>
 
 													<div
 														className="text-center text-muted mb-4"
@@ -1404,7 +1682,7 @@ const CarDataFormModalView = (match) => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-														סטטוס
+												האם נגרם נזק לכלי
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup
@@ -1426,7 +1704,7 @@ const CarDataFormModalView = (match) => {
 																	id="delt"
 																	disabled
 																/>
-																סגור
+																כן
 															</div>
 														</FormGroup>
 
@@ -1449,7 +1727,7 @@ const CarDataFormModalView = (match) => {
 																	onChange={handleChange}
 																	disabled
 																/>
-																בטיפול
+																לא
 															</div>
 														</FormGroup>
 													</div>
@@ -1612,161 +1890,326 @@ const CarDataFormModalView = (match) => {
 													</FormGroup>
 
 													<div className="text-center text-muted mb-4">
-														<small>פרטי יחידה מדווחת</small>
-													</div>
+										<small>פרטי יחידה מדווחת</small>
+									</div>
 
-													<Row style={{ paddingTop: "2px" }}>
-														{!data.ogda ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>פיקוד</h6>
-																<Select
-																	data={pikods}
-																	handleChange2={handleChange2}
-																	name={"pikod"}
-																	val={data.pikod ? data.pikod : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>פיקוד</h6>
-																<Select
-																	disabled
-																	data={pikods}
-																	handleChange2={handleChange2}
-																	name={"pikod"}
-																	val={data.pikod ? data.pikod : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														)}
+									<Row style={{ paddingTop: "2px" }}>
+										{!data.ogdarep ? (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+													isDisabled={true}
 
-														<>
-															{data.pikod && !data.hativa ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>אוגדה</h6>
-																	<Select
-																		data={ogdas}
-																		handleChange2={handleChange2}
-																		name={"ogda"}
-																		val={data.ogda ? data.ogda : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>אוגדה</h6>
-																	<Select
-																		data={ogdas}
-																		handleChange2={handleChange2}
-																		name={"ogda"}
-																		val={data.ogda ? data.ogda : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-														</>
+												/>
+											</Col>
+										) : (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+													isDisabled={true}
+												/>
+											</Col>
+										)}
 
-														<>
-															{data.ogda && !data.gdod ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>חטיבה</h6>
-																	<Select
-																		data={hativas}
-																		handleChange2={handleChange2}
-																		name={"hativa"}
-																		val={data.hativa ? data.hativa : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>חטיבה</h6>
-																	<Select
-																		data={hativas}
-																		handleChange2={handleChange2}
-																		name={"hativa"}
-																		val={data.hativa ? data.hativa : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-														</>
+										<>
+											{data.pikodrep && !data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+														isDisabled={true}
 
-														<>
-															{data.hativa ? (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>גדוד</h6>
-																	<Select
-																		data={gdods}
-																		handleChange2={handleChange2}
-																		name={"gdod"}
-																		val={data.gdod ? data.gdod : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															) : (
-																<Col
-																	style={{
-																		justifyContent: "right",
-																		alignContent: "right",
-																		textAlign: "right",
-																	}}
-																>
-																	<h6>גדוד</h6>
-																	<Select
-																		data={gdods}
-																		handleChange2={handleChange2}
-																		name={"gdod"}
-																		val={data.gdod ? data.gdod : undefined}
-																		isDisabled={true}
-																	/>
-																</Col>
-															)}
-														</>
-													</Row>
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.ogdarep && !data.gdodrep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+									</Row>
+{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+
+									<div className="text-center text-muted mb-4">
+										<small>פרטי יחידה מנמרית</small>
+									</div>
+
+									<Row style={{ paddingTop: "2px" }}>
+										{!data.ogda ? (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikods}
+													handleChange2={handleChange2}
+													name={"pikod"}
+													val={data.pikod ? data.pikod : undefined}
+													isDisabled={true}
+
+												/>
+											</Col>
+										) : (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikods}
+													handleChange2={handleChange2}
+													name={"pikod"}
+													val={data.pikod ? data.pikod : undefined}
+													isDisabled={true}
+												/>
+											</Col>
+										)}
+
+										<>
+											{data.pikod && !data.hativa ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdas}
+														handleChange2={handleChange2}
+														name={"ogda"}
+														val={data.ogda ? data.ogda : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdas}
+														handleChange2={handleChange2}
+														name={"ogda"}
+														val={data.ogda ? data.ogda : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.ogda && !data.gdod ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativas}
+														handleChange2={handleChange2}
+														name={"hativa"}
+														val={data.hativa ? data.hativa : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativas}
+														handleChange2={handleChange2}
+														name={"hativa"}
+														val={data.hativa ? data.hativa : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.hativa ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdods}
+														handleChange2={handleChange2}
+														name={"gdod"}
+														val={data.gdod ? data.gdod : undefined}
+														isDisabled={true}
+
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdods}
+														handleChange2={handleChange2}
+														name={"gdod"}
+														val={data.gdod ? data.gdod : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+									</Row>
+
 
 													<div
 														className="text-center text-muted mb-4"
@@ -1983,7 +2426,7 @@ const CarDataFormModalView = (match) => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-														סטטוס
+												האם נגרם נזק לכלי
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup
@@ -2005,7 +2448,7 @@ const CarDataFormModalView = (match) => {
 																	id="delt"
 																	disabled
 																/>
-																סגור
+																כן
 															</div>
 														</FormGroup>
 
@@ -2028,7 +2471,7 @@ const CarDataFormModalView = (match) => {
 																	onChange={handleChange}
 																	disabled
 																/>
-																בטיפול
+																לא
 															</div>
 														</FormGroup>
 													</div>

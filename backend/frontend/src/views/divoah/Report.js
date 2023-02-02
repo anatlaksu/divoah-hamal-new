@@ -37,10 +37,11 @@ const Report = ({ match }) => {
 		lastname: "",
 		personalnumber: "",
 		cellphone: "",
-		// pikod: "",
-		// ogda: "",
-		// hativa: "",
+		pikodrep: "",
+		ogdarep: "",
+		hativarep: "",
 		gdod: "",
+		gdodrep: "",
 		mkabazs: "",
 		arraymkabaz: [],
 		zadik: "",
@@ -74,6 +75,11 @@ const Report = ({ match }) => {
 	const [hativas, setHativas] = useState([]);
 	const [ogdas, setOgdas] = useState([]);
 	const [pikods, setPikods] = useState([]);
+	//* pikodrep data
+	const [gdodsrep, setGdodsrep] = useState([]);
+	const [hativasrep, setHativasrep] = useState([]);
+	const [ogdasrep, setOgdasrep] = useState([]);
+	const [pikodsrep, setPikodsrep] = useState([]);
 	// * cardata
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
@@ -142,12 +148,13 @@ const Report = ({ match }) => {
 			setRekem(tempmagadmkabazs);
 		}
 	};
-
+//* manmarit
 	const loadPikods = async () => {
 		await axios
 			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
 				setPikods(response.data);
+				// setPikodsrep(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -176,6 +183,7 @@ const Report = ({ match }) => {
 			}
 		}
 		setOgdas(temppikodsogdas);
+		// setOgdasrep(temppikodsogdas);
 	};
 
 	const loadHativas = async (ogdaids) => {
@@ -200,6 +208,7 @@ const Report = ({ match }) => {
 			}
 		}
 		setHativas(tempogdashativas);
+		// setHativasrep(tempogdashativas)
 	};
 
 	const loadGdods = async (hativaids) => {
@@ -224,7 +233,99 @@ const Report = ({ match }) => {
 			}
 		}
 		setGdods(temphativasgdods);
+		// setGdodsrep(temphativasgdods);
 	};
+
+//* rep
+
+const loadPikodsrep = async () => {
+	await axios
+		.get("http://localhost:8000/api/pikod")
+		.then((response) => {
+			// setPikods(response.data);
+			setPikodsrep(response.data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};
+
+const loadOgdasrep = async (pikodids) => {
+	let temppikodids = pikodids;
+	if (temppikodids != undefined && !temppikodids.isArray) {
+		temppikodids = [pikodids];
+	}
+	let temppikodsogdas = [];
+	if (temppikodids != undefined && temppikodids.length > 0) {
+		for (let i = 0; i < temppikodids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+					pikod: temppikodids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						temppikodsogdas.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	// setOgdas(temppikodsogdas);
+	setOgdasrep(temppikodsogdas);
+};
+
+const loadHativasrep = async (ogdaids) => {
+	let tempogdaids = ogdaids;
+	if (tempogdaids != undefined && !tempogdaids.isArray) {
+		tempogdaids = [ogdaids];
+	}
+	let tempogdashativas = [];
+	if (tempogdaids != undefined && tempogdaids.length > 0) {
+		for (let i = 0; i < tempogdaids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+					ogda: tempogdaids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						tempogdashativas.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	// setHativas(tempogdashativas);
+	setHativasrep(tempogdashativas)
+};
+
+const loadGdodsrep = async (hativaids) => {
+	let temphativaids = hativaids;
+	if (temphativaids != undefined && !temphativaids.isArray) {
+		temphativaids = [hativaids];
+	}
+	let temphativasgdods = [];
+	if (temphativaids != undefined && temphativaids.length > 0) {
+		for (let i = 0; i < temphativaids.length; i++) {
+			await axios
+				.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+					hativa: temphativaids[i],
+				})
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						temphativasgdods.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
+	// setGdods(temphativasgdods);
+	setGdodsrep(temphativasgdods);
+};
+
+//* handle changes
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -258,14 +359,17 @@ const Report = ({ match }) => {
 
 	// * only for pikod... and magadal... should be saved in cardats not data (the report itself)
 	function handleChange2(selectedOption, name) {
-		if (!(selectedOption.value == "בחר"))
+		if (!(selectedOption.value == "בחר")){
+			// console.log(selectedOption);
 			setData({ ...data, [name]: selectedOption.value });
+		}
 		else {
 			let tempdata = { ...data };
 			delete tempdata[name];
 			setData(tempdata);
 		}
 	}
+	
 
 	const clickSubmit = (event) => {
 		CheckSignUpForm(event);
@@ -463,14 +567,14 @@ const Report = ({ match }) => {
 			}
 		}
 		if (data.typevent === "9") {
-			if (
-				document.getElementById("mholaz").options[
-					document.getElementById("mholaz").selectedIndex
-				].value == "0"
-			) {
-				flag = false;
-				ErrorReason += "סוג הכלי המחולץ ריק \n";
-			}
+			// if (
+			// 	document.getElementById("mholaz").options[
+			// 		document.getElementById("mholaz").selectedIndex
+			// 	].value == "0" || null
+			// ) {
+			// 	flag = false;
+			// 	ErrorReason += "סוג הכלי המחולץ ריק \n";
+			// }
 			if (data.zadik == "") {
 				flag = false;
 				ErrorReason += "  צ' ריק\n";
@@ -523,9 +627,10 @@ const Report = ({ match }) => {
 			personalnumber: data.personalnumber,
 			cellphone: data.cellphone,
 			gdod: data.gdod,
-			// ogda:data.ogda,
-			// hativa:data.hativa,
-			// gdod:data.gdod,
+			gdodrep: data.gdodrep,
+			ogdarep:data.ogdarep,
+			hativarep:data.hativarep,
+			gdod:data.gdod,
 			typevent: data.typevent,
 			resevent: data.resevent,
 			// magadal: data.magadal,
@@ -600,13 +705,14 @@ const Report = ({ match }) => {
 			personalnumber: user.personalnumber,
 		});
 		loadPikods();
+		loadPikodsrep();
 		getMagadals();
 	};
 
 	useEffect(() => {
 		initWithUserData();
 	}, []);
-
+// * ------ manmarit --------------------------------
 	useEffect(() => {
 		setOgdas([]);
 		loadOgdas(data.pikod);
@@ -621,7 +727,22 @@ const Report = ({ match }) => {
 		setGdods([]);
 		loadGdods(data.hativa);
 	}, [data.hativa]);
+//* ------ rep ----------------------------------------------------------------
+	useEffect(() => {
+		setOgdasrep([]);
+		loadOgdasrep(data.pikodrep);
+	}, [data.pikodrep]);
 
+	useEffect(() => {
+		setHativasrep([]);
+		loadHativasrep(data.ogdarep);
+	}, [data.ogdarep]);
+
+	useEffect(() => {
+		setGdodsrep([]);
+		loadGdodsrep(data.hativarep);
+	}, [data.hativarep]);
+//* ------ magdal .... --------------------------------
 	useEffect(() => {
 		setMagads([]);
 		getMagads(data.magadal);
@@ -711,9 +832,162 @@ const Report = ({ match }) => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
-
+{/*//* --------------------------------------- rep ------------------------------------------- */}
 									<div className="text-center text-muted mb-4">
 										<small>פרטי יחידה מדווחת</small>
+									</div>
+
+									<Row style={{ paddingTop: "2px" }}>
+										{!data.ogdarep ? (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+												/>
+											</Col>
+										) : (
+											<Col
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>פיקוד</h6>
+												<Select
+													data={pikodsrep}
+													handleChange2={handleChange2}
+													name={"pikodrep"}
+													val={data.pikodrep ? data.pikodrep : undefined}
+													isDisabled={true}
+												/>
+											</Col>
+										)}
+
+										<>
+											{data.pikodrep && !data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>אוגדה</h6>
+													<Select
+														data={ogdasrep}
+														handleChange2={handleChange2}
+														name={"ogdarep"}
+														val={data.ogdarep ? data.ogdarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.ogdarep && !data.gdodrep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>חטיבה</h6>
+													<Select
+														data={hativasrep}
+														handleChange2={handleChange2}
+														name={"hativarep"}
+														val={data.hativarep ? data.hativarep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+
+										<>
+											{data.hativarep ? (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+													/>
+												</Col>
+											) : (
+												<Col
+													style={{
+														justifyContent: "right",
+														alignContent: "right",
+														textAlign: "right",
+													}}
+												>
+													<h6>גדוד</h6>
+													<Select
+														data={gdodsrep}
+														handleChange2={handleChange2}
+														name={"gdodrep"}
+														val={data.gdodrep ? data.gdodrep : undefined}
+														isDisabled={true}
+													/>
+												</Col>
+											)}
+										</>
+									</Row>
+{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+
+									<div className="text-center text-muted mb-4">
+										<small>פרטי יחידה מנמרית</small>
 									</div>
 
 									<Row style={{ paddingTop: "2px" }}>
@@ -863,6 +1137,7 @@ const Report = ({ match }) => {
 											)}
 										</>
 									</Row>
+
 
 									<div
 										className="text-center text-muted mb-4"
@@ -1541,7 +1816,7 @@ const Report = ({ match }) => {
 
 									{/* //* ------------------ status checker ----------------------- */}
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-										סטטוס
+										האם מצריך המשך טיפול
 									</div>
 									<div style={{ textAlign: "right" }}>
 										<FormGroup
@@ -1556,7 +1831,7 @@ const Report = ({ match }) => {
 													onChange={handleChange}
 													id="delt"
 												/>
-												סגור
+												כן
 											</div>
 										</FormGroup>
 
@@ -1572,7 +1847,7 @@ const Report = ({ match }) => {
 													value="0"
 													onChange={handleChange}
 												/>
-												בטיפול
+												לא
 											</div>
 										</FormGroup>
 									</div>

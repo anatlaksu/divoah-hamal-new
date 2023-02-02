@@ -82,6 +82,7 @@ let readtipul = [
 	},
 ];
 
+
 let readtipulnotype = [
 	{
 		$lookup: {
@@ -144,10 +145,12 @@ router.route("/add").post((req, res) => {
 	const lastname = req.body.lastname;
 	const personalnumber = req.body.personalnumber;
 	const cellphone = req.body.cellphone;
-	// const pikod = req.body.pikod;
-	// const ogda = req.body.ogda;
-	// const hativa = req.body.hativa;
+	const pikodrep = req.body.pikodrep;
+	const ogdarep = req.body.ogdarep;
+	const hativarep = req.body.hativarep;
 	const gdod = req.body.gdod;
+	const gdodrep = req.body.gdodrep;
+
 	// const magadal = req.body.magadal;
 	// const magad = req.body.magad;
 	const mkabaz = req.body.mkabaz;
@@ -178,10 +181,11 @@ router.route("/add").post((req, res) => {
 		lastname,
 		personalnumber,
 		cellphone,
-		// pikod,
-		// ogda,
-		// hativa,
+		pikodrep,
+		ogdarep,
+		hativarep,
 		gdod,
+		gdodrep,
 		// magadal,
 		// magad,
 		mkabaz,
@@ -245,6 +249,7 @@ router.route("/:id").get((req, res) => {
 	// Report.findById(req.params.id)
 	// 	.then((request) => res.json(request))
 	// 	.catch((err) => res.status(400).json("Error: " + err));
+	
 	let tipulfindquerry = readtipul.slice();
 	let finalquerry = tipulfindquerry;
 	let andquery = [];
@@ -308,10 +313,12 @@ router.route("/update/:id").put((req, res) => {
 			request.lastname = req.body.lastname;
 			request.personalnumber = req.body.personalnumber;
 			request.cellphone = req.body.cellphone;
-			// request.pikod = req.body.pikod;
-			// request.ogda = req.body.ogda;
-			// request.hativa = req.body.hativa;
+			request.pikodrep = req.body.pikodrep;
+			request.ogdarep = req.body.ogdarep;
+			request.hativarep = req.body.hativarep;
 			request.gdod = req.body.gdod;
+			request.gdodrep = req.body.gdodrep;
+
 			// request.magadal = req.body.magadal;
 			// request.magad = req.body.magad;
 			request.mkabaz = req.body.mkabaz;

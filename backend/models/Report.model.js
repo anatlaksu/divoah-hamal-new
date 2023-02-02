@@ -9,10 +9,12 @@ const ReportSchema = new mongoose.Schema(
 		lastname: { type: String, trim: true, required: true },
 		personalnumber: { type: String, trim: true, required: true },
 		cellphone: String,
-		// pikod: { type: String, default: "" },
-		// ogda: String,
-		// hativa: String,
+		pikodrep: { type: String, default: "" },
+		ogdarep: String,
+		hativarep: String,
 		gdod: { type: String }, //*object
+		gdodrep: { type: String }, //*object
+
 		mkabaz: { type: String }, //*object
 		arraymkabaz: {type: Array},
 		zadik: String,
