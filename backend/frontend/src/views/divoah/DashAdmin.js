@@ -21,23 +21,34 @@ import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
 import { Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
-import Select from "components/general/Select/AnimatedSelect";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const AdminSignInForm = () => {
 	const [reportDB, setReportDB] = useState([]);
 	const [isError, setIsError] = useState(false);
 
 	const [data, setData] = useState([]);
+	const [reportDBPikod, setReportDBPikod] = useState([]);
 
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
 	const [ogdas, setOgdas] = useState([]);
 	const [pikods, setPikods] = useState([]);
+	//* options
+	const [gdodsop, setGdodsop] = useState([]);
+	const [hativasop, setHativasop] = useState([]);
+	const [ogdasop, setOgdasop] = useState([]);
+	const [pikodsop, setPikodsop] = useState([]);
+
+	// const [filter, setFilter] = useState([]);
 
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const toggleCollapse = () => {
 		setcollapseOpen(!collapseOpen);
 	};
+
+	const animatedComponents = makeAnimated();
 
 	const eventTypeArray = {
 		בחר: "",
@@ -61,6 +72,7 @@ const AdminSignInForm = () => {
 			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
 				setPikods(response.data);
+				// console.log(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -156,7 +168,7 @@ const AdminSignInForm = () => {
 							// let tempuser = { ...response.data };
 							// setData(tempuser);
 							let tempcardata = response.data[0];
-							console.log(tempcardata);
+							// console.log(tempcardata);
 							arrayTester.push(tempcardata);
 							// tempcardata.slice();
 							if (arrayTester.length === res.data.length) {
@@ -185,6 +197,77 @@ const AdminSignInForm = () => {
 			let tempdata = { ...data };
 			delete tempdata[name];
 			setData(tempdata);
+		}
+	}
+
+	function setoptions(pk, og, ht, gd) {
+		setPikodsop(
+			pk.map((item, index) => {
+				let val = pk[index]._id;
+				let lab = pk[index].name;
+				return { value: val, label: lab };
+			})
+		);
+		setOgdasop(
+			og.map((item, index) => {
+				let val = og[index]._id;
+				let lab = og[index].name;
+				return { value: val, label: lab };
+			})
+		);
+		setHativasop(
+			ht.map((item, index) => {
+				let val = ht[index]._id;
+				let lab = ht[index].name;
+				return { value: val, label: lab };
+			})
+		);
+		setGdodsop(
+			gd.map((item, index) => {
+				let val = gd[index]._id;
+				let lab = gd[index].name;
+				return { value: val, label: lab };
+			})
+		);
+	}
+
+	function convertToObj(a, b) {
+		if (a.length != b.length || a.length == 0 || b.length == 0) {
+			return null;
+		}
+		let obj = {};
+
+		// Using the foreach method
+		a.forEach((k, i) => {
+			obj[k] = b[i];
+		});
+		return obj;
+	}
+
+	function handleChange8(selectedOption, name) {
+		// console.log(selectedOption);
+		// console.log(name);
+		if (!(selectedOption.value == "בחר")) {
+			let tempvalues = [];
+			let tempnames = [];
+			for (let i = 0; i < selectedOption.length; i++) {
+				tempvalues.push(selectedOption[i].value);
+				tempnames.push(selectedOption[i].label);
+			}
+			// console.log(tempvalues);
+			// console.log(tempnames);
+			// console.log(name.name);
+			const obj = convertToObj(tempnames, tempvalues);
+			setData({ ...data, [name.name]: tempvalues });
+			console.log(data);
+			// console.log(data.pikod.map((item,index) => {
+
+			// }));
+		} else {
+			let tempfilter = { ...data };
+			delete tempfilter[name];
+			setData(tempfilter);
+			console.log(tempfilter);
 		}
 	}
 
@@ -347,7 +430,98 @@ const AdminSignInForm = () => {
 		return sumallogdas;
 	}
 
-	const arryogda = ogdas.filter((ogda) => ogda.pikod == data.pikod);
+	const arryogda = ogdas.filter((ogda, index) => {
+		if (data.pikod.includes(ogda.pikod)) {
+			return ogda.pikod;
+		}
+	});
+
+	// const reportDBPikod = reportDB.filter((report) =>
+	// 	data.pikod.includes(report.pikod)
+	// );
+
+	const dataeventPikod = {
+		labels: labels,
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumtypereport(labels, reportDBPikod, eventTypeArray),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const datapikodFilttered = {
+		labels: pikods.map((pikod, index) => pikod.name),
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumpikods(pikods, reportDBPikod),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderWidth: 1,
+			},
+		],
+	};
+	// console.log(arryogda);
 
 	const dataogda = {
 		labels: arryogda.map((ogda) => ogda.name),
@@ -388,7 +562,11 @@ const AdminSignInForm = () => {
 		return sumallhativas;
 	}
 
-	const arryhativa = hativas.filter((hativa) => hativa.ogda == data.ogda);
+	const arryhativa = hativas.filter((hativa, index) => {
+		if (data.ogda.includes(hativa.ogda)) {
+			return hativa.ogda;
+		}
+	});
 
 	const datahativa = {
 		labels: arryhativa.map((hativa) => hativa.name),
@@ -428,8 +606,16 @@ const AdminSignInForm = () => {
 		}
 		return sumallgdods;
 	}
-
-	const arrygdod = gdods.filter((gdod) => gdod.hativa == data.hativa);
+	// const arryhativa = hativas.filter((hativa, index) => {
+	// 	if (data.ogda.includes(hativa.ogda)) {
+	// 		return hativa.ogda;
+	// 	}
+	// });
+	const arrygdod = gdods.filter((gdod, index) => {
+		if (data.hativa.includes(gdod.hativa)) {
+			return gdod.hativa;
+		}
+	});
 
 	const datagdod = {
 		labels: arrygdod.map((gdod) => gdod.name),
@@ -445,6 +631,12 @@ const AdminSignInForm = () => {
 	};
 
 	useEffect(() => {
+		setReportDBPikod(
+			reportDB.filter((report) => data.pikod.includes(report.pikod))
+		);
+	}, [data]);
+
+	useEffect(() => {
 		loadReports();
 		loadPikods();
 	}, []);
@@ -456,6 +648,7 @@ const AdminSignInForm = () => {
 
 	useEffect(() => {
 		setHativas([]);
+
 		loadHativas(data.ogda);
 	}, [data.ogda]);
 
@@ -464,76 +657,20 @@ const AdminSignInForm = () => {
 		loadGdods(data.hativa);
 	}, [data.hativa]);
 
+	useEffect(() => {
+		setoptions(pikods, ogdas, hativas, gdods);
+		// console.log(pikodsop);
+	}, [gdods, hativas, ogdas, pikods]);
+
 	function getname(idnum, arr) {
 		for (let i = 0; i < arr.length; i++) {
 			if (arr[i]._id == idnum) return arr[i].name;
 		}
 	}
 
-  return (
-    <div>
-      <Container className="mt--8 pb-5">
-        <Row>
-          <Col lg="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <h3 className="card-category text-center">טבלת אירועים</h3>
-              </CardHeader>
-              <CardBody>
-                <table className="tablesorter" responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      <th className="text-center" style={{width:"20%"}}>פיקוד</th>
-                      <th className="text-center" style={{width:"30%"}}>סוג אירוע</th>
-                      <th className="text-center" style={{width:"50%"}}>פירוט האירוע</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {reportDB.map((report, index) => (
-                      <tr>
-                        <td>
-                          <p>{getname(report.pikod,pikods)}</p>
-                        </td>
-                        <td>{eventTypeArray[report.typevent]}</td>
-                        <td><div style={{width:"100%",height:"50px",margin:"0",padding:"0",overflow:"auto"}}>{report.pirot}</div></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg="3">
-                <Card className="card-chart">
-                <CardHeader>
-                    <h3 className="card-category text-center">
-                      {" "}
-                      אירועים לפי סוג אירוע
-                    </h3>
-                  </CardHeader>
-                  <CardBody>
-                  <Doughnut data={dataevent} options={options}/>
-                  </CardBody>
-                </Card>
-          </Col>
-
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									מספר אירועים לפי פיקוד
-								</h3>
-							</CardHeader>
-							<CardBody>
-								<Doughnut
-									data={datapikod}
-									options={options}
-								/>
-							</CardBody>
-						</Card>
-					</Col>
-				</Row>
+	return (
+		<div>
+			<Container className="mt--8 pb-5">
 				<Row>
 					<div style={{ width: "100%", margin: "auto", textAlign: "right" }}>
 						<Button
@@ -561,8 +698,12 @@ const AdminSignInForm = () => {
 												>
 													<h6>פיקוד</h6>
 													<Select
-														data={pikods}
-														handleChange2={handleChange2}
+														closeMenuOnSelect={false}
+														components={animatedComponents}
+														isMulti
+														options={pikodsop}
+														// data={pikods}
+														onChange={handleChange8}
 														name={"pikod"}
 														val={data.pikod ? data.pikod : undefined}
 													/>
@@ -577,8 +718,11 @@ const AdminSignInForm = () => {
 												>
 													<h6>פיקוד</h6>
 													<Select
-														data={pikods}
-														handleChange2={handleChange2}
+														closeMenuOnSelect={false}
+														components={animatedComponents}
+														isMulti
+														options={pikodsop}
+														handleChange2={handleChange8}
 														name={"pikod"}
 														val={data.pikod ? data.pikod : undefined}
 														isDisabled={true}
@@ -597,8 +741,11 @@ const AdminSignInForm = () => {
 													>
 														<h6>אוגדה</h6>
 														<Select
-															data={ogdas}
-															handleChange2={handleChange2}
+															closeMenuOnSelect={false}
+															components={animatedComponents}
+															isMulti
+															options={ogdasop}
+															onChange={handleChange8}
 															name={"ogda"}
 															val={data.ogda ? data.ogda : undefined}
 														/>
@@ -613,8 +760,10 @@ const AdminSignInForm = () => {
 													>
 														<h6>אוגדה</h6>
 														<Select
-															data={ogdas}
-															handleChange2={handleChange2}
+															components={animatedComponents}
+															isMulti
+															options={ogdasop}
+															onChange={handleChange8}
 															name={"ogda"}
 															val={data.ogda ? data.ogda : undefined}
 															isDisabled={true}
@@ -634,8 +783,10 @@ const AdminSignInForm = () => {
 													>
 														<h6>חטיבה</h6>
 														<Select
-															data={hativas}
-															handleChange2={handleChange2}
+															components={animatedComponents}
+															isMulti
+															options={hativasop}
+															onChange={handleChange8}
 															name={"hativa"}
 															val={data.hativa ? data.hativa : undefined}
 														/>
@@ -650,8 +801,10 @@ const AdminSignInForm = () => {
 													>
 														<h6>חטיבה</h6>
 														<Select
-															data={hativas}
-															handleChange2={handleChange2}
+															components={animatedComponents}
+															isMulti
+															options={hativasop}
+															onChange={handleChange8}
 															name={"hativa"}
 															val={data.hativa ? data.hativa : undefined}
 															isDisabled={true}
@@ -666,7 +819,142 @@ const AdminSignInForm = () => {
 						</Collapse>
 					</div>
 				</Row>
+				<Row>
+					<Col lg="6">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">טבלת אירועים</h3>
+							</CardHeader>
+							<CardBody>
+								<table
+									className="tablesorter"
+									responsive
+								>
+									<thead className="text-primary">
+										<tr>
+											<th
+												className="text-center"
+												style={{ width: "20%" }}
+											>
+												פיקוד
+											</th>
+											<th
+												className="text-center"
+												style={{ width: "30%" }}
+											>
+												סוג אירוע
+											</th>
+											<th
+												className="text-center"
+												style={{ width: "50%" }}
+											>
+												פירוט האירוע
+											</th>
+										</tr>
+									</thead>
+									{data.length == 0 ? (
+										<tbody>
+											{reportDB.map((report, index) => (
+												<tr>
+													<td>
+														<p>{getname(report.pikod, pikods)}</p>
+													</td>
+													<td>{eventTypeArray[report.typevent]}</td>
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "50px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{report.pirot}
+														</div>
+													</td>
+												</tr>
+											))}
+										</tbody>
+									) : (
+										<tbody>
+											{reportDB.map((report, index) =>
+												data.pikod.includes(report.pikod) ? (
+													<tr>
+														<td>
+															<p>{getname(report.pikod, pikods)}</p>
+														</td>
+														<td>{eventTypeArray[report.typevent]}</td>
+														<td>
+															<div
+																style={{
+																	width: "100%",
+																	height: "50px",
+																	margin: "0",
+																	padding: "0",
+																	overflow: "auto",
+																}}
+															>
+																{report.pirot}
+															</div>
+														</td>
+													</tr>
+												) : null
+											)}
+										</tbody>
+									)}
+								</table>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									אירועים לפי סוג אירוע
+								</h3>
+							</CardHeader>
+							<CardBody>
+								{data.length == 0 ? (
+									<Doughnut
+										data={dataevent}
+										options={options}
+									/>
+								) : (
+									<Doughnut
+										data={dataeventPikod}
+										options={options}
+									/>
+								)}
+							</CardBody>
+						</Card>
+					</Col>
 
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									מספר אירועים לפי פיקוד
+								</h3>
+							</CardHeader>
+							<CardBody>
+								{data.length == 0 ? (
+									<Doughnut
+										data={datapikod}
+										options={options}
+									/>
+								) : (
+									<Doughnut
+										data={datapikodFilttered}
+										options={options}
+									/>
+								)}
+							</CardBody>
+						</Card>
+					</Col>
+				</Row>
 				<Row>
 					{data.pikod && !data.ogda && !data.hativa ? (
 						<Col lg="4">
