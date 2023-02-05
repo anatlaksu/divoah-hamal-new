@@ -42,7 +42,7 @@ const Report = ({ match }) => {
 		hativarep: "",
 		gdod: "",
 		gdodrep: "",
-		mkabazs: "",
+		mkabaz: "",
 		arraymkabaz: [],
 		zadik: "",
 		typevent: "0",
@@ -516,14 +516,14 @@ const loadGdodsrep = async (hativaids) => {
 				flag = false;
 				ErrorReason += "  צ' ריק\n";
 			}	
-			if (
-				document.getElementById("mataf").options[
-					document.getElementById("mataf").selectedIndex
-				].value == "0"
-			) {
-				flag = false;
-				ErrorReason += "סוג מטף ריק \n";
-			}
+			// if (
+			// 	document.getElementById("mataf").options[
+			// 		document.getElementById("mataf").selectedIndex
+			// 	].value == "0"
+			// ) {
+			// 	flag = false;
+			// 	ErrorReason += "סוג מטף ריק \n";
+			// }
 			// if (
 			// 	document.getElementById("rekem").options[
 			// 		document.getElementById("rekem").selectedIndex
@@ -635,12 +635,12 @@ const loadGdodsrep = async (hativaids) => {
 			resevent: data.resevent,
 			// magadal: data.magadal,
 			// magad:data.magad,
-			mkabazs: data.mkabaz,
+			mkabaz: data.mkabaz,
 			arraymkabaz: cartypesfilterarray, 
 			zadik: data.zadik,
 			yn: data.yn,
 			status:
-				data.dt /* //?if there is no need for the status button ==> data.dt != undefined || null ? data.dt : "0",*/,
+				data.dt /* //?if there is no need for the dt button ==> data.dt != undefined || null ? data.dt : "0",*/,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -659,7 +659,7 @@ const loadGdodsrep = async (hativaids) => {
 
 		};
 		console.log("In the SendFormData Func");
-		console.log(requestData.status);
+		console.log(requestData.dt);
 
 		console.groupCollapsed("Axios");
 
@@ -1501,7 +1501,8 @@ const loadGdodsrep = async (hativaids) => {
 													</Col>
 												)}
 											</Row>
-											<FormGroup
+										<div className="mt-3">
+													<FormGroup
 										className="mb-3"
 										dir="rtl"
 									>
@@ -1513,6 +1514,7 @@ const loadGdodsrep = async (hativaids) => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
+</div>
 
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												סוג המטף
@@ -1748,7 +1750,7 @@ const loadGdodsrep = async (hativaids) => {
 													</Col>
 												)}
 
-												{data.magad && !data.makat ? (
+												{data.magad && !data.mkabaz ? (
 													<Col
 														style={{
 															justifyContent: "right",
@@ -1783,7 +1785,8 @@ const loadGdodsrep = async (hativaids) => {
 													</Col>
 												)}
 											</Row>
-											<FormGroup
+										<div className="mt-3">
+													<FormGroup
 										className="mb-3"
 										dir="rtl"
 									>
@@ -1795,6 +1798,7 @@ const loadGdodsrep = async (hativaids) => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
+</div>
 
 											{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
                     סוג הכלי המחלץ
@@ -1814,7 +1818,7 @@ const loadGdodsrep = async (hativaids) => {
 										</>
 									)}
 
-									{/* //* ------------------ status checker ----------------------- */}
+									{/* //* ------------------ dt checker ----------------------- */}
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם מצריך המשך טיפול
 									</div>

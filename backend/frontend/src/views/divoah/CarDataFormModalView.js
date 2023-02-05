@@ -375,6 +375,7 @@ const loadPikodsrep = async () => {
 				console.log(error);
 			});
 		loadPikods();
+		loadPikodsrep();
 		getMagadals();
 	};
 
@@ -472,7 +473,7 @@ useEffect(() => {
 							<Container className="mt--8 pb-5">
 								<Row className="justify-content-center">
 									<Card className="shadow border-0">
-										{data.typevent != "רק'ם" ? (
+										{data.typevent != "רקם" ? (
 											<CardBody className="px-lg-5 py-lg-5">
 												<div className="text-center text-muted mb-4">
 													<big>עדכון דיווח</big>
@@ -1298,7 +1299,8 @@ useEffect(() => {
 																	</Col>
 																)}
 															</Row>
-															<FormGroup
+		<div className="mt-3">
+													<FormGroup
 										className="mb-3"
 										dir="rtl"
 									>
@@ -1308,9 +1310,10 @@ useEffect(() => {
 											type="string"
 											value={data.zadik}
 											onChange={handleChange}
-											disabled
-										/>
+															disabled
+							/>
 									</FormGroup>
+</div>
 
 															<div
 																style={{
@@ -1647,7 +1650,8 @@ useEffect(() => {
 																	</Col>
 																)}
 															</Row>
-															<FormGroup
+		<div className="mt-3">
+													<FormGroup
 										className="mb-3"
 										dir="rtl"
 									>
@@ -1657,9 +1661,10 @@ useEffect(() => {
 											type="string"
 											value={data.zadik}
 											onChange={handleChange}
-											disabled
-										/>
+															disabled
+							/>
 									</FormGroup>
+</div>
 
 															{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
         סוג הכלי המחלץ
@@ -1682,7 +1687,7 @@ useEffect(() => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-												האם נגרם נזק לכלי
+													האם מצריך המשך טיפול										
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup
@@ -2354,6 +2359,7 @@ useEffect(() => {
 															</Col>
 														)}
 													</Row>
+<div className="mt-3">
 													<FormGroup
 										className="mb-3"
 										dir="rtl"
@@ -2364,9 +2370,10 @@ useEffect(() => {
 											type="string"
 											value={data.zadik}
 											onChange={handleChange}
-											disabled
-										/>
+															disabled
+							/>
 									</FormGroup>
+</div>
 
 
 													<div
@@ -2426,7 +2433,7 @@ useEffect(() => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-												האם נגרם נזק לכלי
+												האם מצריך המשך טיפול
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup

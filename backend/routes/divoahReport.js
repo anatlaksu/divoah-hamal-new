@@ -56,6 +56,19 @@ let readtipul = [
 
 	{
 		$lookup: {
+			from: "mkabazs",
+			localField: "mkabaz",
+			foreignField: "_id",
+			as: "mkabaz_data",
+		},
+	},
+	{
+		$set: {
+			mkabaz: { $arrayElemAt: ["$mkabaz_data._id", 0] },
+		},
+	},
+	{
+		$lookup: {
 			from: "magads",
 			localField: "mkabaz_data.magad",
 			foreignField: "_id",
@@ -87,7 +100,7 @@ let readtipulnotype = [
 	{
 		$lookup: {
 			from: "mkabazs",
-			localField: "mkabazs",
+			localField: "mkabaz",
 			foreignField: "_id",
 			as: "mkabaz_data",
 		},
@@ -260,39 +273,16 @@ router.route("/:id").get((req, res) => {
 				$and: andquery,
 			},
 		};
+		console.log(matchquerry);
+	console.log(andquery);
 		finalquerry.push(matchquerry);
 	}
-	// console.log(matchquerry);
-	// console.log(andquery);
 	Report.aggregate(finalquerry)
 		.then((result) => {
 			console.log(result);
 			if (result.length != 0) {
 				res.json(result);
-			} else {
-				let tipulfindquerry = readtipulnotype.slice();
-				let finalquerry = tipulfindquerry;
-				let andquery = [];
-				andquery.push({ _id: mongoose.Types.ObjectId(req.params.id) });
-				if (andquery.length != 0) {
-					let matchquerry = {
-						$match: {
-							$and: andquery,
-						},
-					};
-					finalquerry.push(matchquerry);
-				}
-				// console.log(matchquerry);
-				// console.log(andquery);
-				Report.aggregate(finalquerry)
-					.then((result) => {
-						res.json(result);
-					})
-					.catch((error) => {
-						res.status(400).json("Error: " + error);
-						console.log(error);
-					});
-			}
+			} 
 		})
 		.catch((error) => {
 			res.status(400).json("Error: " + error);

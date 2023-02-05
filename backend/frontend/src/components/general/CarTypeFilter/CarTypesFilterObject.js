@@ -239,7 +239,7 @@ async function getCurrentParentId(CurrentCarFilterType, CurrentCarFilterId) {
           </Col>}
       </Row>
       <Row>
-      <div>
+      <div className='mt-3 mr-3'>
                                       <p style={{ margin: '0px', float: 'right' }}>צ'</p>
                                       <Input onChange={(e) => {
                                         const zadik = e.target.value;

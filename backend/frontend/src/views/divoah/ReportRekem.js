@@ -42,9 +42,9 @@ const Report = ({ props }) => {
 		hativarep: "",
 		gdod: "",
 		gdodrep: "",
-		mkabazs: "",
+		mkabaz: "",
 		zadik: "",
-		typevent: "רק'ם",
+		typevent: "רקם",
 		resevent: "0",
 		cli: "0",
 		yn: "",
@@ -62,7 +62,7 @@ const Report = ({ props }) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
-		status: "0",
+		dt: "0",
 		hurtarray: [],
 
 		error: false,
@@ -459,9 +459,9 @@ setGdodsrep(temphativasgdods);
 			hativarep:data.hativarep,
 			gdod: data.gdod,
 			gdodrep: data.gdodrep,
-			mkabazs: data.mkabaz,
+			mkabaz: data.mkabaz,
 			zadik: data.zadik,
-			status: data.dt,
+			dt: data.dt,
 			typevent: data.typevent,
 			resevent: data.resevent,
 			yn: data.yn,
@@ -1056,7 +1056,7 @@ useEffect(() => {
 											</Col>
 										)}
 
-										{data.magad && !data.makat ? (
+										{data.magad && !data.mkabaz ? (
 											<Col
 												style={{
 													justifyContent: "right",
@@ -1092,7 +1092,8 @@ useEffect(() => {
 										)}
 									</Row>
 
-									<FormGroup
+								<div className="mt-3">
+													<FormGroup
 										className="mb-3"
 										dir="rtl"
 									>
@@ -1104,6 +1105,7 @@ useEffect(() => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
+</div>
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם נגרם נזק לרק"ם
@@ -1143,7 +1145,7 @@ useEffect(() => {
 										</FormGroup>
 									</div>
 
-									{/* //* ------------------ status checker ----------------------- */}
+									{/* //* ------------------ dt checker ----------------------- */}
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם מצריך המשך טיפול
 									</div>

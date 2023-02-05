@@ -298,7 +298,7 @@ const SortingTableHamal = ({ match }) => {
 												if (cell.value == "11")
 													return <td>אי קיום שגרת אחזקה</td>;
 												if (cell.value == "12") return <td>אחר</td>;
-												if (cell.value == "רק'ם") return <td>רק"ם</td>;
+												if (cell.value == "רקם") return <td>רק"ם</td>;
 											}
 											if (cell.column.id == "pirot") {
 												return <td><div style={{width:"100%",height:"60px",margin:"0",padding:"0",overflow:"auto"}}>{cell.value}</div></td>;
@@ -335,7 +335,7 @@ const SortingTableHamal = ({ match }) => {
 										}
 									})}
 									{/*//* -------- update report --------------- */}
-									{row.original.typevent != "רק'ם" ? (
+									{row.original.typevent != "רקם" ? (
 										<td role="cell">
 											{" "}
 											<div
@@ -382,7 +382,7 @@ const SortingTableHamal = ({ match }) => {
 									)}
 									{/* // ? row.original._id=user._id*/}
 									{/*//* -------- view report --------------- */}
-									{row.original.typevent != "רק'ם" ? (
+									{row.original.typevent != "רקם" ? (
 										<td role="cell">
 											{" "}
 											<div

@@ -229,7 +229,7 @@ const SortingTable = ({ match }) => {
 												if (cell.value == "11")
 													return <td>אי קיום שגרת אחזקה</td>;
 												if (cell.value == "12") return <td>אחר</td>;
-												if (cell.value == "רק'ם") return <td>רק"ם</td>;
+												if (cell.value == "רקם") return <td>רק"ם</td>;
 											}
 											if (cell.column.id == "pirot") {
 												return (
@@ -263,7 +263,7 @@ const SortingTable = ({ match }) => {
 										}
 									})}
 
-									{row.original.typevent != "רק'ם" ? (
+									{row.original.typevent != "רקם" ? (
 										<td role="cell">
 											{" "}
 											<div
@@ -309,7 +309,7 @@ const SortingTable = ({ match }) => {
 
 									{/* // ? row.original._id=user._id*/}
 									{/*//* -------- view report --------------- */}
-									{row.original.typevent != "רק'ם" ? (
+									{row.original.typevent != "רקם" ? (
 										<td role="cell">
 											{" "}
 											<div

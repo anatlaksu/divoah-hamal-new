@@ -64,7 +64,7 @@ const AdminSignInForm = () => {
 		10: 'נזק לתשתיות אחזקה / הח"י',
 		11: "אי קיום שגרת אחזקה",
 		12: "אחר",
-		"רק'ם": 'רק"ם',
+		"רקם": 'רק"ם',
 	};
 
 	const loadPikods = async () => {
@@ -667,6 +667,7 @@ const AdminSignInForm = () => {
 			if (arr[i]._id == idnum) return arr[i].name;
 		}
 	}
+	
 
 	return (
 		<div>
@@ -854,7 +855,7 @@ const AdminSignInForm = () => {
 									</thead>
 									{data.length == 0 ? (
 										<tbody>
-											{reportDB.map((report, index) => (
+											{reportDB.slice(0,10).map((report, index) => (
 												<tr>
 													<td>
 														<p>{getname(report.pikod, pikods)}</p>
@@ -878,7 +879,7 @@ const AdminSignInForm = () => {
 										</tbody>
 									) : (
 										<tbody>
-											{reportDB.map((report, index) =>
+											{reportDB.slice(0,10).map((report, index) =>
 												data.pikod.includes(report.pikod) ? (
 													<tr>
 														<td>
@@ -904,6 +905,7 @@ const AdminSignInForm = () => {
 										</tbody>
 									)}
 								</table>
+								
 							</CardBody>
 						</Card>
 					</Col>

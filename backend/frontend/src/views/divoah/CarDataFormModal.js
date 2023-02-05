@@ -50,7 +50,7 @@ const CarDataFormModal = (match) => {
 		hativarep: "",
 		gdod: "",
 		gdodrep: "",
-		mkabazs: "",
+		mkabaz: "",
 		arraymkabaz: [],
 		zadik: "",
 		resevent: "",
@@ -354,7 +354,7 @@ const loadGdodsrep = async (hativaids) => {
 		}
 	}
 	const clickSubmit = (event) => {
-		data.typevent != "רק'ם"
+		data.typevent != "רקם"
 			? CheckSignUpForm(event)
 			: CheckSignUpFormRekem(event);
 	};
@@ -819,7 +819,7 @@ useEffect(() => {
 							<Container className="mt--8 pb-5">
 								<Row className="justify-content-center">
 									<Card className="shadow border-0">
-										{data.typevent != "רק'ם" ? (
+										{data.typevent != "רקם" ? (
 											<CardBody
 												disabled
 												className="px-lg-5 py-lg-5"
@@ -1623,7 +1623,8 @@ useEffect(() => {
 																)}
 															</Row>
 
-															<FormGroup
+														<div className="mt-3">
+													<FormGroup
 										className="mb-3"
 										dir="rtl"
 									>
@@ -1635,6 +1636,7 @@ useEffect(() => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
+</div>
 
 															<div
 																style={{
@@ -1939,7 +1941,9 @@ useEffect(() => {
 																	</Col>
 																)}
 															</Row>
-															<FormGroup
+															
+<div className="mt-3">
+													<FormGroup
 										className="mb-3"
 										dir="rtl"
 									>
@@ -1951,6 +1955,7 @@ useEffect(() => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
+</div>
 
 															{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
         סוג הכלי המחלץ
@@ -1973,7 +1978,7 @@ useEffect(() => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-												האם נגרם נזק לכלי
+													האם מצריך המשך טיפול										
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup
@@ -1993,6 +1998,7 @@ useEffect(() => {
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
+																	
 																/>
 																כן
 															</div>
@@ -2015,11 +2021,14 @@ useEffect(() => {
 																	name="dt"
 																	value="0"
 																	onChange={handleChange}
+																	
 																/>
 																לא
 															</div>
 														</FormGroup>
 													</div>
+									
+									
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2640,7 +2649,8 @@ useEffect(() => {
 															</Col>
 														)}
 													</Row>
-
+<div className="mt-3">
+												<div className="mt-3">
 													<FormGroup
 										className="mb-3"
 										dir="rtl"
@@ -2653,7 +2663,8 @@ useEffect(() => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
-
+</div>
+</div>
 
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
@@ -2755,7 +2766,7 @@ useEffect(() => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-												האם נגרם נזק לכלי
+													האם מצריך המשך טיפול										
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup
@@ -2775,6 +2786,7 @@ useEffect(() => {
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
+																	
 																/>
 																כן
 															</div>
@@ -2797,11 +2809,14 @@ useEffect(() => {
 																	name="dt"
 																	value="0"
 																	onChange={handleChange}
+																	
 																/>
 																לא
 															</div>
 														</FormGroup>
 													</div>
+
+
 
 													<FormGroup dir="rtl">
 														<Input
