@@ -34,10 +34,9 @@ import Select from "components/general/Select/AnimatedSelect";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
 import deletepic from "assets/img/delete.png";
 
-
 const CarDataFormModal = (match) => {
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
-	const [infohurtarray, setinfohurtarray]= useState([]);
+	const [infohurtarray, setinfohurtarray] = useState([]);
 
 	const [data, setData] = useState({
 		name: "",
@@ -82,12 +81,12 @@ const CarDataFormModal = (match) => {
 	const [hativas, setHativas] = useState([]);
 	const [ogdas, setOgdas] = useState([]);
 	const [pikods, setPikods] = useState([]);
-		//* pikodrep data
-		const [gdodsrep, setGdodsrep] = useState([]);
-		const [hativasrep, setHativasrep] = useState([]);
-		const [ogdasrep, setOgdasrep] = useState([]);
-		const [pikodsrep, setPikodsrep] = useState([]);
-	
+	//* pikodrep data
+	const [gdodsrep, setGdodsrep] = useState([]);
+	const [hativasrep, setHativasrep] = useState([]);
+	const [ogdasrep, setOgdasrep] = useState([]);
+	const [pikodsrep, setPikodsrep] = useState([]);
+
 	//* isRekem
 	const [mkabazsRekem, setRekem] = useState([]);
 	const [indexM, setIndexM] = useState(0);
@@ -164,7 +163,7 @@ const CarDataFormModal = (match) => {
 	// 	setCartypesfilterarray(arraymk);
 	// };
 
-//* manmarit
+	//* manmarit
 
 	const loadPikods = async () => {
 		await axios
@@ -251,93 +250,92 @@ const CarDataFormModal = (match) => {
 
 	//* rep
 
-const loadPikodsrep = async () => {
-	await axios
-		.get("http://localhost:8000/api/pikod")
-		.then((response) => {
-			// setPikods(response.data);
-			setPikodsrep(response.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
+	const loadPikodsrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/pikod")
+			.then((response) => {
+				// setPikods(response.data);
+				setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
-const loadOgdasrep = async (pikodids) => {
-	let temppikodids = pikodids;
-	if (temppikodids != undefined && !temppikodids.isArray) {
-		temppikodids = [pikodids];
-	}
-	let temppikodsogdas = [];
-	if (temppikodids != undefined && temppikodids.length > 0) {
-		for (let i = 0; i < temppikodids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
-					pikod: temppikodids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						temppikodsogdas.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+	const loadOgdasrep = async (pikodids) => {
+		let temppikodids = pikodids;
+		if (temppikodids != undefined && !temppikodids.isArray) {
+			temppikodids = [pikodids];
 		}
-	}
-	// setOgdas(temppikodsogdas);
-	setOgdasrep(temppikodsogdas);
-};
-
-const loadHativasrep = async (ogdaids) => {
-	let tempogdaids = ogdaids;
-	if (tempogdaids != undefined && !tempogdaids.isArray) {
-		tempogdaids = [ogdaids];
-	}
-	let tempogdashativas = [];
-	if (tempogdaids != undefined && tempogdaids.length > 0) {
-		for (let i = 0; i < tempogdaids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
-					ogda: tempogdaids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						tempogdashativas.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+		let temppikodsogdas = [];
+		if (temppikodids != undefined && temppikodids.length > 0) {
+			for (let i = 0; i < temppikodids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+						pikod: temppikodids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temppikodsogdas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
 		}
-	}
-	// setHativas(tempogdashativas);
-	setHativasrep(tempogdashativas)
-};
+		// setOgdas(temppikodsogdas);
+		setOgdasrep(temppikodsogdas);
+	};
 
-const loadGdodsrep = async (hativaids) => {
-	let temphativaids = hativaids;
-	if (temphativaids != undefined && !temphativaids.isArray) {
-		temphativaids = [hativaids];
-	}
-	let temphativasgdods = [];
-	if (temphativaids != undefined && temphativaids.length > 0) {
-		for (let i = 0; i < temphativaids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
-					hativa: temphativaids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						temphativasgdods.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+	const loadHativasrep = async (ogdaids) => {
+		let tempogdaids = ogdaids;
+		if (tempogdaids != undefined && !tempogdaids.isArray) {
+			tempogdaids = [ogdaids];
 		}
-	}
-	// setGdods(temphativasgdods);
-	setGdodsrep(temphativasgdods);
-};
+		let tempogdashativas = [];
+		if (tempogdaids != undefined && tempogdaids.length > 0) {
+			for (let i = 0; i < tempogdaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+						ogda: tempogdaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							tempogdashativas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		// setHativas(tempogdashativas);
+		setHativasrep(tempogdashativas);
+	};
 
+	const loadGdodsrep = async (hativaids) => {
+		let temphativaids = hativaids;
+		if (temphativaids != undefined && !temphativaids.isArray) {
+			temphativaids = [hativaids];
+		}
+		let temphativasgdods = [];
+		if (temphativaids != undefined && temphativaids.length > 0) {
+			for (let i = 0; i < temphativaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+						hativa: temphativaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temphativasgdods.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		// setGdods(temphativasgdods);
+		setGdodsrep(temphativasgdods);
+	};
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -414,7 +412,7 @@ const loadGdodsrep = async (hativaids) => {
 			if (data.selneshek == "") {
 				flag = false;
 				ErrorReason += " סוג הנשק ריק\n";
-			}	
+			}
 			if (
 				!document.getElementById("YES").checked &&
 				!document.getElementById("NO").checked
@@ -449,7 +447,7 @@ const loadGdodsrep = async (hativaids) => {
 			if (data.zadik == "") {
 				flag = false;
 				ErrorReason += "  צ' ריק\n";
-			}	
+			}
 			if (
 				document.getElementById("mataf").options[
 					document.getElementById("mataf").selectedIndex
@@ -512,7 +510,7 @@ const loadGdodsrep = async (hativaids) => {
 			if (data.zadik == "") {
 				flag = false;
 				ErrorReason += "  צ' ריק\n";
-			}	
+			}
 			// if (
 			//   document.getElementById("mhalz").options[
 			//     document.getElementById("mhalz").selectedIndex
@@ -668,7 +666,7 @@ const loadGdodsrep = async (hativaids) => {
 			resevent: data.resevent,
 			// magadal: data.magadal,
 			// magad:data.magad,
-			arraymkabaz: cartypesfilterarray, 
+			arraymkabaz: cartypesfilterarray,
 			mkabaz: data.mkabaz,
 			zadik: data.zadik,
 			yn: data.yn,
@@ -727,38 +725,38 @@ const loadGdodsrep = async (hativaids) => {
 		if (match.isOpen == true) init();
 	}, [match.isOpen]);
 
-// * ------ manmarit --------------------------------
-useEffect(() => {
-	setOgdas([]);
-	loadOgdas(data.pikod);
-}, [data.pikod]);
+	// * ------ manmarit --------------------------------
+	useEffect(() => {
+		setOgdas([]);
+		loadOgdas(data.pikod);
+	}, [data.pikod]);
 
-useEffect(() => {
-	setHativas([]);
-	loadHativas(data.ogda);
-}, [data.ogda]);
+	useEffect(() => {
+		setHativas([]);
+		loadHativas(data.ogda);
+	}, [data.ogda]);
 
-useEffect(() => {
-	setGdods([]);
-	loadGdods(data.hativa);
-}, [data.hativa]);
-//* ------ rep ----------------------------------------------------------------
-useEffect(() => {
-	setOgdasrep([]);
-	loadOgdasrep(data.pikodrep);
-}, [data.pikodrep]);
+	useEffect(() => {
+		setGdods([]);
+		loadGdods(data.hativa);
+	}, [data.hativa]);
+	//* ------ rep ----------------------------------------------------------------
+	useEffect(() => {
+		setOgdasrep([]);
+		loadOgdasrep(data.pikodrep);
+	}, [data.pikodrep]);
 
-useEffect(() => {
-	setHativasrep([]);
-	loadHativasrep(data.ogdarep);
-}, [data.ogdarep]);
+	useEffect(() => {
+		setHativasrep([]);
+		loadHativasrep(data.ogdarep);
+	}, [data.ogdarep]);
 
-useEffect(() => {
-	setGdodsrep([]);
-	loadGdodsrep(data.hativarep);
-}, [data.hativarep]);
+	useEffect(() => {
+		setGdodsrep([]);
+		loadGdodsrep(data.hativarep);
+	}, [data.hativarep]);
 
-//* ------ magdal .... --------------------------------
+	//* ------ magdal .... --------------------------------
 	useEffect(() => {
 		setMagads([]);
 		getMagads(data.magadal);
@@ -778,7 +776,6 @@ useEffect(() => {
 		setCartypesfilterarray([]);
 		setinfohurtarray([]);
 	}, []);
-
 
 	// todo: add a way to get the mkbatz
 
@@ -880,312 +877,330 @@ useEffect(() => {
 													</FormGroup>
 
 													{/*//* --------------------------------------- rep ------------------------------------------- */}
-									<div className="text-center text-muted mb-4">
-										<small>פרטי יחידה מדווחת</small>
-									</div>
+													<div className="text-center text-muted mb-4">
+														<small>פרטי יחידה מדווחת</small>
+													</div>
 
-									<Row style={{ paddingTop: "2px" }}>
-										{!data.ogdarep ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikodsrep}
-													handleChange2={handleChange2}
-													name={"pikodrep"}
-													val={data.pikodrep ? data.pikodrep : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikodsrep}
-													handleChange2={handleChange2}
-													name={"pikodrep"}
-													val={data.pikodrep ? data.pikodrep : undefined}
-													isDisabled={true}
-												/>
-											</Col>
-										)}
+													<Row style={{ paddingTop: "2px" }}>
+														{!data.ogdarep ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikodsrep}
+																	handleChange2={handleChange2}
+																	name={"pikodrep"}
+																	val={
+																		data.pikodrep ? data.pikodrep : undefined
+																	}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikodsrep}
+																	handleChange2={handleChange2}
+																	name={"pikodrep"}
+																	val={
+																		data.pikodrep ? data.pikodrep : undefined
+																	}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
 
-										<>
-											{data.pikodrep && !data.hativarep ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdasrep}
-														handleChange2={handleChange2}
-														name={"ogdarep"}
-														val={data.ogdarep ? data.ogdarep : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdasrep}
-														handleChange2={handleChange2}
-														name={"ogdarep"}
-														val={data.ogdarep ? data.ogdarep : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.pikodrep && !data.hativarep ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdasrep}
+																		handleChange2={handleChange2}
+																		name={"ogdarep"}
+																		val={
+																			data.ogdarep ? data.ogdarep : undefined
+																		}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdasrep}
+																		handleChange2={handleChange2}
+																		name={"ogdarep"}
+																		val={
+																			data.ogdarep ? data.ogdarep : undefined
+																		}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.ogdarep && !data.gdodrep ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativasrep}
-														handleChange2={handleChange2}
-														name={"hativarep"}
-														val={data.hativarep ? data.hativarep : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativasrep}
-														handleChange2={handleChange2}
-														name={"hativarep"}
-														val={data.hativarep ? data.hativarep : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.ogdarep && !data.gdodrep ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativasrep}
+																		handleChange2={handleChange2}
+																		name={"hativarep"}
+																		val={
+																			data.hativarep
+																				? data.hativarep
+																				: undefined
+																		}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativasrep}
+																		handleChange2={handleChange2}
+																		name={"hativarep"}
+																		val={
+																			data.hativarep
+																				? data.hativarep
+																				: undefined
+																		}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.hativarep ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdodsrep}
-														handleChange2={handleChange2}
-														name={"gdodrep"}
-														val={data.gdodrep ? data.gdodrep : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdodsrep}
-														handleChange2={handleChange2}
-														name={"gdodrep"}
-														val={data.gdodrep ? data.gdodrep : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
-									</Row>
-{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+														<>
+															{data.hativarep ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdodsrep}
+																		handleChange2={handleChange2}
+																		name={"gdodrep"}
+																		val={
+																			data.gdodrep ? data.gdodrep : undefined
+																		}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdodsrep}
+																		handleChange2={handleChange2}
+																		name={"gdodrep"}
+																		val={
+																			data.gdodrep ? data.gdodrep : undefined
+																		}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+													</Row>
+													{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
 
-									<div className="text-center text-muted mb-4">
-										<small>פרטי יחידה מנמרית</small>
-									</div>
+													<div className="text-center text-muted mb-4">
+														<small>פרטי יחידה מנמרית</small>
+													</div>
 
-									<Row style={{ paddingTop: "2px" }}>
-										{!data.ogda ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikods}
-													handleChange2={handleChange2}
-													name={"pikod"}
-													val={data.pikod ? data.pikod : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikods}
-													handleChange2={handleChange2}
-													name={"pikod"}
-													val={data.pikod ? data.pikod : undefined}
-													isDisabled={true}
-												/>
-											</Col>
-										)}
+													<Row style={{ paddingTop: "2px" }}>
+														{!data.ogda ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
 
-										<>
-											{data.pikod && !data.hativa ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdas}
-														handleChange2={handleChange2}
-														name={"ogda"}
-														val={data.ogda ? data.ogda : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdas}
-														handleChange2={handleChange2}
-														name={"ogda"}
-														val={data.ogda ? data.ogda : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.pikod && !data.hativa ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdas}
+																		handleChange2={handleChange2}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdas}
+																		handleChange2={handleChange2}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.ogda && !data.gdod ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativas}
-														handleChange2={handleChange2}
-														name={"hativa"}
-														val={data.hativa ? data.hativa : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativas}
-														handleChange2={handleChange2}
-														name={"hativa"}
-														val={data.hativa ? data.hativa : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.ogda && !data.gdod ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.hativa ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdods}
-														handleChange2={handleChange2}
-														name={"gdod"}
-														val={data.gdod ? data.gdod : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdods}
-														handleChange2={handleChange2}
-														name={"gdod"}
-														val={data.gdod ? data.gdod : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
-									</Row>
-
-
+														<>
+															{data.hativa ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+													</Row>
 
 													<div
 														className="text-center text-muted mb-4"
@@ -1265,17 +1280,45 @@ useEffect(() => {
 															>
 																סוג הכלי
 															</div>
-															<Row style={{ padding: '0px' }}>
-                                              <Col style={{ display: 'flex', justifyContent: 'right', paddingTop: '15px', paddingRight: '0px' }}>
-                                                <Button style={{ width: '100px', padding: '10px' }} type="button" onClick={() => { setCartypesfilterarray(currentSpec => [...currentSpec, { id: generate() }]) }}>הוסף כלים</Button>
-                                              </Col>
-                                           </Row>
+															<Row style={{ padding: "0px" }}>
+																<Col
+																	style={{
+																		display: "flex",
+																		justifyContent: "right",
+																		paddingTop: "15px",
+																		paddingRight: "0px",
+																	}}
+																>
+																	<Button
+																		style={{ width: "100px", padding: "10px" }}
+																		type="button"
+																		onClick={() => {
+																			setCartypesfilterarray((currentSpec) => [
+																				...currentSpec,
+																				{ id: generate() },
+																			]);
+																		}}
+																	>
+																		הוסף כלים
+																	</Button>
+																</Col>
+															</Row>
 
-                                            {cartypesfilterarray.map((cartypesfilterobject, index) => {
-                                              return (
-                                               <CarTypesFilterObject cartypesfilterobject={cartypesfilterobject} index={index} setCartypesfilterarray={setCartypesfilterarray} />
-                                              )
-                                            })}
+															{cartypesfilterarray.map(
+																(cartypesfilterobject, index) => {
+																	return (
+																		<CarTypesFilterObject
+																			cartypesfilterobject={
+																				cartypesfilterobject
+																			}
+																			index={index}
+																			setCartypesfilterarray={
+																				setCartypesfilterarray
+																			}
+																		/>
+																	);
+																}
+															)}
 
 															<div
 																style={{
@@ -1346,15 +1389,14 @@ useEffect(() => {
 																סוג הנשק
 															</div>
 															<FormGroup>
-												<Input
-													type="text"
-													name="selneshek"
-													value={data.selneshek}
-													onChange={handleChange}
-													id="selneshek"
-												>
-												</Input>
-											</FormGroup>
+																<Input
+																	type="text"
+																	name="selneshek"
+																	value={data.selneshek}
+																	onChange={handleChange}
+																	id="selneshek"
+																></Input>
+															</FormGroup>
 
 															<div
 																style={{
@@ -1623,20 +1665,20 @@ useEffect(() => {
 																)}
 															</Row>
 
-														<div className="mt-3">
-													<FormGroup
-										className="mb-3"
-										dir="rtl"
-									>
-										<Input
-											placeholder="צ'"
-											name="zadik"
-											type="string"
-											value={data.zadik}
-											onChange={handleChange}
-										/>
-									</FormGroup>
-</div>
+															<div className="mt-3">
+																<FormGroup
+																	className="mb-3"
+																	dir="rtl"
+																>
+																	<Input
+																		placeholder="צ'"
+																		name="zadik"
+																		type="string"
+																		value={data.zadik}
+																		onChange={handleChange}
+																	/>
+																</FormGroup>
+															</div>
 
 															<div
 																style={{
@@ -1941,21 +1983,21 @@ useEffect(() => {
 																	</Col>
 																)}
 															</Row>
-															
-<div className="mt-3">
-													<FormGroup
-										className="mb-3"
-										dir="rtl"
-									>
-										<Input
-											placeholder="צ'"
-											name="zadik"
-											type="string"
-											value={data.zadik}
-											onChange={handleChange}
-										/>
-									</FormGroup>
-</div>
+
+															<div className="mt-3">
+																<FormGroup
+																	className="mb-3"
+																	dir="rtl"
+																>
+																	<Input
+																		placeholder="צ'"
+																		name="zadik"
+																		type="string"
+																		value={data.zadik}
+																		onChange={handleChange}
+																	/>
+																</FormGroup>
+															</div>
 
 															{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
         סוג הכלי המחלץ
@@ -1978,7 +2020,7 @@ useEffect(() => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-													האם מצריך המשך טיפול										
+														האם מצריך המשך טיפול
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup
@@ -1998,7 +2040,6 @@ useEffect(() => {
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
-																	
 																/>
 																כן
 															</div>
@@ -2021,14 +2062,11 @@ useEffect(() => {
 																	name="dt"
 																	value="0"
 																	onChange={handleChange}
-																	
 																/>
 																לא
 															</div>
 														</FormGroup>
 													</div>
-									
-									
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2065,77 +2103,238 @@ useEffect(() => {
 														/>
 													</FormGroup>
 
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="כמה נפגעים היו באירוע"
-															name="nifga"
-															type="number"
-															value={data.nifga}
-															onChange={handleChange}
-														/>
-													</FormGroup>
-													
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														האם יש נפגעים
+													</div>
+													<div
+														className="mb-2"
+														style={{ textAlign: "right" }}
+													>
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	// placeholder="ללא נפגעים "
+																	checked={data.nifga == 1}
+																	name="nifga"
+																	type="radio"
+																	value="1"
+																	onChange={handleChange}
+																/>
+																כן
+															</div>
+														</FormGroup>
+
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	// placeholder="הוסף נפגעים"
+																	checked={data.nifga == 0}
+																	name="nifga"
+																	type="radio"
+																	value="0"
+																	onChange={handleChange}
+																/>
+																ללא נפגעים
+															</div>
+														</FormGroup>
+													</div>
+
 													{data.nifga > "0" && (
-                    <>
-					<div>
-                    {infohurtarray.length == 0 ?
-                      <Row>
-                        <Col style={{ display: 'flex', textAlign: 'right' }}>
-                          <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
-                        </Col>
-                      </Row>
-                      : infohurtarray.map((p, index) => {
-                        return (
-                          <div>
-                            {index == 0 ?
-                              <Row>
-                                <Col style={{ display: 'flex', textAlign: 'right' }}>
-                                  <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
-                                </Col>
-                              </Row>
-                              : null}
-							  {
-								  <Row>
-									<Col xs={12} md={4}>
-										<div>
-											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
-											<Input onChange={(e) => {
-												const dargahurt = e.target.value;
-												if (e.target.value != "בחר")
-												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
-												}}
-												value={p.dargahurt} type="select" placeholder="דרגת הפציעה">
-												<option value={"בחר"}>{"בחר"}</option>
-												<option value={'קל'}>{'קל'}</option>
-												<option value={'בינוני'}>{'בינוני'}</option>
-												<option value={'קשה'}>{'קשה'}</option>
-												<option value={'מת'}>{'מת'}</option>
-											</Input>
-										</div>
-									</Col>
-									<Col xs={12} md={4}>
-                                    <div>
-                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
-                                      <Input onChange={(e) => {
-                                        const mikomhurt = e.target.value;
-                                        if (e.target.value != "")
-                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
-                                      }}
-                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" />
-                                    </div>
-                                  </Col>
+														<>
+															<div>
+																{infohurtarray.length == 0 ? (
+																	<Row>
+																		<Col
+																			style={{
+																				display: "flex",
+																				textAlign: "right",
+																			}}
+																		>
+																			<Button
+																				style={{
+																					width: "100px",
+																					padding: "5px",
+																				}}
+																				type="button"
+																				onClick={() => {
+																					setinfohurtarray((currentSpec) => [
+																						...currentSpec,
+																						{ id: generate() },
+																					]);
+																				}}
+																			>
+																				הוסף נפגע
+																			</Button>
+																		</Col>
+																	</Row>
+																) : (
+																	infohurtarray.map((p, index) => {
+																		return (
+																			<div>
+																				{index == 0 ? (
+																					<Row>
+																						<Col
+																							style={{
+																								display: "flex",
+																								textAlign: "right",
+																							}}
+																						>
+																							<Button
+																								style={{
+																									width: "100px",
+																									padding: "5px",
+																								}}
+																								type="button"
+																								onClick={() => {
+																									setinfohurtarray(
+																										(currentSpec) => [
+																											...currentSpec,
+																											{ id: generate() },
+																										]
+																									);
+																								}}
+																							>
+																								הוסף נפגע
+																							</Button>
+																						</Col>
+																					</Row>
+																				) : null}
+																				{
+																					<Row>
+																						<Col
+																							xs={12}
+																							md={4}
+																						>
+																							<div>
+																								<p
+																									style={{
+																										margin: "0px",
+																										float: "right",
+																									}}
+																								>
+																									דרגת הפציעה
+																								</p>
+																								<Input
+																									onChange={(e) => {
+																										const dargahurt =
+																											e.target.value;
+																										if (e.target.value != "בחר")
+																											setinfohurtarray(
+																												(currentSpec) =>
+																													produce(
+																														currentSpec,
+																														(v) => {
+																															v[
+																																index
+																															].dargahurt =
+																																dargahurt;
+																														}
+																													)
+																											);
+																									}}
+																									value={p.dargahurt}
+																									type="select"
+																									placeholder="דרגת הפציעה"
+																								>
+																									<option value={"בחר"}>
+																										{"בחר"}
+																									</option>
+																									<option value={"קל"}>
+																										{"קל"}
+																									</option>
+																									<option value={"בינוני"}>
+																										{"בינוני"}
+																									</option>
+																									<option value={"קשה"}>
+																										{"קשה"}
+																									</option>
+																									<option value={"מת"}>
+																										{"מת"}
+																									</option>
+																								</Input>
+																							</div>
+																						</Col>
+																						<Col
+																							xs={12}
+																							md={4}
+																						>
+																							<div>
+																								<p
+																									style={{
+																										margin: "0px",
+																										float: "right",
+																									}}
+																								>
+																									מספר ימי מחלה
+																								</p>
+																								<Input
+																									onChange={(e) => {
+																										const mikomhurt =
+																											e.target.value;
+																										if (e.target.value != "")
+																											setinfohurtarray(
+																												(currentSpec) =>
+																													produce(
+																														currentSpec,
+																														(v) => {
+																															v[
+																																index
+																															].mikomhurt =
+																																mikomhurt;
+																														}
+																													)
+																											);
+																									}}
+																									value={p.mikomhurt}
+																									type="number"
+																									placeholder="0"
+																								/>
+																							</div>
+																						</Col>
+																					</Row>
+																				}
+																				<Button
+																					type="button"
+																					onClick={() => {
+																						setinfohurtarray((currentSpec) =>
+																							currentSpec.filter(
+																								(x) => x.id !== p.id
+																							)
+																						);
+																					}}
+																				>
+																					<img
+																						src={deletepic}
+																						height="20px"
+																					></img>
+																				</Button>
+																			</div>
+																		);
+																	})
+																)}
+															</div>
+														</>
+													)}
 
-									</Row> }
-							    <Button type="button" onClick={() => { setinfohurtarray(currentSpec => currentSpec.filter(x => x.id !== p.id)) }}><img src={deletepic} height='20px'></img></Button>
-                          </div>
-                        )
-                      })
-                    }
-                  </div>
-                    </>
-                  )}
-
-				  {/* //* ---------------------------------------------- rekem -------------------------------------------------------------------- */}
+													{/* //* ---------------------------------------------- rekem -------------------------------------------------------------------- */}
 
 													<div className="text-center">
 														<button
@@ -2204,311 +2403,331 @@ useEffect(() => {
 														/>
 													</FormGroup>
 
-{/*//* --------------------------------------- rep ------------------------------------------- */}
-<div className="text-center text-muted mb-4">
-										<small>פרטי יחידה מדווחת</small>
-									</div>
+													{/*//* --------------------------------------- rep ------------------------------------------- */}
+													<div className="text-center text-muted mb-4">
+														<small>פרטי יחידה מדווחת</small>
+													</div>
 
-									<Row style={{ paddingTop: "2px" }}>
-										{!data.ogdarep ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikodsrep}
-													handleChange2={handleChange2}
-													name={"pikodrep"}
-													val={data.pikodrep ? data.pikodrep : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikodsrep}
-													handleChange2={handleChange2}
-													name={"pikodrep"}
-													val={data.pikodrep ? data.pikodrep : undefined}
-													isDisabled={true}
-												/>
-											</Col>
-										)}
+													<Row style={{ paddingTop: "2px" }}>
+														{!data.ogdarep ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikodsrep}
+																	handleChange2={handleChange2}
+																	name={"pikodrep"}
+																	val={
+																		data.pikodrep ? data.pikodrep : undefined
+																	}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikodsrep}
+																	handleChange2={handleChange2}
+																	name={"pikodrep"}
+																	val={
+																		data.pikodrep ? data.pikodrep : undefined
+																	}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
 
-										<>
-											{data.pikodrep && !data.hativarep ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdasrep}
-														handleChange2={handleChange2}
-														name={"ogdarep"}
-														val={data.ogdarep ? data.ogdarep : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdasrep}
-														handleChange2={handleChange2}
-														name={"ogdarep"}
-														val={data.ogdarep ? data.ogdarep : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.pikodrep && !data.hativarep ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdasrep}
+																		handleChange2={handleChange2}
+																		name={"ogdarep"}
+																		val={
+																			data.ogdarep ? data.ogdarep : undefined
+																		}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdasrep}
+																		handleChange2={handleChange2}
+																		name={"ogdarep"}
+																		val={
+																			data.ogdarep ? data.ogdarep : undefined
+																		}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.ogdarep && !data.gdodrep ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativasrep}
-														handleChange2={handleChange2}
-														name={"hativarep"}
-														val={data.hativarep ? data.hativarep : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativasrep}
-														handleChange2={handleChange2}
-														name={"hativarep"}
-														val={data.hativarep ? data.hativarep : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.ogdarep && !data.gdodrep ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativasrep}
+																		handleChange2={handleChange2}
+																		name={"hativarep"}
+																		val={
+																			data.hativarep
+																				? data.hativarep
+																				: undefined
+																		}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativasrep}
+																		handleChange2={handleChange2}
+																		name={"hativarep"}
+																		val={
+																			data.hativarep
+																				? data.hativarep
+																				: undefined
+																		}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.hativarep ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdodsrep}
-														handleChange2={handleChange2}
-														name={"gdodrep"}
-														val={data.gdodrep ? data.gdodrep : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdodsrep}
-														handleChange2={handleChange2}
-														name={"gdodrep"}
-														val={data.gdodrep ? data.gdodrep : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
-									</Row>
-{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+														<>
+															{data.hativarep ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdodsrep}
+																		handleChange2={handleChange2}
+																		name={"gdodrep"}
+																		val={
+																			data.gdodrep ? data.gdodrep : undefined
+																		}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdodsrep}
+																		handleChange2={handleChange2}
+																		name={"gdodrep"}
+																		val={
+																			data.gdodrep ? data.gdodrep : undefined
+																		}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+													</Row>
+													{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
 
-									<div className="text-center text-muted mb-4">
-										<small>פרטי יחידה מנמרית</small>
-									</div>
+													<div className="text-center text-muted mb-4">
+														<small>פרטי יחידה מנמרית</small>
+													</div>
 
-									<Row style={{ paddingTop: "2px" }}>
-										{!data.ogda ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikods}
-													handleChange2={handleChange2}
-													name={"pikod"}
-													val={data.pikod ? data.pikod : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>פיקוד</h6>
-												<Select
-													data={pikods}
-													handleChange2={handleChange2}
-													name={"pikod"}
-													val={data.pikod ? data.pikod : undefined}
-													isDisabled={true}
-												/>
-											</Col>
-										)}
+													<Row style={{ paddingTop: "2px" }}>
+														{!data.ogda ? (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																/>
+															</Col>
+														) : (
+															<Col
+																style={{
+																	justifyContent: "right",
+																	alignContent: "right",
+																	textAlign: "right",
+																}}
+															>
+																<h6>פיקוד</h6>
+																<Select
+																	data={pikods}
+																	handleChange2={handleChange2}
+																	name={"pikod"}
+																	val={data.pikod ? data.pikod : undefined}
+																	isDisabled={true}
+																/>
+															</Col>
+														)}
 
-										<>
-											{data.pikod && !data.hativa ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdas}
-														handleChange2={handleChange2}
-														name={"ogda"}
-														val={data.ogda ? data.ogda : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>אוגדה</h6>
-													<Select
-														data={ogdas}
-														handleChange2={handleChange2}
-														name={"ogda"}
-														val={data.ogda ? data.ogda : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.pikod && !data.hativa ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdas}
+																		handleChange2={handleChange2}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>אוגדה</h6>
+																	<Select
+																		data={ogdas}
+																		handleChange2={handleChange2}
+																		name={"ogda"}
+																		val={data.ogda ? data.ogda : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.ogda && !data.gdod ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativas}
-														handleChange2={handleChange2}
-														name={"hativa"}
-														val={data.hativa ? data.hativa : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>חטיבה</h6>
-													<Select
-														data={hativas}
-														handleChange2={handleChange2}
-														name={"hativa"}
-														val={data.hativa ? data.hativa : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
+														<>
+															{data.ogda && !data.gdod ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>חטיבה</h6>
+																	<Select
+																		data={hativas}
+																		handleChange2={handleChange2}
+																		name={"hativa"}
+																		val={data.hativa ? data.hativa : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
 
-										<>
-											{data.hativa ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdods}
-														handleChange2={handleChange2}
-														name={"gdod"}
-														val={data.gdod ? data.gdod : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-														data={gdods}
-														handleChange2={handleChange2}
-														name={"gdod"}
-														val={data.gdod ? data.gdod : undefined}
-														isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
-									</Row>
+														<>
+															{data.hativa ? (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																	/>
+																</Col>
+															) : (
+																<Col
+																	style={{
+																		justifyContent: "right",
+																		alignContent: "right",
+																		textAlign: "right",
+																	}}
+																>
+																	<h6>גדוד</h6>
+																	<Select
+																		data={gdods}
+																		handleChange2={handleChange2}
+																		name={"gdod"}
+																		val={data.gdod ? data.gdod : undefined}
+																		isDisabled={true}
+																	/>
+																</Col>
+															)}
+														</>
+													</Row>
 
 													<div
 														className="text-center text-muted mb-4"
@@ -2649,22 +2868,22 @@ useEffect(() => {
 															</Col>
 														)}
 													</Row>
-<div className="mt-3">
-												<div className="mt-3">
-													<FormGroup
-										className="mb-3"
-										dir="rtl"
-									>
-										<Input
-											placeholder="צ'"
-											name="zadik"
-											type="string"
-											value={data.zadik}
-											onChange={handleChange}
-										/>
-									</FormGroup>
-</div>
-</div>
+													<div className="mt-3">
+														<div className="mt-3">
+															<FormGroup
+																className="mb-3"
+																dir="rtl"
+															>
+																<Input
+																	placeholder="צ'"
+																	name="zadik"
+																	type="string"
+																	value={data.zadik}
+																	onChange={handleChange}
+																/>
+															</FormGroup>
+														</div>
+													</div>
 
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
@@ -2766,7 +2985,7 @@ useEffect(() => {
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
-													האם מצריך המשך טיפול										
+														האם מצריך המשך טיפול
 													</div>
 													<div style={{ textAlign: "right" }}>
 														<FormGroup
@@ -2786,7 +3005,6 @@ useEffect(() => {
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
-																	
 																/>
 																כן
 															</div>
@@ -2809,14 +3027,11 @@ useEffect(() => {
 																	name="dt"
 																	value="0"
 																	onChange={handleChange}
-																	
 																/>
 																לא
 															</div>
 														</FormGroup>
 													</div>
-
-
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2853,77 +3068,236 @@ useEffect(() => {
 														/>
 													</FormGroup>
 
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="כמה נפגעים היו באירוע"
-															name="nifga"
-															type="number"
-															value={data.nifga}
-															onChange={handleChange}
-														/>
-													</FormGroup>
+													<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														האם יש נפגעים
+													</div>
+													<div
+														className="mb-2"
+														style={{ textAlign: "right" }}
+													>
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.nifga == 1}
+																	// placeholder="ללא נפגעים "
+																	name="nifga"
+																	type="radio"
+																	value="1"
+																	onChange={handleChange}
+																/>
+																כן
+															</div>
+														</FormGroup>
+
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.nifga == 0}
+																	// placeholder="הוסף נפגעים"
+																	name="nifga"
+																	type="radio"
+																	value="0"
+																	onChange={handleChange}
+																/>
+																ללא נפגעים
+															</div>
+														</FormGroup>
+													</div>
 
 													{data.nifga > "0" && (
-                    <>
-					<div>
-                    {infohurtarray.length == 0 ?
-                      <Row>
-                        <Col style={{ display: 'flex', textAlign: 'right' }}>
-                          <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
-                        </Col>
-                      </Row>
-                      : infohurtarray.map((p, index) => {
-                        return (
-                          <div>
-                            {index == 0 ?
-                              <Row>
-                                <Col style={{ display: 'flex', textAlign: 'right' }}>
-                                  <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
-                                </Col>
-                              </Row>
-                              : null}
-							  {
-								  <Row>
-									<Col xs={12} md={4}>
-										<div>
-											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
-											<Input onChange={(e) => {
-												const dargahurt = e.target.value;
-												if (e.target.value != "בחר")
-												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
-												}}
-												value={p.dargahurt} type="select" placeholder="דרגת הפציעה">
-												<option value={"בחר"}>{"בחר"}</option>
-												<option value={'קל'}>{'קל'}</option>
-												<option value={'בינוני'}>{'בינוני'}</option>
-												<option value={'קשה'}>{'קשה'}</option>
-												<option value={'מת'}>{'מת'}</option>
-											</Input>
-										</div>
-									</Col>
-									<Col xs={12} md={4}>
-                                    <div>
-                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
-                                      <Input onChange={(e) => {
-                                        const mikomhurt = e.target.value;
-                                        if (e.target.value != "")
-                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
-                                      }}
-                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" />
-                                    </div>
-                                  </Col>
-
-									</Row> }
-							    <Button type="button" onClick={() => { setinfohurtarray(currentSpec => currentSpec.filter(x => x.id !== p.id)) }}><img src={deletepic} height='20px'></img></Button>
-                          </div>
-                        )
-                      })
-                    }
-                  </div>
-                    </>
-                  )}
-
-
+														<>
+															<div>
+																{infohurtarray.length == 0 ? (
+																	<Row>
+																		<Col
+																			style={{
+																				display: "flex",
+																				textAlign: "right",
+																			}}
+																		>
+																			<Button
+																				style={{
+																					width: "100px",
+																					padding: "5px",
+																				}}
+																				type="button"
+																				onClick={() => {
+																					setinfohurtarray((currentSpec) => [
+																						...currentSpec,
+																						{ id: generate() },
+																					]);
+																				}}
+																			>
+																				הוסף נפגע
+																			</Button>
+																		</Col>
+																	</Row>
+																) : (
+																	infohurtarray.map((p, index) => {
+																		return (
+																			<div>
+																				{index == 0 ? (
+																					<Row>
+																						<Col
+																							style={{
+																								display: "flex",
+																								textAlign: "right",
+																							}}
+																						>
+																							<Button
+																								style={{
+																									width: "100px",
+																									padding: "5px",
+																								}}
+																								type="button"
+																								onClick={() => {
+																									setinfohurtarray(
+																										(currentSpec) => [
+																											...currentSpec,
+																											{ id: generate() },
+																										]
+																									);
+																								}}
+																							>
+																								הוסף נפגע
+																							</Button>
+																						</Col>
+																					</Row>
+																				) : null}
+																				{
+																					<Row>
+																						<Col
+																							xs={12}
+																							md={4}
+																						>
+																							<div>
+																								<p
+																									style={{
+																										margin: "0px",
+																										float: "right",
+																									}}
+																								>
+																									דרגת הפציעה
+																								</p>
+																								<Input
+																									onChange={(e) => {
+																										const dargahurt =
+																											e.target.value;
+																										if (e.target.value != "בחר")
+																											setinfohurtarray(
+																												(currentSpec) =>
+																													produce(
+																														currentSpec,
+																														(v) => {
+																															v[
+																																index
+																															].dargahurt =
+																																dargahurt;
+																														}
+																													)
+																											);
+																									}}
+																									value={p.dargahurt}
+																									type="select"
+																									placeholder="דרגת הפציעה"
+																								>
+																									<option value={"בחר"}>
+																										{"בחר"}
+																									</option>
+																									<option value={"קל"}>
+																										{"קל"}
+																									</option>
+																									<option value={"בינוני"}>
+																										{"בינוני"}
+																									</option>
+																									<option value={"קשה"}>
+																										{"קשה"}
+																									</option>
+																									<option value={"מת"}>
+																										{"מת"}
+																									</option>
+																								</Input>
+																							</div>
+																						</Col>
+																						<Col
+																							xs={12}
+																							md={4}
+																						>
+																							<div>
+																								<p
+																									style={{
+																										margin: "0px",
+																										float: "right",
+																									}}
+																								>
+																									מספר ימי מחלה
+																								</p>
+																								<Input
+																									onChange={(e) => {
+																										const mikomhurt =
+																											e.target.value;
+																										if (e.target.value != "")
+																											setinfohurtarray(
+																												(currentSpec) =>
+																													produce(
+																														currentSpec,
+																														(v) => {
+																															v[
+																																index
+																															].mikomhurt =
+																																mikomhurt;
+																														}
+																													)
+																											);
+																									}}
+																									value={p.mikomhurt}
+																									type="number"
+																									placeholder="0"
+																								/>
+																							</div>
+																						</Col>
+																					</Row>
+																				}
+																				<Button
+																					type="button"
+																					onClick={() => {
+																						setinfohurtarray((currentSpec) =>
+																							currentSpec.filter(
+																								(x) => x.id !== p.id
+																							)
+																						);
+																					}}
+																				>
+																					<img
+																						src={deletepic}
+																						height="20px"
+																					></img>
+																				</Button>
+																			</div>
+																		);
+																	})
+																)}
+															</div>
+														</>
+													)}
 
 													<div className="text-center">
 														<button

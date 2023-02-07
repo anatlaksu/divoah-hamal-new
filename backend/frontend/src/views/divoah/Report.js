@@ -20,8 +20,8 @@ import {
 import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
-import { produce } from 'immer'
-import { generate } from 'shortid'
+import { produce } from "immer";
+import { generate } from "shortid";
 import { isAuthenticated } from "auth";
 import Select from "components/general/Select/AnimatedSelect";
 import deletepic from "assets/img/delete.png";
@@ -30,7 +30,7 @@ import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilte
 const Report = ({ match }) => {
 	const { user } = isAuthenticated();
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
-	const [infohurtarray, setinfohurtarray]= useState([]);
+	const [infohurtarray, setinfohurtarray] = useState([]);
 
 	const [data, setData] = useState({
 		name: "",
@@ -148,7 +148,7 @@ const Report = ({ match }) => {
 			setRekem(tempmagadmkabazs);
 		}
 	};
-//* manmarit
+	//* manmarit
 	const loadPikods = async () => {
 		await axios
 			.get("http://localhost:8000/api/pikod")
@@ -236,96 +236,96 @@ const Report = ({ match }) => {
 		// setGdodsrep(temphativasgdods);
 	};
 
-//* rep
+	//* rep
 
-const loadPikodsrep = async () => {
-	await axios
-		.get("http://localhost:8000/api/pikod")
-		.then((response) => {
-			// setPikods(response.data);
-			setPikodsrep(response.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
+	const loadPikodsrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/pikod")
+			.then((response) => {
+				// setPikods(response.data);
+				setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
-const loadOgdasrep = async (pikodids) => {
-	let temppikodids = pikodids;
-	if (temppikodids != undefined && !temppikodids.isArray) {
-		temppikodids = [pikodids];
-	}
-	let temppikodsogdas = [];
-	if (temppikodids != undefined && temppikodids.length > 0) {
-		for (let i = 0; i < temppikodids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
-					pikod: temppikodids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						temppikodsogdas.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+	const loadOgdasrep = async (pikodids) => {
+		let temppikodids = pikodids;
+		if (temppikodids != undefined && !temppikodids.isArray) {
+			temppikodids = [pikodids];
 		}
-	}
-	// setOgdas(temppikodsogdas);
-	setOgdasrep(temppikodsogdas);
-};
-
-const loadHativasrep = async (ogdaids) => {
-	let tempogdaids = ogdaids;
-	if (tempogdaids != undefined && !tempogdaids.isArray) {
-		tempogdaids = [ogdaids];
-	}
-	let tempogdashativas = [];
-	if (tempogdaids != undefined && tempogdaids.length > 0) {
-		for (let i = 0; i < tempogdaids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
-					ogda: tempogdaids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						tempogdashativas.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+		let temppikodsogdas = [];
+		if (temppikodids != undefined && temppikodids.length > 0) {
+			for (let i = 0; i < temppikodids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+						pikod: temppikodids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temppikodsogdas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
 		}
-	}
-	// setHativas(tempogdashativas);
-	setHativasrep(tempogdashativas)
-};
+		// setOgdas(temppikodsogdas);
+		setOgdasrep(temppikodsogdas);
+	};
 
-const loadGdodsrep = async (hativaids) => {
-	let temphativaids = hativaids;
-	if (temphativaids != undefined && !temphativaids.isArray) {
-		temphativaids = [hativaids];
-	}
-	let temphativasgdods = [];
-	if (temphativaids != undefined && temphativaids.length > 0) {
-		for (let i = 0; i < temphativaids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
-					hativa: temphativaids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						temphativasgdods.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+	const loadHativasrep = async (ogdaids) => {
+		let tempogdaids = ogdaids;
+		if (tempogdaids != undefined && !tempogdaids.isArray) {
+			tempogdaids = [ogdaids];
 		}
-	}
-	// setGdods(temphativasgdods);
-	setGdodsrep(temphativasgdods);
-};
+		let tempogdashativas = [];
+		if (tempogdaids != undefined && tempogdaids.length > 0) {
+			for (let i = 0; i < tempogdaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+						ogda: tempogdaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							tempogdashativas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		// setHativas(tempogdashativas);
+		setHativasrep(tempogdashativas);
+	};
 
-//* handle changes
+	const loadGdodsrep = async (hativaids) => {
+		let temphativaids = hativaids;
+		if (temphativaids != undefined && !temphativaids.isArray) {
+			temphativaids = [hativaids];
+		}
+		let temphativasgdods = [];
+		if (temphativaids != undefined && temphativaids.length > 0) {
+			for (let i = 0; i < temphativaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+						hativa: temphativaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temphativasgdods.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		// setGdods(temphativasgdods);
+		setGdodsrep(temphativasgdods);
+	};
+
+	//* handle changes
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -359,17 +359,15 @@ const loadGdodsrep = async (hativaids) => {
 
 	// * only for pikod... and magadal... should be saved in cardats not data (the report itself)
 	function handleChange2(selectedOption, name) {
-		if (!(selectedOption.value == "בחר")){
+		if (!(selectedOption.value == "בחר")) {
 			// console.log(selectedOption);
 			setData({ ...data, [name]: selectedOption.value });
-		}
-		else {
+		} else {
 			let tempdata = { ...data };
 			delete tempdata[name];
 			setData(tempdata);
 		}
 	}
-	
 
 	const clickSubmit = (event) => {
 		CheckSignUpForm(event);
@@ -472,7 +470,7 @@ const loadGdodsrep = async (hativaids) => {
 			if (data.selneshek == "") {
 				flag = false;
 				ErrorReason += " סוג הנשק ריק\n";
-			}	
+			}
 			if (
 				!document.getElementById("YES").checked &&
 				!document.getElementById("NO").checked
@@ -515,7 +513,7 @@ const loadGdodsrep = async (hativaids) => {
 			if (data.zadik == "") {
 				flag = false;
 				ErrorReason += "  צ' ריק\n";
-			}	
+			}
 			// if (
 			// 	document.getElementById("mataf").options[
 			// 		document.getElementById("mataf").selectedIndex
@@ -578,7 +576,7 @@ const loadGdodsrep = async (hativaids) => {
 			if (data.zadik == "") {
 				flag = false;
 				ErrorReason += "  צ' ריק\n";
-			}	
+			}
 			// if (
 			//   document.getElementById("mhalz").options[
 			//     document.getElementById("mhalz").selectedIndex
@@ -628,15 +626,15 @@ const loadGdodsrep = async (hativaids) => {
 			cellphone: data.cellphone,
 			gdod: data.gdod,
 			gdodrep: data.gdodrep,
-			ogdarep:data.ogdarep,
-			hativarep:data.hativarep,
-			pikodrep:data.pikodrep,
+			ogdarep: data.ogdarep,
+			hativarep: data.hativarep,
+			pikodrep: data.pikodrep,
 			typevent: data.typevent,
 			resevent: data.resevent,
 			// magadal: data.magadal,
 			// magad:data.magad,
 			mkabaz: data.mkabaz,
-			arraymkabaz: cartypesfilterarray, 
+			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
 			yn: data.yn,
 			status:
@@ -656,7 +654,6 @@ const loadGdodsrep = async (hativaids) => {
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
-
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData.dt);
@@ -670,13 +667,11 @@ const loadGdodsrep = async (hativaids) => {
 				console.log(res);
 				setData({ ...data, loading: false, error: false, successmsg: true });
 				toast.success(` הדיווח נשלח בהצלחה`);
-        if(user.role=="0")
-				{
+				if (user.role == "0") {
 					history.push(`/dash`);
-				}else if(user.role=="1")
-				{
+				} else if (user.role == "1") {
 					history.push(`/dashamal`);
-				}else if(user.role=="2"){
+				} else if (user.role == "2") {
 					history.push(`/dashadmin`);
 				}
 				console.log(res.data);
@@ -712,7 +707,7 @@ const loadGdodsrep = async (hativaids) => {
 	useEffect(() => {
 		initWithUserData();
 	}, []);
-// * ------ manmarit --------------------------------
+	// * ------ manmarit --------------------------------
 	useEffect(() => {
 		setOgdas([]);
 		loadOgdas(data.pikod);
@@ -727,7 +722,7 @@ const loadGdodsrep = async (hativaids) => {
 		setGdods([]);
 		loadGdods(data.hativa);
 	}, [data.hativa]);
-//* ------ rep ----------------------------------------------------------------
+	//* ------ rep ----------------------------------------------------------------
 	useEffect(() => {
 		setOgdasrep([]);
 		loadOgdasrep(data.pikodrep);
@@ -742,7 +737,7 @@ const loadGdodsrep = async (hativaids) => {
 		setGdodsrep([]);
 		loadGdodsrep(data.hativarep);
 	}, [data.hativarep]);
-//* ------ magdal .... --------------------------------
+	//* ------ magdal .... --------------------------------
 	useEffect(() => {
 		setMagads([]);
 		getMagads(data.magadal);
@@ -832,7 +827,7 @@ const loadGdodsrep = async (hativaids) => {
 											onChange={handleChange}
 										/>
 									</FormGroup>
-{/*//* --------------------------------------- rep ------------------------------------------- */}
+									{/*//* --------------------------------------- rep ------------------------------------------- */}
 									<div className="text-center text-muted mb-4">
 										<small>פרטי יחידה מדווחת</small>
 									</div>
@@ -984,9 +979,9 @@ const loadGdodsrep = async (hativaids) => {
 											)}
 										</>
 									</Row>
-{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+									{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
 
-									<div className="text-center text-muted mb-4">
+									<div className="text-center text-muted mt-3 mb-4">
 										<small>פרטי יחידה מנמרית</small>
 									</div>
 
@@ -1138,7 +1133,6 @@ const loadGdodsrep = async (hativaids) => {
 										</>
 									</Row>
 
-
 									<div
 										className="text-center text-muted mb-4"
 										style={{ paddingTop: "20px" }}
@@ -1203,17 +1197,42 @@ const loadGdodsrep = async (hativaids) => {
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												סוג הכלי
 											</div>
-											<Row style={{ padding: '0px' }}>
-                                              <Col style={{ display: 'flex', justifyContent: 'right', paddingTop: '15px', paddingRight: '0px' }}>
-                                                <Button style={{ width: '100px', padding: '10px' }} type="button" onClick={() => { setCartypesfilterarray(currentSpec => [...currentSpec, { id: generate() }]) }}>הוסף כלים</Button>
-                                              </Col>
-                                           </Row>
+											<Row style={{ padding: "0px" }}>
+												<Col
+													style={{
+														display: "flex",
+														justifyContent: "right",
+														paddingTop: "15px",
+														paddingRight: "0px",
+													}}
+												>
+													<Button
+														style={{ width: "100px", padding: "10px" }}
+														type="button"
+														onClick={() => {
+															setCartypesfilterarray((currentSpec) => [
+																...currentSpec,
+																{ id: generate() },
+															]);
+														}}
+													>
+														הוסף כלים
+													</Button>
+												</Col>
+											</Row>
 
-                                            {cartypesfilterarray.map((cartypesfilterobject, index) => {
-                                              return (
-                                               <CarTypesFilterObject user={user} cartypesfilterobject={cartypesfilterobject} index={index} setCartypesfilterarray={setCartypesfilterarray} />
-                                              )
-                                            })}
+											{cartypesfilterarray.map(
+												(cartypesfilterobject, index) => {
+													return (
+														<CarTypesFilterObject
+															user={user}
+															cartypesfilterobject={cartypesfilterobject}
+															index={index}
+															setCartypesfilterarray={setCartypesfilterarray}
+														/>
+													);
+												}
+											)}
 
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												האם נגרם נזק לכלי
@@ -1272,8 +1291,7 @@ const loadGdodsrep = async (hativaids) => {
 													value={data.selneshek}
 													onChange={handleChange}
 													id="selneshek"
-												>
-												</Input>
+												></Input>
 											</FormGroup>
 
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
@@ -1501,20 +1519,20 @@ const loadGdodsrep = async (hativaids) => {
 													</Col>
 												)}
 											</Row>
-										<div className="mt-3">
-													<FormGroup
-										className="mb-3"
-										dir="rtl"
-									>
-										<Input
-											placeholder="צ'"
-											name="zadik"
-											type="string"
-											value={data.zadik}
-											onChange={handleChange}
-										/>
-									</FormGroup>
-</div>
+											<div className="mt-3">
+												<FormGroup
+													className="mb-3"
+													dir="rtl"
+												>
+													<Input
+														placeholder="צ'"
+														name="zadik"
+														type="string"
+														value={data.zadik}
+														onChange={handleChange}
+													/>
+												</FormGroup>
+											</div>
 
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												סוג המטף
@@ -1785,20 +1803,20 @@ const loadGdodsrep = async (hativaids) => {
 													</Col>
 												)}
 											</Row>
-										<div className="mt-3">
-													<FormGroup
-										className="mb-3"
-										dir="rtl"
-									>
-										<Input
-											placeholder="צ'"
-											name="zadik"
-											type="string"
-											value={data.zadik}
-											onChange={handleChange}
-										/>
-									</FormGroup>
-</div>
+											<div className="mt-3">
+												<FormGroup
+													className="mb-3"
+													dir="rtl"
+												>
+													<Input
+														placeholder="צ'"
+														name="zadik"
+														type="string"
+														value={data.zadik}
+														onChange={handleChange}
+													/>
+												</FormGroup>
+											</div>
 
 											{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
                     סוג הכלי המחלץ
@@ -1822,7 +1840,10 @@ const loadGdodsrep = async (hativaids) => {
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם מצריך המשך טיפול
 									</div>
-									<div style={{ textAlign: "right" }}>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
 										<FormGroup
 											check
 											inline
@@ -1889,75 +1910,190 @@ const loadGdodsrep = async (hativaids) => {
 										/>
 									</FormGroup>
 
-									<FormGroup dir="rtl">
-										<Input
-											placeholder="כמה נפגעים היו באירוע"
-											name="nifga"
-											type="number"
-											value={data.nifga}
-											onChange={handleChange}
-										/>
-									</FormGroup>
-									
-                   {data.nifga > "0" && (
-                    <>
-					<div>
-                    {infohurtarray.length == 0 ?
-                      <Row>
-                        <Col style={{ display: 'flex', textAlign: 'right' }}>
-                          <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
-                        </Col>
-                      </Row>
-                      : infohurtarray.map((p, index) => {
-                        return (
-                          <div>
-                            {index == 0 ?
-                              <Row>
-                                <Col style={{ display: 'flex', textAlign: 'right' }}>
-                                  <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
-                                </Col>
-                              </Row>
-                              : null}
-							  {
-								  <Row>
-									<Col xs={12} md={4}>
-										<div>
-											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
-											<Input onChange={(e) => {
-												const dargahurt = e.target.value;
-												if (e.target.value != "בחר")
-												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
-												}}
-												value={p.dargahurt} type="select" placeholder="דרגת הפציעה">
-												<option value={"בחר"}>{"בחר"}</option>
-												<option value={'קל'}>{'קל'}</option>
-												<option value={'בינוני'}>{'בינוני'}</option>
-												<option value={'קשה'}>{'קשה'}</option>
-												<option value={'מת'}>{'מת'}</option>
-											</Input>
-										</div>
-									</Col>
-									<Col xs={12} md={4}>
-                                    <div>
-                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
-                                      <Input onChange={(e) => {
-                                        const mikomhurt = e.target.value;
-                                        if (e.target.value != "")
-                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
-                                      }}
-                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" />
-                                    </div>
-                                  </Col>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם יש נפגעים
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													// placeholder="ללא נפגעים "
+													name="nifga"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
 
-									</Row> }
-							    <Button type="button" onClick={() => { setinfohurtarray(currentSpec => currentSpec.filter(x => x.id !== p.id)) }}><img src={deletepic} height='20px'></img></Button>
-                          </div>
-                        )
-                      })
-                    }
-                  </div>
-                    </>
-                  )}
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													// placeholder="הוסף נפגעים"
+													name="nifga"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												ללא נפגעים
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.nifga > "0" && (
+										<>
+											<div>
+												{infohurtarray.length == 0 ? (
+													<Row>
+														<Col
+															style={{ display: "flex", textAlign: "right" }}
+														>
+															<Button
+																style={{ width: "100px", padding: "5px" }}
+																type="button"
+																onClick={() => {
+																	setinfohurtarray((currentSpec) => [
+																		...currentSpec,
+																		{ id: generate() },
+																	]);
+																}}
+															>
+																הוסף נפגע
+															</Button>
+														</Col>
+													</Row>
+												) : (
+													infohurtarray.map((p, index) => {
+														return (
+															<div>
+																{index == 0 ? (
+																	<Row>
+																		<Col
+																			style={{
+																				display: "flex",
+																				textAlign: "right",
+																			}}
+																		>
+																			<Button
+																				style={{
+																					width: "100px",
+																					padding: "5px",
+																				}}
+																				type="button"
+																				onClick={() => {
+																					setinfohurtarray((currentSpec) => [
+																						...currentSpec,
+																						{ id: generate() },
+																					]);
+																				}}
+																			>
+																				הוסף נפגע
+																			</Button>
+																		</Col>
+																	</Row>
+																) : null}
+																{
+																	<Row>
+																		<Col
+																			xs={12}
+																			md={4}
+																		>
+																			<div>
+																				<p
+																					style={{
+																						margin: "0px",
+																						float: "right",
+																					}}
+																				>
+																					דרגת הפציעה
+																				</p>
+																				<Input
+																					onChange={(e) => {
+																						const dargahurt = e.target.value;
+																						if (e.target.value != "בחר")
+																							setinfohurtarray((currentSpec) =>
+																								produce(currentSpec, (v) => {
+																									v[index].dargahurt =
+																										dargahurt;
+																								})
+																							);
+																					}}
+																					value={p.dargahurt}
+																					type="select"
+																					placeholder="דרגת הפציעה"
+																				>
+																					<option value={"בחר"}>{"בחר"}</option>
+																					<option value={"קל"}>{"קל"}</option>
+																					<option value={"בינוני"}>
+																						{"בינוני"}
+																					</option>
+																					<option value={"קשה"}>{"קשה"}</option>
+																					<option value={"מת"}>{"מת"}</option>
+																				</Input>
+																			</div>
+																		</Col>
+																		<Col
+																			xs={12}
+																			md={4}
+																		>
+																			<div>
+																				<p
+																					style={{
+																						margin: "0px",
+																						float: "right",
+																					}}
+																				>
+																					מספר ימי מחלה
+																				</p>
+																				<Input
+																					onChange={(e) => {
+																						const mikomhurt = e.target.value;
+																						if (e.target.value != "")
+																							setinfohurtarray((currentSpec) =>
+																								produce(currentSpec, (v) => {
+																									v[index].mikomhurt =
+																										mikomhurt;
+																								})
+																							);
+																					}}
+																					value={p.mikomhurt}
+																					type="number"
+																					placeholder="0"
+																				/>
+																			</div>
+																		</Col>
+																	</Row>
+																}
+																<Button
+																	type="button"
+																	onClick={() => {
+																		setinfohurtarray((currentSpec) =>
+																			currentSpec.filter((x) => x.id !== p.id)
+																		);
+																	}}
+																>
+																	<img
+																		src={deletepic}
+																		height="20px"
+																	></img>
+																</Button>
+															</div>
+														);
+													})
+												)}
+											</div>
+										</>
+									)}
 
 									<div className="text-center">
 										<button

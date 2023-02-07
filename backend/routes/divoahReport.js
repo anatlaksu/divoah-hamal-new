@@ -95,7 +95,6 @@ let readtipul = [
 	},
 ];
 
-
 let readtipulnotype = [
 	{
 		$lookup: {
@@ -143,9 +142,9 @@ router.route("/").get((req, res) => {
 		.then((request) => res.json(request))
 		.catch((err) => res.status(400).json("Error: " + err));
 });
-
+//! by rep, can be chaged to by manmarit
 router.route("/pikod/:pikod").get((req, res) => {
-	Report.find({ pikod: req.params.pikod })
+	Report.find({ pikodrep: req.params.pikod })
 		.then((request) => res.json(request))
 		.catch((err) => res.status(400).json("Error: " + err));
 });
@@ -187,7 +186,7 @@ router.route("/add").post((req, res) => {
 	const datevent = Date.parse(req.body.datevent);
 	const mikom = req.body.mikom;
 	const nifga = Number(req.body.nifga);
-	const hurtarray= req.body.hurtarray;
+	const hurtarray = req.body.hurtarray;
 
 	const newReport = new Report({
 		name,
@@ -203,7 +202,7 @@ router.route("/add").post((req, res) => {
 		// magad,
 		mkabaz,
 		arraymkabaz,
-        zadik,
+		zadik,
 		typevent,
 		resevent,
 		yn,
@@ -262,7 +261,7 @@ router.route("/:id").get((req, res) => {
 	// Report.findById(req.params.id)
 	// 	.then((request) => res.json(request))
 	// 	.catch((err) => res.status(400).json("Error: " + err));
-	
+
 	let tipulfindquerry = readtipul.slice();
 	let finalquerry = tipulfindquerry;
 	let andquery = [];
@@ -274,7 +273,7 @@ router.route("/:id").get((req, res) => {
 			},
 		};
 		console.log(matchquerry);
-	console.log(andquery);
+		console.log(andquery);
 		finalquerry.push(matchquerry);
 	}
 	Report.aggregate(finalquerry)
@@ -282,7 +281,7 @@ router.route("/:id").get((req, res) => {
 			console.log(result);
 			if (result.length != 0) {
 				res.json(result);
-			} 
+			}
 		})
 		.catch((error) => {
 			res.status(400).json("Error: " + error);

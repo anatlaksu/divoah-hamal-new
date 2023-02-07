@@ -25,14 +25,12 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { isAuthenticated } from "auth";
 
-
-
 const AdminSignInForm = () => {
 	const [reportDB, setReportDB] = useState([]);
 	const [isError, setIsError] = useState(false);
 
 	const [data, setData] = useState([]);
-	const [reportDBPikod, setReportDBPikod] = useState([]);
+	const [reportDBOgda, setReportDBOgda] = useState([]);
 
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
@@ -46,7 +44,7 @@ const AdminSignInForm = () => {
 
 	// const [filter, setFilter] = useState([]);
 
-  const { user } = isAuthenticated();
+	const { user } = isAuthenticated();
 
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const toggleCollapse = () => {
@@ -69,7 +67,7 @@ const AdminSignInForm = () => {
 		10: 'נזק לתשתיות אחזקה / הח"י',
 		11: "אי קיום שגרת אחזקה",
 		12: "אחר",
-		"רקם": 'רק"ם',
+		רקם: 'רק"ם',
 	};
 
 	const loadPikods = async () => {
@@ -77,7 +75,7 @@ const AdminSignInForm = () => {
 			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
 				setPikods(response.data);
-				// console.log(response.data);
+				console.log(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -177,6 +175,8 @@ const AdminSignInForm = () => {
 							arrayTester.push(tempcardata);
 							// tempcardata.slice();
 							if (arrayTester.length === res.data.length) {
+								console.log(arrayTester);
+								console.log(reportDB);
 								setReportDB(arrayTester);
 							}
 						})
@@ -250,7 +250,7 @@ const AdminSignInForm = () => {
 	}
 
 	function handleChange8(selectedOption, name) {
-		// console.log(selectedOption);
+		// console.log(selectedOption[0].value);
 		// console.log(name);
 		if (!(selectedOption.value == "בחר")) {
 			let tempvalues = [];
@@ -262,8 +262,28 @@ const AdminSignInForm = () => {
 			// console.log(tempvalues);
 			// console.log(tempnames);
 			// console.log(name.name);
-			setData({ ...data, [name.name]: tempvalues });
+			if (tempvalues.length > 0) {
+				setData({ ...data, [name.name]: tempvalues });
+			} else {
+				// console.log(name.name);
+				if (name.name == "hativa") {
+					delete data.hativa;
+					setData({ ...data });
+				}
+				if (name.name == "ogda") {
+					delete data.ogda;
+					setData({ ...data });
+				}
+				if (name.name == "pikod") {
+					delete data.pikod;
+					setData({ ...data });
+				}
+			}
+
 			console.log(data);
+			// console.log(data.pikod);
+			// console.log(data.ogda);
+			// console.log(data.hativa);
 			// console.log(data.pikod.map((item,index) => {
 
 			// }));
@@ -276,6 +296,7 @@ const AdminSignInForm = () => {
 	}
 
 	const options = {
+		//* on civil
 		responsive: true,
 		plugins: {
 			legend: {
@@ -283,6 +304,14 @@ const AdminSignInForm = () => {
 			},
 		},
 	};
+	//* on Army :
+	/*
+			responsive: true,
+			legend: {
+				display: false,
+			},
+	};
+	 */
 
 	const labels = [
 		"תאונת כלי רכב",
@@ -435,8 +464,12 @@ const AdminSignInForm = () => {
 	}
 
 	const arryogda = ogdas.filter((ogda, index) => {
-		if (data.pikod.includes(ogda.pikod)) {
-			return ogda.pikod;
+		try {
+			if (data.pikod.includes(ogda.pikod)) {
+				return ogda.pikod;
+			}
+		} catch (error) {
+			return datapikod;
 		}
 	});
 
@@ -444,12 +477,12 @@ const AdminSignInForm = () => {
 	// 	data.pikod.includes(report.pikod)
 	// );
 
-	const dataeventPikod = {
+	const dataeventOgda = {
 		labels: labels,
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumtypereport(labels, reportDBPikod, eventTypeArray),
+				data: sumtypereport(labels, reportDBOgda, eventTypeArray),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -490,7 +523,7 @@ const AdminSignInForm = () => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumpikods(pikods, reportDBPikod),
+				data: sumpikods(pikods, reportDBOgda),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -567,9 +600,11 @@ const AdminSignInForm = () => {
 	}
 
 	const arryhativa = hativas.filter((hativa, index) => {
-		if (data.ogda.includes(hativa.ogda)) {
-			return hativa.ogda;
-		}
+		try {
+			if (data.ogda.includes(hativa.ogda)) {
+				return hativa.ogda;
+			}
+		} catch (error) {}
 	});
 
 	const datahativa = {
@@ -616,9 +651,11 @@ const AdminSignInForm = () => {
 	// 	}
 	// });
 	const arrygdod = gdods.filter((gdod, index) => {
-		if (data.hativa.includes(gdod.hativa)) {
-			return gdod.hativa;
-		}
+		try {
+			if (data.hativa.includes(gdod.hativa)) {
+				return gdod.hativa;
+			}
+		} catch (error) {}
 	});
 
 	const datagdod = {
@@ -635,23 +672,28 @@ const AdminSignInForm = () => {
 	};
 
 	useEffect(() => {
-		setReportDBPikod(
-			reportDB.filter((report) => data.pikod.includes(report.pikod))
-		);
+		try {
+			setReportDBOgda(
+				reportDB.filter((report) => data.ogda.includes(report.ogda))
+			);
+		} catch (error) {
+			setReportDBOgda(reportDB);
+		}
 	}, [data]);
 
-  const initWithUserData = () => {
-    setData({
-      ...data,
-      pikod: user.pikod,
-    });
-    loadReports();
-    loadPikods();
-  };
-  
-    useEffect(() => {
-      initWithUserData();
-    }, []);
+	const initWithUserData = () => {
+		setData({
+			...data,
+			pikod: user.pikod,
+		});
+		loadReports();
+		loadPikods();
+		// loadOgdas(pikods);
+	};
+
+	useEffect(() => {
+		initWithUserData();
+	}, []);
 
 	useEffect(() => {
 		setOgdas([]);
@@ -680,10 +722,6 @@ const AdminSignInForm = () => {
 		}
 	}
 
-	const reportbypikod= reportDB.filter((report)=> report.pikod==data.pikod);
-const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.datevent) - new Date(report2.datevent)).reverse();
-
-
 	return (
 		<div>
 			<Container className="mt--8 pb-5">
@@ -704,10 +742,8 @@ const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.dateven
 										style={{ textAlign: "right" }}
 									>
 										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
-											
-
 											<>
-												{data.pikod && !data.hativa ? (
+												{!data.hativa ? (
 													<Col
 														style={{
 															justifyContent: "right",
@@ -743,6 +779,13 @@ const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.dateven
 															name={"ogda"}
 															val={data.ogda ? data.ogda : undefined}
 															isDisabled={true}
+															// isDisabled={
+															// 	!data.hativa
+															// 		? true
+															// 		: data.hativa.length < 1
+															// 		? false
+															// 		: true
+															// }
 														/>
 													</Col>
 												)}
@@ -812,7 +855,7 @@ const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.dateven
 												className="text-center"
 												style={{ width: "20%" }}
 											>
-												פיקוד
+												יחידה מנמרית{" "}
 											</th>
 											<th
 												className="text-center"
@@ -828,9 +871,9 @@ const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.dateven
 											</th>
 										</tr>
 									</thead>
-									{data.length == 0 ? (
+									{data.length == 0 && !data.pikod ? (
 										<tbody>
-											{sortreport.slice(0,10).map((report, index) => (
+											{reportDB.slice(0, 10).map((report, index) => (
 												<tr>
 													<td>
 														<p>{getname(report.pikod, pikods)}</p>
@@ -852,9 +895,9 @@ const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.dateven
 												</tr>
 											))}
 										</tbody>
-									) : (
+									) : data.pikod ? (
 										<tbody>
-											{sortreport.slice(0,10).map((report, index) =>
+											{reportDB.slice(0, 10).map((report, index) =>
 												data.pikod.includes(report.pikod) ? (
 													<tr>
 														<td>
@@ -878,9 +921,32 @@ const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.dateven
 												) : null
 											)}
 										</tbody>
-									)}
+									) : !data.pikod ? (
+										<tbody>
+											{reportDB.slice(0, 10).map((report, index) => (
+												<tr>
+													<td>
+														<p>{getname(report.pikod, pikods)}</p>
+													</td>
+													<td>{eventTypeArray[report.typevent]}</td>
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "50px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{report.pirot}
+														</div>
+													</td>
+												</tr>
+											))}
+										</tbody>
+									) : null}
 								</table>
-								
 							</CardBody>
 						</Card>
 					</Col>
@@ -893,52 +959,56 @@ const sortreport=reportbypikod.sort((report1,report2)=> new Date(report1.dateven
 								</h3>
 							</CardHeader>
 							<CardBody>
-								{data.length == 0 ? (
+								{!data.ogda && !data.hativa ? (
 									<Doughnut
 										data={dataevent}
 										options={options}
 									/>
 								) : (
 									<Doughnut
-										data={dataeventPikod}
+										data={dataeventOgda}
 										options={options}
 									/>
 								)}
 							</CardBody>
 						</Card>
 					</Col>
-
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									מספר אירועים לפי פיקוד
-								</h3>
-							</CardHeader>
-							<CardBody>
-								{data.length == 0 ? (
-									<Doughnut
-										data={datapikod}
-										options={options}
-									/>
-								) : (
+					{!data.ogda ? (
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים לפי אוגדה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{!data.ogda ? (
+										<Doughnut
+											data={dataogda}
+											options={options}
+										/>
+									) : //* was removed
+									/*
 									<Doughnut
 										data={datapikodFilttered}
 										options={options}
 									/>
-								)}
-							</CardBody>
-						</Card>
-					</Col>
+									*/
+									null}
+								</CardBody>
+							</Card>
+						</Col>
+					) : null}
 				</Row>
 				<Row>
-					{data.pikod && !data.ogda && !data.hativa ? (
+					{!data.pikod && !data.ogda && !data.hativa ? (
 						<Col lg="4">
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
+										{}
 										מספר אירועים לפי אוגדה
 									</h3>
 								</CardHeader>

@@ -19,18 +19,17 @@ import {
 import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
-import { produce } from 'immer'
-import { generate } from 'shortid'
+import { produce } from "immer";
+import { generate } from "shortid";
 import { isAuthenticated } from "auth";
 import MultiSelect from "components/general/Select/AnimatedMultiSelect";
 import Select from "components/general/Select/AnimatedSelect";
 import deletepic from "assets/img/delete.png";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
 
-
 const Report = ({ props }) => {
 	const { user } = isAuthenticated();
-	const [infohurtarray, setinfohurtarray]= useState([]);
+	const [infohurtarray, setinfohurtarray] = useState([]);
 
 	const [data, setData] = useState({
 		name: "",
@@ -131,185 +130,184 @@ const Report = ({ props }) => {
 		}
 	};
 
-//* manmarit
-const loadPikods = async () => {
-	await axios
-		.get("http://localhost:8000/api/pikod")
-		.then((response) => {
-			setPikods(response.data);
-			// setPikodsrep(response.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
-
-const loadOgdas = async (pikodids) => {
-	let temppikodids = pikodids;
-	if (temppikodids != undefined && !temppikodids.isArray) {
-		temppikodids = [pikodids];
-	}
-	let temppikodsogdas = [];
-	if (temppikodids != undefined && temppikodids.length > 0) {
-		for (let i = 0; i < temppikodids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
-					pikod: temppikodids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						temppikodsogdas.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
-	}
-	setOgdas(temppikodsogdas);
-	// setOgdasrep(temppikodsogdas);
-};
-
-const loadHativas = async (ogdaids) => {
-	let tempogdaids = ogdaids;
-	if (tempogdaids != undefined && !tempogdaids.isArray) {
-		tempogdaids = [ogdaids];
-	}
-	let tempogdashativas = [];
-	if (tempogdaids != undefined && tempogdaids.length > 0) {
-		for (let i = 0; i < tempogdaids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
-					ogda: tempogdaids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						tempogdashativas.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
-	}
-	setHativas(tempogdashativas);
-	// setHativasrep(tempogdashativas)
-};
-
-const loadGdods = async (hativaids) => {
-	let temphativaids = hativaids;
-	if (temphativaids != undefined && !temphativaids.isArray) {
-		temphativaids = [hativaids];
-	}
-	let temphativasgdods = [];
-	if (temphativaids != undefined && temphativaids.length > 0) {
-		for (let i = 0; i < temphativaids.length; i++) {
-			await axios
-				.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
-					hativa: temphativaids[i],
-				})
-				.then((response) => {
-					for (let j = 0; j < response.data.length; j++)
-						temphativasgdods.push(response.data[j]);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
-	}
-	setGdods(temphativasgdods);
-	// setGdodsrep(temphativasgdods);
-};
-
-//* rep
-
-const loadPikodsrep = async () => {
-await axios
-	.get("http://localhost:8000/api/pikod")
-	.then((response) => {
-		// setPikods(response.data);
-		setPikodsrep(response.data);
-	})
-	.catch((error) => {
-		console.log(error);
-	});
-};
-
-const loadOgdasrep = async (pikodids) => {
-let temppikodids = pikodids;
-if (temppikodids != undefined && !temppikodids.isArray) {
-	temppikodids = [pikodids];
-}
-let temppikodsogdas = [];
-if (temppikodids != undefined && temppikodids.length > 0) {
-	for (let i = 0; i < temppikodids.length; i++) {
+	//* manmarit
+	const loadPikods = async () => {
 		await axios
-			.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
-				pikod: temppikodids[i],
-			})
+			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
-				for (let j = 0; j < response.data.length; j++)
-					temppikodsogdas.push(response.data[j]);
+				setPikods(response.data);
+				// setPikodsrep(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
-	}
-}
-// setOgdas(temppikodsogdas);
-setOgdasrep(temppikodsogdas);
-};
+	};
 
-const loadHativasrep = async (ogdaids) => {
-let tempogdaids = ogdaids;
-if (tempogdaids != undefined && !tempogdaids.isArray) {
-	tempogdaids = [ogdaids];
-}
-let tempogdashativas = [];
-if (tempogdaids != undefined && tempogdaids.length > 0) {
-	for (let i = 0; i < tempogdaids.length; i++) {
+	const loadOgdas = async (pikodids) => {
+		let temppikodids = pikodids;
+		if (temppikodids != undefined && !temppikodids.isArray) {
+			temppikodids = [pikodids];
+		}
+		let temppikodsogdas = [];
+		if (temppikodids != undefined && temppikodids.length > 0) {
+			for (let i = 0; i < temppikodids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+						pikod: temppikodids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temppikodsogdas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		setOgdas(temppikodsogdas);
+		// setOgdasrep(temppikodsogdas);
+	};
+
+	const loadHativas = async (ogdaids) => {
+		let tempogdaids = ogdaids;
+		if (tempogdaids != undefined && !tempogdaids.isArray) {
+			tempogdaids = [ogdaids];
+		}
+		let tempogdashativas = [];
+		if (tempogdaids != undefined && tempogdaids.length > 0) {
+			for (let i = 0; i < tempogdaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+						ogda: tempogdaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							tempogdashativas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		setHativas(tempogdashativas);
+		// setHativasrep(tempogdashativas)
+	};
+
+	const loadGdods = async (hativaids) => {
+		let temphativaids = hativaids;
+		if (temphativaids != undefined && !temphativaids.isArray) {
+			temphativaids = [hativaids];
+		}
+		let temphativasgdods = [];
+		if (temphativaids != undefined && temphativaids.length > 0) {
+			for (let i = 0; i < temphativaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+						hativa: temphativaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temphativasgdods.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		setGdods(temphativasgdods);
+		// setGdodsrep(temphativasgdods);
+	};
+
+	//* rep
+
+	const loadPikodsrep = async () => {
 		await axios
-			.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
-				ogda: tempogdaids[i],
-			})
+			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
-				for (let j = 0; j < response.data.length; j++)
-					tempogdashativas.push(response.data[j]);
+				// setPikods(response.data);
+				setPikodsrep(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
-	}
-}
-// setHativas(tempogdashativas);
-setHativasrep(tempogdashativas)
-};
+	};
 
-const loadGdodsrep = async (hativaids) => {
-let temphativaids = hativaids;
-if (temphativaids != undefined && !temphativaids.isArray) {
-	temphativaids = [hativaids];
-}
-let temphativasgdods = [];
-if (temphativaids != undefined && temphativaids.length > 0) {
-	for (let i = 0; i < temphativaids.length; i++) {
-		await axios
-			.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
-				hativa: temphativaids[i],
-			})
-			.then((response) => {
-				for (let j = 0; j < response.data.length; j++)
-					temphativasgdods.push(response.data[j]);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}
-}
-// setGdods(temphativasgdods);
-setGdodsrep(temphativasgdods);
-};
+	const loadOgdasrep = async (pikodids) => {
+		let temppikodids = pikodids;
+		if (temppikodids != undefined && !temppikodids.isArray) {
+			temppikodids = [pikodids];
+		}
+		let temppikodsogdas = [];
+		if (temppikodids != undefined && temppikodids.length > 0) {
+			for (let i = 0; i < temppikodids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+						pikod: temppikodids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temppikodsogdas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		// setOgdas(temppikodsogdas);
+		setOgdasrep(temppikodsogdas);
+	};
 
-//* handle changes
+	const loadHativasrep = async (ogdaids) => {
+		let tempogdaids = ogdaids;
+		if (tempogdaids != undefined && !tempogdaids.isArray) {
+			tempogdaids = [ogdaids];
+		}
+		let tempogdashativas = [];
+		if (tempogdaids != undefined && tempogdaids.length > 0) {
+			for (let i = 0; i < tempogdaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+						ogda: tempogdaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							tempogdashativas.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		// setHativas(tempogdashativas);
+		setHativasrep(tempogdashativas);
+	};
 
+	const loadGdodsrep = async (hativaids) => {
+		let temphativaids = hativaids;
+		if (temphativaids != undefined && !temphativaids.isArray) {
+			temphativaids = [hativaids];
+		}
+		let temphativasgdods = [];
+		if (temphativaids != undefined && temphativaids.length > 0) {
+			for (let i = 0; i < temphativaids.length; i++) {
+				await axios
+					.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+						hativa: temphativaids[i],
+					})
+					.then((response) => {
+						for (let j = 0; j < response.data.length; j++)
+							temphativasgdods.push(response.data[j]);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		}
+		// setGdods(temphativasgdods);
+		setGdodsrep(temphativasgdods);
+	};
+
+	//* handle changes
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -401,7 +399,7 @@ setGdodsrep(temphativasgdods);
 		if (data.zadik == "") {
 			flag = false;
 			ErrorReason += "  צ' ריק\n";
-		}	
+		}
 		if (
 			!document.getElementById("YES").checked &&
 			!document.getElementById("NO").checked
@@ -455,8 +453,8 @@ setGdodsrep(temphativasgdods);
 			personalnumber: data.personalnumber,
 			cellphone: data.cellphone,
 			pikodrep: data.pikodrep,
-			ogdarep:data.ogdarep,
-			hativarep:data.hativarep,
+			ogdarep: data.ogdarep,
+			hativarep: data.hativarep,
 			gdod: data.gdod,
 			gdodrep: data.gdodrep,
 			mkabaz: data.mkabaz,
@@ -480,7 +478,6 @@ setGdodsrep(temphativasgdods);
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
-
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData);
@@ -494,13 +491,11 @@ setGdodsrep(temphativasgdods);
 				console.log(res);
 				setData({ ...data, loading: false, error: false, successmsg: true });
 				toast.success(` הדיווח נשלח בהצלחה`);
-				if(user.role=="0")
-				{
+				if (user.role == "0") {
 					history.push(`/dash`);
-				}else if(user.role=="1")
-				{
+				} else if (user.role == "1") {
 					history.push(`/dashamal`);
-				}else if(user.role=="2"){
+				} else if (user.role == "2") {
 					history.push(`/dashadmin`);
 				}
 				console.log(res.data);
@@ -537,37 +532,37 @@ setGdodsrep(temphativasgdods);
 		initWithUserData();
 	}, []);
 
-// * ------ manmarit --------------------------------
-useEffect(() => {
-	setOgdas([]);
-	loadOgdas(data.pikod);
-}, [data.pikod]);
+	// * ------ manmarit --------------------------------
+	useEffect(() => {
+		setOgdas([]);
+		loadOgdas(data.pikod);
+	}, [data.pikod]);
 
-useEffect(() => {
-	setHativas([]);
-	loadHativas(data.ogda);
-}, [data.ogda]);
+	useEffect(() => {
+		setHativas([]);
+		loadHativas(data.ogda);
+	}, [data.ogda]);
 
-useEffect(() => {
-	setGdods([]);
-	loadGdods(data.hativa);
-}, [data.hativa]);
-//* ------ rep ----------------------------------------------------------------
-useEffect(() => {
-	setOgdasrep([]);
-	loadOgdasrep(data.pikodrep);
-}, [data.pikodrep]);
+	useEffect(() => {
+		setGdods([]);
+		loadGdods(data.hativa);
+	}, [data.hativa]);
+	//* ------ rep ----------------------------------------------------------------
+	useEffect(() => {
+		setOgdasrep([]);
+		loadOgdasrep(data.pikodrep);
+	}, [data.pikodrep]);
 
-useEffect(() => {
-	setHativasrep([]);
-	loadHativasrep(data.ogdarep);
-}, [data.ogdarep]);
+	useEffect(() => {
+		setHativasrep([]);
+		loadHativasrep(data.ogdarep);
+	}, [data.ogdarep]);
 
-useEffect(() => {
-	setGdodsrep([]);
-	loadGdodsrep(data.hativarep);
-}, [data.hativarep]);
-//* ------ magdal .... --------------------------------
+	useEffect(() => {
+		setGdodsrep([]);
+		loadGdodsrep(data.hativarep);
+	}, [data.hativarep]);
+	//* ------ magdal .... --------------------------------
 	useEffect(() => {
 		setMagads([]);
 		getMagads(data.magadal);
@@ -648,8 +643,8 @@ useEffect(() => {
 										/>
 									</FormGroup>
 
-{/*//* --------------------------------------- rep ------------------------------------------- */}
-<div className="text-center text-muted mb-4">
+									{/*//* --------------------------------------- rep ------------------------------------------- */}
+									<div className="text-center text-muted mb-4">
 										<small>פרטי יחידה מדווחת</small>
 									</div>
 
@@ -800,7 +795,7 @@ useEffect(() => {
 											)}
 										</>
 									</Row>
-{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
+									{/* //* ----------------------------------------- manmarit ---------------------------------------------- */}
 
 									<div className="text-center text-muted mb-4">
 										<small>פרטי יחידה מנמרית</small>
@@ -954,8 +949,6 @@ useEffect(() => {
 										</>
 									</Row>
 
-
-
 									<div
 										className="text-center text-muted mb-4"
 										style={{ paddingTop: "20px" }}
@@ -1092,20 +1085,20 @@ useEffect(() => {
 										)}
 									</Row>
 
-								<div className="mt-3">
-													<FormGroup
-										className="mb-3"
-										dir="rtl"
-									>
-										<Input
-											placeholder="צ'"
-											name="zadik"
-											type="string"
-											value={data.zadik}
-											onChange={handleChange}
-										/>
-									</FormGroup>
-</div>
+									<div className="mt-3">
+										<FormGroup
+											className="mb-3"
+											dir="rtl"
+										>
+											<Input
+												placeholder="צ'"
+												name="zadik"
+												type="string"
+												value={data.zadik}
+												onChange={handleChange}
+											/>
+										</FormGroup>
+									</div>
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם נגרם נזק לרק"ם
@@ -1216,75 +1209,190 @@ useEffect(() => {
 										/>
 									</FormGroup>
 
-									<FormGroup dir="rtl">
-										<Input
-											placeholder="כמה נפגעים היו באירוע"
-											name="nifga"
-											type="number"
-											value={data.nifga}
-											onChange={handleChange}
-										/>
-									</FormGroup>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם יש נפגעים
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													// placeholder="ללא נפגעים "
+													name="nifga"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													// placeholder="הוסף נפגעים"
+													name="nifga"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												ללא נפגעים
+											</div>
+										</FormGroup>
+									</div>
 
 									{data.nifga > "0" && (
-                    <>
-					<div>
-                    {infohurtarray.length == 0 ?
-                      <Row>
-                        <Col style={{ display: 'flex', textAlign: 'right' }}>
-                          <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate()}]) }}>הוסף נפגע</Button>
-                        </Col>
-                      </Row>
-                      : infohurtarray.map((p, index) => {
-                        return (
-                          <div>
-                            {index == 0 ?
-                              <Row>
-                                <Col style={{ display: 'flex', textAlign: 'right' }}>
-                                  <Button style={{ width: '100px', padding: '5px' }} type="button" onClick={() => { setinfohurtarray(currentSpec => [...currentSpec, { id: generate() }]) }}>הוסף נפגע</Button>
-                                </Col>
-                              </Row>
-                              : null}
-							  {
-								  <Row>
-									<Col xs={12} md={4}>
-										<div>
-											<p style={{ margin: '0px', float: 'right' }}>דרגת הפציעה</p>
-											<Input onChange={(e) => {
-												const dargahurt = e.target.value;
-												if (e.target.value != "בחר")
-												setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].dargahurt = dargahurt }))
-												}}
-												value={p.dargahurt} type="select" placeholder="דרגת הפציעה">
-												<option value={"בחר"}>{"בחר"}</option>
-												<option value={'קל'}>{'קל'}</option>
-												<option value={'בינוני'}>{'בינוני'}</option>
-												<option value={'קשה'}>{'קשה'}</option>
-												<option value={'מת'}>{'מת'}</option>
-											</Input>
-										</div>
-									</Col>
-									<Col xs={12} md={4}>
-                                    <div>
-                                      <p style={{ margin: '0px', float: 'right' }}>מיקום הפגיעה בגוף</p>
-                                      <Input onChange={(e) => {
-                                        const mikomhurt = e.target.value;
-                                        if (e.target.value != "")
-                                          setinfohurtarray(currentSpec => produce(currentSpec, v => { v[index].mikomhurt = mikomhurt }))
-                                      }}
-                                        value={p.mikomhurt} type="text" placeholder="מיקום הפגיעה בגוף" />
-                                    </div>
-                                  </Col>
-
-									</Row> }
-							    <Button type="button" onClick={() => { setinfohurtarray(currentSpec => currentSpec.filter(x => x.id !== p.id)) }}><img src={deletepic} height='20px'></img></Button>
-                          </div>
-                        )
-                      })
-                    }
-                  </div>
-                    </>
-                  )}
+										<>
+											<div>
+												{infohurtarray.length == 0 ? (
+													<Row>
+														<Col
+															style={{ display: "flex", textAlign: "right" }}
+														>
+															<Button
+																style={{ width: "100px", padding: "5px" }}
+																type="button"
+																onClick={() => {
+																	setinfohurtarray((currentSpec) => [
+																		...currentSpec,
+																		{ id: generate() },
+																	]);
+																}}
+															>
+																הוסף נפגע
+															</Button>
+														</Col>
+													</Row>
+												) : (
+													infohurtarray.map((p, index) => {
+														return (
+															<div>
+																{index == 0 ? (
+																	<Row>
+																		<Col
+																			style={{
+																				display: "flex",
+																				textAlign: "right",
+																			}}
+																		>
+																			<Button
+																				style={{
+																					width: "100px",
+																					padding: "5px",
+																				}}
+																				type="button"
+																				onClick={() => {
+																					setinfohurtarray((currentSpec) => [
+																						...currentSpec,
+																						{ id: generate() },
+																					]);
+																				}}
+																			>
+																				הוסף נפגע
+																			</Button>
+																		</Col>
+																	</Row>
+																) : null}
+																{
+																	<Row>
+																		<Col
+																			xs={12}
+																			md={4}
+																		>
+																			<div>
+																				<p
+																					style={{
+																						margin: "0px",
+																						float: "right",
+																					}}
+																				>
+																					דרגת הפציעה
+																				</p>
+																				<Input
+																					onChange={(e) => {
+																						const dargahurt = e.target.value;
+																						if (e.target.value != "בחר")
+																							setinfohurtarray((currentSpec) =>
+																								produce(currentSpec, (v) => {
+																									v[index].dargahurt =
+																										dargahurt;
+																								})
+																							);
+																					}}
+																					value={p.dargahurt}
+																					type="select"
+																					placeholder="דרגת הפציעה"
+																				>
+																					<option value={"בחר"}>{"בחר"}</option>
+																					<option value={"קל"}>{"קל"}</option>
+																					<option value={"בינוני"}>
+																						{"בינוני"}
+																					</option>
+																					<option value={"קשה"}>{"קשה"}</option>
+																					<option value={"מת"}>{"מת"}</option>
+																				</Input>
+																			</div>
+																		</Col>
+																		<Col
+																			xs={12}
+																			md={4}
+																		>
+																			<div>
+																				<p
+																					style={{
+																						margin: "0px",
+																						float: "right",
+																					}}
+																				>
+																					מספר ימי מחלה
+																				</p>
+																				<Input
+																					onChange={(e) => {
+																						const mikomhurt = e.target.value;
+																						if (e.target.value != "")
+																							setinfohurtarray((currentSpec) =>
+																								produce(currentSpec, (v) => {
+																									v[index].mikomhurt =
+																										mikomhurt;
+																								})
+																							);
+																					}}
+																					value={p.mikomhurt}
+																					type="number"
+																					placeholder="0"
+																				/>
+																			</div>
+																		</Col>
+																	</Row>
+																}
+																<Button
+																	type="button"
+																	onClick={() => {
+																		setinfohurtarray((currentSpec) =>
+																			currentSpec.filter((x) => x.id !== p.id)
+																		);
+																	}}
+																>
+																	<img
+																		src={deletepic}
+																		height="20px"
+																	></img>
+																</Button>
+															</div>
+														);
+													})
+												)}
+											</div>
+										</>
+									)}
 
 									<div className="text-center">
 										<button
