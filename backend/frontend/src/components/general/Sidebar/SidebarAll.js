@@ -80,9 +80,10 @@ function SidebarAll(props) {
 		<>
 			{/* לוגו המערכת */}
 			<div className="logo">
-				<Link to={"/dash"}>
+				{/* <Link to={"/dash"}>
 					<img src={logodiv}></img>
-				</Link>
+				</Link> */}{" "}
+				<img src={logodiv}></img>
 			</div>
 			<Nav style={{ textAlign: "right" }}>
 				<li>

@@ -923,7 +923,7 @@ const AdminSignInForm = () => {
 										</tbody>
 									) : !data.pikod ? (
 										<tbody>
-											{reportDB.slice(0, 10).map((report, index) => (
+											{reportDB.slice(0, 5).map((report, index) => (
 												<tr>
 													<td>
 														<p>{getname(report.pikod, pikods)}</p>

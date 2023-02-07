@@ -492,7 +492,7 @@ const Report = ({ props }) => {
 				setData({ ...data, loading: false, error: false, successmsg: true });
 				toast.success(` הדיווח נשלח בהצלחה`);
 				if (user.role == "0") {
-					history.push(`/dash`);
+					history.push(`/odot`);
 				} else if (user.role == "1") {
 					history.push(`/dashamal`);
 				} else if (user.role == "2") {

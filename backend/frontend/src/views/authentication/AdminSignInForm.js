@@ -68,6 +68,8 @@ function AdminSignInForm() {
 		if (redirectToReferrer) {
 			console.log(user);
 			if (user && user.validated == true) {
+				history.push("/odot");
+				/* //? by role to dashboard
 				if (user.role === "0") {
 					history.push(`/dash`);
 				}
@@ -77,6 +79,7 @@ function AdminSignInForm() {
 				if (user.role === "2") {
 					history.push(`/dashadmin`);
 				}
+				*/
 			} else {
 				toast.success("משתמש לא מאושר מערכת");
 				setValues({ ...values, redirectToReferrer: false });

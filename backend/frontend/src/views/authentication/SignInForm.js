@@ -83,6 +83,8 @@ function Signin() {
 		if (redirectToReferrer) {
 			console.log(user);
 			if (user && user.validated == true) {
+				history.push("/odot");
+				/* //? by role to dashboard
 				if (user.role === "0") {
 					history.push(`/dash`);
 				}
@@ -90,8 +92,9 @@ function Signin() {
 					history.push(`/dashamal`);
 				}
 				if (user.role === "2") {
-					history.push(`/dashamal`);
+					history.push(`/dashadmin`);
 				}
+				*/
 				// if (user.role === "2") {
 				//   history.push(`/dashboard/hativa/${user.hativaid}/magadal/0`);
 				// }
