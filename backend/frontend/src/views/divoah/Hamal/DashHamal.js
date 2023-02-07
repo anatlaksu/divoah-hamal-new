@@ -42,6 +42,8 @@ const AdminSignInForm = () => {
 	const [ogdasop, setOgdasop] = useState([]);
 	const [pikodsop, setPikodsop] = useState([]);
 
+	const [gdodim, setGdodim]=useState([]);
+
 	// const [filter, setFilter] = useState([]);
 
 	const { user } = isAuthenticated();
@@ -76,6 +78,18 @@ const AdminSignInForm = () => {
 			.then((response) => {
 				setPikods(response.data);
 				console.log(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const loadGdodim = async () => {
+		await axios
+			.get("http://localhost:8000/api/gdod")
+			.then((response) => {
+				setGdodim(response.data);
+				// console.log(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -688,6 +702,7 @@ const AdminSignInForm = () => {
 		});
 		loadReports();
 		loadPikods();
+		loadGdodim();
 		// loadOgdas(pikods);
 	};
 
@@ -839,7 +854,7 @@ const AdminSignInForm = () => {
 					</div>
 				</Row>
 				<Row>
-					<Col lg="6">
+					<Col lg="12">
 						<Card className="card-chart">
 							<CardHeader>
 								<h3 className="card-category text-center">טבלת אירועים</h3>
@@ -876,7 +891,7 @@ const AdminSignInForm = () => {
 											{reportDB.slice(0, 5).map((report, index) => (
 												<tr>
 													<td>
-														<p>{getname(report.pikod, pikods)}</p>
+														<p>{getname(report.gdod, gdodim)}</p>
 													</td>
 													<td>{eventTypeArray[report.typevent]}</td>
 													<td>
@@ -901,7 +916,7 @@ const AdminSignInForm = () => {
 												data.pikod.includes(report.pikod) ? (
 													<tr>
 														<td>
-															<p>{getname(report.pikod, pikods)}</p>
+															<p>{getname(report.gdod, gdodim)}</p>
 														</td>
 														<td>{eventTypeArray[report.typevent]}</td>
 														<td>
@@ -926,7 +941,7 @@ const AdminSignInForm = () => {
 											{reportDB.slice(0, 5).map((report, index) => (
 												<tr>
 													<td>
-														<p>{getname(report.pikod, pikods)}</p>
+														<p>{getname(report.gdod, gdodim)}</p>
 													</td>
 													<td>{eventTypeArray[report.typevent]}</td>
 													<td>
@@ -950,7 +965,9 @@ const AdminSignInForm = () => {
 							</CardBody>
 						</Card>
 					</Col>
-					<Col lg="3">
+					</Row>
+					<Row>
+					<Col lg="6">
 						<Card className="card-chart">
 							<CardHeader>
 								<h3 className="card-category text-center">
@@ -974,7 +991,7 @@ const AdminSignInForm = () => {
 						</Card>
 					</Col>
 					{!data.ogda ? (
-						<Col lg="3">
+						<Col lg="6">
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1000,10 +1017,8 @@ const AdminSignInForm = () => {
 							</Card>
 						</Col>
 					) : null}
-				</Row>
-				<Row>
 					{!data.pikod && !data.ogda && !data.hativa ? (
-						<Col lg="4">
+						<Col lg="6">
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1023,7 +1038,7 @@ const AdminSignInForm = () => {
 					) : null}
 					<>
 						{data.ogda && !data.hativa ? (
-							<Col lg="4">
+							<Col lg="6">
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1043,7 +1058,7 @@ const AdminSignInForm = () => {
 					</>
 					<>
 						{data.hativa ? (
-							<Col lg="4">
+							<Col lg="6">
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
