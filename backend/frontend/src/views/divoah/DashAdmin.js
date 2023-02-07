@@ -64,7 +64,7 @@ const AdminSignInForm = () => {
 		10: 'נזק לתשתיות אחזקה / הח"י',
 		11: "אי קיום שגרת אחזקה",
 		12: "אחר",
-		"רקם": 'רק"ם',
+		רקם: 'רק"ם',
 	};
 
 	const loadPikods = async () => {
@@ -245,7 +245,7 @@ const AdminSignInForm = () => {
 	}
 
 	function handleChange8(selectedOption, name) {
-		// console.log(selectedOption);
+		// console.log(selectedOption[0].value);
 		// console.log(name);
 		if (!(selectedOption.value == "בחר")) {
 			let tempvalues = [];
@@ -257,9 +257,28 @@ const AdminSignInForm = () => {
 			// console.log(tempvalues);
 			// console.log(tempnames);
 			// console.log(name.name);
-			const obj = convertToObj(tempnames, tempvalues);
-			setData({ ...data, [name.name]: tempvalues });
+			if (tempvalues.length > 0) {
+				setData({ ...data, [name.name]: tempvalues });
+			} else {
+				// console.log(name.name);
+				if (name.name == "hativa") {
+					delete data.hativa;
+					setData({ ...data });
+				}
+				if (name.name == "ogda") {
+					delete data.ogda;
+					setData({ ...data });
+				}
+				if (name.name == "pikod") {
+					delete data.pikod;
+					setData({ ...data });
+				}
+			}
+
 			console.log(data);
+			// console.log(data.pikod);
+			// console.log(data.ogda);
+			// console.log(data.hativa);
 			// console.log(data.pikod.map((item,index) => {
 
 			// }));
@@ -272,6 +291,7 @@ const AdminSignInForm = () => {
 	}
 
 	const options = {
+		//* on civil
 		responsive: true,
 		plugins: {
 			legend: {
@@ -279,6 +299,14 @@ const AdminSignInForm = () => {
 			},
 		},
 	};
+	//* on Army :
+	/*
+			responsive: true,
+			legend: {
+				display: false,
+			},
+	};
+	 */
 
 	const labels = [
 		"תאונת כלי רכב",
@@ -431,8 +459,12 @@ const AdminSignInForm = () => {
 	}
 
 	const arryogda = ogdas.filter((ogda, index) => {
-		if (data.pikod.includes(ogda.pikod)) {
-			return ogda.pikod;
+		try {
+			if (data.pikod.includes(ogda.pikod)) {
+				return ogda.pikod;
+			}
+		} catch (error) {
+			return datapikod;
 		}
 	});
 
@@ -563,9 +595,11 @@ const AdminSignInForm = () => {
 	}
 
 	const arryhativa = hativas.filter((hativa, index) => {
-		if (data.ogda.includes(hativa.ogda)) {
-			return hativa.ogda;
-		}
+		try {
+			if (data.ogda.includes(hativa.ogda)) {
+				return hativa.ogda;
+			}
+		} catch (error) {}
 	});
 
 	const datahativa = {
@@ -612,9 +646,11 @@ const AdminSignInForm = () => {
 	// 	}
 	// });
 	const arrygdod = gdods.filter((gdod, index) => {
-		if (data.hativa.includes(gdod.hativa)) {
-			return gdod.hativa;
-		}
+		try {
+			if (data.hativa.includes(gdod.hativa)) {
+				return gdod.hativa;
+			}
+		} catch (error) {}
 	});
 
 	const datagdod = {
@@ -631,9 +667,13 @@ const AdminSignInForm = () => {
 	};
 
 	useEffect(() => {
-		setReportDBPikod(
-			reportDB.filter((report) => data.pikod.includes(report.pikod))
-		);
+		try {
+			setReportDBPikod(
+				reportDB.filter((report) => data.pikod.includes(report.pikod))
+			);
+		} catch (error) {
+			setReportDBPikod(reportDB);
+		}
 	}, [data]);
 
 	useEffect(() => {
@@ -667,7 +707,6 @@ const AdminSignInForm = () => {
 			if (arr[i]._id == idnum) return arr[i].name;
 		}
 	}
-	
 
 	return (
 		<div>
@@ -727,6 +766,13 @@ const AdminSignInForm = () => {
 														name={"pikod"}
 														val={data.pikod ? data.pikod : undefined}
 														isDisabled={true}
+														// isDisabled={
+														// 	!data.ogda
+														// 		? true
+														// 		: data.ogda.length < 1
+														// 		? false
+														// 		: true
+														// }
 													/>
 												</Col>
 											)}
@@ -768,6 +814,13 @@ const AdminSignInForm = () => {
 															name={"ogda"}
 															val={data.ogda ? data.ogda : undefined}
 															isDisabled={true}
+															// isDisabled={
+															// 	!data.hativa
+															// 		? true
+															// 		: data.hativa.length < 1
+															// 		? false
+															// 		: true
+															// }
 														/>
 													</Col>
 												)}
@@ -853,9 +906,9 @@ const AdminSignInForm = () => {
 											</th>
 										</tr>
 									</thead>
-									{data.length == 0 ? (
+									{data.length == 0 && !data.pikod ? (
 										<tbody>
-											{reportDB.slice(0,10).map((report, index) => (
+											{reportDB.slice(0, 5).map((report, index) => (
 												<tr>
 													<td>
 														<p>{getname(report.pikod, pikods)}</p>
@@ -877,9 +930,9 @@ const AdminSignInForm = () => {
 												</tr>
 											))}
 										</tbody>
-									) : (
+									) : data.pikod ? (
 										<tbody>
-											{reportDB.slice(0,10).map((report, index) =>
+											{reportDB.slice(0, 5).map((report, index) =>
 												data.pikod.includes(report.pikod) ? (
 													<tr>
 														<td>
@@ -903,9 +956,32 @@ const AdminSignInForm = () => {
 												) : null
 											)}
 										</tbody>
-									)}
+									) : !data.pikod ? (
+										<tbody>
+											{reportDB.slice(0, 10).map((report, index) => (
+												<tr>
+													<td>
+														<p>{getname(report.pikod, pikods)}</p>
+													</td>
+													<td>{eventTypeArray[report.typevent]}</td>
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "50px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{report.pirot}
+														</div>
+													</td>
+												</tr>
+											))}
+										</tbody>
+									) : null}
 								</table>
-								
 							</CardBody>
 						</Card>
 					</Col>
@@ -932,30 +1008,33 @@ const AdminSignInForm = () => {
 							</CardBody>
 						</Card>
 					</Col>
-
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									מספר אירועים לפי פיקוד
-								</h3>
-							</CardHeader>
-							<CardBody>
-								{data.length == 0 ? (
-									<Doughnut
-										data={datapikod}
-										options={options}
-									/>
-								) : (
+					{!data.pikod ? (
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים לפי פיקוד
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{!data.pikod ? (
+										<Doughnut
+											data={datapikod}
+											options={options}
+										/>
+									) : //* was removed
+									/*
 									<Doughnut
 										data={datapikodFilttered}
 										options={options}
 									/>
-								)}
-							</CardBody>
-						</Card>
-					</Col>
+									*/
+									null}
+								</CardBody>
+							</Card>
+						</Col>
+					) : null}
 				</Row>
 				<Row>
 					{data.pikod && !data.ogda && !data.hativa ? (
@@ -964,6 +1043,7 @@ const AdminSignInForm = () => {
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
+										{}
 										מספר אירועים לפי אוגדה
 									</h3>
 								</CardHeader>

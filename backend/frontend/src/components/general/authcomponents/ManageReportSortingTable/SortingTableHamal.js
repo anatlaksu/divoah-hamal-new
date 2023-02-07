@@ -143,8 +143,10 @@ const SortingTableHamal = ({ match }) => {
 			? axios
 					.get(`http://localhost:8000/report/`)
 					.then((response) => {
-						console.log(response.data);
-						setData(response.data);
+						const reports = response.data;
+						reports.reverse();
+						// console.log(reports);
+						setData(reports);
 					})
 					.catch((error) => {
 						console.log(error);
@@ -196,17 +198,17 @@ const SortingTableHamal = ({ match }) => {
 
 	return (
 		<>
-		      <div style={{ float: 'right', paddingBottom: '5px' }}>
-        <ReactHTMLTableToExcel
-          id="test-table-xls-button"
-          className="btn-green"
-          table="table-to-xls"
-          filename="קובץ - סיכום דיווחים"
-          sheet="קובץ - סיכום דיווחים"
-          buttonText="הורד כקובץ אקסל"
-          style={{ float: 'right' }}
-        />
-        </div>
+			<div style={{ float: "right", paddingBottom: "5px" }}>
+				<ReactHTMLTableToExcel
+					id="test-table-xls-button"
+					className="btn-green"
+					table="table-to-xls"
+					filename="קובץ - סיכום דיווחים"
+					sheet="קובץ - סיכום דיווחים"
+					buttonText="הורד כקובץ אקסל"
+					style={{ float: "right" }}
+				/>
+			</div>
 
 			{/*//* ----- modals --------------------------------
 				//? ++ unittype={props.unittype} unitid={props.unitid} */}
@@ -239,7 +241,7 @@ const SortingTableHamal = ({ match }) => {
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th style={{width:"20%"}}>
+									<th style={{ width: "20%" }}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -301,7 +303,21 @@ const SortingTableHamal = ({ match }) => {
 												if (cell.value == "רקם") return <td>רק"ם</td>;
 											}
 											if (cell.column.id == "pirot") {
-												return <td><div style={{width:"100%",height:"60px",margin:"0",padding:"0",overflow:"auto"}}>{cell.value}</div></td>;
+												return (
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "60px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{cell.value}
+														</div>
+													</td>
+												);
 											}
 
 											if (cell.column.id == "datevent") {

@@ -69,8 +69,12 @@ const SortingTable = ({ match }) => {
 				`http://localhost:8000/report/requestByPersonalnumber/${user.personalnumber}`
 			)
 			.then((response) => {
-				console.log(response.data);
-				setData(response.data);
+				// console.log(response.data);
+				// setData(response.data);
+				const reports = response.data;
+				reports.reverse();
+				// console.log(reports);
+				setData(reports);
 			})
 			.catch((error) => {
 				console.log(error);
