@@ -35,6 +35,9 @@ import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilte
 import deletepic from "assets/img/delete.png";
 
 const CarDataFormModal = (match) => {
+	const digits_only = (string) =>
+		[...string].every((c) => "0123456789".includes(c));
+
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray] = useState([]);
 
@@ -339,7 +342,16 @@ const CarDataFormModal = (match) => {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
-		setData({ ...data, [evt.target.name]: value });
+		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
+			setData({ ...data, [evt.target.name]: value });
+		} else {
+			if (digits_only(value)) {
+				setData({ ...data, [evt.target.name]: value });
+			} else {
+				// console.log("you used letter in the phone number");
+				toast.error("לא ניתן לכתוב אותיות בשדה זה");
+			}
+		}
 	}
 
 	function handleChange2(selectedOption, name) {
@@ -2090,6 +2102,8 @@ const CarDataFormModal = (match) => {
 															type="datetime-local"
 															value={data.datevent.slice(0, 21)}
 															onChange={handleChange}
+															min={"1900-01-01T00:00:00"}
+															max={"2100-01-01T00:00:00"}
 														/>
 													</FormGroup>
 
@@ -3055,6 +3069,8 @@ const CarDataFormModal = (match) => {
 															type="datetime-local"
 															value={data.datevent.slice(0, 21)}
 															onChange={handleChange}
+															min={"1900-01-01T00:00:00"}
+															max={"2100-01-01T00:00:00"}
 														/>
 													</FormGroup>
 
