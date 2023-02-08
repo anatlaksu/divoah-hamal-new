@@ -35,6 +35,9 @@ import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilte
 import deletepic from "assets/img/delete.png";
 
 const CarDataFormModal = (match) => {
+	const digits_only = (string) =>
+		[...string].every((c) => "0123456789".includes(c));
+
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray] = useState([]);
 
@@ -339,7 +342,16 @@ const CarDataFormModal = (match) => {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
-		setData({ ...data, [evt.target.name]: value });
+		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
+			setData({ ...data, [evt.target.name]: value });
+		} else {
+			if (digits_only(value)) {
+				setData({ ...data, [evt.target.name]: value });
+			} else {
+				// console.log("you used letter in the phone number");
+				toast.error("לא ניתן לכתוב אותיות בשדה זה");
+			}
+		}
 	}
 
 	function handleChange2(selectedOption, name) {
@@ -533,10 +545,10 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
-		if (data.nifga == "") {
-			flag = false;
-			ErrorReason += "כמות הנפגעים ריקה \n";
-		}
+		// if (data.nifga == "") {
+		// 	flag = false;
+		// 	ErrorReason += "כמות הנפגעים ריקה \n";
+		// }
 
 		if (flag == true) {
 			FixUser(event);
@@ -670,7 +682,7 @@ const CarDataFormModal = (match) => {
 			mkabaz: data.mkabaz,
 			zadik: data.zadik,
 			yn: data.yn,
-			status: data.dt != undefined || null ? data.dt : data.status,
+			status: data.status,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -687,16 +699,24 @@ const CarDataFormModal = (match) => {
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
 		};
-
-		axios
-			.put(`http://localhost:8000/report/update/${reportid}`, report)
-			.then((response) => {
-				toast.success(`הדיווח עודכן בהצלחה`);
-				match.ToggleForModal();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		console.log(report.gdod);
+		if (!(report.gdod == "בחר")) {
+			if (!(report.gdodrep == "בחר")) {
+				axios
+					.put(`http://localhost:8000/report/update/${reportid}`, report)
+					.then((response) => {
+						toast.success(`הדיווח עודכן בהצלחה`);
+						match.ToggleForModal();
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			} else {
+				toast.error("לא הוזנה יחידה מדווחת");
+			}
+		} else {
+			toast.error("לא הוזנה יחידה מנמרית");
+		}
 	};
 
 	const init = () => {
@@ -2036,7 +2056,7 @@ const CarDataFormModal = (match) => {
 																<Input
 																	checked={data.status == 1}
 																	type="radio"
-																	name="dt"
+																	name="status"
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
@@ -2059,7 +2079,7 @@ const CarDataFormModal = (match) => {
 																	checked={data.status == 0}
 																	type="radio"
 																	id="notDelt"
-																	name="dt"
+																	name="status"
 																	value="0"
 																	onChange={handleChange}
 																/>
@@ -2090,6 +2110,8 @@ const CarDataFormModal = (match) => {
 															type="datetime-local"
 															value={data.datevent.slice(0, 21)}
 															onChange={handleChange}
+															min={"1900-01-01T00:00:00"}
+															max={"2100-01-01T00:00:00"}
 														/>
 													</FormGroup>
 
@@ -3001,7 +3023,7 @@ const CarDataFormModal = (match) => {
 																<Input
 																	checked={data.status == 1}
 																	type="radio"
-																	name="dt"
+																	name="status"
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
@@ -3024,7 +3046,7 @@ const CarDataFormModal = (match) => {
 																	checked={data.status == 0}
 																	type="radio"
 																	id="notDelt"
-																	name="dt"
+																	name="status"
 																	value="0"
 																	onChange={handleChange}
 																/>
@@ -3055,6 +3077,8 @@ const CarDataFormModal = (match) => {
 															type="datetime-local"
 															value={data.datevent.slice(0, 21)}
 															onChange={handleChange}
+															min={"1900-01-01T00:00:00"}
+															max={"2100-01-01T00:00:00"}
 														/>
 													</FormGroup>
 

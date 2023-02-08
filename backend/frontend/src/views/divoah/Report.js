@@ -29,6 +29,8 @@ import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilte
 
 const Report = ({ match }) => {
 	const { user } = isAuthenticated();
+	const digits_only = (string) =>
+		[...string].every((c) => "0123456789".includes(c));
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray] = useState([]);
 
@@ -328,9 +330,20 @@ const Report = ({ match }) => {
 	//* handle changes
 
 	function handleChange(evt) {
+		// console.log(evt.target.value);
 		const value = evt.target.value;
 		console.log(evt.target.value);
-		setData({ ...data, [evt.target.name]: value });
+		console.log(evt.target.name);
+		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
+			setData({ ...data, [evt.target.name]: value });
+		} else {
+			if (digits_only(value)) {
+				setData({ ...data, [evt.target.name]: value });
+			} else {
+				// console.log("you used letter in the phone number");
+				toast.error("לא ניתן לכתוב אותיות בשדה זה");
+			}
+		}
 	}
 
 	async function matafHandleChange(selectedOption, name) {
@@ -359,6 +372,7 @@ const Report = ({ match }) => {
 
 	// * only for pikod... and magadal... should be saved in cardats not data (the report itself)
 	function handleChange2(selectedOption, name) {
+		// console.log(selectedOption.value);
 		if (!(selectedOption.value == "בחר")) {
 			// console.log(selectedOption);
 			setData({ ...data, [name]: selectedOption.value });
@@ -394,6 +408,14 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += " טלפון ריק \n";
 		}
+		// if (data.gdod == ("בחר" || "" || undefined || null)) {
+		// 	flag = false;
+		// 	ErrorReason += "  גדוד ריק \n";
+		// }
+		// if (data.gdodrep == ("בחר" || "" || undefined || null)) {
+		// 	flag = false;
+		// 	ErrorReason += "  גדוד ריק \n";
+		// }
 
 		// if (
 		// 	document.getElementById("pikod").options[
@@ -657,39 +679,50 @@ const Report = ({ match }) => {
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData.dt);
-
 		console.groupCollapsed("Axios");
-
-		axios
-			.post(`http://localhost:8000/report/add`, requestData)
-			.then((res) => {
-				console.groupCollapsed("Axios then");
-				console.log(res);
-				setData({ ...data, loading: false, error: false, successmsg: true });
-				toast.success(` הדיווח נשלח בהצלחה`);
-				if (user.role == "0") {
-					history.push(`/odot`);
-				} else if (user.role == "1") {
-					history.push(`/dashamal`);
-				} else if (user.role == "2") {
-					history.push(`/dashadmin`);
-				}
-				console.log(res.data);
+		if (!requestData.gdod == "") {
+			if (!requestData.gdodrep == "") {
+				axios
+					.post(`http://localhost:8000/report/add`, requestData)
+					.then((res) => {
+						console.groupCollapsed("Axios then");
+						console.log(res);
+						setData({
+							...data,
+							loading: false,
+							error: false,
+							successmsg: true,
+						});
+						toast.success(` הדיווח נשלח בהצלחה`);
+						if (user.role == "0") {
+							history.push(`/odot`);
+						} else if (user.role == "1") {
+							history.push(`/dashamal`);
+						} else if (user.role == "2") {
+							history.push(`/dashadmin`);
+						}
+						console.log(res.data);
+						console.groupEnd();
+					})
+					.catch((error) => {
+						console.groupCollapsed("Axios catch error");
+						console.log(error);
+						toast.error("שגיאה בשליחת הדיווח");
+						setData({
+							...data,
+							errortype: error.response.data.error,
+							loading: false,
+							error: true,
+						});
+						console.groupEnd();
+					});
 				console.groupEnd();
-			})
-			.catch((error) => {
-				console.groupCollapsed("Axios catch error");
-				console.log(error);
-				toast.error("שגיאה בשליחת הדיווח");
-				setData({
-					...data,
-					errortype: error.response.data.error,
-					loading: false,
-					error: true,
-				});
-				console.groupEnd();
-			});
-		console.groupEnd();
+			} else {
+				toast.error("לא הוזנה יחידה מדווחת");
+			}
+		} else {
+			toast.error("לא הוזנה יחידה מנמרית");
+		}
 	};
 
 	const initWithUserData = () => {
@@ -1897,6 +1930,8 @@ const Report = ({ match }) => {
 											type="datetime-local"
 											value={data.datevent}
 											onChange={handleChange}
+											min={"1900-01-01T00:00:00"}
+											max={"2100-01-01T00:00:00"}
 										/>
 									</FormGroup>
 
