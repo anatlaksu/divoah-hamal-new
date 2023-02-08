@@ -42,7 +42,7 @@ const AdminSignInForm = () => {
 	const [ogdasop, setOgdasop] = useState([]);
 	const [pikodsop, setPikodsop] = useState([]);
 
-	const [gdodim, setGdodim]=useState([]);
+	const [gdodim, setGdodim] = useState([]);
 
 	// const [filter, setFilter] = useState([]);
 
@@ -77,7 +77,7 @@ const AdminSignInForm = () => {
 			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
 				setPikods(response.data);
-				console.log(response.data);
+				// console.log(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -355,12 +355,16 @@ const AdminSignInForm = () => {
 		return alldata;
 	}
 
+	const reportEvent = reportDB.filter((report) =>
+		data.pikod.includes(report.pikod)
+	);
+
 	const dataevent = {
 		labels: labels,
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumtypereport(labels, reportDB, eventTypeArray),
+				data: sumtypereport(labels, reportEvent, eventTypeArray),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -965,8 +969,8 @@ const AdminSignInForm = () => {
 							</CardBody>
 						</Card>
 					</Col>
-					</Row>
-					<Row>
+				</Row>
+				<Row>
 					<Col lg="6">
 						<Card className="card-chart">
 							<CardHeader>
