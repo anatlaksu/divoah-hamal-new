@@ -205,24 +205,26 @@ const EditUserForm = ({ match }) => {
 											<option value="1">משתמש חמ"ל</option>
 											<option value="2"> מנהל מערכת</option>
 										</Input>
-									</FormGroup >
-									{data.role != "0" ? (
+									</FormGroup>
+									{data.role == "1" ? (
 										<>
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												פיקוד
 											</div>
-											<FormGroup 			style={{
+											<FormGroup
+												style={{
 													justifyContent: "right",
 													alignContent: "right",
 													textAlign: "right",
-												}}>
+												}}
+											>
 												<h6>פיקוד</h6>
 												<Select
 													data={pikods}
 													handleChange2={handleChange2}
 													name={"pikod"}
 													val={data.pikod ? data.pikod : undefined}
-													/>
+												/>
 											</FormGroup>
 										</>
 									) : null}
