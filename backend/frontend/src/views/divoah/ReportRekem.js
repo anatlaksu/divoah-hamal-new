@@ -495,36 +495,49 @@ const Report = ({ props }) => {
 
 		console.groupCollapsed("Axios");
 
-		axios
-			.post(`http://localhost:8000/report/add`, requestData)
-			.then((res) => {
-				console.groupCollapsed("Axios then");
-				console.log(res);
-				setData({ ...data, loading: false, error: false, successmsg: true });
-				toast.success(` הדיווח נשלח בהצלחה`);
-				if (user.role == "0") {
-					history.push(`/odot`);
-				} else if (user.role == "1") {
-					history.push(`/dashamal`);
-				} else if (user.role == "2") {
-					history.push(`/dashadmin`);
-				}
-				console.log(res.data);
+		if (!requestData.gdod == "") {
+			if (!requestData.gdodrep == "") {
+				axios
+					.post(`http://localhost:8000/report/add`, requestData)
+					.then((res) => {
+						console.groupCollapsed("Axios then");
+						console.log(res);
+						setData({
+							...data,
+							loading: false,
+							error: false,
+							successmsg: true,
+						});
+						toast.success(` הדיווח נשלח בהצלחה`);
+						if (user.role == "0") {
+							history.push(`/odot`);
+						} else if (user.role == "1") {
+							history.push(`/dashamal`);
+						} else if (user.role == "2") {
+							history.push(`/dashadmin`);
+						}
+						console.log(res.data);
+						console.groupEnd();
+					})
+					.catch((error) => {
+						console.groupCollapsed("Axios catch error");
+						console.log(error);
+						toast.error("שגיאה בשליחת הדיווח");
+						setData({
+							...data,
+							errortype: error.response.data.error,
+							loading: false,
+							error: true,
+						});
+						console.groupEnd();
+					});
 				console.groupEnd();
-			})
-			.catch((error) => {
-				console.groupCollapsed("Axios catch error");
-				console.log(error);
-				toast.error("שגיאה בשליחת הדיווח");
-				setData({
-					...data,
-					errortype: error.response.data.error,
-					loading: false,
-					error: true,
-				});
-				console.groupEnd();
-			});
-		console.groupEnd();
+			} else {
+				toast.error("לא הוזנה יחידה מדווחת");
+			}
+		} else {
+			toast.error("לא הוזנה יחידה מנמרית");
+		}
 	};
 
 	const initWithUserData = () => {

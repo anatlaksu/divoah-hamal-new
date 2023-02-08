@@ -272,8 +272,8 @@ router.route("/:id").get((req, res) => {
 				$and: andquery,
 			},
 		};
-		console.log(matchquerry);
-		console.log(andquery);
+		// console.log(matchquerry);
+		// console.log(andquery);
 		finalquerry.push(matchquerry);
 	}
 	Report.aggregate(finalquerry)

@@ -372,6 +372,7 @@ const Report = ({ match }) => {
 
 	// * only for pikod... and magadal... should be saved in cardats not data (the report itself)
 	function handleChange2(selectedOption, name) {
+		// console.log(selectedOption.value);
 		if (!(selectedOption.value == "בחר")) {
 			// console.log(selectedOption);
 			setData({ ...data, [name]: selectedOption.value });
@@ -407,11 +408,11 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += " טלפון ריק \n";
 		}
-		// if (data.gdod == "בחר") {
+		// if (data.gdod == ("בחר" || "" || undefined || null)) {
 		// 	flag = false;
 		// 	ErrorReason += "  גדוד ריק \n";
 		// }
-		// if (data.gdodrep == "בחר") {
+		// if (data.gdodrep == ("בחר" || "" || undefined || null)) {
 		// 	flag = false;
 		// 	ErrorReason += "  גדוד ריק \n";
 		// }
@@ -678,39 +679,50 @@ const Report = ({ match }) => {
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData.dt);
-
 		console.groupCollapsed("Axios");
-
-		axios
-			.post(`http://localhost:8000/report/add`, requestData)
-			.then((res) => {
-				console.groupCollapsed("Axios then");
-				console.log(res);
-				setData({ ...data, loading: false, error: false, successmsg: true });
-				toast.success(` הדיווח נשלח בהצלחה`);
-				if (user.role == "0") {
-					history.push(`/odot`);
-				} else if (user.role == "1") {
-					history.push(`/dashamal`);
-				} else if (user.role == "2") {
-					history.push(`/dashadmin`);
-				}
-				console.log(res.data);
+		if (!requestData.gdod == "") {
+			if (!requestData.gdodrep == "") {
+				axios
+					.post(`http://localhost:8000/report/add`, requestData)
+					.then((res) => {
+						console.groupCollapsed("Axios then");
+						console.log(res);
+						setData({
+							...data,
+							loading: false,
+							error: false,
+							successmsg: true,
+						});
+						toast.success(` הדיווח נשלח בהצלחה`);
+						if (user.role == "0") {
+							history.push(`/odot`);
+						} else if (user.role == "1") {
+							history.push(`/dashamal`);
+						} else if (user.role == "2") {
+							history.push(`/dashadmin`);
+						}
+						console.log(res.data);
+						console.groupEnd();
+					})
+					.catch((error) => {
+						console.groupCollapsed("Axios catch error");
+						console.log(error);
+						toast.error("שגיאה בשליחת הדיווח");
+						setData({
+							...data,
+							errortype: error.response.data.error,
+							loading: false,
+							error: true,
+						});
+						console.groupEnd();
+					});
 				console.groupEnd();
-			})
-			.catch((error) => {
-				console.groupCollapsed("Axios catch error");
-				console.log(error);
-				toast.error("שגיאה בשליחת הדיווח");
-				setData({
-					...data,
-					errortype: error.response.data.error,
-					loading: false,
-					error: true,
-				});
-				console.groupEnd();
-			});
-		console.groupEnd();
+			} else {
+				toast.error("לא הוזנה יחידה מדווחת");
+			}
+		} else {
+			toast.error("לא הוזנה יחידה מנמרית");
+		}
 	};
 
 	const initWithUserData = () => {

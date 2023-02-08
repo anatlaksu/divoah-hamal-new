@@ -545,10 +545,10 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
-		if (data.nifga == "") {
-			flag = false;
-			ErrorReason += "כמות הנפגעים ריקה \n";
-		}
+		// if (data.nifga == "") {
+		// 	flag = false;
+		// 	ErrorReason += "כמות הנפגעים ריקה \n";
+		// }
 
 		if (flag == true) {
 			FixUser(event);
@@ -682,7 +682,7 @@ const CarDataFormModal = (match) => {
 			mkabaz: data.mkabaz,
 			zadik: data.zadik,
 			yn: data.yn,
-			status: data.dt != undefined || null ? data.dt : data.status,
+			status: data.status,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -699,16 +699,24 @@ const CarDataFormModal = (match) => {
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
 		};
-
-		axios
-			.put(`http://localhost:8000/report/update/${reportid}`, report)
-			.then((response) => {
-				toast.success(`הדיווח עודכן בהצלחה`);
-				match.ToggleForModal();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		console.log(report.gdod);
+		if (!(report.gdod == "בחר")) {
+			if (!(report.gdodrep == "בחר")) {
+				axios
+					.put(`http://localhost:8000/report/update/${reportid}`, report)
+					.then((response) => {
+						toast.success(`הדיווח עודכן בהצלחה`);
+						match.ToggleForModal();
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			} else {
+				toast.error("לא הוזנה יחידה מדווחת");
+			}
+		} else {
+			toast.error("לא הוזנה יחידה מנמרית");
+		}
 	};
 
 	const init = () => {
@@ -2048,7 +2056,7 @@ const CarDataFormModal = (match) => {
 																<Input
 																	checked={data.status == 1}
 																	type="radio"
-																	name="dt"
+																	name="status"
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
@@ -2071,7 +2079,7 @@ const CarDataFormModal = (match) => {
 																	checked={data.status == 0}
 																	type="radio"
 																	id="notDelt"
-																	name="dt"
+																	name="status"
 																	value="0"
 																	onChange={handleChange}
 																/>
@@ -3015,7 +3023,7 @@ const CarDataFormModal = (match) => {
 																<Input
 																	checked={data.status == 1}
 																	type="radio"
-																	name="dt"
+																	name="status"
 																	value="1"
 																	onChange={handleChange}
 																	id="delt"
@@ -3038,7 +3046,7 @@ const CarDataFormModal = (match) => {
 																	checked={data.status == 0}
 																	type="radio"
 																	id="notDelt"
-																	name="dt"
+																	name="status"
 																	value="0"
 																	onChange={handleChange}
 																/>
