@@ -783,8 +783,10 @@ const Report = ({ match }) => {
 
 	useEffect(() => {
 		setRekem([]);
-		getRekem();
-	}, [data.mkabaz]);
+		getRekem(data.magad);
+		console.log(data.mkabaz);
+		console.log(mkabazsRekem);
+	}, [data.magad]);
 
 	useEffect(() => {
 		setCartypesfilterarray([]);
@@ -1577,7 +1579,7 @@ const Report = ({ match }) => {
 												{console.log(mkabazsMataf[indexM].matafCre)} */}
 
 												{mkabazsRekem[indexM] ==
-												undefined ? null : mkabazsRekem[indexM] == true ? (
+												undefined ? null : mkabazsRekem[indexM] ? (
 													<Input
 														type="select"
 														name="mataftype"
@@ -1591,8 +1593,7 @@ const Report = ({ match }) => {
 														<option value={"3"}>תא מנוע ותא צוות</option>
 													</Input>
 												) : (
-													mkabazsRekem[indexM] ==
-													false(
+													!mkabazsRekem[indexM](
 														<Input
 															type="select"
 															name="mataftype"
