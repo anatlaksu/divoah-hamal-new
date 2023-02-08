@@ -20,6 +20,8 @@ import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
 import { isAuthenticated } from "auth";
+import image from "../../assets/img/landing.jpg";
+
 
 function AdminSignInForm() {
 	const { user } = isAuthenticated();
@@ -69,53 +71,20 @@ function AdminSignInForm() {
 	console.log(incident.length);
 
 	return (
-		<div>
-			<Container className="mt--8 pb-5">
-				<Row className="justify-content-center">
-					<Col
-						lg="10"
-						md="2"
-					>
-						<Card className="shadow border-0">
-							<CardHeader>
-								{" "}
-								<h2 className="text-center">עשרת הדיברות בבטיחות בעבודה</h2>
-							</CardHeader>
-							<CardBody className="text-right mb-5">
-								<li>
-									{" "}
-									t is a long established fact that a reader will be distracted
-									by the readable content of a page when looking at its layout.
-									The point of using Lorem Ipsum is that it has a more-or-less
-									normal distribution of letters, as opposed to using 'Content
-									here, content here', making it look like readable English.
-									Many desktop publishing packages and web page editors now use
-									Lorem Ipsum as their default model text, and a search for
-									'lorem ipsum' will uncover many web sites still in their
-									infancy . Various versions have evolved over the years,
-									sometimes by accident, sometimes on purpose (injected humour
-									and the like).
-								</li>
-								<li>
-									{" "}
-									t is a long established fact that a reader will be distracted
-									by the readable content of a page when looking at its layout.
-									The point of using Lorem Ipsum is that it has a more-or-less
-									normal distribution of letters, as opposed to using 'Content
-									here, content here', making it look like readable English.
-									Many desktop publishing packages and web page editors now use
-									Lorem Ipsum as their default model text, and a search for
-									'lorem ipsum' will uncover many web sites still in their
-									infancy . Various versions have evolved over the years,
-									sometimes by accident, sometimes on purpose (injected humour
-									and the like).
-								</li>
-							</CardBody>
-							{/*//* ---------------- navigation buttons ----------------------------------------------------- */}
-							<div className="row justify-content-around mb-4 mt-5">
-								<div className="col-md-3 ">
+		<div >
+		<div className=" position-absolute"
+		style={{marginRight: "7em"}}
+		
+		>
+		{/*//* on army marginRight: "12em" */}
+								<div className="mb-5"
+								style={{marginTop :" 250%"}}
+								>
+										{/*//* on army marginTop :" 320%" */}
+
 									<Button>
 										<Link
+										
 											className="text-white"
 											to="/report"
 										>
@@ -123,7 +92,7 @@ function AdminSignInForm() {
 										</Link>
 									</Button>
 								</div>
-								<div className="col-md-3 ml-4">
+								<div className="">
 									<Button>
 										<Link
 											className="text-white"
@@ -134,31 +103,11 @@ function AdminSignInForm() {
 									</Button>
 								</div>
 							</div>
-						</Card>
-					</Col>
-					{/*//* ------------------------------------------------------------ info cards ---------------------------------   */}
-					<div className="row justify-content-around">
-						<Card className="col-md-4 shadow border-0 mt-5 ml-5">
-							<CardHeader>
-								{" "}
-								<h2 className="text-center">
-									כמות אירועים חריגים שדווחו <br />
-									{incident.length}
-								</h2>
-							</CardHeader>
-						</Card>
-						<Card className="col-md-4 shadow border-0 mt-5 mr-5">
-							<CardHeader>
-								{" "}
-								<h2 className="text-center">
-									כמות אירועי רק"ם שדווחו
-									<br /> {rekem.length}
-								</h2>
-							</CardHeader>
-						</Card>
-					</div>
-				</Row>
-			</Container>
+			<img 
+				src={image}
+				style={{ width: "100vw", height: "100vh" }}
+			/>
+
 		</div>
 	);
 }

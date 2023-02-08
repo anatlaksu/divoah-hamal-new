@@ -68,7 +68,7 @@ function AdminSignInForm() {
 		if (redirectToReferrer) {
 			console.log(user);
 			if (user && user.validated == true) {
-				history.push("/odot");
+				history.push("/dash");
 				/* //? by role to dashboard
 				if (user.role === "0") {
 					history.push(`/dash`);
