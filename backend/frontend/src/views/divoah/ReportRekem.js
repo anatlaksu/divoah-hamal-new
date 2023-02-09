@@ -1073,7 +1073,7 @@ const Report = ({ props }) => {
 											</Col>
 										)}
 
-										{data.magad && !data.mkabaz ? (
+										{data.magad ? (
 											<Col
 												style={{
 													justifyContent: "right",

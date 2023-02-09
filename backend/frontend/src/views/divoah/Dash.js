@@ -20,7 +20,8 @@ import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
 import { isAuthenticated } from "auth";
-import image from "../../assets/img/landing.jpg";
+
+import image from "../../assets/img/divoha-report.png";
 
 
 function AdminSignInForm() {

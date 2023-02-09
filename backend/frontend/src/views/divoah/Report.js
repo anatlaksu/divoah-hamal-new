@@ -1519,7 +1519,7 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 
-												{data.magad && !data.makat ? (
+												{data.magad ? (
 													<Col
 														style={{
 															justifyContent: "right",
@@ -1554,7 +1554,9 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 											</Row>
-											<div className="mt-3">
+									{data.mkabaz == undefined ? null : !data.mkabaz == "" ?
+									(
+										<div className="mt-3">
 												<FormGroup
 													className="mb-3"
 													dir="rtl"
@@ -1568,6 +1570,12 @@ const Report = ({ match }) => {
 													/>
 												</FormGroup>
 											</div>
+									)
+									:
+									(
+null
+									)}
+										
 
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												סוג המטף
@@ -1837,7 +1845,9 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 											</Row>
-											<div className="mt-3">
+											{data.mkabaz == undefined ? null : !data.mkabaz == "" ?
+									(
+										<div className="mt-3">
 												<FormGroup
 													className="mb-3"
 													dir="rtl"
@@ -1851,6 +1861,11 @@ const Report = ({ match }) => {
 													/>
 												</FormGroup>
 											</div>
+									)
+									:
+									(
+null
+									)}
 
 											{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
                     סוג הכלי המחלץ
