@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import styles from "../divoah/css/dash.module.css"
 import { Link, withRouter, Redirect } from "react-router-dom";
 import {
 	Button,
@@ -21,12 +21,55 @@ import history from "history.js";
 import { toast } from "react-toastify";
 import { isAuthenticated } from "auth";
 
-import image from "../../assets/img/divoha-report.png";
+import backgroundImg from "../../assets/img/divoha-report.png";
+import tank from '../../assets/img/pngwing.com (2).png';
+import note from '../../assets/img/note-img.png';
+import pikodImg from '../../assets/img/home3.png';
+
 
 
 function AdminSignInForm() {
 	const { user } = isAuthenticated();
 	const [data, setData] = useState([]);
+
+
+	const loadReports = () => {
+		//* help tool for checking if ReportDB is an array so the map function will work on him
+		let arrayTester = [];
+		//* geting all the reports
+		axios
+			.get(`http://localhost:8000/report/`)
+			.then((res) => {
+				res.data.map((item, index) => {
+					// console.log(res.data[index]._id);
+					//* taking the id of etch report and geting all its data (like in the cardatamodal)
+					axios
+						.get(`http://localhost:8000/report/${res.data[index]._id}`)
+						.then((response) => {
+							// console.log(response);
+							// let tempuser = { ...response.data };
+							// setData(tempuser);
+							let tempcardata = response.data[0];
+							// console.log(tempcardata);
+							arrayTester.push(tempcardata);
+							// tempcardata.slice();
+							if (arrayTester.length === res.data.length) {
+								setData(arrayTester);
+								console.log(data.length);
+							}
+						})
+						.catch((error) => {
+							console.log(error);
+						});
+				});
+				// console.log(response.data);
+				// console.log(reportDBItem);
+				// setReportDB(reportDBItem);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
 	useEffect(() => {
 		// console.log(user.personalnumber);
@@ -73,39 +116,97 @@ function AdminSignInForm() {
 
 	return (
 		<div >
-		<div className=" position-absolute"
-		style={{marginRight: "7em"}}
-		
-		>
-		{/*//* on army marginRight: "12em" */}
-								<div className="mb-5"
-								style={{marginTop :" 250%"}}
-								>
-										{/*//* on army marginTop :" 320%" */}
+		{/* //* ---------------------- buttons---------------- */}
 
-									<Button>
+							<div className="row position-absolute"
+							style={{ marginTop:"14%"}}
+							>
+								<div className="col-md-2 lg mr-3">
+									<button className= {styles.dashBtn}>
 										<Link
-										
-											className="text-white"
+										className="text-dark"
 											to="/report"
 										>
 											דיווח אירוע חריג
 										</Link>
-									</Button>
+									</button>
 								</div>
-								<div className="">
-									<Button>
+								<div className="col-md-3 lg ">
+									<button className={styles.dashBtn}
+									style={{marginLeft:"100px"}}
+									>
 										<Link
-											className="text-white"
+										className="text-dark"
 											to="/reportrekem"
 										>
 											דיווח אירוע רק"ם
 										</Link>
-									</Button>
+									</button>
+									
 								</div>
+
+										{/* //* ----------- cards ------------------------ */}
+							<div className={styles.AllCard}>
+								<div className="row justify-content-around">
+
+						{/*//* ------- rekem ------------- */}
+
+						<Card className="col-md-2 shadow border-0 mt-5 mr-5"
+						style ={{height:"300px"}}
+						>
+						<img 
+				src={tank}
+				style={{height:"120px", width:"120px"}}
+				className="mb-0 rounded mx-auto d-block"
+			/>
+							<CardHeader>
+								{" "}
+								<h2 className="text-center mt-0">
+									 סה"כ אירועי רק"ם
+									 <br />	 <br />{rekem.length}
+								</h2>
+							</CardHeader>
+						</Card>
+						
+					{/*//* ------- pikod ------------- */}
+			
+						<Card className="col-md-2 shadow border-0 mt-5 mr-5" 
+						style ={{height:"400px"}}
+						>
+						<img 
+				src={pikodImg}
+				style={{height:"60px", width:"60px"}}
+				className="mb-0 mt-2 rounded mx-auto d-block"
+			/>
+							<CardHeader>
+								{" "}
+								<h2 className="text-center"> כמות אירועים חריגים שדווחו  <br />  <br /> {data.length}
+								</h2>
+							</CardHeader>
+						</Card>
+
+				{/*//* ------- report ------------- */}
+
+						<Card className="col-md-2 shadow border-0 mt-5 mr-5"
+						style ={{height:"300px"}}
+						>
+						<img 
+				src={note}
+				style={{height:"60px", width:"60px"}}
+				className="mb-0 mt-2 rounded mx-auto d-block"
+			/>
+							<CardHeader>
+								{" "}
+								<h2 className="text-center"> כמות אירועים חריגים שדווחו  <br />  <br /> {incident.length}
+								</h2>
+							</CardHeader>
+						</Card>
+						
+					</div>
+					</div>
 							</div>
 			<img 
-				src={image}
+				src={backgroundImg}
 				style={{ width: "100vw", height: "100vh" }}
 			/>
 
