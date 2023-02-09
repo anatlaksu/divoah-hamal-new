@@ -204,9 +204,11 @@ const EditUserForm = ({ match }) => {
 											<option value="0">משתמש רגיל</option>
 											<option value="1">משתמש חמ"ל</option>
 											<option value="2"> מנהל מערכת</option>
+											<option value="3"> משתמש חט"ל</option>
+
 										</Input>
 									</FormGroup>
-									{data.role == "1" ? (
+									{data.role == "1" || data.role == "3" ? (
 										<>
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												פיקוד
