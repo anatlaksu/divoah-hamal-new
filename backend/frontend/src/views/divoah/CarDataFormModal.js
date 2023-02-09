@@ -2371,7 +2371,7 @@ const CarDataFormModal = (match) => {
 										) : (
 											<CardBody className="px-lg-5 py-lg-5">
 												<div className="text-center text-muted mb-4">
-													<big>עיכון דיווח</big>
+													<big>עדכון דיווח</big>
 												</div>
 												<div className="text-center text-muted mb-4">
 													<small>פרטי מדווח</small>
@@ -2784,128 +2784,46 @@ const CarDataFormModal = (match) => {
 													>
 														סוג הרק"ם
 													</div>
-													<Row>
-														{!data.magad ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד על</h6>
-																<Select
-																	data={magadals}
-																	handleChange2={handleChange2}
-																	name={"magadal"}
-																	val={data.magadal ? data.magadal : undefined}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד על</h6>
-																<Select
-																	data={magadals}
-																	handleChange2={handleChange2}
-																	name={"magadal"}
-																	val={data.magadal ? data.magadal : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														)}
+													<Row style={{ padding: "0px" }}>
+																<Col
+																	style={{
+																		display: "flex",
+																		justifyContent: "right",
+																		paddingTop: "15px",
+																		paddingRight: "0px",
+																	}}
+																>
+																	<Button
+																		style={{ width: "100px", padding: "10px" }}
+																		type="button"
+																		onClick={() => {
+																			setCartypesfilterarray((currentSpec) => [
+																				...currentSpec,
+																				{ id: generate() },
+																			]);
+																		}}
+																	>
+																		הוסף רק"ם
+																	</Button>
+																</Col>
+															</Row>
 
-														{data.magadal && !data.mkabaz ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד</h6>
-																<Select
-																	data={magads}
-																	handleChange2={handleChange2}
-																	name={"magad"}
-																	val={data.magad ? data.magad : undefined}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד</h6>
-																<Select
-																	data={magads}
-																	handleChange2={handleChange2}
-																	name={"magad"}
-																	val={data.magad ? data.magad : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														)}
+															{cartypesfilterarray.map(
+																(cartypesfilterobject, index) => {
+																	return (
+																		<CarTypesFilterObject
+																			cartypesfilterobject={
+																				cartypesfilterobject
+																			}
+																			index={index}
+																			setCartypesfilterarray={
+																				setCartypesfilterarray
+																			}
+																		/>
+																	);
+																}
+															)}
 
-														{data.magad && !data.makat ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מקבץ</h6>
-																<Select
-																	data={mkabazs}
-																	handleChange2={handleChange2}
-																	name={"mkabaz"}
-																	val={data.mkabaz ? data.mkabaz : undefined}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מקבץ</h6>
-																<Select
-																	data={mkabazs}
-																	handleChange2={handleChange2}
-																	name={"mkabaz"}
-																	val={data.mkabaz ? data.mkabaz : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														)}
-													</Row>
-													<div className="mt-3">
-														<div className="mt-3">
-															<FormGroup
-																className="mb-3"
-																dir="rtl"
-															>
-																<Input
-																	placeholder="צ'"
-																	name="zadik"
-																	type="string"
-																	value={data.zadik}
-																	onChange={handleChange}
-																/>
-															</FormGroup>
-														</div>
-													</div>
 
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}

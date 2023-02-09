@@ -32,6 +32,7 @@ const Report = ({ props }) => {
 	const digits_only = (string) =>
 		[...string].every((c) => "0123456789".includes(c));
 	const [infohurtarray, setinfohurtarray] = useState([]);
+	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 
 	const [data, setData] = useState({
 		name: "",
@@ -44,6 +45,7 @@ const Report = ({ props }) => {
 		gdod: "",
 		gdodrep: "",
 		mkabaz: "",
+		arraymkabaz: [],
 		zadik: "",
 		typevent: "רקם",
 		resevent: "0",
@@ -407,10 +409,6 @@ const Report = ({ props }) => {
 		// 	flag = false;
 		// 	ErrorReason += " ,סוג הרקם ריק \n";
 		// }
-		if (data.zadik == "") {
-			flag = false;
-			ErrorReason += "  צ' ריק\n";
-		}
 		if (
 			!document.getElementById("YES").checked &&
 			!document.getElementById("NO").checked
@@ -469,6 +467,7 @@ const Report = ({ props }) => {
 			gdod: data.gdod,
 			gdodrep: data.gdodrep,
 			mkabaz: data.mkabaz,
+			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
 			dt: data.dt,
 			typevent: data.typevent,
@@ -601,6 +600,10 @@ const Report = ({ props }) => {
 		setMkabazs([]);
 		getMkabazs();
 	}, [data.mkabaz]);
+
+	useEffect(() => {
+		setCartypesfilterarray([]);
+	}, []);
 
 	return (
 		<div>
@@ -1002,127 +1005,42 @@ const Report = ({ props }) => {
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										סוג הרק"ם
 									</div>
-									<Row>
-										{!data.magad ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>מאגד על</h6>
-												<Select
-													data={magadals}
-													handleChange2={handleChange2}
-													name={"magadal"}
-													val={data.magadal ? data.magadal : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>מאגד על</h6>
-												<Select
-													data={magadals}
-													handleChange2={handleChange2}
-													name={"magadal"}
-													val={data.magadal ? data.magadal : undefined}
-													isDisabled={true}
-												/>
-											</Col>
-										)}
+									<Row style={{ padding: "0px" }}>
+												<Col
+													style={{
+														display: "flex",
+														justifyContent: "right",
+														paddingTop: "15px",
+														paddingRight: "0px",
+													}}
+												>
+													<Button
+														style={{ width: "100px", padding: "10px" }}
+														type="button"
+														onClick={() => {
+															setCartypesfilterarray((currentSpec) => [
+																...currentSpec,
+																{ id: generate() },
+															]);
+														}}
+													>
+														הוסף רק"ם
+													</Button>
+												</Col>
+											</Row>
 
-										{data.magadal && !data.mkabaz ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>מאגד</h6>
-												<Select
-													data={magads}
-													handleChange2={handleChange2}
-													name={"magad"}
-													val={data.magad ? data.magad : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>מאגד</h6>
-												<Select
-													data={magads}
-													handleChange2={handleChange2}
-													name={"magad"}
-													val={data.magad ? data.magad : undefined}
-													isDisabled={true}
-												/>
-											</Col>
-										)}
-
-										{data.magad ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>מקבץ</h6>
-												<Select
-													data={mkabazs}
-													handleChange2={handleChange2}
-													name={"mkabaz"}
-													val={data.mkabaz ? data.mkabaz : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>מקבץ</h6>
-												<Select
-													data={mkabazs}
-													handleChange2={handleChange2}
-													name={"mkabaz"}
-													val={data.mkabaz ? data.mkabaz : undefined}
-													isDisabled={true}
-												/>
-											</Col>
-										)}
-									</Row>
-
-									<div className="mt-3">
-										<FormGroup
-											className="mb-3"
-											dir="rtl"
-										>
-											<Input
-												placeholder="צ'"
-												name="zadik"
-												type="string"
-												value={data.zadik}
-												onChange={handleChange}
-											/>
-										</FormGroup>
-									</div>
+											{cartypesfilterarray.map(
+												(cartypesfilterobject, index) => {
+													return (
+														<CarTypesFilterObject
+															user={user}
+															cartypesfilterobject={cartypesfilterobject}
+															index={index}
+															setCartypesfilterarray={setCartypesfilterarray}
+														/>
+													);
+												}
+											)}
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם נגרם נזק לרק"ם

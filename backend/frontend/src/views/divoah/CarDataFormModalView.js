@@ -1959,7 +1959,7 @@ const CarDataFormModalView = (match) => {
 										) : (
 											<CardBody className="px-lg-5 py-lg-5">
 												<div className="text-center text-muted mb-4">
-													<big>עיכון דיווח</big>
+													<big>צפייה בדיווח</big>
 												</div>
 												<div className="text-center text-muted mb-4">
 													<small>פרטי מדווח</small>
@@ -2384,130 +2384,21 @@ const CarDataFormModalView = (match) => {
 													>
 														סוג הרק"ם
 													</div>
-													<Row>
-														{!data.magad ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד על</h6>
-																<Select
-																	data={magadals}
-																	handleChange2={handleChange2}
-																	name={"magadal"}
-																	val={data.magadal ? data.magadal : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד על</h6>
-																<Select
-																	data={magadals}
-																	handleChange2={handleChange2}
-																	name={"magadal"}
-																	val={data.magadal ? data.magadal : undefined}
-																	disabled
-																/>
-															</Col>
-														)}
-
-														{data.magadal && !data.mkabaz ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד</h6>
-																<Select
-																	data={magads}
-																	handleChange2={handleChange2}
-																	name={"magad"}
-																	val={data.magad ? data.magad : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מאגד</h6>
-																<Select
-																	data={magads}
-																	handleChange2={handleChange2}
-																	name={"magad"}
-																	val={data.magad ? data.magad : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														)}
-
-														{data.magad && !data.makat ? (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מקבץ</h6>
-																<Select
-																	data={mkabazs}
-																	handleChange2={handleChange2}
-																	name={"mkabaz"}
-																	val={data.mkabaz ? data.mkabaz : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														) : (
-															<Col
-																style={{
-																	justifyContent: "right",
-																	alignContent: "right",
-																	textAlign: "right",
-																}}
-															>
-																<h6>מקבץ</h6>
-																<Select
-																	data={mkabazs}
-																	handleChange2={handleChange2}
-																	name={"mkabaz"}
-																	val={data.mkabaz ? data.mkabaz : undefined}
-																	isDisabled={true}
-																/>
-															</Col>
-														)}
-													</Row>
-													<div className="mt-3">
-														<FormGroup
-															className="mb-3"
-															dir="rtl"
-														>
-															<Input
-																placeholder="צ'"
-																name="zadik"
-																type="string"
-																value={data.zadik}
-																onChange={handleChange}
-																disabled
-															/>
-														</FormGroup>
-													</div>
+													{cartypesfilterarray.map(
+																(cartypesfilterobject, index) => {
+																	return (
+																		<CarTypesFilterObject
+																			cartypesfilterobject={
+																				cartypesfilterobject
+																			}
+																			index={index}
+																			setCartypesfilterarray={
+																				setCartypesfilterarray
+																			}
+																		/>
+																	);
+																}
+															)}
 
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
