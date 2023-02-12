@@ -1,28 +1,152 @@
 .dashBtn {
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  padding: 6px 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif !important;
-  border-radius: 6px !important;
-  color: #040000 !important;
-  background: #fff !important;
-  border: none !important;
-  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1) !important;
-  user-select: none !important;
-  -webkit-user-select: none !important;
-  touch-action: manipulation !important; 
-  border-radius: 12px  !important;
-  
+	width: 200px;
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	padding: 6px 14px;
+	font-family: -apple-system, BlinkMacSystemFont, "Roboto", sans-serif !important;
+	border-radius: 6px !important;
+	color: #040000 !important;
+	background: #fff !important;
+	border: none !important;
+	box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1) !important;
+	user-select: none !important;
+	-webkit-user-select: none !important;
+	touch-action: manipulation !important;
+	border-radius: 18px !important;
 }
 
 .dashBtn:focus {
-  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5) !important;
-  outline: 0 !important;
+	box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1),
+		0px 0px 0px 3.5px rgba(58, 108, 217, 0.5) !important;
+	outline: 0 !important;
 }
 
 .AllCard {
-    margin-top: 12%;
+	margin-top: 12%;
 }
 
+.pikodCard {
+	width: 250px;
+	height: 400px;
+	position: absolute;
+	top: 33%;
+	left: 50%;
+}
+
+.groupChild,
+.groupInner,
+.groupItem {
+	position: absolute;
+	height: 72.1%;
+	width: 100.11%;
+	top: -0.05%;
+	right: -0.03%;
+	bottom: -0.05%;
+	left: -0.09%;
+	max-width: 100%;
+	overflow: hidden;
+	max-height: 100%;
+	/* object-fit: cover; */
+}
+.groupInner,
+.groupItem {
+	height: 51.9%;
+	width: 10.84%;
+	top: 6.65%;
+	right: 0.03%;
+	bottom: 22.45%;
+	left: 89.13%;
+}
+.groupInner {
+	height: 37.54%;
+	width: 45.61%;
+	top: -0.05%;
+	right: 54.48%;
+	bottom: 62.51%;
+	left: -0.09%;
+}
+.pngwing2Icon,
+.vectorParent {
+	position: absolute;
+	height: 70.78%;
+	width: 100%;
+	top: -8%;
+	right: -5%;
+	bottom: 24.61%;
+	left: 0.1%;
+}
+.pngwing2Icon {
+	height: 25.16%;
+	width: 21.82%;
+	top: 0%;
+	right: 60.78%;
+	bottom: 61.02%;
+	left: 17.4%;
+	max-width: 100%;
+	overflow: hidden;
+	max-height: 100%;
+	object-fit: cover;
+}
+.component1Child {
+	border: 0;
+	position: absolute;
+	top: calc(50% - 156.5px);
+	left: calc(50% + 385px);
+}
+.h1 {
+	font-weight: bolder;
+	color: white !important;
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+.h2,
+.h4 {
+	margin: 0;
+	position: relative;
+	font-family: inherit;
+	display: inline-block;
+	width: 33.44rem;
+	height: 4.44rem;
+	flex-shrink: 0;
+}
+.h2 {
+	font-size: inherit;
+	font-weight: 800;
+	-webkit-text-stroke: 1px #fff;
+}
+.h4 {
+	font-weight: 800;
+	font-size: var(--font-size-sm);
+	/* font-weight: 700; */
+	color: var(--color-black);
+	margin-top: -2rem;
+}
+.parent {
+	position: absolute;
+	top: 8rem;
+	left: 84.06rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+.component1 {
+	position: relative;
+	width: 120rem;
+	height: 80rem;
+	flex-shrink: 0;
+}
+.wireframe1 {
+	position: relative;
+	background-color: var(--color-white);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	text-align: right;
+	font-size: var(--font-size-xl);
+	color: var(--color-white);
+	font-family: var(--font-rubik);
+}
