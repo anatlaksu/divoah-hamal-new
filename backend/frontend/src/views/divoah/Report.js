@@ -26,6 +26,7 @@ import { isAuthenticated } from "auth";
 import Select from "components/general/Select/AnimatedSelect";
 import deletepic from "assets/img/delete.png";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
+import Background from "components/general/Background/Background";
 
 const Report = ({ match }) => {
 	const { user } = isAuthenticated();
@@ -799,7 +800,7 @@ const Report = ({ match }) => {
 	// const selectElem = document.getElementById("mkabazM");
 
 	return (
-		<div>
+		<Background>
 			<Container className="mt--8 pb-5">
 				<Row className="justify-content-center">
 					<Col
@@ -1554,28 +1555,22 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 											</Row>
-									{data.mkabaz == undefined ? null : !data.mkabaz == "" ?
-									(
-										<div className="mt-3">
-												<FormGroup
-													className="mb-3"
-													dir="rtl"
-												>
-													<Input
-														placeholder="צ'"
-														name="zadik"
-														type="string"
-														value={data.zadik}
-														onChange={handleChange}
-													/>
-												</FormGroup>
-											</div>
-									)
-									:
-									(
-null
-									)}
-										
+											{data.mkabaz == undefined ? null : !data.mkabaz == "" ? (
+												<div className="mt-3">
+													<FormGroup
+														className="mb-3"
+														dir="rtl"
+													>
+														<Input
+															placeholder="צ'"
+															name="zadik"
+															type="string"
+															value={data.zadik}
+															onChange={handleChange}
+														/>
+													</FormGroup>
+												</div>
+											) : null}
 
 											<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												סוג המטף
@@ -1845,27 +1840,22 @@ null
 													</Col>
 												)}
 											</Row>
-											{data.mkabaz == undefined ? null : !data.mkabaz == "" ?
-									(
-										<div className="mt-3">
-												<FormGroup
-													className="mb-3"
-													dir="rtl"
-												>
-													<Input
-														placeholder="צ'"
-														name="zadik"
-														type="string"
-														value={data.zadik}
-														onChange={handleChange}
-													/>
-												</FormGroup>
-											</div>
-									)
-									:
-									(
-null
-									)}
+											{data.mkabaz == undefined ? null : !data.mkabaz == "" ? (
+												<div className="mt-3">
+													<FormGroup
+														className="mb-3"
+														dir="rtl"
+													>
+														<Input
+															placeholder="צ'"
+															name="zadik"
+															type="string"
+															value={data.zadik}
+															onChange={handleChange}
+														/>
+													</FormGroup>
+												</div>
+											) : null}
 
 											{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
                     סוג הכלי המחלץ
@@ -2160,7 +2150,7 @@ null
 					</Col>
 				</Row>
 			</Container>
-		</div>
+		</Background>
 	);
 };
 

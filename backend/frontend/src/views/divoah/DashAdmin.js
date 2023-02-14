@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import { Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Background from "components/general/Background/Background";
 
 const AdminSignInForm = () => {
 	const [reportDB, setReportDB] = useState([]);
@@ -41,7 +42,7 @@ const AdminSignInForm = () => {
 	const [ogdasop, setOgdasop] = useState([]);
 	const [pikodsop, setPikodsop] = useState([]);
 
-	const [gdodim, setGdodim]=useState([]);
+	const [gdodim, setGdodim] = useState([]);
 
 	// const [filter, setFilter] = useState([]);
 
@@ -92,7 +93,6 @@ const AdminSignInForm = () => {
 				console.log(error);
 			});
 	};
-
 
 	const loadOgdas = async (pikodids) => {
 		let temppikodids = pikodids;
@@ -724,8 +724,11 @@ const AdminSignInForm = () => {
 	}
 
 	return (
-		<div>
-			<Container className="mt--8 pb-5">
+		<Background>
+			<Container
+				className="mt--8 pb-5"
+				// style={{ marginRight: "10%" }}
+			>
 				<Row>
 					<div style={{ width: "100%", margin: "auto", textAlign: "right" }}>
 						<Button
@@ -1000,8 +1003,8 @@ const AdminSignInForm = () => {
 							</CardBody>
 						</Card>
 					</Col>
-					</Row>
-					<Row>
+				</Row>
+				<Row>
 					<Col lg="6">
 						<Card className="card-chart">
 							<CardHeader>
@@ -1113,7 +1116,7 @@ const AdminSignInForm = () => {
 					</>
 				</Row>
 			</Container>
-		</div>
+		</Background>
 	);
 };
 

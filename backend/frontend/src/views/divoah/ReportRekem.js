@@ -26,6 +26,7 @@ import MultiSelect from "components/general/Select/AnimatedMultiSelect";
 import Select from "components/general/Select/AnimatedSelect";
 import deletepic from "assets/img/delete.png";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
+import Background from "components/general/Background/Background";
 
 const Report = ({ props }) => {
 	const { user } = isAuthenticated();
@@ -606,7 +607,7 @@ const Report = ({ props }) => {
 	}, []);
 
 	return (
-		<div>
+		<Background>
 			<Container className="mt--8 pb-5">
 				<Row className="justify-content-center">
 					<Col
@@ -1006,41 +1007,39 @@ const Report = ({ props }) => {
 										סוג הרק"ם
 									</div>
 									<Row style={{ padding: "0px" }}>
-												<Col
-													style={{
-														display: "flex",
-														justifyContent: "right",
-														paddingTop: "15px",
-														paddingRight: "0px",
-													}}
-												>
-													<Button
-														style={{ width: "100px", padding: "10px" }}
-														type="button"
-														onClick={() => {
-															setCartypesfilterarray((currentSpec) => [
-																...currentSpec,
-																{ id: generate() },
-															]);
-														}}
-													>
-														הוסף רק"ם
-													</Button>
-												</Col>
-											</Row>
+										<Col
+											style={{
+												display: "flex",
+												justifyContent: "right",
+												paddingTop: "15px",
+												paddingRight: "0px",
+											}}
+										>
+											<Button
+												style={{ width: "100px", padding: "10px" }}
+												type="button"
+												onClick={() => {
+													setCartypesfilterarray((currentSpec) => [
+														...currentSpec,
+														{ id: generate() },
+													]);
+												}}
+											>
+												הוסף רק"ם
+											</Button>
+										</Col>
+									</Row>
 
-											{cartypesfilterarray.map(
-												(cartypesfilterobject, index) => {
-													return (
-														<CarTypesFilterObject
-															user={user}
-															cartypesfilterobject={cartypesfilterobject}
-															index={index}
-															setCartypesfilterarray={setCartypesfilterarray}
-														/>
-													);
-												}
-											)}
+									{cartypesfilterarray.map((cartypesfilterobject, index) => {
+										return (
+											<CarTypesFilterObject
+												user={user}
+												cartypesfilterobject={cartypesfilterobject}
+												index={index}
+												setCartypesfilterarray={setCartypesfilterarray}
+											/>
+										);
+									})}
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם נגרם נזק לרק"ם
@@ -1352,7 +1351,7 @@ const Report = ({ props }) => {
 					</Col>
 				</Row>
 			</Container>
-		</div>
+		</Background>
 	);
 };
 export default withRouter(Report);

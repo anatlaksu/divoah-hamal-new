@@ -23,6 +23,8 @@ import { toast } from "react-toastify";
 import { Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Background from "components/general/Background/Background";
+
 import { isAuthenticated } from "auth";
 
 const AdminSignInForm = () => {
@@ -742,7 +744,7 @@ const AdminSignInForm = () => {
 	}
 
 	return (
-		<div>
+		<Background>
 			<Container className="mt--8 pb-5">
 				<Row>
 					<div style={{ width: "100%", margin: "auto", textAlign: "right" }}>
@@ -1082,7 +1084,7 @@ const AdminSignInForm = () => {
 					</>
 				</Row>
 			</Container>
-		</div>
+		</Background>
 	);
 };
 
