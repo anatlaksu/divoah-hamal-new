@@ -15,11 +15,14 @@ import { isAuthenticated } from "auth";
 import history from "history.js";
 import CarDataFormModalView from "views/divoah/CarDataFormModalView";
 import CarDataFormModal from "views/divoah/CarDataFormModal";
+import { toast } from "react-toastify";
 
 const SortingTable = ({ match }) => {
 	const columns = useMemo(() => COLUMNS, []);
 	const { user } = isAuthenticated();
 	const [data, setData] = useState([]);
+	//* check if the report was created for more than 30 days
+	const [expired, setExpired] = useState([]);
 	//*cardata form modal
 	const [iscardataformopen, setIscardataformopen] = useState(false);
 	const [cardataidformodal, setCardataidformodal] = useState(undefined);
@@ -64,6 +67,41 @@ const SortingTable = ({ match }) => {
 	// }, []);
 
 	useEffect(() => {
+		console.log(user.personalnumber);
+		if (user.role == "0") {
+			history.push(`/historeport`);
+		}
+		// console.log(data.length);
+		// * ------ making the dates subtractable --------------------------------
+		//* created at:
+		const creatArray = data.map((item, index) => {
+			return new Date(data[index].createdAt);
+		});
+		//* today:
+		const today = new Date();
+
+		// * ---------- makeing sure that there are not any problems --------------------------------
+
+		try {
+			setExpired(
+				creatArray.map((item, index) => {
+					let sum = ~~(
+						(today.getTime() - creatArray[index].getTime()) /
+						86400000
+					);
+					// console.log(`today is ${today}`);
+					// console.log(creatArray[index]);
+					// console.log(`${sum > 30} at ${index}`);
+					return sum > 30;
+				})
+			);
+		} catch (error) {
+			console.log(error);
+		}
+		console.log(expired);
+	}, [data]);
+
+	useEffect(() => {
 		axios
 			.get(
 				`http://localhost:8000/report/requestByPersonalnumber/${user.personalnumber}`
@@ -83,13 +121,29 @@ const SortingTable = ({ match }) => {
 
 	//* modal
 	function Toggle(evt) {
-		if (evt.currentTarget.value == "") {
-			setCardataidformodal(undefined);
+		let index = +evt.currentTarget.id;
+		// console.log(index);
+		console.log(expired[index]);
+		if (!evt.currentTarget.value == "") {
+			if (expired[index] == true) {
+				toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן ךערוך אותו");
+			} else {
+				if (evt.currentTarget.value == "") {
+					setCardataidformodal(undefined);
+				} else {
+					setCardataidformodal(evt.currentTarget.value);
+				}
+				setIscardataformopen(!iscardataformopen);
+			}
 		} else {
-			setCardataidformodal(evt.currentTarget.value);
+			if (evt.currentTarget.value == "") {
+				setCardataidformodal(undefined);
+			} else {
+				setCardataidformodal(evt.currentTarget.value);
+			}
+			setIscardataformopen(!iscardataformopen);
+			// console.log(cardataidformodal);
 		}
-		setIscardataformopen(!iscardataformopen);
-		// console.log(cardataidformodal);
 	}
 
 	function ToggleForModal(evt) {
@@ -202,7 +256,7 @@ const SortingTable = ({ match }) => {
 						))}
 					</thead>
 					<tbody {...getTableBodyProps()}>
-						{page.map((row) => {
+						{page.map((row, index) => {
 							prepareRow(row);
 							return (
 								<tr {...row.getRowProps()}>
@@ -281,6 +335,7 @@ const SortingTable = ({ match }) => {
 												{/* {console.log(row.original.typevent)} */}
 												<button
 													className="btn-new"
+													id={index}
 													value={row.original._id}
 													onClick={Toggle}
 												>
@@ -302,6 +357,7 @@ const SortingTable = ({ match }) => {
 												{/* {console.log(row.original.typevent)} */}
 												<button
 													className="btn-new"
+													id={index}
 													value={row.original._id}
 													onClick={Toggle}
 												>

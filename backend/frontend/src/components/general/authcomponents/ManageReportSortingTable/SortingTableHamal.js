@@ -24,7 +24,10 @@ const SortingTableHamal = ({ match }) => {
 	const { user } = isAuthenticated();
 	const [data, setData] = useState([]);
 	const [isError, setIsError] = useState(false);
+	//* the difference between the date the report was created and the date the incident happened
 	const [diff, setDiff] = useState([]);
+	//* check if the report was created for more than 30 days
+	const [expired, setExpired] = useState([]);
 	//*cardata form modal
 	const [iscardataformopen, setIscardataformopen] = useState(false);
 	const [cardataidformodal, setCardataidformodal] = useState(undefined);
@@ -42,20 +45,25 @@ const SortingTableHamal = ({ match }) => {
 		}
 		// console.log(data.length);
 		// * ------ making the dates subtractable --------------------------------
+		//* created at:
 		const creatArray = data.map((item, index) => {
 			return new Date(data[index].createdAt);
 		});
+		//* the date the incident happened:
 		const dateArray = data.map((item, index) => {
 			return new Date(data[index].datevent);
 		});
+		//* today:
+		const today = new Date();
 
 		// * ---------- makeing sure that there are not any problems --------------------------------
 		try {
 			setDiff(
 				creatArray.map((item, index) => {
-					return Math.round(
+					//* ~~ == Math.floor
+					return ~~(
 						(creatArray[index].getTime() - dateArray[index].getTime()) /
-							86400000
+						86400000
 					);
 				})
 			);
@@ -64,18 +72,51 @@ const SortingTableHamal = ({ match }) => {
 		} catch (error) {
 			console.log(error);
 		}
+		try {
+			setExpired(
+				creatArray.map((item, index) => {
+					let sum = ~~(
+						(today.getTime() - creatArray[index].getTime()) /
+						86400000
+					);
+					// console.log(`today is ${today}`);
+					// console.log(creatArray[index]);
+					// console.log(`${sum > 30} at ${index}`);
+					return sum > 30;
+				})
+			);
+		} catch (error) {
+			console.log(error);
+		}
+		// console.log(expired);
 	}, [data]);
 
 	//* ------------ modal --------------------------------
 
 	function Toggle(evt) {
-		if (evt.currentTarget.value == "") {
-			setCardataidformodal(undefined);
+		let index = +evt.currentTarget.id;
+		// console.log(index);
+		console.log(expired[index]);
+		if (!evt.currentTarget.value == "") {
+			if (expired[index] == true) {
+				toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן ךערוך אותו");
+			} else {
+				if (evt.currentTarget.value == "") {
+					setCardataidformodal(undefined);
+				} else {
+					setCardataidformodal(evt.currentTarget.value);
+				}
+				setIscardataformopen(!iscardataformopen);
+			}
 		} else {
-			setCardataidformodal(evt.currentTarget.value);
+			if (evt.currentTarget.value == "") {
+				setCardataidformodal(undefined);
+			} else {
+				setCardataidformodal(evt.currentTarget.value);
+			}
+			setIscardataformopen(!iscardataformopen);
+			// console.log(cardataidformodal);
 		}
-		setIscardataformopen(!iscardataformopen);
-		// console.log(cardataidformodal);
 	}
 
 	function ToggleForModal(evt) {
@@ -366,6 +407,7 @@ const SortingTableHamal = ({ match }) => {
 												{/* <Link to={`/editreport/${row.original._id}`}> */}
 												<button
 													className="btn-new"
+													id={index}
 													value={row.original._id}
 													onClick={Toggle}
 												>
@@ -388,6 +430,7 @@ const SortingTableHamal = ({ match }) => {
 												{/* <Link to={`/editreport/${row.original._id}`}> */}
 												<button
 													className="btn-new"
+													id={index}
 													value={row.original._id}
 													onClick={Toggle}
 												>
