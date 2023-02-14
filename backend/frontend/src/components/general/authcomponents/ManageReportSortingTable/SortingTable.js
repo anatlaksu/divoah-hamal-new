@@ -123,10 +123,10 @@ const SortingTable = ({ match }) => {
 	function Toggle(evt) {
 		let index = +evt.currentTarget.id;
 		// console.log(index);
-		console.log(expired[index]);
+		// console.log(expired[index]);
 		if (!evt.currentTarget.value == "") {
 			if (expired[index] == true) {
-				toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן ךערוך אותו");
+				toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
 			} else {
 				if (evt.currentTarget.value == "") {
 					setCardataidformodal(undefined);
