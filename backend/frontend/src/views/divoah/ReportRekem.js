@@ -25,7 +25,7 @@ import { isAuthenticated } from "auth";
 import MultiSelect from "components/general/Select/AnimatedMultiSelect";
 import Select from "components/general/Select/AnimatedSelect";
 import deletepic from "assets/img/delete.png";
-import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
+import CarTypesFilterObjectRekem from "components/general/CarTypeFilter/CarTypesFilterObjectRekem";
 import Background from "components/general/Background/Background";
 
 const Report = ({ props }) => {
@@ -1032,7 +1032,7 @@ const Report = ({ props }) => {
 
 									{cartypesfilterarray.map((cartypesfilterobject, index) => {
 										return (
-											<CarTypesFilterObject
+											<CarTypesFilterObjectRekem
 												user={user}
 												cartypesfilterobject={cartypesfilterobject}
 												index={index}

@@ -1530,7 +1530,7 @@ const Report = ({ match }) => {
 													>
 														<h6>מקבץ</h6>
 														<Select
-															data={mkabazs}
+															data={mkabazsRekem}
 															handleChange2={handleChange2}
 															name={"mkabaz"}
 															val={data.mkabaz ? data.mkabaz : undefined}
@@ -1546,7 +1546,7 @@ const Report = ({ match }) => {
 													>
 														<h6>מקבץ</h6>
 														<Select
-															data={mkabazs}
+															data={mkabazsRekem}
 															handleChange2={handleChange2}
 															name={"mkabaz"}
 															val={data.mkabaz ? data.mkabaz : undefined}

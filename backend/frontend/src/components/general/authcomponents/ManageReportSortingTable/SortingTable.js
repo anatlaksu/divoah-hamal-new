@@ -335,7 +335,8 @@ const SortingTable = ({ match }) => {
 												{/* {console.log(row.original.typevent)} */}
 												<button
 													className="btn-new"
-													id={index}
+													id={row.index}
+
 													value={row.original._id}
 													onClick={Toggle}
 												>
@@ -357,7 +358,7 @@ const SortingTable = ({ match }) => {
 												{/* {console.log(row.original.typevent)} */}
 												<button
 													className="btn-new"
-													id={index}
+													id={row.index}
 													value={row.original._id}
 													onClick={Toggle}
 												>

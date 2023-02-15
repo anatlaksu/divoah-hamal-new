@@ -1238,7 +1238,7 @@ const CarDataFormModalView = (match) => {
 																			val={
 																				data.magadal ? data.magadal : undefined
 																			}
-																			disabled
+																			isDisabled={true}
 																		/>
 																	</Col>
 																)}

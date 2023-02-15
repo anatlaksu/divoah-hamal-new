@@ -95,7 +95,7 @@ const SortingTableHamal = ({ match }) => {
 
 	function Toggle(evt) {
 		let index = +evt.currentTarget.id;
-		// console.log(index);
+		console.log(index);
 		console.log(expired[index]);
 		if (!evt.currentTarget.value == "") {
 			if (expired[index] == true) {
@@ -407,7 +407,7 @@ const SortingTableHamal = ({ match }) => {
 												{/* <Link to={`/editreport/${row.original._id}`}> */}
 												<button
 													className="btn-new"
-													id={index}
+													id={row.index}
 													value={row.original._id}
 													onClick={Toggle}
 												>
@@ -430,7 +430,7 @@ const SortingTableHamal = ({ match }) => {
 												{/* <Link to={`/editreport/${row.original._id}`}> */}
 												<button
 													className="btn-new"
-													id={index}
+													id={row.index}
 													value={row.original._id}
 													onClick={Toggle}
 												>

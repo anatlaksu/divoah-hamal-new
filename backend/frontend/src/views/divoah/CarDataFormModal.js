@@ -31,7 +31,7 @@ import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
-import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterObject";
+import CarTypesFilterObjectRekem from "components/general/CarTypeFilter/CarTypesFilterObjectRekem";
 import deletepic from "assets/img/delete.png";
 
 const CarDataFormModal = (match) => {
@@ -1327,7 +1327,7 @@ const CarDataFormModal = (match) => {
 															{cartypesfilterarray.map(
 																(cartypesfilterobject, index) => {
 																	return (
-																		<CarTypesFilterObject
+																		<CarTypesFilterObjectRekem
 																			cartypesfilterobject={
 																				cartypesfilterobject
 																			}
@@ -2811,7 +2811,7 @@ const CarDataFormModal = (match) => {
 															{cartypesfilterarray.map(
 																(cartypesfilterobject, index) => {
 																	return (
-																		<CarTypesFilterObject
+																		<CarTypesFilterObjectRekem
 																			cartypesfilterobject={
 																				cartypesfilterobject
 																			}
