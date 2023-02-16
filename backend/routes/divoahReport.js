@@ -142,6 +142,12 @@ router.route("/").get((req, res) => {
 		.then((request) => res.json(request))
 		.catch((err) => res.status(400).json("Error: " + err));
 });
+
+router.route("/rekem").get((req, res) => {
+	Report.find({typevent: "רקם"})
+		.then((request) => res.json(request))
+		.catch((err) => res.status(400).json("Error: " + err));
+});
 //! by rep, can be chaged to by manmarit
 router.route("/pikod/:pikod").get((req, res) => {
 	Report.find({ pikodrep: req.params.pikod })

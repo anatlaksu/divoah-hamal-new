@@ -51,6 +51,7 @@ import DashHamal from "views/divoah/Hamal/DashHamal";
 import Odot from "views/divoah/Hamal/Odot";
 import HistoReport from "views/divoah/Hamal/HistoReport";
 import SummarizingReport from "views/divoah/Hamal/SummarizingReport";
+import SummarizingReportRekem from "views/divoah/Hamal/SummarizingReportRekem";
 
 ReactDOM.render(
 	<>
@@ -131,6 +132,11 @@ ReactDOM.render(
 							path="/summarizingreport"
 							exact
 							component={SummarizingReport}
+						/>
+												<LoggedinRoute
+							path="/summarizingreportrekem"
+							exact
+							component={SummarizingReportRekem}
 						/>
 						<LoggedinRoute
 							path="/editreport/:formId"
