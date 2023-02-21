@@ -6,6 +6,22 @@ import {
 	useFilters,
 	usePagination,
 } from "react-table";
+import {
+	Button,
+	Card,
+	CardHeader,
+	Container,
+	CardBody,
+	FormGroup,
+	Form,
+	Input,
+	InputGroupAddon,
+	InputGroupText,
+	InputGroup,
+	Row,
+	Col,
+	Collapse,
+} from "reactstrap";
 import { withRouter, Redirect, Link } from "react-router-dom";
 import { COLUMNS } from "./coulmns";
 import { GlobalFilter } from "./GlobalFilter";
@@ -29,6 +45,13 @@ const SortingTable = ({ match }) => {
 	//* view modal
 	const [isviewmodalopen, setisviewmodalopen] = useState(false);
 	const [viewmodalid, setViewmodalid] = useState(undefined);
+
+	const [date, setDate] = useState([]);
+
+	const [collapseOpen, setcollapseOpen] = React.useState(false);
+	const toggleCollapse = () => {
+		setcollapseOpen(!collapseOpen);
+	};
 
 	//units
 
@@ -118,6 +141,16 @@ const SortingTable = ({ match }) => {
 				console.log(error);
 			});
 	}, []);
+
+	function handleChange(evt) {
+		const value = evt.target.value;
+		console.log(evt.target.value);
+		console.log(evt.target.name);
+		setDate({ ...date, [evt.target.name]: value });
+		console.log(new Date(date.fromdate).setHours(0, 0, 0, 0));
+		console.log(date.todate)
+	}
+
 
 	//* modal
 	function Toggle(evt) {
@@ -215,6 +248,39 @@ const SortingTable = ({ match }) => {
 				Toggle={ToggleView}
 				ToggleForModal={ToggleForModalView}
 			/>
+							<Row>
+					<div style={{ width: "100%", margin: "auto", textAlign: "right" }}>
+						<Button
+							onClick={toggleCollapse}
+							style={{}}
+						>
+							סינון
+						</Button>
+						<Collapse isOpen={collapseOpen}>
+							<Card style={{ background: "rgb(255, 255, 255)" }}>
+								<Row style={{ margin: "0px" }}>
+									<Col
+										xs={12}
+										md={8}
+										style={{ textAlign: "right" }}
+									>
+									<Row>
+                                     <Col xs={12} md={6}>
+                                       <div style={{ textAlign: 'right' }}>מתאריך</div>
+                                       <Input placeholder="תאריך התחלה" type="date" name="fromdate" value={date.fromdate} onChange={handleChange} />
+                                     </Col>
+                                     <Col xs={12} md={6}>
+                                       <div style={{ textAlign: 'right' }}>עד תאריך</div>
+                                       <Input placeholder="תאריך סיום" type="date" name="todate" value={date.todate} onChange={handleChange}/>
+                                     </Col>
+                                    </Row> 
+									</Col>
+								</Row>
+							</Card>
+						</Collapse>
+					</div>
+				</Row>
+
 			<GlobalFilter
 				filter={globalFilter}
 				setFilter={setGlobalFilter}
@@ -255,6 +321,182 @@ const SortingTable = ({ match }) => {
 							</tr>
 						))}
 					</thead>
+					{date.fromdate && date.todate ? (
+						<>
+						<tbody {...getTableBodyProps()}>
+						{page.filter((row)=>(new Date(row.original.datevent).setHours(0, 0, 0, 0) >= new Date(date.fromdate).setHours(0, 0, 0, 0) && new Date(row.original.datevent).setHours(0, 0, 0, 0) <= new Date(date.todate).setHours(0, 0, 0, 0))).map((row, index) => {
+							prepareRow(row);
+							return (
+								<tr {...row.getRowProps()}>
+									{row.cells.map((cell) => {
+										if (
+											cell.column.id != "typevent" &&
+											cell.column.id != "pirot" &&
+											cell.column.id != "datevent"
+										) {
+											return (
+												<td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+											);
+										} else {
+											if (cell.column.id == "typevent") {
+												if (cell.value == "1") return <td>תאונת כלי רכב</td>;
+												if (cell.value == "2") return <td>התהפכות</td>;
+												if (cell.value == "3") return <td>הנתקות גלגל</td>;
+												if (cell.value == "4") return <td>שריפה</td>;
+												if (cell.value == "5")
+													return <td>אירוע נשק / תחמושת</td>;
+												if (cell.value == "6")
+													return <td>תאונת עבודה אנשי טנ"א</td>;
+												if (cell.value == "7") return <td>פריקת מטפים</td>;
+												if (cell.value == "8") return <td>אפידמיה</td>;
+												if (cell.value == "9") return <td>חילוץ</td>;
+												if (cell.value == "10")
+													return <td>נזק לתשתיות אחזקה / הח"י</td>;
+												if (cell.value == "11")
+													return <td>אי קיום שגרת אחזקה</td>;
+												if (cell.value == "12") return <td>אחר</td>;
+												if (cell.value == "רקם") return <td>רק"ם</td>;
+											}
+											if (cell.column.id == "pirot") {
+												return (
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "40px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{cell.value}
+														</div>
+													</td>
+												);
+											}
+
+											if (cell.column.id == "datevent") {
+												return (
+													<td>
+														{cell.value
+															.slice(0, 10)
+															.split("-")
+															.reverse()
+															.join("-")}
+													</td>
+												);
+											}
+										}
+									})}
+
+									{row.original.typevent != "רקם" ? (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* {console.log(row.original.typevent)} */}
+												<button
+													className="btn-new"
+													id={row.index}
+
+													value={row.original._id}
+													onClick={Toggle}
+												>
+													עדכן
+												</button>
+											</div>{" "}
+										</td>
+									) : (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* {console.log(row.original.typevent)} */}
+												<button
+													className="btn-new"
+													id={row.index}
+													value={row.original._id}
+													onClick={Toggle}
+												>
+													עדכן
+												</button>
+											</div>{" "}
+										</td>
+									)}
+
+									{/* // ? row.original._id=user._id*/}
+									{/*//* -------- view report --------------- */}
+									{row.original.typevent != "רקם" ? (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+												<button
+													value={row.original._id}
+													onClick={ToggleView}
+													className="btn-new-delete"
+												>
+													צפייה
+												</button>
+											</div>
+										</td>
+									) : (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+												<button
+													value={row.original._id}
+													onClick={ToggleView}
+													className="btn-new-delete"
+												>
+													צפייה
+												</button>
+											</div>
+										</td>
+									)}
+								</tr>
+							);
+						})}
+					</tbody>
+						</>
+					):(
 					<tbody {...getTableBodyProps()}>
 						{page.map((row, index) => {
 							prepareRow(row);
@@ -427,6 +669,7 @@ const SortingTable = ({ match }) => {
 							);
 						})}
 					</tbody>
+					)}
 				</table>
 				<div className="pagination">
 					<button
