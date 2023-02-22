@@ -723,6 +723,14 @@ const AdminSignInForm = () => {
 		}
 	}
 
+	function getnumevt(arr){
+		let num=0;
+		for(let i=0;i< arr.length;i++){
+			num++;
+		}
+		return num;
+	}
+
 	return (
 		<Background>
 			<Container
@@ -890,6 +898,57 @@ const AdminSignInForm = () => {
 							</Card>
 						</Collapse>
 					</div>
+				</Row>
+				<Row>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									סה"כ עלות נזק
+								</h3>
+							</CardHeader>
+							<CardBody>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									סה"כ שעות עבודה
+								</h3>
+							</CardHeader>
+							<CardBody>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									סה"כ עלות אירועים
+								</h3>
+							</CardHeader>
+							<CardBody>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									מספר אירועים
+								</h3>
+							</CardHeader>
+							<CardBody>
+								<h2 className="text-center">{getnumevt(reportDB)}</h2>
+							</CardBody>
+						</Card>
+					</Col>
 				</Row>
 				<Row>
 					<Col lg="12">

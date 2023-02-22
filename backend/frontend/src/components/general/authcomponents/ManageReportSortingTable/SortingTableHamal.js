@@ -53,19 +53,19 @@ const SortingTableHamal = ({ match }) => {
 	const [isviewmodalopen, setisviewmodalopen] = useState(false);
 	const [viewmodalid, setViewmodalid] = useState(undefined);
 
-	const [reportDBPikod, setReportDBPikod] = useState([]);
+	// const [reportDBPikod, setReportDBPikod] = useState([]);
 
-	const [gdods, setGdods] = useState([]);
-	const [hativas, setHativas] = useState([]);
-	const [ogdas, setOgdas] = useState([]);
-	const [pikods, setPikods] = useState([]);
-	//* options
-	const [gdodsop, setGdodsop] = useState([]);
-	const [hativasop, setHativasop] = useState([]);
-	const [ogdasop, setOgdasop] = useState([]);
-	const [pikodsop, setPikodsop] = useState([]);
+	// const [gdods, setGdods] = useState([]);
+	// const [hativas, setHativas] = useState([]);
+	// const [ogdas, setOgdas] = useState([]);
+	// const [pikods, setPikods] = useState([]);
+	// //* options
+	// const [gdodsop, setGdodsop] = useState([]);
+	// const [hativasop, setHativasop] = useState([]);
+	// const [ogdasop, setOgdasop] = useState([]);
+	// const [pikodsop, setPikodsop] = useState([]);
 
-	const [gdodim, setGdodim] = useState([]);
+	// const [gdodim, setGdodim] = useState([]);
 
 	const [date, setDate] = useState([]);
 
@@ -74,185 +74,185 @@ const SortingTableHamal = ({ match }) => {
 		setcollapseOpen(!collapseOpen);
 	};
 
-	const animatedComponents = makeAnimated();
+	// const animatedComponents = makeAnimated();
 
 
-	const loadPikods = async () => {
-		await axios
-			.get("http://localhost:8000/api/pikod")
-			.then((response) => {
-				setPikods(response.data);
-				// console.log(response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
+	// const loadPikods = async () => {
+	// 	await axios
+	// 		.get("http://localhost:8000/api/pikod")
+	// 		.then((response) => {
+	// 			setPikods(response.data);
+	// 			// console.log(response.data);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
+	// };
 
-	const loadGdodim = async () => {
-		await axios
-			.get("http://localhost:8000/api/gdod")
-			.then((response) => {
-				setGdodim(response.data);
-				// console.log(response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
+	// const loadGdodim = async () => {
+	// 	await axios
+	// 		.get("http://localhost:8000/api/gdod")
+	// 		.then((response) => {
+	// 			setGdodim(response.data);
+	// 			// console.log(response.data);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
+	// };
 
-	const loadOgdas = async (pikodids) => {
-		let temppikodids = pikodids;
-		if (temppikodids != undefined && !temppikodids.isArray) {
-			temppikodids = [pikodids];
-		}
-		let temppikodsogdas = [];
-		if (temppikodids != undefined && temppikodids.length > 0) {
-			for (let i = 0; i < temppikodids.length; i++) {
-				await axios
-					.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
-						pikod: temppikodids[i],
-					})
-					.then((response) => {
-						for (let j = 0; j < response.data.length; j++)
-							temppikodsogdas.push(response.data[j]);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			}
-		}
-		setOgdas(temppikodsogdas);
-	};
+	// const loadOgdas = async (pikodids) => {
+	// 	let temppikodids = pikodids;
+	// 	if (temppikodids != undefined && !temppikodids.isArray) {
+	// 		temppikodids = [pikodids];
+	// 	}
+	// 	let temppikodsogdas = [];
+	// 	if (temppikodids != undefined && temppikodids.length > 0) {
+	// 		for (let i = 0; i < temppikodids.length; i++) {
+	// 			await axios
+	// 				.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
+	// 					pikod: temppikodids[i],
+	// 				})
+	// 				.then((response) => {
+	// 					for (let j = 0; j < response.data.length; j++)
+	// 						temppikodsogdas.push(response.data[j]);
+	// 				})
+	// 				.catch((error) => {
+	// 					console.log(error);
+	// 				});
+	// 		}
+	// 	}
+	// 	setOgdas(temppikodsogdas);
+	// };
 
-	const loadHativas = async (ogdaids) => {
-		let tempogdaids = ogdaids;
-		if (tempogdaids != undefined && !tempogdaids.isArray) {
-			tempogdaids = [ogdaids];
-		}
-		let tempogdashativas = [];
-		if (tempogdaids != undefined && tempogdaids.length > 0) {
-			for (let i = 0; i < tempogdaids.length; i++) {
-				await axios
-					.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
-						ogda: tempogdaids[i],
-					})
-					.then((response) => {
-						for (let j = 0; j < response.data.length; j++)
-							tempogdashativas.push(response.data[j]);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			}
-		}
-		setHativas(tempogdashativas);
-	};
+	// const loadHativas = async (ogdaids) => {
+	// 	let tempogdaids = ogdaids;
+	// 	if (tempogdaids != undefined && !tempogdaids.isArray) {
+	// 		tempogdaids = [ogdaids];
+	// 	}
+	// 	let tempogdashativas = [];
+	// 	if (tempogdaids != undefined && tempogdaids.length > 0) {
+	// 		for (let i = 0; i < tempogdaids.length; i++) {
+	// 			await axios
+	// 				.post("http://localhost:8000/api/hativa/hativasbyogdaid", {
+	// 					ogda: tempogdaids[i],
+	// 				})
+	// 				.then((response) => {
+	// 					for (let j = 0; j < response.data.length; j++)
+	// 						tempogdashativas.push(response.data[j]);
+	// 				})
+	// 				.catch((error) => {
+	// 					console.log(error);
+	// 				});
+	// 		}
+	// 	}
+	// 	setHativas(tempogdashativas);
+	// };
 
-	const loadGdods = async (hativaids) => {
-		let temphativaids = hativaids;
-		if (temphativaids != undefined && !temphativaids.isArray) {
-			temphativaids = [hativaids];
-		}
-		let temphativasgdods = [];
-		if (temphativaids != undefined && temphativaids.length > 0) {
-			for (let i = 0; i < temphativaids.length; i++) {
-				await axios
-					.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
-						hativa: temphativaids[i],
-					})
-					.then((response) => {
-						for (let j = 0; j < response.data.length; j++)
-							temphativasgdods.push(response.data[j]);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			}
-		}
-		setGdods(temphativasgdods);
-	};
+	// const loadGdods = async (hativaids) => {
+	// 	let temphativaids = hativaids;
+	// 	if (temphativaids != undefined && !temphativaids.isArray) {
+	// 		temphativaids = [hativaids];
+	// 	}
+	// 	let temphativasgdods = [];
+	// 	if (temphativaids != undefined && temphativaids.length > 0) {
+	// 		for (let i = 0; i < temphativaids.length; i++) {
+	// 			await axios
+	// 				.post("http://localhost:8000/api/gdod/gdodsbyhativaid", {
+	// 					hativa: temphativaids[i],
+	// 				})
+	// 				.then((response) => {
+	// 					for (let j = 0; j < response.data.length; j++)
+	// 						temphativasgdods.push(response.data[j]);
+	// 				})
+	// 				.catch((error) => {
+	// 					console.log(error);
+	// 				});
+	// 		}
+	// 	}
+	// 	setGdods(temphativasgdods);
+	// };
 
-	function setoptions(pk, og, ht, gd) {
-		setPikodsop(
-			pk.map((item, index) => {
-				let val = pk[index]._id;
-				let lab = pk[index].name;
-				return { value: val, label: lab };
-			})
-		);
-		setOgdasop(
-			og.map((item, index) => {
-				let val = og[index]._id;
-				let lab = og[index].name;
-				return { value: val, label: lab };
-			})
-		);
-		setHativasop(
-			ht.map((item, index) => {
-				let val = ht[index]._id;
-				let lab = ht[index].name;
-				return { value: val, label: lab };
-			})
-		);
-		setGdodsop(
-			gd.map((item, index) => {
-				let val = gd[index]._id;
-				let lab = gd[index].name;
-				return { value: val, label: lab };
-			})
-		);
-	}
+	// function setoptions(pk, og, ht, gd) {
+	// 	setPikodsop(
+	// 		pk.map((item, index) => {
+	// 			let val = pk[index]._id;
+	// 			let lab = pk[index].name;
+	// 			return { value: val, label: lab };
+	// 		})
+	// 	);
+	// 	setOgdasop(
+	// 		og.map((item, index) => {
+	// 			let val = og[index]._id;
+	// 			let lab = og[index].name;
+	// 			return { value: val, label: lab };
+	// 		})
+	// 	);
+	// 	setHativasop(
+	// 		ht.map((item, index) => {
+	// 			let val = ht[index]._id;
+	// 			let lab = ht[index].name;
+	// 			return { value: val, label: lab };
+	// 		})
+	// 	);
+	// 	setGdodsop(
+	// 		gd.map((item, index) => {
+	// 			let val = gd[index]._id;
+	// 			let lab = gd[index].name;
+	// 			return { value: val, label: lab };
+	// 		})
+	// 	);
+	// }
 
-	function handleChange8(selectedOption, name) {
-		// console.log(selectedOption[0].value);
-		// console.log(name);
-		if (!(selectedOption.value == "בחר")) {
-			let tempvalues = [];
-			let tempnames = [];
-			for (let i = 0; i < selectedOption.length; i++) {
-				tempvalues.push(selectedOption[i].value);
-				tempnames.push(selectedOption[i].label);
-			}
-			// console.log(tempvalues);
-			// console.log(tempnames);
-			// console.log(name.name);
-			if (tempvalues.length > 0) {
-				setData({ ...data, [name.name]: tempvalues });
-			} else {
-				// console.log(name.name);
-				if (name.name == "gdod") {
-					delete data.gdod;
-					setData({ ...data });
-				}
-				if (name.name == "hativa") {
-					delete data.hativa;
-					setData({ ...data });
-				}
-				if (name.name == "ogda") {
-					delete data.ogda;
-					setData({ ...data });
-				}
-				if (name.name == "pikod") {
-					delete data.pikod;
-					setData({ ...data });
-				}
-			}
+	// function handleChange8(selectedOption, name) {
+	// 	// console.log(selectedOption[0].value);
+	// 	// console.log(name);
+	// 	if (!(selectedOption.value == "בחר")) {
+	// 		let tempvalues = [];
+	// 		let tempnames = [];
+	// 		for (let i = 0; i < selectedOption.length; i++) {
+	// 			tempvalues.push(selectedOption[i].value);
+	// 			tempnames.push(selectedOption[i].label);
+	// 		}
+	// 		// console.log(tempvalues);
+	// 		// console.log(tempnames);
+	// 		// console.log(name.name);
+	// 		if (tempvalues.length > 0) {
+	// 			setData({ ...data, [name.name]: tempvalues });
+	// 		} else {
+	// 			// console.log(name.name);
+	// 			if (name.name == "gdod") {
+	// 				delete data.gdod;
+	// 				setData({ ...data });
+	// 			}
+	// 			if (name.name == "hativa") {
+	// 				delete data.hativa;
+	// 				setData({ ...data });
+	// 			}
+	// 			if (name.name == "ogda") {
+	// 				delete data.ogda;
+	// 				setData({ ...data });
+	// 			}
+	// 			if (name.name == "pikod") {
+	// 				delete data.pikod;
+	// 				setData({ ...data });
+	// 			}
+	// 		}
 
-			console.log(data);
-			// console.log(data.pikod);
-			// console.log(data.ogda);
-			// console.log(data.hativa);
-			// console.log(data.pikod.map((item,index) => {
+	// 		console.log(data);
+	// 		// console.log(data.pikod);
+	// 		// console.log(data.ogda);
+	// 		// console.log(data.hativa);
+	// 		// console.log(data.pikod.map((item,index) => {
 
-			// }));
-		} else {
-			let tempfilter = { ...data };
-			delete tempfilter[name];
-			setData(tempfilter);
-			console.log(tempfilter);
-		}
-	}
+	// 		// }));
+	// 	} else {
+	// 		let tempfilter = { ...data };
+	// 		delete tempfilter[name];
+	// 		setData(tempfilter);
+	// 		console.log(tempfilter);
+	// 	}
+	// }
 
 	// ! alternative is to enter the timestamp to the database and then call it like we do with the other columns
 	// * ------ geting only on loading the difference btween the dates --------------------------------
@@ -434,31 +434,31 @@ const SortingTableHamal = ({ match }) => {
 					});
 	}, []);
 
-	useEffect(() => {
-		loadPikods();
-		loadGdodim();
-	}, []);
+	// useEffect(() => {
+	// 	loadPikods();
+	// 	loadGdodim();
+	// }, []);
 
 
-	useEffect(() => {
-		setOgdas([]);
-		loadOgdas(data.pikod);
-	}, [data.pikod]);
+	// useEffect(() => {
+	// 	setOgdas([]);
+	// 	loadOgdas(data.pikod);
+	// }, [data.pikod]);
 
-	useEffect(() => {
-		setHativas([]);
-		loadHativas(data.ogda);
-	}, [data.ogda]);
+	// useEffect(() => {
+	// 	setHativas([]);
+	// 	loadHativas(data.ogda);
+	// }, [data.ogda]);
 
-	useEffect(() => {
-		setGdods([]);
-		loadGdods(data.hativa);
-	}, [data.hativa]);
+	// useEffect(() => {
+	// 	setGdods([]);
+	// 	loadGdods(data.hativa);
+	// }, [data.hativa]);
 
-	useEffect(() => {
-		setoptions(pikods, ogdas, hativas, gdods);
-		// console.log(pikodsop);
-	}, [gdods, hativas, ogdas, pikods]);
+	// useEffect(() => {
+	// 	setoptions(pikods, ogdas, hativas, gdods);
+	// 	// console.log(pikodsop);
+	// }, [gdods, hativas, ogdas, pikods]);
 
 
 	const {
@@ -522,7 +522,7 @@ const SortingTableHamal = ({ match }) => {
                                     </Row> 
 									</Col>
 								</Row>
-								{user.role === "2" ? (
+								{/* {user.role === "2" ? (
 								<Row style={{ margin: "0px" }}>
 									<Col
 										xs={12}
@@ -848,13 +848,12 @@ const SortingTableHamal = ({ match }) => {
 										</Row>
 									</Col>
 								</Row>
-
-								)}
+								)} */}
 
 							</Card>
 						</Collapse>
 					</div>
-				</Row>
+		</Row>
 
 			<div style={{ float: "right", paddingBottom: "5px" }}>
 				<ReactHTMLTableToExcel
