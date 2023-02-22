@@ -144,7 +144,7 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/rekem").get((req, res) => {
-	Report.find({typevent: "רקם"})
+	Report.find({ typevent: "רקם" })
 		.then((request) => res.json(request))
 		.catch((err) => res.status(400).json("Error: " + err));
 });
@@ -261,7 +261,35 @@ router.route("/requestByPersonalnumber/:personalnumber").get((req, res) => {
 //     .exec()
 //     .then((request) => res.json(request))
 //     .catch((err) => res.status(400).json("Error: " + err));
-// });
+// });\
+
+router.route("/readall").get((req, res) => {
+	let tipulfindquerry = readtipul.slice();
+	let finalquerry = tipulfindquerry;
+	// let andquery = [];
+	// andquery.push();
+	// if (andquery.length != 0) {
+	// 	let matchquerry = {
+	// 		$match: {
+	// 			$and: andquery,
+	// 		},
+	// 	};
+	// 	// console.log(matchquerry);
+	// 	// console.log(andquery);
+	// 	finalquerry.push(matchquerry);
+	// }
+	Report.aggregate(finalquerry)
+		.then((result) => {
+			console.log(result);
+			if (result.length != 0) {
+				res.json(result);
+			}
+		})
+		.catch((error) => {
+			res.status(400).json("Error: " + error);
+			console.log(error);
+		});
+});
 
 router.route("/:id").get((req, res) => {
 	// Report.findById(req.params.id)
