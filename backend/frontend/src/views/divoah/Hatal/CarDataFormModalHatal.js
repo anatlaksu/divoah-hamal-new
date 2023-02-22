@@ -1649,6 +1649,7 @@ const CarDataFormModalHatal = (match) => {
 																								value={p.mikomhurt}
 																								type="number"
 																								placeholder="0"
+																								min="0"
 																							/>
 																						</div>
 																					</Col>

@@ -2255,7 +2255,6 @@ const CarDataFormModal = (match) => {
 																									<option value={"לא ידוע"}>
 																										{"לא ידוע"}
 																									</option>
-
 																								</Input>
 																							</div>
 																						</Col>
@@ -2293,6 +2292,7 @@ const CarDataFormModal = (match) => {
 																									value={p.mikomhurt}
 																									type="number"
 																									placeholder="0"
+																									min="0"
 																								/>
 																							</div>
 																						</Col>
@@ -3140,7 +3140,6 @@ const CarDataFormModal = (match) => {
 																									<option value={"לא ידוע"}>
 																										{"לא ידוע"}
 																									</option>
-
 																								</Input>
 																							</div>
 																						</Col>
@@ -3178,6 +3177,7 @@ const CarDataFormModal = (match) => {
 																									value={p.mikomhurt}
 																									type="number"
 																									placeholder="0"
+																									min="0"
 																								/>
 																							</div>
 																						</Col>

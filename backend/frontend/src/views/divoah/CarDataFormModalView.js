@@ -1511,7 +1511,7 @@ const CarDataFormModalView = (match) => {
 														</>
 													)}
 
-												{/*//* -------------- חילוץ  ----------*/}
+													{/*//* -------------- חילוץ  ----------*/}
 
 													{data.typevent === "9" && (
 														<>
@@ -1881,7 +1881,6 @@ const CarDataFormModalView = (match) => {
 																							<option value={"לא ידוע"}>
 																								{"לא ידוע"}
 																							</option>
-
 																						</Input>
 																					</div>
 																				</Col>
@@ -1917,6 +1916,7 @@ const CarDataFormModalView = (match) => {
 																							value={p.mikomhurt}
 																							type="number"
 																							placeholder="0"
+																							min="0"
 																							disabled
 																						/>
 																					</div>
@@ -2359,20 +2359,18 @@ const CarDataFormModalView = (match) => {
 														סוג הרק"ם
 													</div>
 													{cartypesfilterarray.map(
-																(cartypesfilterobject, index) => {
-																	return (
-																		<CarTypesFilterObject
-																			cartypesfilterobject={
-																				cartypesfilterobject
-																			}
-																			index={index}
-																			setCartypesfilterarray={
-																				setCartypesfilterarray
-																			}
-																		/>
-																	);
-																}
-															)}
+														(cartypesfilterobject, index) => {
+															return (
+																<CarTypesFilterObject
+																	cartypesfilterobject={cartypesfilterobject}
+																	index={index}
+																	setCartypesfilterarray={
+																		setCartypesfilterarray
+																	}
+																/>
+															);
+														}
+													)}
 
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
@@ -2634,9 +2632,8 @@ const CarDataFormModalView = (match) => {
 																								{"מת"}
 																							</option>
 																							<option value={"לא ידוע"}>
-																										{"לא ידוע"}
-																									</option>
-
+																								{"לא ידוע"}
+																							</option>
 																						</Input>
 																					</div>
 																				</Col>
@@ -2672,6 +2669,7 @@ const CarDataFormModalView = (match) => {
 																							value={p.mikomhurt}
 																							type="number"
 																							placeholder="0"
+																							min="0"
 																							disabled
 																						/>
 																					</div>
