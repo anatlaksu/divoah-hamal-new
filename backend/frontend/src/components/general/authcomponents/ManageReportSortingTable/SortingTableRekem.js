@@ -730,7 +730,6 @@ const SortingTableRekem = ({ match }) => {
 												if (cell.value == "6")
 													return <td>תאונת עבודה אנשי טנ"א</td>;
 												if (cell.value == "7") return <td>פריקת מטפים</td>;
-												if (cell.value == "8") return <td>אפידמיה</td>;
 												if (cell.value == "9") return <td>חילוץ</td>;
 												if (cell.value == "10")
 													return <td>נזק לתשתיות אחזקה / הח"י</td>;
@@ -908,7 +907,6 @@ const SortingTableRekem = ({ match }) => {
 												if (cell.value == "6")
 													return <td>תאונת עבודה אנשי טנ"א</td>;
 												if (cell.value == "7") return <td>פריקת מטפים</td>;
-												if (cell.value == "8") return <td>אפידמיה</td>;
 												if (cell.value == "9") return <td>חילוץ</td>;
 												if (cell.value == "10")
 													return <td>נזק לתשתיות אחזקה / הח"י</td>;

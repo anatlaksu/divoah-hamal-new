@@ -896,7 +896,6 @@ const CarDataFormModalView = (match) => {
 															<option value={"5"}>אירועי נשק / תחמושת</option>
 															<option value={"6"}>תאונת עבודה אנשי טנ"א</option>
 															<option value={"7"}>פריקת מטפים</option>
-															<option value={"8"}>אפידמיה</option>
 															<option value={"9"}>חילוץ</option>
 															<option value={"10"}>
 																נזק לתשתיות אחזקה / הח"י
@@ -1512,36 +1511,7 @@ const CarDataFormModalView = (match) => {
 														</>
 													)}
 
-													{/* אפידמיה */}
-
-													{data.typevent === "8" && (
-														<>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																סוג האפידמיה
-															</div>
-															<FormGroup>
-																<Input
-																	type="select"
-																	name="apitype"
-																	value={data.apitype}
-																	onChange={handleChange}
-																	id="apidmia"
-																	disabled
-																>
-																	<option value={"0"}>בחר</option>
-																	<option value={"1"}>תפעולית</option>
-																	<option value={"2"}>אחזקתית</option>
-																</Input>
-															</FormGroup>
-														</>
-													)}
-
-													{/*//* -------------- חילוץ  ----------*/}
+												{/*//* -------------- חילוץ  ----------*/}
 
 													{data.typevent === "9" && (
 														<>
