@@ -12,6 +12,7 @@ import { withRouter, Redirect, Link } from "react-router-dom";
 import { COLUMNSSUM } from "./ColumnsSum";
 import { GlobalFilter } from "./GlobalFilter";
 import CarDataFormModal from "views/divoah/CarDataFormModal";
+import CarDataFormModalHatal from "views/divoah/Hatal/CarDataFormModalHatal";
 import CarDataFormModalView from "views/divoah/CarDataFormModalView";
 import axios from "axios";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
@@ -180,30 +181,18 @@ const SortingTableRekem = ({ match }) => {
 	// }, []);
 
 	useEffect(() => {
-		user.role === "2"
-			? axios
-					.get(`http://localhost:8000/report/rekem`)
-					.then((response) => {
-						const reports = response.data;
-						reports.reverse();
-						// console.log(reports);
-						setData(reports);
-					})
-					.catch((error) => {
-						console.log(error);
-						setIsError(true);
-					})
-			: axios
-					.get(`http://localhost:8000/report/pikod/${user.pikod}`)
-					.then((response) => {
-						console.log(user.pikod);
-						console.log(response.data);
-						setData(response.data);
-					})
-					.catch((error) => {
-						console.log(error);
-						setIsError(true);
-					});
+		axios
+			.get(`http://localhost:8000/report/rekem`)
+			.then((response) => {
+				const reports = response.data;
+				reports.reverse();
+				// console.log(reports);
+				setData(reports);
+			})
+			.catch((error) => {
+				console.log(error);
+				setIsError(true);
+			});
 	}, []);
 
 	const {
@@ -253,12 +242,22 @@ const SortingTableRekem = ({ match }) => {
 
 			{/*//* ----- modals --------------------------------
 				//? ++ unittype={props.unittype} unitid={props.unitid} */}
-			<CarDataFormModal
-				isOpen={iscardataformopen}
-				cardataid={cardataidformodal}
-				Toggle={Toggle}
-				ToggleForModal={ToggleForModal}
-			/>
+			{user.role == "3" ? (
+				<CarDataFormModalHatal
+					isOpen={iscardataformopen}
+					cardataid={cardataidformodal}
+					Toggle={Toggle}
+					ToggleForModal={ToggleForModal}
+				/>
+			) : (
+				<CarDataFormModal
+					isOpen={iscardataformopen}
+					cardataid={cardataidformodal}
+					Toggle={Toggle}
+					ToggleForModal={ToggleForModal}
+				/>
+			)}
+
 			<CarDataFormModalView
 				isOpen={isviewmodalopen}
 				cardataid={viewmodalid}

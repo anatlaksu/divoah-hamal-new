@@ -2355,9 +2355,6 @@ const CarDataFormModal = (match) => {
 															</div>
 														</>
 													)}
-
-													{/* //* ---------------------------------------------- rekem -------------------------------------------------------------------- */}
-
 													<div className="text-center">
 														<button
 															onClick={clickSubmit}
@@ -2369,6 +2366,8 @@ const CarDataFormModal = (match) => {
 												</Form>
 											</CardBody>
 										) : (
+											/* //* ---------------------------------------------- rekem -------------------------------------------------------------------- */
+
 											<CardBody className="px-lg-5 py-lg-5">
 												<div className="text-center text-muted mb-4">
 													<big>עדכון דיווח</big>
@@ -2785,45 +2784,42 @@ const CarDataFormModal = (match) => {
 														סוג הרק"ם
 													</div>
 													<Row style={{ padding: "0px" }}>
-																<Col
-																	style={{
-																		display: "flex",
-																		justifyContent: "right",
-																		paddingTop: "15px",
-																		paddingRight: "0px",
-																	}}
-																>
-																	<Button
-																		style={{ width: "100px", padding: "10px" }}
-																		type="button"
-																		onClick={() => {
-																			setCartypesfilterarray((currentSpec) => [
-																				...currentSpec,
-																				{ id: generate() },
-																			]);
-																		}}
-																	>
-																		הוסף רק"ם
-																	</Button>
-																</Col>
-															</Row>
+														<Col
+															style={{
+																display: "flex",
+																justifyContent: "right",
+																paddingTop: "15px",
+																paddingRight: "0px",
+															}}
+														>
+															<Button
+																style={{ width: "100px", padding: "10px" }}
+																type="button"
+																onClick={() => {
+																	setCartypesfilterarray((currentSpec) => [
+																		...currentSpec,
+																		{ id: generate() },
+																	]);
+																}}
+															>
+																הוסף רק"ם
+															</Button>
+														</Col>
+													</Row>
 
-															{cartypesfilterarray.map(
-																(cartypesfilterobject, index) => {
-																	return (
-																		<CarTypesFilterObjectRekem
-																			cartypesfilterobject={
-																				cartypesfilterobject
-																			}
-																			index={index}
-																			setCartypesfilterarray={
-																				setCartypesfilterarray
-																			}
-																		/>
-																	);
-																}
-															)}
-
+													{cartypesfilterarray.map(
+														(cartypesfilterobject, index) => {
+															return (
+																<CarTypesFilterObjectRekem
+																	cartypesfilterobject={cartypesfilterobject}
+																	index={index}
+																	setCartypesfilterarray={
+																		setCartypesfilterarray
+																	}
+																/>
+															);
+														}
+													)}
 
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}

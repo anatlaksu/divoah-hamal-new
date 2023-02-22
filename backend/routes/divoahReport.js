@@ -228,6 +228,10 @@ router.route("/add").post((req, res) => {
 		mikom,
 		nifga,
 		hurtarray,
+		totalWorkHours,
+		totalCostWorkHours,
+		damageCost,
+		spareCost,
 	});
 	const formId = newReport.save((err, form) => {
 		console.groupCollapsed("formId");
@@ -366,6 +370,10 @@ router.route("/update/:id").put((req, res) => {
 			request.mikom = req.body.mikom;
 			request.nifga = Number(req.body.nifga);
 			request.hurtarray = req.body.hurtarray;
+			request.totalWorkHours = req.body.totalWorkHours;
+			request.totalCostWorkHours = req.body.totalCostWorkHours;
+			request.damageCost = req.body.damageCost;
+			request.spareCost = req.body.spareCost;
 
 			request
 				.save()

@@ -318,7 +318,10 @@ const AdminSignInForm = (props) => {
 		responsive: true,
 		plugins: {
 			legend: {
-				display: false,
+				display: true,
+				position: "right",
+				align: "center",
+				fullSize: true,
 			},
 		},
 	};

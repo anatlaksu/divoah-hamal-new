@@ -13,10 +13,10 @@ const ReportSchema = new mongoose.Schema(
 		ogdarep: String,
 		hativarep: String,
 		gdod: { type: String }, //*object
-		gdodrep: String , //*object
+		gdodrep: String, //*object
 
 		mkabaz: { type: String }, //*object
-		arraymkabaz: {type: Array},
+		arraymkabaz: { type: Array },
 		zadik: String,
 		// magadal: String,
 		// magad: String,
@@ -38,8 +38,12 @@ const ReportSchema = new mongoose.Schema(
 		pirot: String,
 		datevent: Date,
 		mikom: String,
+		totalWorkHours: String,
+		totalCostWorkHours: String,
+		damageCost: String,
+		spareCost: String,
 		nifga: { type: Number, default: 0 },
-		hurtarray:  {type: Array},
+		hurtarray: { type: Array },
 	},
 	{ timestamps: true }
 );
