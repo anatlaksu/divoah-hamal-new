@@ -23,7 +23,7 @@ import {
 	UncontrolledTooltip,
 } from "reactstrap";
 import axios from "axios";
-import ManageReportSortingTable from "../../../components/general/authcomponents/ManageReportSortingTable/SortingTableRekem"
+import ManageReportSortingTable from "../../../components/general/authcomponents/ManageReportSortingTable/SortingTableRekem";
 const SummarizingReportRekem = (props) => {
 	useEffect(() => {}, []);
 
@@ -38,7 +38,7 @@ const SummarizingReportRekem = (props) => {
 									tag="h4"
 									style={{ direction: "rtl", textAlign: "right" }}
 								>
-                                 סיכום דיווחים רק"ם
+									סיכום דיווחים רק"ם
 								</CardTitle>
 								{/*headline*/}
 							</CardHeader>

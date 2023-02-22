@@ -81,9 +81,9 @@ function SidebarHamal(props) {
 	return (
 		<>
 			{/* לוגו המערכת */}
-			<div className="logo">
+			<Link to={"/dash"}>
 				<img src={logodiv}></img>
-			</div>
+			</Link>{" "}
 			<Nav style={{ textAlign: "right" }}>
 				<li>
 					<NavLink
@@ -355,7 +355,7 @@ function SidebarHamal(props) {
 										paddingBottom: "6px",
 									}}
 								>
-									סיכום דיווחים רק"ם
+									סיכום דיווחים חט"ל
 								</h4>
 							</Col>
 						</Row>

@@ -169,45 +169,53 @@ const AdminSignInForm = () => {
 		setGdods(temphativasgdods);
 	};
 
+	// const loadReports = () => {
+	// 	//* help tool for checking if ReportDB is an array so the map function will work on him
+	// 	let arrayTester = [];
+	// 	//* geting all the reports
+	// 	axios
+	// 		.get(`http://localhost:8000/report/`)
+	// 		.then((res) => {
+	// 			res.data.map((item, index) => {
+	// 				// console.log(res.data[index]._id);
+	// 				//* taking the id of etch report and geting all its data (like in the cardatamodal)
+	// 				axios
+	// 					.get(`http://localhost:8000/report/${res.data[index]._id}`)
+	// 					.then((response) => {
+	// 						// console.log(response);
+	// 						// let tempuser = { ...response.data };
+	// 						// setData(tempuser);
+	// 						let tempcardata = response.data[0];
+	// 						// console.log(tempcardata);
+	// 						arrayTester.push(tempcardata);
+	// 						// tempcardata.slice();
+	// 						if (arrayTester.length === res.data.length) {
+	// 							console.log(arrayTester);
+	// 							console.log(reportDB);
+	// 							setReportDB(arrayTester);
+	// 						}
+	// 					})
+	// 					.catch((error) => {
+	// 						console.log(error);
+	// 					});
+	// 				loadPikods();
+	// 			});
+	// 			// console.log(response.data);
+	// 			// console.log(reportDBItem);
+	// 			// setReportDB(reportDBItem);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 			setIsError(true);
+	// 		});
+	// };
+
 	const loadReports = () => {
-		//* help tool for checking if ReportDB is an array so the map function will work on him
-		let arrayTester = [];
-		//* geting all the reports
-		axios
-			.get(`http://localhost:8000/report/`)
-			.then((res) => {
-				res.data.map((item, index) => {
-					// console.log(res.data[index]._id);
-					//* taking the id of etch report and geting all its data (like in the cardatamodal)
-					axios
-						.get(`http://localhost:8000/report/${res.data[index]._id}`)
-						.then((response) => {
-							// console.log(response);
-							// let tempuser = { ...response.data };
-							// setData(tempuser);
-							let tempcardata = response.data[0];
-							// console.log(tempcardata);
-							arrayTester.push(tempcardata);
-							// tempcardata.slice();
-							if (arrayTester.length === res.data.length) {
-								console.log(arrayTester);
-								console.log(reportDB);
-								setReportDB(arrayTester);
-							}
-						})
-						.catch((error) => {
-							console.log(error);
-						});
-					loadPikods();
-				});
-				// console.log(response.data);
-				// console.log(reportDBItem);
-				// setReportDB(reportDBItem);
-			})
-			.catch((error) => {
-				console.log(error);
-				setIsError(true);
-			});
+		axios.get(`http://localhost:8000/report/readall`).then((res) => {
+			// console.log(res);
+			// console.log(res.data);
+			setReportDB(res.data);
+		});
 	};
 
 	function handleChange2(selectedOption, name) {
@@ -228,7 +236,6 @@ const AdminSignInForm = () => {
 		console.log(new Date(data.fromdate).setHours(0, 0, 0, 0));
 		console.log(data.todate);
 	}
-
 
 	function setoptions(pk, og, ht, gd) {
 		setPikodsop(
@@ -778,17 +785,35 @@ const AdminSignInForm = () => {
 										md={8}
 										style={{ textAlign: "right" }}
 									>
-									<Row>
-                                     <Col xs={12} md={6}>
-                                       <div style={{ textAlign: 'right' }}>מתאריך</div>
-                                       <Input placeholder="תאריך התחלה" type="date" name="fromdate" value={data.fromdate} onChange={handleChange} />
-                                     </Col>
-                                     <Col xs={12} md={6}>
-                                       <div style={{ textAlign: 'right' }}>עד תאריך</div>
-                                       <Input placeholder="תאריך סיום" type="date" name="todate" value={data.todate} onChange={handleChange}/>
-                                     </Col>
-                                    </Row>
- 
+										<Row>
+											<Col
+												xs={12}
+												md={6}
+											>
+												<div style={{ textAlign: "right" }}>מתאריך</div>
+												<Input
+													placeholder="תאריך התחלה"
+													type="date"
+													name="fromdate"
+													value={data.fromdate}
+													onChange={handleChange}
+												/>
+											</Col>
+											<Col
+												xs={12}
+												md={6}
+											>
+												<div style={{ textAlign: "right" }}>עד תאריך</div>
+												<Input
+													placeholder="תאריך סיום"
+													type="date"
+													name="todate"
+													value={data.todate}
+													onChange={handleChange}
+												/>
+											</Col>
+										</Row>
+
 										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
 											<>
 												{!data.hativa ? (
@@ -972,112 +997,156 @@ const AdminSignInForm = () => {
 									</thead>
 									{data.fromdate && data.todate ? (
 										<>
-										{data.length == 0 && !data.pikod ? (
-											<tbody>
-												{reportDB.filter((report)=>(new Date(report.datevent).setHours(0, 0, 0, 0) >= new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <= new Date(data.todate).setHours(0, 0, 0, 0))).slice(0, 5).map((report, index) => (
-													<tr>
-														<td>
-															<p>{getname(report.gdod, gdodim)}</p>
-														</td>
-														<td>{eventTypeArray[report.typevent]}</td>
-														<td>
-														<div
-															style={{
-																width: "100%",
-																height: "50px",
-																margin: "0",
-																padding: "0",
-																overflow: "auto",
-															}}
-														>
-															{report.pirot}
-														</div>
-														</td>
-													</tr>
-												))}
-													</tbody>
-														) : data.pikod ? (
-															<tbody>
-																{reportDB.filter((report)=>(new Date(report.datevent).setHours(0, 0, 0, 0) >= new Date(data.fromdate).setHours(0, 0, 0, 0)&& new Date(report.datevent).setHours(0, 0, 0, 0) <= new Date(data.todate).setHours(0, 0, 0, 0))).slice(0, 5).map((report, index) =>
-																	data.pikod.includes(report.pikod) ? (
-																		<tr>
-																			<td>
-																				<p>{getname(report.gdod, gdodim)}</p>
-																			</td>
-																			<td>{eventTypeArray[report.typevent]}</td>
-																			<td>
-																				<div
-																					style={{
-																						width: "100%",
-																						height: "50px",
-																						margin: "0",
-																						padding: "0",
-																						overflow: "auto",
-																					}}
-																				>
-																					{report.pirot}
-																				</div>
-																			</td>
-																		</tr>
-																	) : null
-																)}
-															</tbody>
-														) : !data.pikod ? (
-															<tbody>
-																{reportDB.filter((report)=>(new Date(report.datevent).setHours(0, 0, 0, 0) >= new Date(data.fromdate).setHours(0, 0, 0, 0)&& new Date(report.datevent).setHours(0, 0, 0, 0) <= new Date(data.todate).setHours(0, 0, 0, 0))).slice(0, 5).map((report, index) => (
-																	<tr>
-																		<td>
-																			<p>{getname(report.gdod, gdodim)}</p>
-																		</td>
-																		<td>{eventTypeArray[report.typevent]}</td>
-																		<td>
-																			<div
-																				style={{
-																					width: "100%",
-																					height: "50px",
-																					margin: "0",
-																					padding: "0",
-																					overflow: "auto",
-																				}}
-																			>
-																				{report.pirot}
-																			</div>
-																		</td>
-																	</tr>
-																))}
-															</tbody>
-														) : null}	
-										</>									
-									):(
+											{data.length == 0 && !data.pikod ? (
+												<tbody>
+													{reportDB
+														.filter(
+															(report) =>
+																new Date(report.datevent).setHours(
+																	0,
+																	0,
+																	0,
+																	0
+																) >=
+																	new Date(data.fromdate).setHours(
+																		0,
+																		0,
+																		0,
+																		0
+																	) &&
+																new Date(report.datevent).setHours(
+																	0,
+																	0,
+																	0,
+																	0
+																) <= new Date(data.todate).setHours(0, 0, 0, 0)
+														)
+														.slice(0, 5)
+														.map((report, index) => (
+															<tr>
+																<td>
+																	<p>{getname(report.gdod, gdodim)}</p>
+																</td>
+																<td>{eventTypeArray[report.typevent]}</td>
+																<td>
+																	<div
+																		style={{
+																			width: "100%",
+																			height: "50px",
+																			margin: "0",
+																			padding: "0",
+																			overflow: "auto",
+																		}}
+																	>
+																		{report.pirot}
+																	</div>
+																</td>
+															</tr>
+														))}
+												</tbody>
+											) : data.pikod ? (
+												<tbody>
+													{reportDB
+														.filter(
+															(report) =>
+																new Date(report.datevent).setHours(
+																	0,
+																	0,
+																	0,
+																	0
+																) >=
+																	new Date(data.fromdate).setHours(
+																		0,
+																		0,
+																		0,
+																		0
+																	) &&
+																new Date(report.datevent).setHours(
+																	0,
+																	0,
+																	0,
+																	0
+																) <= new Date(data.todate).setHours(0, 0, 0, 0)
+														)
+														.slice(0, 5)
+														.map((report, index) =>
+															data.pikod.includes(report.pikod) ? (
+																<tr>
+																	<td>
+																		<p>{getname(report.gdod, gdodim)}</p>
+																	</td>
+																	<td>{eventTypeArray[report.typevent]}</td>
+																	<td>
+																		<div
+																			style={{
+																				width: "100%",
+																				height: "50px",
+																				margin: "0",
+																				padding: "0",
+																				overflow: "auto",
+																			}}
+																		>
+																			{report.pirot}
+																		</div>
+																	</td>
+																</tr>
+															) : null
+														)}
+												</tbody>
+											) : !data.pikod ? (
+												<tbody>
+													{reportDB
+														.filter(
+															(report) =>
+																new Date(report.datevent).setHours(
+																	0,
+																	0,
+																	0,
+																	0
+																) >=
+																	new Date(data.fromdate).setHours(
+																		0,
+																		0,
+																		0,
+																		0
+																	) &&
+																new Date(report.datevent).setHours(
+																	0,
+																	0,
+																	0,
+																	0
+																) <= new Date(data.todate).setHours(0, 0, 0, 0)
+														)
+														.slice(0, 5)
+														.map((report, index) => (
+															<tr>
+																<td>
+																	<p>{getname(report.gdod, gdodim)}</p>
+																</td>
+																<td>{eventTypeArray[report.typevent]}</td>
+																<td>
+																	<div
+																		style={{
+																			width: "100%",
+																			height: "50px",
+																			margin: "0",
+																			padding: "0",
+																			overflow: "auto",
+																		}}
+																	>
+																		{report.pirot}
+																	</div>
+																</td>
+															</tr>
+														))}
+												</tbody>
+											) : null}
+										</>
+									) : (
 										<>
-										{data.length == 0 && !data.pikod ? (
-											<tbody>
-												{reportDB.slice(0, 5).map((report, index) => (
-													<tr>
-														<td>
-															<p>{getname(report.gdod, gdodim)}</p>
-														</td>
-														<td>{eventTypeArray[report.typevent]}</td>
-														<td>
-															<div
-																style={{
-																	width: "100%",
-																	height: "50px",
-																	margin: "0",
-																	padding: "0",
-																	overflow: "auto",
-																}}
-															>
-																{report.pirot}
-															</div>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										) : data.pikod ? (
-											<tbody>
-												{reportDB.slice(0, 5).map((report, index) =>
-													data.pikod.includes(report.pikod) ? (
+											{data.length == 0 && !data.pikod ? (
+												<tbody>
+													{reportDB.slice(0, 5).map((report, index) => (
 														<tr>
 															<td>
 																<p>{getname(report.gdod, gdodim)}</p>
@@ -1097,36 +1166,61 @@ const AdminSignInForm = () => {
 																</div>
 															</td>
 														</tr>
-													) : null
-												)}
-											</tbody>
-										) : !data.pikod ? (
-											<tbody>
-												{reportDB.slice(0, 5).map((report, index) => (
-													<tr>
-														<td>
-															<p>{getname(report.gdod, gdodim)}</p>
-														</td>
-														<td>{eventTypeArray[report.typevent]}</td>
-														<td>
-															<div
-																style={{
-																	width: "100%",
-																	height: "50px",
-																	margin: "0",
-																	padding: "0",
-																	overflow: "auto",
-																}}
-															>
-																{report.pirot}
-															</div>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										) : null}
-									</>
-									)} 
+													))}
+												</tbody>
+											) : data.pikod ? (
+												<tbody>
+													{reportDB.slice(0, 5).map((report, index) =>
+														data.pikod.includes(report.pikod) ? (
+															<tr>
+																<td>
+																	<p>{getname(report.gdod, gdodim)}</p>
+																</td>
+																<td>{eventTypeArray[report.typevent]}</td>
+																<td>
+																	<div
+																		style={{
+																			width: "100%",
+																			height: "50px",
+																			margin: "0",
+																			padding: "0",
+																			overflow: "auto",
+																		}}
+																	>
+																		{report.pirot}
+																	</div>
+																</td>
+															</tr>
+														) : null
+													)}
+												</tbody>
+											) : !data.pikod ? (
+												<tbody>
+													{reportDB.slice(0, 5).map((report, index) => (
+														<tr>
+															<td>
+																<p>{getname(report.gdod, gdodim)}</p>
+															</td>
+															<td>{eventTypeArray[report.typevent]}</td>
+															<td>
+																<div
+																	style={{
+																		width: "100%",
+																		height: "50px",
+																		margin: "0",
+																		padding: "0",
+																		overflow: "auto",
+																	}}
+																>
+																	{report.pirot}
+																</div>
+															</td>
+														</tr>
+													))}
+												</tbody>
+											) : null}
+										</>
+									)}
 								</table>
 							</CardBody>
 						</Card>
