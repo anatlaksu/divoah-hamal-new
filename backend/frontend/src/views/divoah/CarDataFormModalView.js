@@ -1878,6 +1878,10 @@ const CarDataFormModalView = (match) => {
 																							<option value={"מת"}>
 																								{"מת"}
 																							</option>
+																							<option value={"לא ידוע"}>
+																								{"לא ידוע"}
+																							</option>
+
 																						</Input>
 																					</div>
 																				</Col>
@@ -2629,6 +2633,10 @@ const CarDataFormModalView = (match) => {
 																							<option value={"מת"}>
 																								{"מת"}
 																							</option>
+																							<option value={"לא ידוע"}>
+																										{"לא ידוע"}
+																									</option>
+
 																						</Input>
 																					</div>
 																				</Col>

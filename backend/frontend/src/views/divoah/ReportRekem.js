@@ -1281,6 +1281,7 @@ const Report = ({ props }) => {
 																					</option>
 																					<option value={"קשה"}>{"קשה"}</option>
 																					<option value={"מת"}>{"מת"}</option>
+																					<option value={"לא ידוע"}>{"לא ידוע"}</option>
 																				</Input>
 																			</div>
 																		</Col>
