@@ -1955,9 +1955,26 @@ const Report = ({ match }) => {
 												ללא נפגעים
 											</div>
 										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													// placeholder="הוסף נפגעים"
+													name="nifga"
+													type="radio"
+													value="2"
+													onChange={handleChange}
+												/>
+												לא ידוע
+											</div>
+										</FormGroup>
+
 									</div>
 
-									{data.nifga > "0" && (
+									{data.nifga === "1" && (
 										<>
 											<div>
 												{infohurtarray.length == 0 ? (

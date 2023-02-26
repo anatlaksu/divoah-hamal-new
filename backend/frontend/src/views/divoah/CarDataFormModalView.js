@@ -1819,9 +1819,33 @@ const CarDataFormModalView = (match) => {
 																ללא נפגעים
 															</div>
 														</FormGroup>
+
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.nifga == 2}
+																	// placeholder="ללא נפגעים "
+																	name="nifga"
+																	type="radio"
+																	value="2"
+																	onChange={handleChange}
+																	disabled
+																/>
+																לא ידוע
+															</div>
+														</FormGroup>
+
 													</div>
 												</Form>
-												{data.nifga > "0" && (
+												{data.nifga === "1" && (
 													<>
 														<div>
 															{infohurtarray.map((p, index) => {
@@ -2348,8 +2372,8 @@ const CarDataFormModalView = (match) => {
 															<option value={"0"}>בחר</option>
 															<option value={"1"}>תאונה</option>
 															<option value={"2"}>כשל טכני</option>
-															<option value={"4"}>טעות אנוש</option>
-															<option value={"3"}>לא ידוע</option>
+															<option value={"3"}>טעות אנוש</option>
+															<option value={"4"}>לא ידוע</option>
 														</Input>
 													</FormGroup>
 
@@ -2571,10 +2595,34 @@ const CarDataFormModalView = (match) => {
 																ללא נפגעים
 															</div>
 														</FormGroup>
+
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	checked={data.nifga == 2}
+																	// placeholder="ללא נפגעים "
+																	name="nifga"
+																	type="radio"
+																	value="2"
+																	onChange={handleChange}
+																	disabled
+																/>
+																לא ידוע
+															</div>
+														</FormGroup>
+
 													</div>
 												</Form>
 
-												{data.nifga > "0" && (
+												{data.nifga === "1" && (
 													<>
 														<div>
 															{infohurtarray.map((p, index) => {

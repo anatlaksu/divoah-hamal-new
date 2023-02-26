@@ -1010,11 +1010,19 @@ const SortingTableHamal = ({ match }) => {
 												return <td>{diff[index]}</td>;
 											}
 											if (cell.column.id == "tipul") {
-												if(row.original.resevent === "4")
-													return <td>סיבת אירוע חסרה</td>;
-												else
-													return <td>לא</td>;
-											}
+												if(row.original.resevent === "4" && row.original.nifga === 2)
+												  return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+												else {
+													if(row.original.resevent === "4")
+													   return <td>סיבת אירוע חסרה</td>;
+													else{
+													  if(row.original.nifga === 2)
+														return <td>לא ידוע על נפגעים</td>;
+													  else
+														return <td>לא</td>;
+													}
+												}
+										}
 
 										}
 									})}
@@ -1202,10 +1210,18 @@ const SortingTableHamal = ({ match }) => {
 												return <td>{diff[index]}</td>;
 											}
 											if (cell.column.id == "tipul") {
-													if(row.original.resevent === "4")
-													  return <td>סיבת אירוע חסרה</td>;
-													else
-													return <td>לא</td>;
+													if(row.original.resevent === "4" && row.original.nifga === 2)
+													  return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+													else {
+														if(row.original.resevent === "4")
+														   return <td>סיבת אירוע חסרה</td>;
+														else{
+														  if(row.original.nifga === 2)
+														    return <td>לא ידוע על נפגעים</td>;
+														  else
+														    return <td>לא</td>;
+														}
+													}
 											}
 
 										}

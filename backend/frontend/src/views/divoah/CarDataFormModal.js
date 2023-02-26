@@ -2181,9 +2181,32 @@ const CarDataFormModal = (match) => {
 																ללא נפגעים
 															</div>
 														</FormGroup>
+
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	// placeholder="הוסף נפגעים"
+																	checked={data.nifga == 2}
+																	name="nifga"
+																	type="radio"
+																	value="2"
+																	onChange={handleChange}
+																/>
+																לא ידוע
+															</div>
+														</FormGroup>
+
 													</div>
 
-													{data.nifga > "0" && (
+													{data.nifga === "1" && (
 														<>
 															<div>
 																{infohurtarray.length == 0 ? (
@@ -2781,8 +2804,8 @@ const CarDataFormModal = (match) => {
 															<option value={"0"}>בחר</option>
 															<option value={"1"}>תאונה</option>
 															<option value={"2"}>כשל טכני</option>
-															<option value={"4"}>טעות אנוש</option>
-															<option value={"3"}>לא ידוע</option>
+															<option value={"3"}>טעות אנוש</option>
+															<option value={"4"}>לא ידוע</option>
 														</Input>
 													</FormGroup>
 
@@ -3066,9 +3089,32 @@ const CarDataFormModal = (match) => {
 																ללא נפגעים
 															</div>
 														</FormGroup>
+
+														<FormGroup
+															check
+															inline
+														>
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
+															>
+																<Input
+																	// placeholder="הוסף נפגעים"
+																	checked={data.nifga == 2}
+																	name="nifga"
+																	type="radio"
+																	value="2"
+																	onChange={handleChange}
+																/>
+																לא ידוע
+															</div>
+														</FormGroup>
+
 													</div>
 
-													{data.nifga > "0" && (
+													{data.nifga === "1" && (
 														<>
 															<div>
 																{infohurtarray.length == 0 ? (

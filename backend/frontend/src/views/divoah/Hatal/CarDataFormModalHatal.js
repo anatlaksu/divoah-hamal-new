@@ -1503,8 +1503,32 @@ const CarDataFormModalHatal = (match) => {
 															ללא נפגעים
 														</div>
 													</FormGroup>
+
+													<FormGroup
+														check
+														inline
+													>
+														<div
+															style={{
+																textAlign: "right",
+																paddingTop: "10px",
+															}}
+														>
+															<Input
+																checked={data.nifga == 2}
+																// placeholder="הוסף נפגעים"
+																name="nifga"
+																type="radio"
+																value="2"
+																onChange={handleChange}
+																disabled
+															/>
+															לא ידוע
+														</div>
+													</FormGroup>
+
 												</div>
-												{data.nifga > "0" && (
+												{data.nifga === "1" && (
 													<>
 														<div>
 															{infohurtarray.length == 0 ? (
