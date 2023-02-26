@@ -1329,59 +1329,102 @@ const CarDataFormModal = (match) => {
 																}
 															)}
 
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
+<div
+														style={{ textAlign: "right", paddingTop: "10px" }}
+													>
+														האם נגרם נזק לכלי
+													</div>
+													<div style={{ textAlign: "right" }}>
+														{data.yn == true ? (
+															<FormGroup
+																check
+																inline
 															>
-																האם נגרם נזק לכלי
-															</div>
-															<div style={{ textAlign: "right" }}>
-																<FormGroup
-																	check
-																	inline
+																<div
+																	style={{
+																		textAlign: "right",
+																		paddingTop: "10px",
+																	}}
 																>
-																	<div
-																		style={{
-																			textAlign: "right",
-																			paddingTop: "10px",
-																		}}
-																	>
-																		<Input
-																			checked={data.yn == true}
-																			type="radio"
-																			name="yn"
-																			value={true}
-																			onChange={handleChange}
-																			id="YES"
-																		/>
-																		כן
-																	</div>
-																</FormGroup>
+																	<Input
+																		checked={data.yn == true}
+																		type="radio"
+																		name="yn"
+																		value={true}
+																		onChange={handleChange}
+																		id="YES"
+																	/>
+																	כן
+																</div>
+															</FormGroup>
+														) : (
+															<FormGroup
+																check
+																inline
+															>
+																<div
+																	style={{
+																		textAlign: "right",
+																		paddingTop: "10px",
+																	}}
+																>
+																	<Input
+																		type="radio"
+																		name="yn"
+																		value={true}
+																		onChange={handleChange}
+																		id="YES"
+																	/>
+																	כן
+																</div>
+															</FormGroup>
+														)}
 
-																<FormGroup
-																	check
-																	inline
+														{data.yn == false ? (
+															<FormGroup
+																check
+																inline
+															>
+																<div
+																	style={{
+																		textAlign: "right",
+																		paddingTop: "10px",
+																	}}
 																>
-																	<div
-																		style={{
-																			textAlign: "right",
-																			paddingTop: "10px",
-																		}}
-																	>
-																		<Input
-																			checked={data.yn == false}
-																			type="radio"
-																			id="NO"
-																			name="yn"
-																			value={false}
-																			onChange={handleChange}
-																		/>
-																		לא
-																	</div>
-																</FormGroup>
-															</div>
+																	<Input
+																		checked={data.yn == false}
+																		type="radio"
+																		id="NO"
+																		name="yn"
+																		value={false}
+																		onChange={handleChange}
+																	/>
+																	לא
+																</div>
+															</FormGroup>
+														) : (
+															<FormGroup
+																check
+																inline
+															>
+																<div
+																	style={{
+																		textAlign: "right",
+																		paddingTop: "10px",
+																	}}
+																>
+																	<Input
+																		type="radio"
+																		id="NO"
+																		name="yn"
+																		value={false}
+																		onChange={handleChange}
+																	/>
+																	לא
+																</div>
+															</FormGroup>
+														)}
+													</div>
 														</>
 													)}
 
