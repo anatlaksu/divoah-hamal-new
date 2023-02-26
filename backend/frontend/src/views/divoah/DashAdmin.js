@@ -62,6 +62,7 @@ const AdminSignInForm = (props) => {
 		5: "אירוע נשק / תחמושת",
 		6: 'תאונת עבודה אנשי טנ"א',
 		7: "פריקת מטפים",
+		8: "אפידמיה",
 		9: "חילוץ",
 		10: 'נזק לתשתיות אחזקה / הח"י',
 		11: "אי קיום שגרת אחזקה",
@@ -341,6 +342,7 @@ const AdminSignInForm = (props) => {
 		"אירוע נשק / תחמושת",
 		'תאונת עבודה אנשי טנ"א',
 		"פריקת מטפים",
+		"אפידמיה",
 		"חילוץ",
 		'נזק לתשתיות אחזקה / הח"י',
 		"אי קיום שגרת אחזקה",
@@ -541,7 +543,7 @@ const AdminSignInForm = (props) => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumogda(arryogda, reportDB),
+				data: sumogda(arryogda, reportDBFillter),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -588,7 +590,7 @@ const AdminSignInForm = (props) => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumhativa(arryhativa, reportDB),
+				data: sumhativa(arryhativa, reportDBFillter),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -639,7 +641,7 @@ const AdminSignInForm = (props) => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumgdod(arrygdod, reportDB),
+				data: sumgdod(arrygdod, reportDBFillter),
 				backgroundColor: randomcolor(arrygdod),
 				borderColor: ["rgba(200, 200, 200, 0.75)"],
 				borderWidth: 1,
@@ -648,15 +650,44 @@ const AdminSignInForm = (props) => {
 	};
 	//todo:
 	//! to try to use this use effect for reportDBOgda and so on
+
+	function reportDBFl(report, dataUnit, unit) {
+		props.theme == "white-content"
+			? setReportDFillter(
+					report.filter((rp) =>
+						unit == "pikod"
+							? dataUnit.includes(rp.pikod)
+							: unit == "ogda"
+							? dataUnit.includes(rp.ogda)
+							: unit == "hativa"
+							? dataUnit.includes(rp.hativa)
+							: dataUnit.includes(rp.gdod)
+					)
+			  )
+			: setReportDFillter(
+					report.filter((rp) =>
+						unit == "pikod"
+							? dataUnit.includes(rp.pikodrep)
+							: unit == "ogda"
+							? dataUnit.includes(rp.ogdarep)
+							: unit == "hativa"
+							? dataUnit.includes(rp.hativarep)
+							: dataUnit.includes(rp.gdodrep)
+					)
+			  );
+	}
+
 	useEffect(() => {
 		try {
-			props.theme == "white-content"
-				? setReportDFillter(
-						reportDB.filter((report) => data.pikod.includes(report.pikod))
-				  )
-				: setReportDFillter(
-						reportDB.filter((report) => data.pikod.includes(report.pikodrep))
-				  );
+			data.pikod.length > 0
+				? reportDBFl(reportDB, data.pikod, "pikod")
+				: data.ogda.length > 0
+				? reportDBFl(reportDB, data.ogda, "ogda")
+				: data.hativa.length > 0
+				? reportDBFl(reportDB, data.hativa, "hativa")
+				: reportDBFl(reportDB, data.gdod, "gdod");
+			console.log(reportDBFillter.length);
+
 			// console.log(reportDBPikod.length);
 		} catch (error) {
 			setReportDFillter(reportDB);
@@ -694,14 +725,6 @@ const AdminSignInForm = (props) => {
 		for (let i = 0; i < arr.length; i++) {
 			if (arr[i]._id == idnum) return arr[i].name;
 		}
-	}
-
-	function getnumevt(arr) {
-		let num = 0;
-		for (let i = 0; i < arr.length; i++) {
-			num++;
-		}
-		return num;
 	}
 
 	return (
@@ -871,45 +894,6 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Collapse>
 					</div>
-				</Row>
-				<Row>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
-							</CardHeader>
-							<CardBody></CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center"> סה"כ שעות עבודה</h3>
-							</CardHeader>
-							<CardBody></CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									סה"כ עלות אירועים
-								</h3>
-							</CardHeader>
-							<CardBody></CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center"> מספר אירועים</h3>
-							</CardHeader>
-							<CardBody>
-								<h2 className="text-center">{getnumevt(reportDB)}</h2>
-							</CardBody>
-						</Card>
-					</Col>
 				</Row>
 				{props.theme == "white-content" ? (
 					<>
