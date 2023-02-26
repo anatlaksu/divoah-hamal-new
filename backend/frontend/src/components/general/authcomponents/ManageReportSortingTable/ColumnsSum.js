@@ -27,12 +27,13 @@ export const COLUMNSSUM = [
 		
 	},
 	{
-		Header: "  סטטוס",
-		Footer: " סטטוס ",
-		accessor: "status",
+		Header: "נדרש המשך טיפול",
+		Footer: "נדרש המשך טיפול",
+		accessor: "tipul",
 		Filter: ColumnFilter,
 		
 	},
+
 	// {
 	//     Header: 'הרשאה',
 	//     Footer:'הרשאה',

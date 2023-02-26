@@ -53,6 +53,7 @@ const SortingTableHamal = ({ match }) => {
 	const [isviewmodalopen, setisviewmodalopen] = useState(false);
 	const [viewmodalid, setViewmodalid] = useState(undefined);
 
+	const [reportDB, setReportDB] = useState([]);
 	// const [reportDBPikod, setReportDBPikod] = useState([]);
 
 	// const [gdods, setGdods] = useState([]);
@@ -406,6 +407,20 @@ const SortingTableHamal = ({ match }) => {
 	//     setData(result.data);
 	//   })();
 	// }, []);
+
+	const loadReports = () => {
+		axios.get(`http://localhost:8000/report`).then((res) => {
+			// console.log(res);
+			// console.log(res.data);
+			setReportDB(res.data);
+		});
+	};
+
+	useEffect(() => {
+		loadReports();
+	}, []);
+
+
 
 	useEffect(() => {
 		user.role === "2"
@@ -933,184 +948,9 @@ const SortingTableHamal = ({ match }) => {
 										if (
 											cell.column.id != "typevent" &&
 											cell.column.id != "pirot" &&
-											cell.column.id != "datevent"
-										) {
-											return (
-												<td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-											);
-										} else {
-											if (cell.column.id == "typevent") {
-												if (cell.value == "1") return <td>תאונת כלי רכב</td>;
-												if (cell.value == "2") return <td>התהפכות</td>;
-												if (cell.value == "3") return <td>הנתקות גלגל</td>;
-												if (cell.value == "4") return <td>שריפה</td>;
-												if (cell.value == "5")
-													return <td>אירוע נשק / תחמושת</td>;
-												if (cell.value == "6")
-													return <td>תאונת עבודה אנשי טנ"א</td>;
-												if (cell.value == "7") return <td>פריקת מטפים</td>;
-												if (cell.value == "9") return <td>חילוץ</td>;
-												if (cell.value == "10")
-													return <td>נזק לתשתיות אחזקה / הח"י</td>;
-												if (cell.value == "11")
-													return <td>אי קיום שגרת אחזקה</td>;
-												if (cell.value == "12") return <td>אחר</td>;
-												if (cell.value == "רקם") return <td>רק"ם</td>;
-											}
-											if (cell.column.id == "pirot") {
-												return (
-													<td>
-														<div
-															style={{
-																width: "100%",
-																height: "40px",
-																margin: "0",
-																padding: "0",
-																overflow: "auto",
-															}}
-														>
-															{cell.value}
-														</div>
-													</td>
-												);
-											}
-
-											if (cell.column.id == "datevent") {
-												return (
-													<td>
-														{cell.value
-															.slice(0, 10)
-															.split("-")
-															.reverse()
-															.join("-")}
-													</td>
-												);
-											}
-										}
-									})}
-
-									{row.original.typevent != "רקם" ? (
-										<td role="cell">
-											{" "}
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													justifyContent: "center",
-												}}
-											>
-												{" "}
-												{/* {console.log(row.original.typevent)} */}
-												<button
-													className="btn-new"
-													id={row.index}
-
-													value={row.original._id}
-													onClick={Toggle}
-												>
-													עדכן
-												</button>
-											</div>{" "}
-										</td>
-									) : (
-										<td role="cell">
-											{" "}
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													justifyContent: "center",
-												}}
-											>
-												{" "}
-												{/* {console.log(row.original.typevent)} */}
-												<button
-													className="btn-new"
-													id={row.index}
-													value={row.original._id}
-													onClick={Toggle}
-												>
-													עדכן
-												</button>
-											</div>{" "}
-										</td>
-									)}
-
-									{/* // ? row.original._id=user._id*/}
-									{/*//* -------- view report --------------- */}
-									{row.original.typevent != "רקם" ? (
-										<td role="cell">
-											{" "}
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													justifyContent: "center",
-												}}
-											>
-												{" "}
-												{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-												<button
-													value={row.original._id}
-													onClick={ToggleView}
-													className="btn-new-delete"
-												>
-													צפייה
-												</button>
-											</div>
-										</td>
-									) : (
-										<td role="cell">
-											{" "}
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													justifyContent: "center",
-												}}
-											>
-												{" "}
-												{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-												<button
-													value={row.original._id}
-													onClick={ToggleView}
-													className="btn-new-delete"
-												>
-													צפייה
-												</button>
-											</div>
-										</td>
-									)}
-								</tr>
-							);
-						})}
-					</tbody>
-						</>
-					):(
-
-					<tbody {...getTableBodyProps()}>
-						{/* added an index so i could pull the diff for each row */}
-						{page.map((row, index) => {
-							prepareRow(row);
-							return (
-								<tr {...row.getRowProps()}>
-									{row.cells.map((cell) => {
-										if (
-											cell.column.id != "typevent" &&
-											cell.column.id != "pirot" &&
 											cell.column.id != "datevent" &&
 											cell.column.id != "difftime" &&
-											cell.column.id != "status"
+											cell.column.id != "tipul" 
 										) {
 											return (
 												<td {...cell.getCellProps()}>{cell.render("Cell")}</td>
@@ -1169,17 +1009,205 @@ const SortingTableHamal = ({ match }) => {
 											if (cell.column.id == "difftime") {
 												return <td>{diff[index]}</td>;
 											}
-											// * ------------- added status --------------------------------
-											if (cell.column.id == "status") {
-												if (cell.value == "0") {
-													return <td>בטיפול</td>;
-												}
-												if (cell.value == "1") {
-													return <td>סגור</td>;
-												} else {
-													return <td>בטיפול</td>;
-												}
+											if (cell.column.id == "tipul") {
+												if(row.original.resevent === "4")
+													return <td>סיבת אירוע חסרה</td>;
+												else
+													return <td>לא</td>;
 											}
+
+										}
+									})}
+									{/*//* -------- update report --------------- */}
+									{row.original.typevent != "רקם" ? (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* {console.log(row.original.typevent)} */}
+												{/* <Link to={`/editreport/${row.original._id}`}> */}
+												<button
+													className="btn-new"
+													id={row.index}
+													value={row.original._id}
+													onClick={Toggle}
+												>
+													עדכן
+												</button>
+											</div>{" "}
+										</td>
+									) : (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* {console.log(row.original.typevent)} */}
+												{/* <Link to={`/editreport/${row.original._id}`}> */}
+												<button
+													className="btn-new"
+													id={row.index}
+													value={row.original._id}
+													onClick={Toggle}
+												>
+													עדכן
+												</button>
+											</div>{" "}
+										</td>
+									)}
+									{/* // ? row.original._id=user._id*/}
+									{/*//* -------- view report --------------- */}
+									{row.original.typevent != "רקם" ? (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+												{/* <Link to={`/wachreport/${row.original._id}`}> */}
+												<button
+													value={row.original._id}
+													onClick={ToggleView}
+													className="btn-new-delete"
+												>
+													צפייה
+												</button>
+											</div>
+										</td>
+									) : (
+										<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+												{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
+												<button
+													value={row.original._id}
+													onClick={ToggleView}
+													className="btn-new-delete"
+												>
+													צפייה
+												</button>
+											</div>
+										</td>
+									)}
+								</tr>
+							);
+						})}
+					</tbody>
+						</>
+					):(
+
+					<tbody {...getTableBodyProps()}>
+						{/* added an index so i could pull the diff for each row */}
+						{page.map((row, index) => {
+							prepareRow(row);
+							return (
+								<tr {...row.getRowProps()}>
+									{row.cells.map((cell) => {
+										if (
+											cell.column.id != "typevent" &&
+											cell.column.id != "pirot" &&
+											cell.column.id != "datevent" &&
+											cell.column.id != "difftime" &&
+											cell.column.id != "tipul" 
+										) {
+											return (
+												<td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+											);
+										} else {
+											if (cell.column.id == "typevent") {
+												if (cell.value == "1") return <td>תאונת כלי רכב</td>;
+												if (cell.value == "2") return <td>התהפכות</td>;
+												if (cell.value == "3") return <td>הנתקות גלגל</td>;
+												if (cell.value == "4") return <td>שריפה</td>;
+												if (cell.value == "5")
+													return <td>אירוע נשק / תחמושת</td>;
+												if (cell.value == "6")
+													return <td>תאונת עבודה אנשי טנ"א</td>;
+												if (cell.value == "7") return <td>פריקת מטפים</td>;
+												if (cell.value == "9") return <td>חילוץ</td>;
+												if (cell.value == "10")
+													return <td>נזק לתשתיות אחזקה / הח"י</td>;
+												if (cell.value == "11")
+													return <td>אי קיום שגרת אחזקה</td>;
+												if (cell.value == "12") return <td>אחר</td>;
+												if (cell.value == "רקם") return <td>רק"ם</td>;
+											}
+											if (cell.column.id == "pirot") {
+												return (
+													<td>
+														<div
+															style={{
+																width: "100%",
+																height: "60px",
+																margin: "0",
+																padding: "0",
+																overflow: "auto",
+															}}
+														>
+															{cell.value}
+														</div>
+													</td>
+												);
+											}
+
+											if (cell.column.id == "datevent") {
+												return (
+													<td>
+														{cell.value
+															.slice(0, 10)
+															.split("-")
+															.reverse()
+															.join("-")}
+													</td>
+												);
+											}
+
+											// * ------------- added difftime --------------------------------
+
+											if (cell.column.id == "difftime") {
+												return <td>{diff[index]}</td>;
+											}
+											if (cell.column.id == "tipul") {
+													if(row.original.resevent === "4")
+													  return <td>סיבת אירוע חסרה</td>;
+													else
+													return <td>לא</td>;
+											}
+
 										}
 									})}
 									{/*//* -------- update report --------------- */}
