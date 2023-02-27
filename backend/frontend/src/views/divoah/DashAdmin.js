@@ -298,7 +298,7 @@ const AdminSignInForm = (props) => {
 				}
 			}
 
-			console.log(data);
+			// console.log(data);
 			// console.log(data.pikod);
 			// console.log(data.ogda);
 			// console.log(data.hativa);
@@ -403,12 +403,65 @@ const AdminSignInForm = (props) => {
 		],
 	};
 
+	const dataeventPikod = {
+		labels: labels,
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumtypereport(labels, reportDBFillter, eventTypeArray),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderWidth: 1,
+			},
+		],
+	};
+
 	function sumpikods(arr1, arr2) {
 		let sumallpikods = [];
 		for (let i = 0; i < arr1.length; i++) {
 			let sum = 0;
 			for (let j = 0; j < arr2.length; j++) {
 				if (arr2[j].pikod == arr1[i]._id) sum++;
+			}
+			sumallpikods[i] = sum;
+		}
+		return sumallpikods;
+	}
+
+	function sumpikodsrep(arr1, arr2) {
+		let sumallpikods = [];
+		for (let i = 0; i < arr1.length; i++) {
+			let sum = 0;
+			for (let j = 0; j < arr2.length; j++) {
+				if (arr2[j].pikodrep == arr1[i]._id) sum++;
 			}
 			sumallpikods[i] = sum;
 		}
@@ -456,53 +509,12 @@ const AdminSignInForm = (props) => {
 		],
 	};
 
-	function getcolor() {
-		const r = Math.floor(Math.random() * 255);
-		const g = Math.floor(Math.random() * 255);
-		const b = Math.floor(Math.random() * 255);
-		return "rgb(" + r + "," + g + "," + b + ")";
-	}
-
-	function randomcolor(arr1) {
-		const colors = [];
-		for (let i = 0; i < arr1.length; i++) {
-			colors.push(getcolor());
-			console.log(colors);
-		}
-		return colors;
-	}
-
-	function sumogda(arr1, arr2) {
-		let sumallogdas = [];
-		for (let i = 0; i < arr1.length; i++) {
-			let sum = 0;
-			for (let j = 0; j < arr2.length; j++) {
-				if (arr2[j].ogda == arr1[i]._id) sum++;
-			}
-			sumallogdas[i] = sum;
-		}
-		return sumallogdas;
-	}
-	const arryogda = ogdas.filter((ogda, index) => {
-		try {
-			if (data.pikod.includes(ogda.pikod)) {
-				return ogda.pikod;
-			}
-		} catch (error) {
-			return datapikod;
-		}
-	});
-
-	// const reportDBPikod = reportDB.filter((report) =>
-	// 	data.pikod.includes(report.pikod)
-	// );
-
-	const dataeventPikod = {
-		labels: labels,
+	const datapikodrep = {
+		labels: pikods.map((pikod, index) => pikod.name),
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumtypereport(labels, reportDBFillter, eventTypeArray),
+				data: sumpikodsrep(pikods, reportDB),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -538,12 +550,93 @@ const AdminSignInForm = (props) => {
 		],
 	};
 
+	function getcolor() {
+		const r = Math.floor(Math.random() * 255);
+		const g = Math.floor(Math.random() * 255);
+		const b = Math.floor(Math.random() * 255);
+		return "rgb(" + r + "," + g + "," + b + ")";
+	}
+
+	function randomcolor(arr1) {
+		const colors = [];
+		for (let i = 0; i < arr1.length; i++) {
+			colors.push(getcolor());
+			// console.log(colors);
+		}
+		return colors;
+	}
+
+	function sumogda(arr1, arr2) {
+		let sumallogdas = [];
+		for (let i = 0; i < arr1.length; i++) {
+			let sum = 0;
+			for (let j = 0; j < arr2.length; j++) {
+				if (arr2[j].ogda == arr1[i]._id) sum++;
+			}
+			sumallogdas[i] = sum;
+		}
+		return sumallogdas;
+	}
+
+	function sumogdarep(arr1, arr2) {
+		let sumallogdas = [];
+		for (let i = 0; i < arr1.length; i++) {
+			let sum = 0;
+			for (let j = 0; j < arr2.length; j++) {
+				if (arr2[j].ogdarep == arr1[i]._id) sum++;
+			}
+			sumallogdas[i] = sum;
+		}
+		return sumallogdas;
+	}
+
+	const arryogda = ogdas.filter((ogda, index) => {
+		try {
+			if (data.pikod.includes(ogda.pikod)) {
+				return ogda.pikod;
+			}
+		} catch (error) {
+			return datapikod;
+		}
+	});
+
+	// const reportDBPikod = reportDB.filter((report) =>
+	// 	data.pikod.includes(report.pikod)
+	// );
+
 	const dataogda = {
 		labels: arryogda.map((ogda) => ogda.name),
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumogda(arryogda, reportDBFillter),
+				data: sumogda(arryogda, reportDB),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: ["rgba(200, 200, 200, 0.75)"],
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const dataogdarep = {
+		labels: arryogda.map((ogda) => ogda.name),
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumogdarep(arryogda, reportDB),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -577,6 +670,18 @@ const AdminSignInForm = (props) => {
 		return sumallhativas;
 	}
 
+	function sumhativarep(arr1, arr2) {
+		let sumallhativas = [];
+		for (let i = 0; i < arr1.length; i++) {
+			let sum = 0;
+			for (let j = 0; j < arr2.length; j++) {
+				if (arr2[j].hativarep == arr1[i]._id) sum++;
+			}
+			sumallhativas[i] = sum;
+		}
+		return sumallhativas;
+	}
+
 	const arryhativa = hativas.filter((hativa, index) => {
 		try {
 			if (data.ogda.includes(hativa.ogda)) {
@@ -590,7 +695,34 @@ const AdminSignInForm = (props) => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumhativa(arryhativa, reportDBFillter),
+				data: sumhativa(arryhativa, reportDB),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: ["rgba(200, 200, 200, 0.75)"],
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const datahativarep = {
+		labels: arryhativa.map((hativa) => hativa.name),
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumhativarep(arryhativa, reportDB),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -623,6 +755,18 @@ const AdminSignInForm = (props) => {
 		}
 		return sumallgdods;
 	}
+
+	function sumgdodrep(arr1, arr2) {
+		let sumallgdods = [];
+		for (let i = 0; i < arr1.length; i++) {
+			let sum = 0;
+			for (let j = 0; j < arr2.length; j++) {
+				if (arr2[j].gdodrep == arr1[i]._id) sum++;
+			}
+			sumallgdods[i] = sum;
+		}
+		return sumallgdods;
+	}
 	// const arryhativa = hativas.filter((hativa, index) => {
 	// 	if (data.ogda.includes(hativa.ogda)) {
 	// 		return hativa.ogda;
@@ -641,15 +785,26 @@ const AdminSignInForm = (props) => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumgdod(arrygdod, reportDBFillter),
+				data: sumgdod(arrygdod, reportDB),
 				backgroundColor: randomcolor(arrygdod),
 				borderColor: ["rgba(200, 200, 200, 0.75)"],
 				borderWidth: 1,
 			},
 		],
 	};
-	//todo:
-	//! to try to use this use effect for reportDBOgda and so on
+
+	const datagdodrep = {
+		labels: arrygdod.map((gdod) => gdod.name),
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumgdodrep(arrygdod, reportDB),
+				backgroundColor: randomcolor(arrygdod),
+				borderColor: ["rgba(200, 200, 200, 0.75)"],
+				borderWidth: 1,
+			},
+		],
+	};
 
 	function reportDBFl(report, dataUnit, unit) {
 		props.theme == "white-content"
@@ -661,7 +816,7 @@ const AdminSignInForm = (props) => {
 							? dataUnit.includes(rp.ogda)
 							: unit == "hativa"
 							? dataUnit.includes(rp.hativa)
-							: dataUnit.includes(rp.gdod)
+							: null
 					)
 			  )
 			: setReportDFillter(
@@ -672,26 +827,24 @@ const AdminSignInForm = (props) => {
 							? dataUnit.includes(rp.ogdarep)
 							: unit == "hativa"
 							? dataUnit.includes(rp.hativarep)
-							: dataUnit.includes(rp.gdodrep)
+							: null
 					)
 			  );
 	}
 
 	useEffect(() => {
-		try {
-			data.pikod.length > 0
-				? reportDBFl(reportDB, data.pikod, "pikod")
-				: data.ogda.length > 0
-				? reportDBFl(reportDB, data.ogda, "ogda")
-				: data.hativa.length > 0
-				? reportDBFl(reportDB, data.hativa, "hativa")
-				: reportDBFl(reportDB, data.gdod, "gdod");
-			console.log(reportDBFillter.length);
+		typeof data.pikod == "object"
+			? reportDBFl(reportDB, data.pikod, "pikod")
+			: typeof data.ogda == "object"
+			? reportDBFl(reportDB, data.ogda, "ogda")
+			: typeof data.hativa == "object"
+			? reportDBFl(reportDB, data.hativa, "hativa")
+			: setReportDFillter(reportDB);
 
-			// console.log(reportDBPikod.length);
-		} catch (error) {
-			setReportDFillter(reportDB);
-		}
+		console.table(reportDBFillter);
+		// console.log(typeof data.gdod);
+		console.log(reportDBFillter.length);
+
 		// console.log(props.theme);
 	}, [data, props.theme]);
 
@@ -1273,7 +1426,7 @@ const AdminSignInForm = (props) => {
 										<CardBody>
 											{!data.pikod ? (
 												<Doughnut
-													data={datapikod}
+													data={datapikodrep}
 													options={options}
 												/>
 											) : //* was removed
@@ -1300,7 +1453,7 @@ const AdminSignInForm = (props) => {
 										</CardHeader>
 										<CardBody>
 											<Doughnut
-												data={dataogda}
+												data={dataogdarep}
 												options={options}
 											/>
 										</CardBody>
@@ -1319,7 +1472,7 @@ const AdminSignInForm = (props) => {
 											</CardHeader>
 											<CardBody>
 												<Doughnut
-													data={datahativa}
+													data={datahativarep}
 													options={options}
 												/>
 											</CardBody>
@@ -1339,7 +1492,7 @@ const AdminSignInForm = (props) => {
 											</CardHeader>
 											<CardBody>
 												<Doughnut
-													data={datagdod}
+													data={datagdodrep}
 													options={options}
 												/>
 											</CardBody>

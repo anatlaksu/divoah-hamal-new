@@ -718,7 +718,7 @@ const SortingTableRekem = ({ match }) => {
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th style={{ width: "20%" }}>
+									<th style={{ width: "18%" }}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -761,6 +761,7 @@ const SortingTableRekem = ({ match }) => {
 													if (
 														cell.column.id != "typevent" &&
 														cell.column.id != "pirot" &&
+														cell.column.id != "createdAt" &&
 														cell.column.id != "datevent"
 													) {
 														return (
@@ -804,6 +805,18 @@ const SortingTableRekem = ({ match }) => {
 																	>
 																		{cell.value}
 																	</div>
+																</td>
+															);
+														}
+
+														if (cell.column.id == "createdAt") {
+															return (
+																<td>
+																	{cell.value
+																		.slice(0, 10)
+																		.split("-")
+																		.reverse()
+																		.join("-")}
 																</td>
 															);
 														}
@@ -939,6 +952,7 @@ const SortingTableRekem = ({ match }) => {
 											if (
 												cell.column.id != "typevent" &&
 												cell.column.id != "pirot" &&
+												cell.column.id != "createdAt" &&
 												cell.column.id != "datevent" &&
 												cell.column.id != "difftime" &&
 												cell.column.id != "status"
@@ -981,6 +995,18 @@ const SortingTableRekem = ({ match }) => {
 															>
 																{cell.value}
 															</div>
+														</td>
+													);
+												}
+
+												if (cell.column.id == "createdAt") {
+													return (
+														<td>
+															{cell.value
+																.slice(0, 10)
+																.split("-")
+																.reverse()
+																.join("-")}
 														</td>
 													);
 												}

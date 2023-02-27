@@ -375,6 +375,7 @@ const SortingTable = ({ match }) => {
 													if (
 														cell.column.id != "typevent" &&
 														cell.column.id != "pirot" &&
+														cell.column.id != "createdAt" &&
 														cell.column.id != "datevent"
 													) {
 														return (
@@ -418,6 +419,18 @@ const SortingTable = ({ match }) => {
 																	>
 																		{cell.value}
 																	</div>
+																</td>
+															);
+														}
+
+														if (cell.column.id == "createdAt") {
+															return (
+																<td>
+																	{cell.value
+																		.slice(0, 10)
+																		.split("-")
+																		.reverse()
+																		.join("-")}
 																</td>
 															);
 														}
@@ -552,6 +565,7 @@ const SortingTable = ({ match }) => {
 											if (
 												cell.column.id != "typevent" &&
 												cell.column.id != "pirot" &&
+												cell.column.id != "createdAt" &&
 												cell.column.id != "datevent"
 											) {
 												return (
@@ -592,6 +606,18 @@ const SortingTable = ({ match }) => {
 															>
 																{cell.value}
 															</div>
+														</td>
+													);
+												}
+
+												if (cell.column.id == "createdAt") {
+													return (
+														<td>
+															{cell.value
+																.slice(0, 10)
+																.split("-")
+																.reverse()
+																.join("-")}
 														</td>
 													);
 												}

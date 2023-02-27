@@ -323,11 +323,20 @@ const SortingTableHamal = ({ match }) => {
 
 	function Toggle(evt) {
 		let index = +evt.currentTarget.id;
-		console.log(index);
-		console.log(expired[index]);
+		// console.log(index);
+		// console.log(expired[index]);
 		if (!evt.currentTarget.value == "") {
 			if (expired[index] == true) {
-				toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
+				if (user.role == "2") {
+					if (evt.currentTarget.value == "") {
+						setCardataidformodal(undefined);
+					} else {
+						setCardataidformodal(evt.currentTarget.value);
+					}
+					setIscardataformopen(!iscardataformopen);
+				} else {
+					toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
+				}
 			} else {
 				if (evt.currentTarget.value == "") {
 					setCardataidformodal(undefined);
@@ -943,7 +952,7 @@ const SortingTableHamal = ({ match }) => {
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th style={{ width: "20%" }}>
+									<th style={{ width: "18%" }}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -986,6 +995,7 @@ const SortingTableHamal = ({ match }) => {
 													if (
 														cell.column.id != "typevent" &&
 														cell.column.id != "pirot" &&
+														cell.column.id != "createdAt" &&
 														cell.column.id != "datevent" &&
 														cell.column.id != "difftime" &&
 														cell.column.id != "tipul"
@@ -1035,6 +1045,17 @@ const SortingTableHamal = ({ match }) => {
 															);
 														}
 
+														if (cell.column.id == "createdAt") {
+															return (
+																<td>
+																	{cell.value
+																		.slice(0, 10)
+																		.split("-")
+																		.reverse()
+																		.join("-")}
+																</td>
+															);
+														}
 														if (cell.column.id == "datevent") {
 															return (
 																<td>
@@ -1193,6 +1214,7 @@ const SortingTableHamal = ({ match }) => {
 											if (
 												cell.column.id != "typevent" &&
 												cell.column.id != "pirot" &&
+												cell.column.id != "createdAt" &&
 												cell.column.id != "datevent" &&
 												cell.column.id != "difftime" &&
 												cell.column.id != "tipul"
@@ -1235,6 +1257,18 @@ const SortingTableHamal = ({ match }) => {
 															>
 																{cell.value}
 															</div>
+														</td>
+													);
+												}
+
+												if (cell.column.id == "createdAt") {
+													return (
+														<td>
+															{cell.value
+																.slice(0, 10)
+																.split("-")
+																.reverse()
+																.join("-")}
 														</td>
 													);
 												}
