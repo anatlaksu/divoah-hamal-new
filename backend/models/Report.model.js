@@ -33,7 +33,6 @@ const ReportSchema = new mongoose.Schema(
 		mataftype: String,
 		apitype: String,
 		mholaztype: String,
-		status: { type: String, default: "" },
 		// mhalztype:String,
 		pirot: String,
 		datevent: Date,

@@ -57,7 +57,6 @@ const CarDataFormModal = (match) => {
 		zadik: "",
 		resevent: "",
 		yn: "",
-		status: "",
 		selneshek: "",
 		whap: "",
 		amlahtype: "",
@@ -672,7 +671,6 @@ const CarDataFormModal = (match) => {
 			mkabaz: data.mkabaz,
 			zadik: data.zadik,
 			yn: data.yn,
-			status: data.status,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -2040,57 +2038,6 @@ const CarDataFormModal = (match) => {
 */}
 														</>
 													)}
-													{/*//* ------------- status checker ------------------ */}
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם מצריך המשך טיפול
-													</div>
-													<div style={{ textAlign: "right" }}>
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 1}
-																	type="radio"
-																	name="status"
-																	value="1"
-																	onChange={handleChange}
-																	id="delt"
-																/>
-																כן
-															</div>
-														</FormGroup>
-
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 0}
-																	type="radio"
-																	id="notDelt"
-																	name="status"
-																	value="0"
-																	onChange={handleChange}
-																/>
-																לא
-															</div>
-														</FormGroup>
-													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2947,57 +2894,6 @@ const CarDataFormModal = (match) => {
 																</div>
 															</FormGroup>
 														)}
-													</div>
-													{/*//* ------------- status checker ------------------ */}
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם מצריך המשך טיפול
-													</div>
-													<div style={{ textAlign: "right" }}>
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 1}
-																	type="radio"
-																	name="status"
-																	value="1"
-																	onChange={handleChange}
-																	id="delt"
-																/>
-																כן
-															</div>
-														</FormGroup>
-
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 0}
-																	type="radio"
-																	id="notDelt"
-																	name="status"
-																	value="0"
-																	onChange={handleChange}
-																/>
-																לא
-															</div>
-														</FormGroup>
 													</div>
 
 													<FormGroup dir="rtl">

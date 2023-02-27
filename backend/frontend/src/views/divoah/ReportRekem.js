@@ -66,7 +66,6 @@ const Report = ({ props }) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
-		dt: "0",
 		hurtarray: [],
 
 		error: false,
@@ -417,13 +416,6 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += " ,אם נגרם נזק ריק \n";
 		}
-		if (
-			!document.getElementById("delt").checked &&
-			!document.getElementById("notDelt").checked
-		) {
-			flag = false;
-			ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
-		}
 		if (data.pirot == "") {
 			flag = false;
 			ErrorReason += "  פירוט האירוע ריק \n";
@@ -470,7 +462,6 @@ const Report = ({ props }) => {
 			mkabaz: data.mkabaz,
 			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
-			dt: data.dt,
 			typevent: data.typevent,
 			resevent: data.resevent,
 			yn: data.yn,
@@ -1072,44 +1063,6 @@ const Report = ({ props }) => {
 													id="NO"
 													name="yn"
 													value={false}
-													onChange={handleChange}
-												/>
-												לא
-											</div>
-										</FormGroup>
-									</div>
-
-									{/* //* ------------------ dt checker ----------------------- */}
-									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-										האם מצריך המשך טיפול
-									</div>
-									<div style={{ textAlign: "right" }}>
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													name="dt"
-													value="1"
-													onChange={handleChange}
-													id="delt"
-												/>
-												כן
-											</div>
-										</FormGroup>
-
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													id="notDelt"
-													name="dt"
-													value="0"
 													onChange={handleChange}
 												/>
 												לא

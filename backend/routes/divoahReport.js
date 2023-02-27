@@ -177,7 +177,6 @@ router.route("/add").post((req, res) => {
 	const typevent = req.body.typevent;
 	const resevent = req.body.resevent;
 	const yn = req.body.yn;
-	const status = req.body.status;
 	const selneshek = req.body.selneshek;
 	const whap = req.body.whap;
 	const rekemtype = req.body.rekemtype;
@@ -216,7 +215,6 @@ router.route("/add").post((req, res) => {
 		typevent,
 		resevent,
 		yn,
-		status,
 		selneshek,
 		whap,
 		amlahtype,
@@ -358,7 +356,6 @@ router.route("/update/:id").put((req, res) => {
 			request.typevent = req.body.typevent;
 			request.resevent = req.body.resevent;
 			request.yn = req.body.yn;
-			request.status = req.body.status;
 			request.selneshek = req.body.selneshek;
 			request.whap = req.body.whap;
 			request.amlahtype = req.body.amlahtype;

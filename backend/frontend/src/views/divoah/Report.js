@@ -60,7 +60,6 @@ const Report = ({ match }) => {
 		mataftype: "0",
 		apitype: "0",
 		mholaztype: "0",
-		status: "0",
 		// mhalztype:"0",
 		pirot: "",
 		datevent: "",
@@ -481,13 +480,6 @@ const Report = ({ match }) => {
 				flag = false;
 				ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
 			}
-			if (
-				!document.getElementById("delt").checked &&
-				!document.getElementById("notDelt").checked
-			) {
-				flag = false;
-				ErrorReason += " ,    סטטוס ריק\n";
-			}
 		}
 		if (data.typevent === "5") {
 			if (data.selneshek == "") {
@@ -500,13 +492,6 @@ const Report = ({ match }) => {
 			) {
 				flag = false;
 				ErrorReason += " ,אם נגרם נזק ריק \n";
-			}
-			if (
-				!document.getElementById("delt").checked &&
-				!document.getElementById("notDelt").checked
-			) {
-				flag = false;
-				ErrorReason += " סטטוס ריק   \n";
 			}
 
 			if (
@@ -650,8 +635,6 @@ const Report = ({ match }) => {
 			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
 			yn: data.yn,
-			status:
-				data.dt /* //?if there is no need for the dt button ==> data.dt != undefined || null ? data.dt : "0",*/,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -669,7 +652,6 @@ const Report = ({ match }) => {
 			hurtarray: infohurtarray,
 		};
 		console.log("In the SendFormData Func");
-		console.log(requestData.dt);
 		console.groupCollapsed("Axios");
 		if (!requestData.gdod == "") {
 			if (!requestData.gdodrep == "") {
@@ -1840,47 +1822,6 @@ const Report = ({ match }) => {
  */}
 										</>
 									)}
-
-									{/* //* ------------------ dt checker ----------------------- */}
-									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-										האם מצריך המשך טיפול
-									</div>
-									<div
-										className="mb-2"
-										style={{ textAlign: "right" }}
-									>
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													name="dt"
-													value="1"
-													onChange={handleChange}
-													id="delt"
-												/>
-												כן
-											</div>
-										</FormGroup>
-
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													id="notDelt"
-													name="dt"
-													value="0"
-													onChange={handleChange}
-												/>
-												לא
-											</div>
-										</FormGroup>
-									</div>
 
 									<FormGroup dir="rtl">
 										<Input

@@ -45,7 +45,6 @@ const CarDataFormModalView = (match) => {
 		typevent: "",
 		resevent: "",
 		yn: "",
-		status: "",
 		selneshek: "",
 		whap: "",
 		amlahtype: "",
@@ -1673,59 +1672,6 @@ const CarDataFormModalView = (match) => {
 */}
 														</>
 													)}
-													{/*//* ------------- status checker ------------------ */}
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם מצריך המשך טיפול
-													</div>
-													<div style={{ textAlign: "right" }}>
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 1}
-																	type="radio"
-																	name="dt"
-																	value="1"
-																	onChange={handleChange}
-																	id="delt"
-																	disabled
-																/>
-																כן
-															</div>
-														</FormGroup>
-
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 0}
-																	type="radio"
-																	id="notDelt"
-																	name="dt"
-																	value="0"
-																	onChange={handleChange}
-																	disabled
-																/>
-																לא
-															</div>
-														</FormGroup>
-													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2442,59 +2388,6 @@ const CarDataFormModalView = (match) => {
 																	id="NO"
 																	name="yn"
 																	value={false}
-																	onChange={handleChange}
-																	disabled
-																/>
-																לא
-															</div>
-														</FormGroup>
-													</div>
-													{/*//* ------------- status checker ------------------ */}
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם מצריך המשך טיפול
-													</div>
-													<div style={{ textAlign: "right" }}>
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 1}
-																	type="radio"
-																	name="dt"
-																	value="1"
-																	onChange={handleChange}
-																	id="delt"
-																	disabled
-																/>
-																כן
-															</div>
-														</FormGroup>
-
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 0}
-																	type="radio"
-																	id="notDelt"
-																	name="dt"
-																	value="0"
 																	onChange={handleChange}
 																	disabled
 																/>
