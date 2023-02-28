@@ -209,7 +209,9 @@ const AdminSignInForm = (props) => {
 		axios.get(`http://localhost:8000/report/readall`).then((res) => {
 			// console.log(res);
 			console.log(res.data);
-			setReportDB(res.data);
+			const reports = res.data;
+			reports.reverse();
+			setReportDB(reports);
 		});
 	};
 
