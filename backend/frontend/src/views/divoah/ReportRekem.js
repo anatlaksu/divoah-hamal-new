@@ -63,6 +63,7 @@ const Report = ({ props }) => {
 		mholaztype: "0",
 		// mhalztype:"0",
 		pirot: "",
+		lessons: "",
 		datevent: "",
 		mikom: "",
 		nifga: "",
@@ -480,6 +481,7 @@ const Report = ({ props }) => {
 			mholaztype: data.mholaztype,
 			// mhalztype: data.mhalztype,
 			pirot: data.pirot,
+			lessons: data.lessons,
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
@@ -509,11 +511,13 @@ const Report = ({ props }) => {
 						});
 						toast.success(` הדיווח נשלח בהצלחה`);
 						if (user.role == "0") {
-							history.push(`/odot`);
+							history.push(`/dash`);
 						} else if (user.role == "1") {
 							history.push(`/dashamal`);
 						} else if (user.role == "2") {
 							history.push(`/dashadmin`);
+						} else if (user.role == "3") {
+							history.push(`/dash`);
 						}
 						console.log(res.data);
 						console.groupEnd();
@@ -1088,6 +1092,16 @@ const Report = ({ props }) => {
 										/>
 									</FormGroup>
 
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="לקחים ותובנות"
+											name="lessons"
+											type="textarea"
+											value={data.lessons}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										תאריך אירוע
 									</div>
@@ -1167,7 +1181,6 @@ const Report = ({ props }) => {
 												לא ידוע
 											</div>
 										</FormGroup>
-
 									</div>
 
 									{data.nifga === "1" && (

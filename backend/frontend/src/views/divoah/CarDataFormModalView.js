@@ -55,6 +55,7 @@ const CarDataFormModalView = (match) => {
 		apitype: "",
 		mholaztype: "",
 		pirot: "",
+		lessons: "",
 		datevent: "",
 		mikom: "",
 		nifga: "",
@@ -1684,6 +1685,17 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="לקחים ותובנות"
+															name="lessons"
+															type="textarea"
+															value={data.lessons}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
@@ -1788,7 +1800,6 @@ const CarDataFormModalView = (match) => {
 																לא ידוע
 															</div>
 														</FormGroup>
-
 													</div>
 												</Form>
 												{data.nifga === "1" && (
@@ -2407,6 +2418,17 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="לקחים ותובנות"
+															name="lessons"
+															type="textarea"
+															value={data.lessons}
+															onChange={handleChange}
+															disabled
+														/>
+													</FormGroup>
+
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
@@ -2511,7 +2533,6 @@ const CarDataFormModalView = (match) => {
 																לא ידוע
 															</div>
 														</FormGroup>
-
 													</div>
 												</Form>
 

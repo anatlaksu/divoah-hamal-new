@@ -67,6 +67,7 @@ const CarDataFormModal = (match) => {
 		apitype: "",
 		mholaztype: "",
 		pirot: "",
+		lessons: "",
 		datevent: "",
 		mikom: "",
 		nifga: "",
@@ -682,6 +683,7 @@ const CarDataFormModal = (match) => {
 			mholaztype: data.mholaztype,
 			// mhalztype: data.mhalztype,
 			pirot: data.pirot,
+			lessons: data.lessons,
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
@@ -1327,102 +1329,105 @@ const CarDataFormModal = (match) => {
 																}
 															)}
 
-<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם נגרם נזק לכלי
-													</div>
-													<div style={{ textAlign: "right" }}>
-														{data.yn == true ? (
-															<FormGroup
-																check
-																inline
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
 															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		checked={data.yn == true}
-																		type="radio"
-																		name="yn"
-																		value={true}
-																		onChange={handleChange}
-																		id="YES"
-																	/>
-																	כן
-																</div>
-															</FormGroup>
-														) : (
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		name="yn"
-																		value={true}
-																		onChange={handleChange}
-																		id="YES"
-																	/>
-																	כן
-																</div>
-															</FormGroup>
-														)}
+																האם נגרם נזק לכלי
+															</div>
+															<div style={{ textAlign: "right" }}>
+																{data.yn == true ? (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				checked={data.yn == true}
+																				type="radio"
+																				name="yn"
+																				value={true}
+																				onChange={handleChange}
+																				id="YES"
+																			/>
+																			כן
+																		</div>
+																	</FormGroup>
+																) : (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				type="radio"
+																				name="yn"
+																				value={true}
+																				onChange={handleChange}
+																				id="YES"
+																			/>
+																			כן
+																		</div>
+																	</FormGroup>
+																)}
 
-														{data.yn == false ? (
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		checked={data.yn == false}
-																		type="radio"
-																		id="NO"
-																		name="yn"
-																		value={false}
-																		onChange={handleChange}
-																	/>
-																	לא
-																</div>
-															</FormGroup>
-														) : (
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		id="NO"
-																		name="yn"
-																		value={false}
-																		onChange={handleChange}
-																	/>
-																	לא
-																</div>
-															</FormGroup>
-														)}
-													</div>
+																{data.yn == false ? (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				checked={data.yn == false}
+																				type="radio"
+																				id="NO"
+																				name="yn"
+																				value={false}
+																				onChange={handleChange}
+																			/>
+																			לא
+																		</div>
+																	</FormGroup>
+																) : (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				type="radio"
+																				id="NO"
+																				name="yn"
+																				value={false}
+																				onChange={handleChange}
+																			/>
+																			לא
+																		</div>
+																	</FormGroup>
+																)}
+															</div>
 														</>
 													)}
 
@@ -2049,6 +2054,16 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="לקחים ותובנות"
+															name="lessons"
+															type="textarea"
+															value={data.lessons}
+															onChange={handleChange}
+														/>
+													</FormGroup>
+
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
@@ -2150,7 +2165,6 @@ const CarDataFormModal = (match) => {
 																לא ידוע
 															</div>
 														</FormGroup>
-
 													</div>
 
 													{data.nifga === "1" && (
@@ -2906,6 +2920,16 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="לקחים ותובנות"
+															name="lessons"
+															type="textarea"
+															value={data.lessons}
+															onChange={handleChange}
+														/>
+													</FormGroup>
+
 													<div
 														style={{ textAlign: "right", paddingTop: "10px" }}
 													>
@@ -3007,7 +3031,6 @@ const CarDataFormModal = (match) => {
 																לא ידוע
 															</div>
 														</FormGroup>
-
 													</div>
 
 													{data.nifga === "1" && (

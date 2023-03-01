@@ -62,6 +62,7 @@ const Report = ({ match }) => {
 		mholaztype: "0",
 		// mhalztype:"0",
 		pirot: "",
+		lessons: "",
 		datevent: "",
 		mikom: "",
 		nifga: "",
@@ -70,7 +71,6 @@ const Report = ({ match }) => {
 		totalCostWorkHours: "0",
 		damageCost: "0",
 		spareCost: "0",
-
 
 		error: false,
 		successmsg: false,
@@ -651,6 +651,7 @@ const Report = ({ match }) => {
 			mholaztype: data.mholaztype,
 			// mhalztype: data.mhalztype,
 			pirot: data.pirot,
+			lessons: data.lessons,
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
@@ -659,7 +660,6 @@ const Report = ({ match }) => {
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,
 			spareCost: data.spareCost,
-	
 		};
 		console.log("In the SendFormData Func");
 		console.groupCollapsed("Axios");
@@ -678,12 +678,15 @@ const Report = ({ match }) => {
 						});
 						toast.success(` הדיווח נשלח בהצלחה`);
 						if (user.role == "0") {
-							history.push(`/odot`);
+							history.push(`/dash`);
 						} else if (user.role == "1") {
 							history.push(`/dashamal`);
 						} else if (user.role == "2") {
 							history.push(`/dashadmin`);
+						} else if (user.role == "3") {
+							history.push(`/dash`);
 						}
+
 						console.log(res.data);
 						console.groupEnd();
 					})
@@ -1843,6 +1846,16 @@ const Report = ({ match }) => {
 										/>
 									</FormGroup>
 
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="לקחים ותובנות"
+											name="lessons"
+											type="textarea"
+											value={data.lessons}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										תאריך אירוע
 									</div>
@@ -1922,7 +1935,6 @@ const Report = ({ match }) => {
 												לא ידוע
 											</div>
 										</FormGroup>
-
 									</div>
 
 									{data.nifga === "1" && (

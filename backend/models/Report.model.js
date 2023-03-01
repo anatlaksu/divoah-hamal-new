@@ -35,6 +35,7 @@ const ReportSchema = new mongoose.Schema(
 		mholaztype: String,
 		// mhalztype:String,
 		pirot: String,
+		lessons: String,
 		datevent: Date,
 		mikom: String,
 		totalWorkHours: { type: Number, default: 0 },

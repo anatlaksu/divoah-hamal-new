@@ -211,13 +211,16 @@ const AdminSignInForm = () => {
 	// };
 
 	const loadReports = () => {
-		axios.get(`http://localhost:8000/report/readall`).then((res) => {
-			// console.log(res);
-			// console.log(res.data);
-			const reports = res.data;
-			reports.reverse();
-			setReportDB(reports);
-		});
+		axios
+			.get(`http://localhost:8000/report/pikod/readall/${user.pikod}`)
+			.then((res) => {
+				// console.log(res);
+				// console.log(res.data);
+				const reports = res.data;
+				// console.log(reports);
+				reports.reverse();
+				setReportDB(reports);
+			});
 	};
 
 	function handleChange2(selectedOption, name) {
@@ -760,21 +763,20 @@ const AdminSignInForm = () => {
 		}
 	}
 
-	function getnumevt(arr){
-		let num=0;
-		for(let i=0;i< arr.length;i++){
+	function getnumevt(arr) {
+		let num = 0;
+		for (let i = 0; i < arr.length; i++) {
 			num++;
 		}
 		return num;
 	}
 
-	function gettotal(arr){
-		let sum = arr.reduce(function(a, b){
+	function gettotal(arr) {
+		let sum = arr.reduce(function (a, b) {
 			return a + b;
-		},0);	    
-		  return sum;
+		}, 0);
+		return sum;
 	}
-
 
 	return (
 		<Background>
@@ -922,117 +924,156 @@ const AdminSignInForm = () => {
 					</div>
 				</Row>
 				{data.fromdate && data.todate ? (
-									<Row>
-									<Col lg="3">
-										<Card className="card-chart">
-											<CardHeader>
-												<h3 className="card-category text-center">
-													{" "}
-													סה"כ עלות נזק
-												</h3>
-											</CardHeader>
-											<CardBody>
-											<h2 className="text-center">{gettotal(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).map((report)=> report.damageCost))}</h2>
-											</CardBody>
-										</Card>
-									</Col>
-									<Col lg="3">
-										<Card className="card-chart">
-											<CardHeader>
-												<h3 className="card-category text-center">
-													{" "}
-													סה"כ שעות עבודה
-												</h3>
-											</CardHeader>
-											<CardBody>
-											<h2 className="text-center">{gettotal(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).map((report)=> report.totalWorkHours))}</h2>
-											</CardBody>
-										</Card>
-									</Col>
-									<Col lg="3">
-										<Card className="card-chart">
-											<CardHeader>
-												<h3 className="card-category text-center">
-													{" "}
-													סה"כ עלות שעות עבודה
-												</h3>
-											</CardHeader>
-											<CardBody>
-											<h2 className="text-center">{gettotal(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).map((report)=> report.totalCostWorkHours))}</h2>
-											</CardBody>
-										</Card>
-									</Col>
-									<Col lg="3">
-										<Card className="card-chart">
-											<CardHeader>
-												<h3 className="card-category text-center">
-													{" "}
-													מספר אירועים
-												</h3>
-											</CardHeader>
-											<h2 className="text-center">{getnumevt(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)))}</h2>
-											<CardBody>
-											</CardBody>
-										</Card>
-									</Col>
-								</Row>
-				
-				):(
-				<Row>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									סה"כ עלות נזק
-								</h3>
-							</CardHeader>
-							<CardBody>
-							<h2 className="text-center">{gettotal(reportDB.map((report)=> report.damageCost))}</h2>
-							</CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									סה"כ שעות עבודה
-								</h3>
-							</CardHeader>
-							<CardBody>
-							<h2 className="text-center">{gettotal(reportDB.map((report)=> report.totalWorkHours))}</h2>
-							</CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									סה"כ עלות שעות עבודה
-								</h3>
-							</CardHeader>
-							<CardBody>
-							<h2 className="text-center">{gettotal(reportDB.map((report)=> report.totalCostWorkHours))}</h2>
-							</CardBody>
-						</Card>
-					</Col>
-					<Col lg="3">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									מספר אירועים
-								</h3>
-							</CardHeader>
-							<h2 className="text-center">{getnumevt(reportDB)}</h2>
-							<CardBody>
-							</CardBody>
-						</Card>
-					</Col>
-				</Row>
-)}
+					<Row>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
+								</CardHeader>
+								<CardBody>
+									<h2 className="text-center">
+										{gettotal(
+											reportDB
+												.filter(
+													(report) =>
+														new Date(report.datevent).setHours(0, 0, 0, 0) >=
+															new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+														new Date(report.datevent).setHours(0, 0, 0, 0) <=
+															new Date(data.todate).setHours(0, 0, 0, 0)
+												)
+												.map((report) => report.damageCost)
+										)}
+									</h2>
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									<h2 className="text-center">
+										{gettotal(
+											reportDB
+												.filter(
+													(report) =>
+														new Date(report.datevent).setHours(0, 0, 0, 0) >=
+															new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+														new Date(report.datevent).setHours(0, 0, 0, 0) <=
+															new Date(data.todate).setHours(0, 0, 0, 0)
+												)
+												.map((report) => report.totalWorkHours)
+										)}
+									</h2>
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ עלות שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									<h2 className="text-center">
+										{gettotal(
+											reportDB
+												.filter(
+													(report) =>
+														new Date(report.datevent).setHours(0, 0, 0, 0) >=
+															new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+														new Date(report.datevent).setHours(0, 0, 0, 0) <=
+															new Date(data.todate).setHours(0, 0, 0, 0)
+												)
+												.map((report) => report.totalCostWorkHours)
+										)}
+									</h2>
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> מספר אירועים</h3>
+								</CardHeader>
+								<h2 className="text-center">
+									{getnumevt(
+										reportDB.filter(
+											(report) =>
+												new Date(report.datevent).setHours(0, 0, 0, 0) >=
+													new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+												new Date(report.datevent).setHours(0, 0, 0, 0) <=
+													new Date(data.todate).setHours(0, 0, 0, 0)
+										)
+									)}
+								</h2>
+								<CardBody></CardBody>
+							</Card>
+						</Col>
+					</Row>
+				) : (
+					<Row>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
+								</CardHeader>
+								<CardBody>
+									<h2 className="text-center">
+										{gettotal(reportDB.map((report) => report.damageCost))}
+									</h2>
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									<h2 className="text-center">
+										{gettotal(reportDB.map((report) => report.totalWorkHours))}
+									</h2>
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ עלות שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									<h2 className="text-center">
+										{gettotal(
+											reportDB.map((report) => report.totalCostWorkHours)
+										)}
+									</h2>
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="3">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> מספר אירועים</h3>
+								</CardHeader>
+								<h2 className="text-center">{getnumevt(reportDB)}</h2>
+								<CardBody></CardBody>
+							</Card>
+						</Col>
+					</Row>
+				)}
 
 				<Row>
 					<Col lg="12">

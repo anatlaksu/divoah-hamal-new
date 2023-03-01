@@ -188,13 +188,14 @@ router.route("/add").post((req, res) => {
 	const mholaztype = req.body.mholaztype;
 	// const mhalztype = req.body.mhalztype;
 	const pirot = req.body.pirot;
+	const lessons = req.body.lessons;
 	const datevent = Date.parse(req.body.datevent);
 	const mikom = req.body.mikom;
 	const nifga = Number(req.body.nifga);
 	const hurtarray = req.body.hurtarray;
 	const totalWorkHours = Number(req.body.totalWorkHours);
 	const totalCostWorkHours = Number(req.body.totalCostWorkHours);
-	const damageCost =Number(req.body.damageCost);
+	const damageCost = Number(req.body.damageCost);
 	const spareCost = Number(req.body.spareCost);
 
 	const newReport = new Report({
@@ -226,6 +227,7 @@ router.route("/add").post((req, res) => {
 		mholaztype,
 		// mhalztype,
 		pirot,
+		lessons,
 		datevent,
 		mikom,
 		nifga,
@@ -297,6 +299,34 @@ router.route("/readall").get((req, res) => {
 		});
 });
 
+router.route("/pikod/readall/:pikod").get((req, res) => {
+	let tipulfindquerry = readtipul.slice();
+	let finalquerry = tipulfindquerry;
+	let andquery = [];
+	andquery.push({ pikod: req.params.pikod });
+	if (andquery.length != 0) {
+		let matchquerry = {
+			$match: {
+				$and: andquery,
+			},
+		};
+		// console.log(matchquerry);
+		// console.log(andquery);
+		finalquerry.push(matchquerry);
+	}
+	Report.aggregate(finalquerry)
+		.then((result) => {
+			// console.log(result);
+			if (result.length != 0) {
+				res.json(result);
+			}
+		})
+		.catch((error) => {
+			res.status(400).json("Error: " + error);
+			console.log(error);
+		});
+});
+
 router.route("/:id").get((req, res) => {
 	// Report.findById(req.params.id)
 	// 	.then((request) => res.json(request))
@@ -318,7 +348,7 @@ router.route("/:id").get((req, res) => {
 	}
 	Report.aggregate(finalquerry)
 		.then((result) => {
-			console.log(result);
+			// console.log(result);
 			if (result.length != 0) {
 				res.json(result);
 			}
@@ -367,6 +397,7 @@ router.route("/update/:id").put((req, res) => {
 			request.mholaztype = req.body.mholaztype;
 			// request.mhalztype = req.body.mhalztype;
 			request.pirot = req.body.pirot;
+			request.lessons = req.body.lessons;
 			request.datevent = Date.parse(req.body.datevent);
 			request.mikom = req.body.mikom;
 			request.nifga = Number(req.body.nifga);
