@@ -67,6 +67,10 @@ const Report = ({ props }) => {
 		mikom: "",
 		nifga: "",
 		hurtarray: [],
+		totalWorkHours: "0",
+		totalCostWorkHours: "0",
+		damageCost: "0",
+		spareCost: "0",
 
 		error: false,
 		successmsg: false,
@@ -480,6 +484,10 @@ const Report = ({ props }) => {
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
+			totalWorkHours: data.totalWorkHours,
+			totalCostWorkHours: data.totalCostWorkHours,
+			damageCost: data.damageCost,
+			spareCost: data.spareCost,
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData);

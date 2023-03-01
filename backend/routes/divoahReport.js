@@ -192,10 +192,10 @@ router.route("/add").post((req, res) => {
 	const mikom = req.body.mikom;
 	const nifga = Number(req.body.nifga);
 	const hurtarray = req.body.hurtarray;
-	const totalWorkHours = ""
-	const totalCostWorkHours = ""
-	const damageCost =""
-	const spareCost = ""
+	const totalWorkHours = Number(req.body.totalWorkHours);
+	const totalCostWorkHours = Number(req.body.totalCostWorkHours);
+	const damageCost =Number(req.body.damageCost);
+	const spareCost = Number(req.body.spareCost);
 
 	const newReport = new Report({
 		name,
@@ -371,10 +371,10 @@ router.route("/update/:id").put((req, res) => {
 			request.mikom = req.body.mikom;
 			request.nifga = Number(req.body.nifga);
 			request.hurtarray = req.body.hurtarray;
-			request.totalWorkHours = req.body.totalWorkHours;
-			request.totalCostWorkHours = req.body.totalCostWorkHours;
-			request.damageCost = req.body.damageCost;
-			request.spareCost = req.body.spareCost;
+			request.totalWorkHours = Number(req.body.totalWorkHours);
+			request.totalCostWorkHours = Number(req.body.totalCostWorkHours);
+			request.damageCost = Number(req.body.damageCost);
+			request.spareCost = Number(req.body.spareCost);
 
 			request
 				.save()

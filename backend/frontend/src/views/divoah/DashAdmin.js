@@ -269,6 +269,15 @@ const AdminSignInForm = (props) => {
 		return obj;
 	}
 
+	function handleChange(evt) {
+		const value = evt.target.value;
+		console.log(evt.target.value);
+		console.log(evt.target.name);
+		setData({ ...data, [evt.target.name]: value });
+		console.log(new Date(data.fromdate).setHours(0, 0, 0, 0));
+		console.log(data.todate);
+	}
+
 	function handleChange8(selectedOption, name) {
 		// console.log(selectedOption[0].value);
 		// console.log(name);
@@ -847,6 +856,8 @@ const AdminSignInForm = (props) => {
 		// console.log(typeof data.gdod);
 		console.log(reportDBFillter.length);
 
+		console.log(reportDB.reduce((a,b)=>a.damageCost +b.damageCost,0));
+
 		// console.log(props.theme);
 	}, [data, props.theme]);
 
@@ -882,6 +893,23 @@ const AdminSignInForm = (props) => {
 		}
 	}
 
+	function getnumevt(arr){
+		let num=0;
+		for(let i=0;i< arr.length;i++){
+			num++;
+		}
+		return num;
+	}
+
+	function gettotal(arr){
+		let sum = arr.reduce(function(a, b){
+			return a + b;
+		},0);	    
+		  return sum;
+	}
+
+
+
 	return (
 		<Background>
 			<Container
@@ -904,6 +932,35 @@ const AdminSignInForm = (props) => {
 										md={8}
 										style={{ textAlign: "right" }}
 									>
+																				<Row>
+											<Col
+												xs={12}
+												md={6}
+											>
+												<div style={{ textAlign: "right" }}>מתאריך</div>
+												<Input
+													placeholder="תאריך התחלה"
+													type="date"
+													name="fromdate"
+													value={data.fromdate}
+													onChange={handleChange}
+												/>
+											</Col>
+											<Col
+												xs={12}
+												md={6}
+											>
+												<div style={{ textAlign: "right" }}>עד תאריך</div>
+												<Input
+													placeholder="תאריך סיום"
+													type="date"
+													name="todate"
+													value={data.todate}
+													onChange={handleChange}
+												/>
+											</Col>
+										</Row>
+
 										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
 											{!data.ogda ? (
 												<Col
@@ -1050,13 +1107,126 @@ const AdminSignInForm = (props) => {
 						</Collapse>
 					</div>
 				</Row>
+				{data.fromdate && data.todate ? (
+									<Row>
+									<Col lg="3">
+										<Card className="card-chart">
+											<CardHeader>
+												<h3 className="card-category text-center">
+													{" "}
+													סה"כ עלות נזק
+												</h3>
+											</CardHeader>
+											<CardBody>
+											<h2 className="text-center">{gettotal(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).map((report)=> report.damageCost))}</h2>
+											</CardBody>
+										</Card>
+									</Col>
+									<Col lg="3">
+										<Card className="card-chart">
+											<CardHeader>
+												<h3 className="card-category text-center">
+													{" "}
+													סה"כ שעות עבודה
+												</h3>
+											</CardHeader>
+											<CardBody>
+											<h2 className="text-center">{gettotal(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).map((report)=> report.totalWorkHours))}</h2>
+											</CardBody>
+										</Card>
+									</Col>
+									<Col lg="3">
+										<Card className="card-chart">
+											<CardHeader>
+												<h3 className="card-category text-center">
+													{" "}
+													סה"כ עלות שעות עבודה
+												</h3>
+											</CardHeader>
+											<CardBody>
+											<h2 className="text-center">{gettotal(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).map((report)=> report.totalCostWorkHours))}</h2>
+											</CardBody>
+										</Card>
+									</Col>
+									<Col lg="3">
+										<Card className="card-chart">
+											<CardHeader>
+												<h3 className="card-category text-center">
+													{" "}
+													מספר אירועים
+												</h3>
+											</CardHeader>
+											<h2 className="text-center">{getnumevt(reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)))}</h2>
+											<CardBody>
+											</CardBody>
+										</Card>
+									</Col>
+								</Row>
+				
+				):(
+				<Row>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									סה"כ עלות נזק
+								</h3>
+							</CardHeader>
+							<CardBody>
+							<h2 className="text-center">{gettotal(reportDB.map((report)=> report.damageCost))}</h2>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									סה"כ שעות עבודה
+								</h3>
+							</CardHeader>
+							<CardBody>
+							<h2 className="text-center">{gettotal(reportDB.map((report)=> report.totalWorkHours))}</h2>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									סה"כ עלות שעות עבודה
+								</h3>
+							</CardHeader>
+							<CardBody>
+							<h2 className="text-center">{gettotal(reportDB.map((report)=> report.totalCostWorkHours))}</h2>
+							</CardBody>
+						</Card>
+					</Col>
+					<Col lg="3">
+						<Card className="card-chart">
+							<CardHeader>
+								<h3 className="card-category text-center">
+									{" "}
+									מספר אירועים
+								</h3>
+							</CardHeader>
+							<h2 className="text-center">{getnumevt(reportDB)}</h2>
+							<CardBody>
+							</CardBody>
+						</Card>
+					</Col>
+				</Row>
+)}
+
 				{props.theme == "white-content" ? (
 					<>
 						<Row>
 							<Col lg="12">
 								<Card className="card-chart">
 									<CardHeader>
-										<h3 className="card-category text-center">טבלת אירועים</h3>
+										<h3 className="card-category text-center">אירועים אחרונים</h3>
 									</CardHeader>
 									<CardBody>
 										<table
@@ -1085,7 +1255,87 @@ const AdminSignInForm = (props) => {
 													</th>
 												</tr>
 											</thead>
+											{data.fromdate && data.todate ? (
+										<>
 											{data.length == 0 && !data.pikod ? (
+												<tbody>
+													{reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).slice(0, 5).map((report, index) => (
+														<tr>
+															<td>
+																<p>{getname(report.gdod, gdodim)}</p>
+															</td>
+															<td>{eventTypeArray[report.typevent]}</td>
+															<td>
+																<div
+																	style={{
+																		width: "100%",
+																		height: "50px",
+																		margin: "0",
+																		padding: "0",
+																		overflow: "auto",
+																	}}
+																>
+																	{report.pirot}
+																</div>
+															</td>
+														</tr>
+													))}
+												</tbody>
+											) : data.pikod ? (
+												<tbody>
+													{reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).slice(0, 5).map((report, index) =>
+														data.pikod.includes(report.pikod) ? (
+															<tr>
+																<td>
+																	<p>{getname(report.gdod, gdodim)}</p>
+																</td>
+																<td>{eventTypeArray[report.typevent]}</td>
+																<td>
+																	<div
+																		style={{
+																			width: "100%",
+																			height: "50px",
+																			margin: "0",
+																			padding: "0",
+																			overflow: "auto",
+																		}}
+																	>
+																		{report.pirot}
+																	</div>
+																</td>
+															</tr>
+														) : null
+													)}
+												</tbody>
+											) : !data.pikod ? (
+												<tbody>
+													{reportDB.filter((report)=>new Date(report.datevent).setHours(0, 0, 0, 0) >=new Date(data.fromdate).setHours(0, 0, 0, 0) && new Date(report.datevent).setHours(0, 0, 0, 0) <=new Date(data.todate).setHours(0, 0, 0, 0)).slice(0, 5).map((report, index) => (
+														<tr>
+															<td>
+																<p>{getname(report.gdod, gdodim)}</p>
+															</td>
+															<td>{eventTypeArray[report.typevent]}</td>
+															<td>
+																<div
+																	style={{
+																		width: "100%",
+																		height: "50px",
+																		margin: "0",
+																		padding: "0",
+																		overflow: "auto",
+																	}}
+																>
+																	{report.pirot}
+																</div>
+															</td>
+														</tr>
+													))}
+												</tbody>
+											) : null}
+										</>
+									) : (
+										<>
+																					{data.length == 0 && !data.pikod ? (
 												<tbody>
 													{reportDB.slice(0, 5).map((report, index) => (
 														<tr>
@@ -1160,6 +1410,9 @@ const AdminSignInForm = (props) => {
 													))}
 												</tbody>
 											) : null}
+
+										</>
+									)}
 										</table>
 									</CardBody>
 								</Card>
@@ -1283,7 +1536,7 @@ const AdminSignInForm = (props) => {
 							<Col lg="12">
 								<Card className="card-chart">
 									<CardHeader>
-										<h3 className="card-category text-center">טבלת אירועים</h3>
+										<h3 className="card-category text-center">אירועים אחרונים</h3>
 									</CardHeader>
 									<CardBody>
 										<table
