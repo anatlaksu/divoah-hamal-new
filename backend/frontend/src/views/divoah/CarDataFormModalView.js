@@ -32,6 +32,7 @@ import history from "history.js";
 import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterforwach";
+import deletepic from "assets/img/delete.png";
 
 const CarDataFormModalView = (match) => {
 	const [data, setData] = useState({
@@ -59,7 +60,7 @@ const CarDataFormModalView = (match) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
-
+		wnifga: "",
 		error: false,
 		successmsg: false,
 		loading: false,
@@ -1802,114 +1803,187 @@ const CarDataFormModalView = (match) => {
 														</FormGroup>
 													</div>
 												</Form>
-												{data.nifga === "1" && (
+												{data.nifga == 1 ? (
 													<>
 														<div>
-															{infohurtarray.map((p, index) => {
-																return (
-																	<div>
-																		{
-																			<Row>
-																				<Col
-																					xs={12}
-																					md={4}
-																				>
-																					<div>
-																						<p
+															{infohurtarray.length == 0 ? (
+																<Row>
+																	<Col
+																		style={{
+																			display: "flex",
+																			textAlign: "right",
+																		}}
+																	>
+																		<Button
+																			style={{
+																				width: "100px",
+																				padding: "5px",
+																			}}
+																			disabled
+																			type="button"
+																			onClick={() => {
+																				setinfohurtarray((currentSpec) => [
+																					...currentSpec,
+																					{ id: generate() },
+																				]);
+																			}}
+																		>
+																			הוסף נפגע
+																		</Button>
+																	</Col>
+																</Row>
+															) : (
+																infohurtarray.map((p, index) => {
+																	return (
+																		<div>
+																			{index == 0 ? (
+																				<Row>
+																					<Col
+																						style={{
+																							display: "flex",
+																							textAlign: "right",
+																						}}
+																					>
+																						<Button
 																							style={{
-																								margin: "0px",
-																								float: "right",
+																								width: "100px",
+																								padding: "5px",
 																							}}
-																						>
-																							דרגת הפציעה
-																						</p>
-																						<Input
-																							onChange={(e) => {
-																								const dargahurt =
-																									e.target.value;
-																								if (e.target.value != "בחר")
-																									setinfohurtarray(
-																										(currentSpec) =>
-																											produce(
-																												currentSpec,
-																												(v) => {
-																													v[index].dargahurt =
-																														dargahurt;
-																												}
-																											)
-																									);
-																							}}
-																							value={p.dargahurt}
-																							type="select"
-																							placeholder="דרגת הפציעה"
+																							type="button"
 																							disabled
-																						>
-																							<option value={"בחר"}>
-																								{"בחר"}
-																							</option>
-																							<option value={"קל"}>
-																								{"קל"}
-																							</option>
-																							<option value={"בינוני"}>
-																								{"בינוני"}
-																							</option>
-																							<option value={"קשה"}>
-																								{"קשה"}
-																							</option>
-																							<option value={"מת"}>
-																								{"מת"}
-																							</option>
-																							<option value={"לא ידוע"}>
-																								{"לא ידוע"}
-																							</option>
-																						</Input>
-																					</div>
-																				</Col>
-																				<Col
-																					xs={12}
-																					md={4}
-																				>
-																					<div>
-																						<p
-																							style={{
-																								margin: "0px",
-																								float: "right",
+																							onClick={() => {
+																								setinfohurtarray(
+																									(currentSpec) => [
+																										...currentSpec,
+																										{ id: generate() },
+																									]
+																								);
 																							}}
 																						>
-																							מספר ימי מחלה
-																						</p>
-																						<Input
-																							onChange={(e) => {
-																								const mikomhurt =
-																									e.target.value;
-																								if (e.target.value != "")
-																									setinfohurtarray(
-																										(currentSpec) =>
-																											produce(
-																												currentSpec,
-																												(v) => {
-																													v[index].mikomhurt =
-																														mikomhurt;
-																												}
-																											)
-																									);
-																							}}
-																							value={p.mikomhurt}
-																							type="number"
-																							placeholder="0"
-																							min="0"
-																							disabled
-																						/>
-																					</div>
-																				</Col>
-																			</Row>
-																		}
-																	</div>
-																);
-															})}
+																							הוסף נפגע
+																						</Button>
+																					</Col>
+																				</Row>
+																			) : null}
+																			{
+																				<Row>
+																					<Col
+																						xs={12}
+																						md={4}
+																					>
+																						<div>
+																							<p
+																								style={{
+																									margin: "0px",
+																									float: "right",
+																								}}
+																							>
+																								דרגת הפציעה
+																							</p>
+																							<Input
+																								onChange={(e) => {
+																									const dargahurt =
+																										e.target.value;
+																									if (e.target.value != "בחר")
+																										setinfohurtarray(
+																											(currentSpec) =>
+																												produce(
+																													currentSpec,
+																													(v) => {
+																														v[index].dargahurt =
+																															dargahurt;
+																													}
+																												)
+																										);
+																								}}
+																								value={p.dargahurt}
+																								type="select"
+																								placeholder="דרגת הפציעה"
+																								disabled
+																							>
+																								<option value={"בחר"}>
+																									{"בחר"}
+																								</option>
+																								<option value={"קל"}>
+																									{"קל"}
+																								</option>
+																								<option value={"בינוני"}>
+																									{"בינוני"}
+																								</option>
+																								<option value={"קשה"}>
+																									{"קשה"}
+																								</option>
+																								<option value={"מת"}>
+																									{"מת"}
+																								</option>
+																								<option value={"לא ידוע"}>
+																									{"לא ידוע"}
+																								</option>
+																							</Input>
+																						</div>
+																					</Col>
+																					<Col
+																						xs={12}
+																						md={4}
+																					>
+																						<div>
+																							<p
+																								style={{
+																									margin: "0px",
+																									float: "right",
+																								}}
+																							>
+																								מספר ימי מחלה
+																							</p>
+																							<Input
+																								onChange={(e) => {
+																									const mikomhurt =
+																										e.target.value;
+																									if (e.target.value != "")
+																										setinfohurtarray(
+																											(currentSpec) =>
+																												produce(
+																													currentSpec,
+																													(v) => {
+																														v[index].mikomhurt =
+																															mikomhurt;
+																													}
+																												)
+																										);
+																								}}
+																								value={p.mikomhurt}
+																								type="number"
+																								placeholder="0"
+																								min="0"
+																								disabled
+																							/>
+																						</div>
+																					</Col>
+																				</Row>
+																			}
+																			<Button
+																				type="button"
+																				disabled
+																				onClick={() => {
+																					setinfohurtarray((currentSpec) =>
+																						currentSpec.filter(
+																							(x) => x.id !== p.id
+																						)
+																					);
+																				}}
+																			>
+																				<img
+																					src={deletepic}
+																					height="20px"
+																				></img>
+																			</Button>
+																		</div>
+																	);
+																})
+															)}
 														</div>
 													</>
-												)}
+												) : null}
 											</CardBody>
 										) : (
 											<CardBody className="px-lg-5 py-lg-5">
@@ -2536,114 +2610,187 @@ const CarDataFormModalView = (match) => {
 													</div>
 												</Form>
 
-												{data.nifga === "1" && (
+												{data.nifga == 1 ? (
 													<>
 														<div>
-															{infohurtarray.map((p, index) => {
-																return (
-																	<div>
-																		{
-																			<Row>
-																				<Col
-																					xs={12}
-																					md={4}
-																				>
-																					<div>
-																						<p
+															{infohurtarray.length == 0 ? (
+																<Row>
+																	<Col
+																		style={{
+																			display: "flex",
+																			textAlign: "right",
+																		}}
+																	>
+																		<Button
+																			style={{
+																				width: "100px",
+																				padding: "5px",
+																			}}
+																			disabled
+																			type="button"
+																			onClick={() => {
+																				setinfohurtarray((currentSpec) => [
+																					...currentSpec,
+																					{ id: generate() },
+																				]);
+																			}}
+																		>
+																			הוסף נפגע
+																		</Button>
+																	</Col>
+																</Row>
+															) : (
+																infohurtarray.map((p, index) => {
+																	return (
+																		<div>
+																			{index == 0 ? (
+																				<Row>
+																					<Col
+																						style={{
+																							display: "flex",
+																							textAlign: "right",
+																						}}
+																					>
+																						<Button
 																							style={{
-																								margin: "0px",
-																								float: "right",
+																								width: "100px",
+																								padding: "5px",
 																							}}
-																						>
-																							דרגת הפציעה
-																						</p>
-																						<Input
-																							onChange={(e) => {
-																								const dargahurt =
-																									e.target.value;
-																								if (e.target.value != "בחר")
-																									setinfohurtarray(
-																										(currentSpec) =>
-																											produce(
-																												currentSpec,
-																												(v) => {
-																													v[index].dargahurt =
-																														dargahurt;
-																												}
-																											)
-																									);
-																							}}
-																							value={p.dargahurt}
-																							type="select"
-																							placeholder="דרגת הפציעה"
+																							type="button"
 																							disabled
-																						>
-																							<option value={"בחר"}>
-																								{"בחר"}
-																							</option>
-																							<option value={"קל"}>
-																								{"קל"}
-																							</option>
-																							<option value={"בינוני"}>
-																								{"בינוני"}
-																							</option>
-																							<option value={"קשה"}>
-																								{"קשה"}
-																							</option>
-																							<option value={"מת"}>
-																								{"מת"}
-																							</option>
-																							<option value={"לא ידוע"}>
-																								{"לא ידוע"}
-																							</option>
-																						</Input>
-																					</div>
-																				</Col>
-																				<Col
-																					xs={12}
-																					md={4}
-																				>
-																					<div>
-																						<p
-																							style={{
-																								margin: "0px",
-																								float: "right",
+																							onClick={() => {
+																								setinfohurtarray(
+																									(currentSpec) => [
+																										...currentSpec,
+																										{ id: generate() },
+																									]
+																								);
 																							}}
 																						>
-																							מיקום הפגיעה בגוף מספר ימי מחלה
-																						</p>
-																						<Input
-																							onChange={(e) => {
-																								const mikomhurt =
-																									e.target.value;
-																								if (e.target.value != "")
-																									setinfohurtarray(
-																										(currentSpec) =>
-																											produce(
-																												currentSpec,
-																												(v) => {
-																													v[index].mikomhurt =
-																														mikomhurt;
-																												}
-																											)
-																									);
-																							}}
-																							value={p.mikomhurt}
-																							type="number"
-																							placeholder="0"
-																							min="0"
-																							disabled
-																						/>
-																					</div>
-																				</Col>
-																			</Row>
-																		}
-																	</div>
-																);
-															})}
+																							הוסף נפגע
+																						</Button>
+																					</Col>
+																				</Row>
+																			) : null}
+																			{
+																				<Row>
+																					<Col
+																						xs={12}
+																						md={4}
+																					>
+																						<div>
+																							<p
+																								style={{
+																									margin: "0px",
+																									float: "right",
+																								}}
+																							>
+																								דרגת הפציעה
+																							</p>
+																							<Input
+																								onChange={(e) => {
+																									const dargahurt =
+																										e.target.value;
+																									if (e.target.value != "בחר")
+																										setinfohurtarray(
+																											(currentSpec) =>
+																												produce(
+																													currentSpec,
+																													(v) => {
+																														v[index].dargahurt =
+																															dargahurt;
+																													}
+																												)
+																										);
+																								}}
+																								value={p.dargahurt}
+																								type="select"
+																								placeholder="דרגת הפציעה"
+																								disabled
+																							>
+																								<option value={"בחר"}>
+																									{"בחר"}
+																								</option>
+																								<option value={"קל"}>
+																									{"קל"}
+																								</option>
+																								<option value={"בינוני"}>
+																									{"בינוני"}
+																								</option>
+																								<option value={"קשה"}>
+																									{"קשה"}
+																								</option>
+																								<option value={"מת"}>
+																									{"מת"}
+																								</option>
+																								<option value={"לא ידוע"}>
+																									{"לא ידוע"}
+																								</option>
+																							</Input>
+																						</div>
+																					</Col>
+																					<Col
+																						xs={12}
+																						md={4}
+																					>
+																						<div>
+																							<p
+																								style={{
+																									margin: "0px",
+																									float: "right",
+																								}}
+																							>
+																								מספר ימי מחלה
+																							</p>
+																							<Input
+																								onChange={(e) => {
+																									const mikomhurt =
+																										e.target.value;
+																									if (e.target.value != "")
+																										setinfohurtarray(
+																											(currentSpec) =>
+																												produce(
+																													currentSpec,
+																													(v) => {
+																														v[index].mikomhurt =
+																															mikomhurt;
+																													}
+																												)
+																										);
+																								}}
+																								value={p.mikomhurt}
+																								type="number"
+																								placeholder="0"
+																								min="0"
+																								disabled
+																							/>
+																						</div>
+																					</Col>
+																				</Row>
+																			}
+																			<Button
+																				type="button"
+																				disabled
+																				onClick={() => {
+																					setinfohurtarray((currentSpec) =>
+																						currentSpec.filter(
+																							(x) => x.id !== p.id
+																						)
+																					);
+																				}}
+																			>
+																				<img
+																					src={deletepic}
+																					height="20px"
+																				></img>
+																			</Button>
+																		</div>
+																	);
+																})
+															)}
 														</div>
 													</>
-												)}
+												) : null}
 											</CardBody>
 										)}
 

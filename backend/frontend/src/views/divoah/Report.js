@@ -66,6 +66,7 @@ const Report = ({ match }) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		wnifga: "",
 		hurtarray: [],
 		totalWorkHours: "0",
 		totalCostWorkHours: "0",
@@ -335,10 +336,15 @@ const Report = ({ match }) => {
 	//* handle changes
 
 	function handleChange(evt) {
-		// console.log(evt.target.value);
 		const value = evt.target.value;
-		console.log(evt.target.value);
-		console.log(evt.target.name);
+		if (evt.target.name == "nifga") {
+			if (value == 1) {
+				setData({ ...data, [evt.target.name]: value });
+				setinfohurtarray((currentSpec) => [...currentSpec, { id: generate() }]);
+			} else {
+				setData({ ...data, [evt.target.name]: value });
+			}
+		}
 		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
 			setData({ ...data, [evt.target.name]: value });
 		} else {
@@ -606,6 +612,16 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += "כמות הנפגעים ריקה \n";
 		}
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
+		}
 
 		if (flag == true) {
 			SendFormData(event);
@@ -656,6 +672,7 @@ const Report = ({ match }) => {
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
+			wnifga: data.wnifga,
 			totalWorkHours: data.totalWorkHours,
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,

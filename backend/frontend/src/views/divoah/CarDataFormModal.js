@@ -71,7 +71,13 @@ const CarDataFormModal = (match) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		wnifga: "",
 		hurtarray: [],
+		totalwork: 0,
+		totalWorkHours: 0,
+		totalCostWorkHours: 0,
+		damageCost: 0,
+		spareCost: 0,
 
 		error: false,
 		successmsg: false,
@@ -342,6 +348,14 @@ const CarDataFormModal = (match) => {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
+		if (evt.target.name == "nifga") {
+			if (value == 1) {
+				setData({ ...data, [evt.target.name]: value });
+				setinfohurtarray((currentSpec) => [...currentSpec, { id: generate() }]);
+			} else {
+				setData({ ...data, [evt.target.name]: value });
+			}
+		}
 		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
 			setData({ ...data, [evt.target.name]: value });
 		} else {
@@ -539,6 +553,16 @@ const CarDataFormModal = (match) => {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
+		}
 
 		if (flag == true) {
 			FixUser(event);
@@ -633,9 +657,19 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
-		if (data.nifga == "") {
-			flag = false;
-			ErrorReason += "כמות הנפגעים ריקה \n";
+		// if (data.nifga == "") {
+		// 	flag = false;
+		// 	ErrorReason += "כמות הנפגעים ריקה \n";
+		// }
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
 		}
 
 		if (flag == true) {
@@ -651,7 +685,7 @@ const CarDataFormModal = (match) => {
 	};
 
 	const UpdateReport = () => {
-		console.log(match);
+		// console.log(match);
 		console.log(match.cardataid);
 		var reportid = match.cardataid;
 		const report = {
@@ -688,6 +722,14 @@ const CarDataFormModal = (match) => {
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
+			wnifga: data.wnifga,
+			totalwork: data.totalwork ? undefined || null || NaN : 0,
+			totalWorkHours: data.totalWorkHours ? undefined || null || NaN : 0,
+			totalCostWorkHours: data.totalCostWorkHours
+				? undefined || null || NaN
+				: 0,
+			damageCost: data.damageCost ? undefined || null || NaN : 0,
+			spareCost: data.spareCost ? undefined || null || NaN : 0,
 		};
 		console.log(report.gdod);
 		if (!(report.gdod == "בחר")) {
@@ -2167,7 +2209,7 @@ const CarDataFormModal = (match) => {
 														</FormGroup>
 													</div>
 
-													{data.nifga === "1" && (
+													{data.nifga == 1 ? (
 														<>
 															<div>
 																{infohurtarray.length == 0 ? (
@@ -2346,7 +2388,7 @@ const CarDataFormModal = (match) => {
 																)}
 															</div>
 														</>
-													)}
+													) : null}
 													<div className="text-center">
 														<button
 															onClick={clickSubmit}
@@ -3033,7 +3075,7 @@ const CarDataFormModal = (match) => {
 														</FormGroup>
 													</div>
 
-													{data.nifga === "1" && (
+													{data.nifga == 1 ? (
 														<>
 															<div>
 																{infohurtarray.length == 0 ? (
@@ -3212,7 +3254,7 @@ const CarDataFormModal = (match) => {
 																)}
 															</div>
 														</>
-													)}
+													) : null}
 
 													<div className="text-center">
 														<button

@@ -181,6 +181,7 @@ router.route("/add").post((req, res) => {
 	const whap = req.body.whap;
 	const rekemtype = req.body.rekemtype;
 	const amlahtype = req.body.amlahtype;
+	const wnifga = req.body.wnifga;
 	const mazavrekem = req.body.mazavrekem;
 	const dwork = req.body.dwork;
 	const mataftype = req.body.mataftype;
@@ -219,6 +220,7 @@ router.route("/add").post((req, res) => {
 		selneshek,
 		whap,
 		amlahtype,
+		wnifga,
 		rekemtype,
 		mazavrekem,
 		dwork,
@@ -389,6 +391,7 @@ router.route("/update/:id").put((req, res) => {
 			request.selneshek = req.body.selneshek;
 			request.whap = req.body.whap;
 			request.amlahtype = req.body.amlahtype;
+			request.wnifga = req.body.wnifga;
 			request.rekemtype = req.body.rekemtype;
 			request.mazavrekem = req.body.mazavrekem;
 			request.dwork = req.body.dwork;

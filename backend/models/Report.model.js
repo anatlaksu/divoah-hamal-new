@@ -27,6 +27,7 @@ const ReportSchema = new mongoose.Schema(
 		selneshek: String,
 		whap: String,
 		amlahtype: String,
+		wnifga: String,
 		rekemtype: String,
 		mazavrekem: String,
 		dwork: String,

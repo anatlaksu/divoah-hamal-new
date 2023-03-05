@@ -320,6 +320,14 @@ const Report = ({ props }) => {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
+		if (evt.target.name == "nifga") {
+			if (value == 1) {
+				setData({ ...data, [evt.target.name]: value });
+				setinfohurtarray((currentSpec) => [...currentSpec, { id: generate() }]);
+			} else {
+				setData({ ...data, [evt.target.name]: value });
+			}
+		}
 		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
 			setData({ ...data, [evt.target.name]: value });
 		} else {
@@ -436,6 +444,16 @@ const Report = ({ props }) => {
 		if (data.nifga == "") {
 			flag = false;
 			ErrorReason += "כמות הנפגעים ריקה \n";
+		}
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
 		}
 
 		if (flag == true) {
