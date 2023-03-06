@@ -57,7 +57,6 @@ const CarDataFormModal = (match) => {
 		zadik: "",
 		resevent: "",
 		yn: "",
-		status: "",
 		selneshek: "",
 		whap: "",
 		amlahtype: "",
@@ -68,10 +67,17 @@ const CarDataFormModal = (match) => {
 		apitype: "",
 		mholaztype: "",
 		pirot: "",
+		lessons: "",
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		wnifga: "",
 		hurtarray: [],
+		totalwork: 0,
+		totalWorkHours: 0,
+		totalCostWorkHours: 0,
+		damageCost: 0,
+		spareCost: 0,
 
 		error: false,
 		successmsg: false,
@@ -342,6 +348,14 @@ const CarDataFormModal = (match) => {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
+		if (evt.target.name == "nifga") {
+			if (value == 1) {
+				setData({ ...data, [evt.target.name]: value });
+				setinfohurtarray((currentSpec) => [...currentSpec, { id: generate() }]);
+			} else {
+				setData({ ...data, [evt.target.name]: value });
+			}
+		}
 		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
 			setData({ ...data, [evt.target.name]: value });
 		} else {
@@ -539,6 +553,16 @@ const CarDataFormModal = (match) => {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
+		}
 
 		if (flag == true) {
 			FixUser(event);
@@ -633,9 +657,19 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
-		if (data.nifga == "") {
-			flag = false;
-			ErrorReason += "כמות הנפגעים ריקה \n";
+		// if (data.nifga == "") {
+		// 	flag = false;
+		// 	ErrorReason += "כמות הנפגעים ריקה \n";
+		// }
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
 		}
 
 		if (flag == true) {
@@ -651,7 +685,7 @@ const CarDataFormModal = (match) => {
 	};
 
 	const UpdateReport = () => {
-		console.log(match);
+		// console.log(match);
 		console.log(match.cardataid);
 		var reportid = match.cardataid;
 		const report = {
@@ -672,7 +706,6 @@ const CarDataFormModal = (match) => {
 			mkabaz: data.mkabaz,
 			zadik: data.zadik,
 			yn: data.yn,
-			status: data.status,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -684,10 +717,19 @@ const CarDataFormModal = (match) => {
 			mholaztype: data.mholaztype,
 			// mhalztype: data.mhalztype,
 			pirot: data.pirot,
+			lessons: data.lessons,
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
+			wnifga: data.wnifga,
+			totalwork: data.totalwork ? undefined || null || NaN : 0,
+			totalWorkHours: data.totalWorkHours ? undefined || null || NaN : 0,
+			totalCostWorkHours: data.totalCostWorkHours
+				? undefined || null || NaN
+				: 0,
+			damageCost: data.damageCost ? undefined || null || NaN : 0,
+			spareCost: data.spareCost ? undefined || null || NaN : 0,
 		};
 		console.log(report.gdod);
 		if (!(report.gdod == "בחר")) {
@@ -1329,102 +1371,105 @@ const CarDataFormModal = (match) => {
 																}
 															)}
 
-<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם נגרם נזק לכלי
-													</div>
-													<div style={{ textAlign: "right" }}>
-														{data.yn == true ? (
-															<FormGroup
-																check
-																inline
+															<div
+																style={{
+																	textAlign: "right",
+																	paddingTop: "10px",
+																}}
 															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		checked={data.yn == true}
-																		type="radio"
-																		name="yn"
-																		value={true}
-																		onChange={handleChange}
-																		id="YES"
-																	/>
-																	כן
-																</div>
-															</FormGroup>
-														) : (
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		name="yn"
-																		value={true}
-																		onChange={handleChange}
-																		id="YES"
-																	/>
-																	כן
-																</div>
-															</FormGroup>
-														)}
+																האם נגרם נזק לכלי
+															</div>
+															<div style={{ textAlign: "right" }}>
+																{data.yn == true ? (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				checked={data.yn == true}
+																				type="radio"
+																				name="yn"
+																				value={true}
+																				onChange={handleChange}
+																				id="YES"
+																			/>
+																			כן
+																		</div>
+																	</FormGroup>
+																) : (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				type="radio"
+																				name="yn"
+																				value={true}
+																				onChange={handleChange}
+																				id="YES"
+																			/>
+																			כן
+																		</div>
+																	</FormGroup>
+																)}
 
-														{data.yn == false ? (
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		checked={data.yn == false}
-																		type="radio"
-																		id="NO"
-																		name="yn"
-																		value={false}
-																		onChange={handleChange}
-																	/>
-																	לא
-																</div>
-															</FormGroup>
-														) : (
-															<FormGroup
-																check
-																inline
-															>
-																<div
-																	style={{
-																		textAlign: "right",
-																		paddingTop: "10px",
-																	}}
-																>
-																	<Input
-																		type="radio"
-																		id="NO"
-																		name="yn"
-																		value={false}
-																		onChange={handleChange}
-																	/>
-																	לא
-																</div>
-															</FormGroup>
-														)}
-													</div>
+																{data.yn == false ? (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				checked={data.yn == false}
+																				type="radio"
+																				id="NO"
+																				name="yn"
+																				value={false}
+																				onChange={handleChange}
+																			/>
+																			לא
+																		</div>
+																	</FormGroup>
+																) : (
+																	<FormGroup
+																		check
+																		inline
+																	>
+																		<div
+																			style={{
+																				textAlign: "right",
+																				paddingTop: "10px",
+																			}}
+																		>
+																			<Input
+																				type="radio"
+																				id="NO"
+																				name="yn"
+																				value={false}
+																				onChange={handleChange}
+																			/>
+																			לא
+																		</div>
+																	</FormGroup>
+																)}
+															</div>
 														</>
 													)}
 
@@ -2040,57 +2085,6 @@ const CarDataFormModal = (match) => {
 */}
 														</>
 													)}
-													{/*//* ------------- status checker ------------------ */}
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם מצריך המשך טיפול
-													</div>
-													<div style={{ textAlign: "right" }}>
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 1}
-																	type="radio"
-																	name="status"
-																	value="1"
-																	onChange={handleChange}
-																	id="delt"
-																/>
-																כן
-															</div>
-														</FormGroup>
-
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 0}
-																	type="radio"
-																	id="notDelt"
-																	name="status"
-																	value="0"
-																	onChange={handleChange}
-																/>
-																לא
-															</div>
-														</FormGroup>
-													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2098,6 +2092,16 @@ const CarDataFormModal = (match) => {
 															name="pirot"
 															type="textarea"
 															value={data.pirot}
+															onChange={handleChange}
+														/>
+													</FormGroup>
+
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="לקחים ותובנות"
+															name="lessons"
+															type="textarea"
+															value={data.lessons}
 															onChange={handleChange}
 														/>
 													</FormGroup>
@@ -2203,10 +2207,9 @@ const CarDataFormModal = (match) => {
 																לא ידוע
 															</div>
 														</FormGroup>
-
 													</div>
 
-													{data.nifga === "1" && (
+													{data.nifga == 1 ? (
 														<>
 															<div>
 																{infohurtarray.length == 0 ? (
@@ -2385,7 +2388,7 @@ const CarDataFormModal = (match) => {
 																)}
 															</div>
 														</>
-													)}
+													) : null}
 													<div className="text-center">
 														<button
 															onClick={clickSubmit}
@@ -2948,57 +2951,6 @@ const CarDataFormModal = (match) => {
 															</FormGroup>
 														)}
 													</div>
-													{/*//* ------------- status checker ------------------ */}
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														האם מצריך המשך טיפול
-													</div>
-													<div style={{ textAlign: "right" }}>
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 1}
-																	type="radio"
-																	name="status"
-																	value="1"
-																	onChange={handleChange}
-																	id="delt"
-																/>
-																כן
-															</div>
-														</FormGroup>
-
-														<FormGroup
-															check
-															inline
-														>
-															<div
-																style={{
-																	textAlign: "right",
-																	paddingTop: "10px",
-																}}
-															>
-																<Input
-																	checked={data.status == 0}
-																	type="radio"
-																	id="notDelt"
-																	name="status"
-																	value="0"
-																	onChange={handleChange}
-																/>
-																לא
-															</div>
-														</FormGroup>
-													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -3006,6 +2958,16 @@ const CarDataFormModal = (match) => {
 															name="pirot"
 															type="textarea"
 															value={data.pirot}
+															onChange={handleChange}
+														/>
+													</FormGroup>
+
+													<FormGroup dir="rtl">
+														<Input
+															placeholder="לקחים ותובנות"
+															name="lessons"
+															type="textarea"
+															value={data.lessons}
 															onChange={handleChange}
 														/>
 													</FormGroup>
@@ -3111,10 +3073,9 @@ const CarDataFormModal = (match) => {
 																לא ידוע
 															</div>
 														</FormGroup>
-
 													</div>
 
-													{data.nifga === "1" && (
+													{data.nifga == 1 ? (
 														<>
 															<div>
 																{infohurtarray.length == 0 ? (
@@ -3293,7 +3254,7 @@ const CarDataFormModal = (match) => {
 																)}
 															</div>
 														</>
-													)}
+													) : null}
 
 													<div className="text-center">
 														<button

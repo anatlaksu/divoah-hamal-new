@@ -60,13 +60,18 @@ const Report = ({ match }) => {
 		mataftype: "0",
 		apitype: "0",
 		mholaztype: "0",
-		status: "0",
 		// mhalztype:"0",
 		pirot: "",
+		lessons: "",
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		wnifga: "",
 		hurtarray: [],
+		totalWorkHours: "0",
+		totalCostWorkHours: "0",
+		damageCost: "0",
+		spareCost: "0",
 
 		error: false,
 		successmsg: false,
@@ -331,10 +336,15 @@ const Report = ({ match }) => {
 	//* handle changes
 
 	function handleChange(evt) {
-		// console.log(evt.target.value);
 		const value = evt.target.value;
-		console.log(evt.target.value);
-		console.log(evt.target.name);
+		if (evt.target.name == "nifga") {
+			if (value == 1) {
+				setData({ ...data, [evt.target.name]: value });
+				setinfohurtarray((currentSpec) => [...currentSpec, { id: generate() }]);
+			} else {
+				setData({ ...data, [evt.target.name]: value });
+			}
+		}
 		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
 			setData({ ...data, [evt.target.name]: value });
 		} else {
@@ -481,13 +491,6 @@ const Report = ({ match }) => {
 				flag = false;
 				ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
 			}
-			if (
-				!document.getElementById("delt").checked &&
-				!document.getElementById("notDelt").checked
-			) {
-				flag = false;
-				ErrorReason += " ,    סטטוס ריק\n";
-			}
 		}
 		if (data.typevent === "5") {
 			if (data.selneshek == "") {
@@ -500,13 +503,6 @@ const Report = ({ match }) => {
 			) {
 				flag = false;
 				ErrorReason += " ,אם נגרם נזק ריק \n";
-			}
-			if (
-				!document.getElementById("delt").checked &&
-				!document.getElementById("notDelt").checked
-			) {
-				flag = false;
-				ErrorReason += " סטטוס ריק   \n";
 			}
 
 			if (
@@ -616,6 +612,16 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += "כמות הנפגעים ריקה \n";
 		}
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
+		}
 
 		if (flag == true) {
 			SendFormData(event);
@@ -650,8 +656,6 @@ const Report = ({ match }) => {
 			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
 			yn: data.yn,
-			status:
-				data.dt /* //?if there is no need for the dt button ==> data.dt != undefined || null ? data.dt : "0",*/,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -663,13 +667,18 @@ const Report = ({ match }) => {
 			mholaztype: data.mholaztype,
 			// mhalztype: data.mhalztype,
 			pirot: data.pirot,
+			lessons: data.lessons,
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
+			wnifga: data.wnifga,
+			totalWorkHours: data.totalWorkHours,
+			totalCostWorkHours: data.totalCostWorkHours,
+			damageCost: data.damageCost,
+			spareCost: data.spareCost,
 		};
 		console.log("In the SendFormData Func");
-		console.log(requestData.dt);
 		console.groupCollapsed("Axios");
 		if (!requestData.gdod == "") {
 			if (!requestData.gdodrep == "") {
@@ -686,12 +695,15 @@ const Report = ({ match }) => {
 						});
 						toast.success(` הדיווח נשלח בהצלחה`);
 						if (user.role == "0") {
-							history.push(`/odot`);
+							history.push(`/dash`);
 						} else if (user.role == "1") {
 							history.push(`/dashamal`);
 						} else if (user.role == "2") {
 							history.push(`/dashadmin`);
+						} else if (user.role == "3") {
+							history.push(`/dash`);
 						}
+
 						console.log(res.data);
 						console.groupEnd();
 					})
@@ -1841,53 +1853,22 @@ const Report = ({ match }) => {
 										</>
 									)}
 
-									{/* //* ------------------ dt checker ----------------------- */}
-									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-										האם מצריך המשך טיפול
-									</div>
-									<div
-										className="mb-2"
-										style={{ textAlign: "right" }}
-									>
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													name="dt"
-													value="1"
-													onChange={handleChange}
-													id="delt"
-												/>
-												כן
-											</div>
-										</FormGroup>
-
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													id="notDelt"
-													name="dt"
-													value="0"
-													onChange={handleChange}
-												/>
-												לא
-											</div>
-										</FormGroup>
-									</div>
-
 									<FormGroup dir="rtl">
 										<Input
 											placeholder="פירוט האירוע"
 											name="pirot"
 											type="textarea"
 											value={data.pirot}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="לקחים ותובנות"
+											name="lessons"
+											type="textarea"
+											value={data.lessons}
 											onChange={handleChange}
 										/>
 									</FormGroup>
@@ -1971,7 +1952,6 @@ const Report = ({ match }) => {
 												לא ידוע
 											</div>
 										</FormGroup>
-
 									</div>
 
 									{data.nifga === "1" && (

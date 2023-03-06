@@ -63,11 +63,15 @@ const Report = ({ props }) => {
 		mholaztype: "0",
 		// mhalztype:"0",
 		pirot: "",
+		lessons: "",
 		datevent: "",
 		mikom: "",
 		nifga: "",
-		dt: "0",
 		hurtarray: [],
+		totalWorkHours: "0",
+		totalCostWorkHours: "0",
+		damageCost: "0",
+		spareCost: "0",
 
 		error: false,
 		successmsg: false,
@@ -316,6 +320,14 @@ const Report = ({ props }) => {
 
 	function handleChange(evt) {
 		const value = evt.target.value;
+		if (evt.target.name == "nifga") {
+			if (value == 1) {
+				setData({ ...data, [evt.target.name]: value });
+				setinfohurtarray((currentSpec) => [...currentSpec, { id: generate() }]);
+			} else {
+				setData({ ...data, [evt.target.name]: value });
+			}
+		}
 		if (evt.target.name != "cellphone" && evt.target.name != "zadik") {
 			setData({ ...data, [evt.target.name]: value });
 		} else {
@@ -417,13 +429,6 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += " ,אם נגרם נזק ריק \n";
 		}
-		if (
-			!document.getElementById("delt").checked &&
-			!document.getElementById("notDelt").checked
-		) {
-			flag = false;
-			ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
-		}
 		if (data.pirot == "") {
 			flag = false;
 			ErrorReason += "  פירוט האירוע ריק \n";
@@ -439,6 +444,16 @@ const Report = ({ props }) => {
 		if (data.nifga == "") {
 			flag = false;
 			ErrorReason += "כמות הנפגעים ריקה \n";
+		}
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
 		}
 
 		if (flag == true) {
@@ -470,7 +485,6 @@ const Report = ({ props }) => {
 			mkabaz: data.mkabaz,
 			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
-			dt: data.dt,
 			typevent: data.typevent,
 			resevent: data.resevent,
 			yn: data.yn,
@@ -485,10 +499,15 @@ const Report = ({ props }) => {
 			mholaztype: data.mholaztype,
 			// mhalztype: data.mhalztype,
 			pirot: data.pirot,
+			lessons: data.lessons,
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
+			totalWorkHours: data.totalWorkHours,
+			totalCostWorkHours: data.totalCostWorkHours,
+			damageCost: data.damageCost,
+			spareCost: data.spareCost,
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData);
@@ -510,11 +529,13 @@ const Report = ({ props }) => {
 						});
 						toast.success(` הדיווח נשלח בהצלחה`);
 						if (user.role == "0") {
-							history.push(`/odot`);
+							history.push(`/dash`);
 						} else if (user.role == "1") {
 							history.push(`/dashamal`);
 						} else if (user.role == "2") {
 							history.push(`/dashadmin`);
+						} else if (user.role == "3") {
+							history.push(`/dash`);
 						}
 						console.log(res.data);
 						console.groupEnd();
@@ -1079,50 +1100,22 @@ const Report = ({ props }) => {
 										</FormGroup>
 									</div>
 
-									{/* //* ------------------ dt checker ----------------------- */}
-									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-										האם מצריך המשך טיפול
-									</div>
-									<div style={{ textAlign: "right" }}>
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													name="dt"
-													value="1"
-													onChange={handleChange}
-													id="delt"
-												/>
-												כן
-											</div>
-										</FormGroup>
-
-										<FormGroup
-											check
-											inline
-										>
-											<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												<Input
-													type="radio"
-													id="notDelt"
-													name="dt"
-													value="0"
-													onChange={handleChange}
-												/>
-												לא
-											</div>
-										</FormGroup>
-									</div>
-
 									<FormGroup dir="rtl">
 										<Input
 											placeholder="פירוט האירוע"
 											name="pirot"
 											type="textarea"
 											value={data.pirot}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="לקחים ותובנות"
+											name="lessons"
+											type="textarea"
+											value={data.lessons}
 											onChange={handleChange}
 										/>
 									</FormGroup>
@@ -1206,7 +1199,6 @@ const Report = ({ props }) => {
 												לא ידוע
 											</div>
 										</FormGroup>
-
 									</div>
 
 									{data.nifga === "1" && (

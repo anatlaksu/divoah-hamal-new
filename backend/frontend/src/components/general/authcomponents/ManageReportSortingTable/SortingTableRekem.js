@@ -128,11 +128,20 @@ const SortingTableRekem = ({ match }) => {
 
 	function Toggle(evt) {
 		let index = +evt.currentTarget.id;
-		console.log(index);
-		console.log(expired[index]);
+		// console.log(index);
+		// console.log(expired[index]);
 		if (!evt.currentTarget.value == "") {
 			if (expired[index] == true) {
-				toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
+				if (user.role == "2" || user.role == "3") {
+					if (evt.currentTarget.value == "") {
+						setCardataidformodal(undefined);
+					} else {
+						setCardataidformodal(evt.currentTarget.value);
+					}
+					setIscardataformopen(!iscardataformopen);
+				} else {
+					toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
+				}
 			} else {
 				if (evt.currentTarget.value == "") {
 					setCardataidformodal(undefined);
