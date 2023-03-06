@@ -171,11 +171,28 @@ const AdminSignInForm = (props) => {
 	const loadReports = () => {
 		axios.get(`http://localhost:8000/report/readall`).then((res) => {
 			// console.log(res);
+			console.log("all");
 			console.log(res.data);
 			const reports = res.data;
 			reports.reverse();
 			setReportDB(reports);
 		});
+	};
+
+	const loadReportsByDate = (from, to) => {
+		// console.log("try by date");
+		// console.log(from);
+		// console.log(to);
+		axios
+			.get(`http://localhost:8000/report/byDate/readall/${from}/${to}`)
+			.then((res) => {
+				// console.log(res);
+				// console.log("by date");
+				// console.log(res.data);
+				const reports = res.data;
+				reports.reverse();
+				setReportDB(reports);
+			});
 	};
 
 	function handleChange2(selectedOption, name) {
@@ -857,6 +874,12 @@ const AdminSignInForm = (props) => {
 	}, []);
 
 	useEffect(() => {
+		data.fromdate && data.todate
+			? loadReportsByDate(data.fromdate, data.todate)
+			: loadReports();
+	}, [data.fromdate, data.todate]);
+
+	useEffect(() => {
 		setOgdas([]);
 		loadOgdas(data.pikod);
 	}, [data.pikod]);
@@ -1096,6 +1119,7 @@ const AdminSignInForm = (props) => {
 						</Collapse>
 					</div>
 				</Row>
+				{/*//todo dont let the user put todate larger then from date or make a fail safe like in divoahReport lines 340 - 374 */}
 				{data.fromdate && data.todate ? (
 					<Row>
 						<Col lg="3">
@@ -1696,7 +1720,7 @@ const AdminSignInForm = (props) => {
 												</tbody>
 											) : data.pikod ? (
 												<tbody>
-													{reportDB.slice(0, 5).map((report, index) =>
+													{reportDBFillter.slice(0, 5).map((report, index) =>
 														data.pikod.includes(report.pikodrep) ? (
 															<tr>
 																<td>

@@ -290,7 +290,7 @@ router.route("/readall").get((req, res) => {
 	// }
 	Report.aggregate(finalquerry)
 		.then((result) => {
-			console.log(result);
+			// console.log(result);
 			if (result.length != 0) {
 				res.json(result);
 			}
@@ -319,6 +319,137 @@ router.route("/pikod/readall/:pikod").get((req, res) => {
 	Report.aggregate(finalquerry)
 		.then((result) => {
 			// console.log(result);
+			if (result.length != 0) {
+				res.json(result);
+			}
+		})
+		.catch((error) => {
+			res.status(400).json("Error: " + error);
+			console.log(error);
+		});
+});
+
+router
+	.route("/byDate/pikod/readall/:fromdate/:todate/:pikod")
+	.get((req, res) => {
+		let tipulfindquerry = readtipul.slice();
+		let finalquerry = tipulfindquerry;
+		let andquery = [];
+		console.log("first check");
+		andquery.push({ pikod: req.params.pikod });
+		switch (true) {
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) <
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("second check");
+
+				andquery.push({
+					datevent: {
+						$gt: new Date(req.params.fromdate),
+						$lt: new Date(req.params.todate),
+					},
+				});
+				break;
+
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) >
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("third check");
+				andquery.push({
+					datevent: {
+						$lt: new Date(req.params.fromdate),
+						$gt: new Date(req.params.todate),
+					},
+				});
+				break;
+
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) ==
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("forth check");
+				andquery.push({
+					datevent: new Date(req.params.fromdate),
+				});
+				break;
+			default:
+				console.log("error");
+				break;
+		}
+
+		if (andquery.length != 0) {
+			let matchquerry = {
+				$match: {
+					$and: andquery,
+				},
+			};
+			// console.log(matchquerry);
+			// console.log(andquery);
+			finalquerry.push(matchquerry);
+		}
+		Report.aggregate(finalquerry)
+			.then((result) => {
+				console.log(result);
+				if (result.length != 0) {
+					res.json(result);
+				}
+			})
+			.catch((error) => {
+				res.status(400).json("Error: " + error);
+				console.log(error);
+			});
+	});
+
+router.route("/byDate/readall/:fromdate/:todate").get((req, res) => {
+	let tipulfindquerry = readtipul.slice();
+	let finalquerry = tipulfindquerry;
+	let andquery = [];
+	console.log("first check");
+
+	switch (true) {
+		case new Date(req.params.fromdate).setHours(0, 0, 0, 0) <
+			new Date(req.params.todate).setHours(0, 0, 0, 0):
+			// console.log("second check");
+			andquery.push({
+				datevent: {
+					$gt: new Date(req.params.fromdate),
+					$lt: new Date(req.params.todate),
+				},
+			});
+			break;
+
+		case new Date(req.params.fromdate).setHours(0, 0, 0, 0) >
+			new Date(req.params.todate).setHours(0, 0, 0, 0):
+			// console.log("third check");
+			andquery.push({
+				datevent: {
+					$lt: new Date(req.params.fromdate),
+					$gt: new Date(req.params.todate),
+				},
+			});
+			break;
+
+		case new Date(req.params.fromdate).setHours(0, 0, 0, 0) ==
+			new Date(req.params.todate).setHours(0, 0, 0, 0):
+			// console.log("forth check");
+			andquery.push({
+				datevent: new Date(req.params.fromdate),
+			});
+			break;
+		default:
+			console.log("error");
+			break;
+	}
+
+	if (andquery.length != 0) {
+		let matchquerry = {
+			$match: {
+				$and: andquery,
+			},
+		};
+		// console.log(matchquerry);
+		// console.log(andquery);
+		finalquerry.push(matchquerry);
+	}
+	Report.aggregate(finalquerry)
+		.then((result) => {
+			console.log(result);
 			if (result.length != 0) {
 				res.json(result);
 			}
