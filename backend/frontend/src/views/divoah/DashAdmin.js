@@ -315,6 +315,29 @@ const AdminSignInForm = (props) => {
 			  );
 	}
 
+	function reportSwitch() {
+		switch (true) {
+			//* the order is important - must be from the lowest level to the highest
+			case typeof data.hativa == "object": //? checks if the the array exists
+				reportDBFl(reportDB, data.hativa, "hativa");
+				// console.log(data.hativa);
+				break;
+			case typeof data.ogda == "object":
+				reportDBFl(reportDB, data.ogda, "ogda");
+				// console.log(data.ogda);
+				break;
+			case typeof data.pikod == "object":
+				reportDBFl(reportDB, data.pikod, "pikod");
+				// console.log(data.pikod);
+				break;
+
+			default:
+				setReportDFillter(reportDB);
+				console.log("def");
+				break;
+		}
+	}
+
 	//* clock options settings ----------------------------------------------------------------
 
 	const options = {
@@ -410,7 +433,7 @@ const AdminSignInForm = (props) => {
 		],
 	};
 
-	const dataeventPikod = {
+	const dataeventFilltered = {
 		labels: labels,
 		datasets: [
 			{
@@ -817,27 +840,7 @@ const AdminSignInForm = (props) => {
 
 	//* manmait - reporting + typeevent clock
 	useEffect(() => {
-		switch (true) {
-			//* the order is important - must be from the lowest level to the highest
-			case typeof data.hativa == "object": //? checks if the the array exists
-				reportDBFl(reportDB, data.hativa, "hativa");
-				// console.log(data.hativa);
-				break;
-			case typeof data.ogda == "object":
-				reportDBFl(reportDB, data.ogda, "ogda");
-				// console.log(data.ogda);
-				break;
-			case typeof data.pikod == "object":
-				reportDBFl(reportDB, data.pikod, "pikod");
-				// console.log(data.pikod);
-				break;
-
-			default:
-				setReportDFillter(reportDB);
-				console.log("def");
-				break;
-		}
-
+		reportSwitch();
 		console.table(reportDBFillter);
 		// console.log(typeof data.gdod);
 		// console.log(reportDBFillter.length);
@@ -1334,7 +1337,7 @@ const AdminSignInForm = (props) => {
 														</tbody>
 													) : data.pikod ? (
 														<tbody>
-															{reportDB
+															{reportDBFillter
 																.filter(
 																	(report) =>
 																		new Date(report.datevent).setHours(
@@ -1460,29 +1463,31 @@ const AdminSignInForm = (props) => {
 														</tbody>
 													) : data.pikod ? (
 														<tbody>
-															{reportDB.slice(0, 5).map((report, index) =>
-																data.pikod.includes(report.pikod) ? (
-																	<tr>
-																		<td>
-																			<p>{getname(report.gdod, gdodim)}</p>
-																		</td>
-																		<td>{eventTypeArray[report.typevent]}</td>
-																		<td>
-																			<div
-																				style={{
-																					width: "100%",
-																					height: "50px",
-																					margin: "0",
-																					padding: "0",
-																					overflow: "auto",
-																				}}
-																			>
-																				{report.pirot}
-																			</div>
-																		</td>
-																	</tr>
-																) : null
-															)}
+															{reportDBFillter
+																.slice(0, 5)
+																.map((report, index) =>
+																	data.pikod.includes(report.pikod) ? (
+																		<tr>
+																			<td>
+																				<p>{getname(report.gdod, gdodim)}</p>
+																			</td>
+																			<td>{eventTypeArray[report.typevent]}</td>
+																			<td>
+																				<div
+																					style={{
+																						width: "100%",
+																						height: "50px",
+																						margin: "0",
+																						padding: "0",
+																						overflow: "auto",
+																					}}
+																				>
+																					{report.pirot}
+																				</div>
+																			</td>
+																		</tr>
+																	) : null
+																)}
 														</tbody>
 													) : !data.pikod ? (
 														<tbody>
@@ -1533,7 +1538,7 @@ const AdminSignInForm = (props) => {
 											/>
 										) : (
 											<Doughnut
-												data={dataeventPikod}
+												data={dataeventFilltered}
 												options={options}
 											/>
 										)}
@@ -1762,7 +1767,7 @@ const AdminSignInForm = (props) => {
 											/>
 										) : (
 											<Doughnut
-												data={dataeventPikod}
+												data={dataeventFilltered}
 												options={options}
 											/>
 										)}

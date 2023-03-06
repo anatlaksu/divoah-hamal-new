@@ -26,13 +26,12 @@ import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
 
 import { isAuthenticated } from "auth";
-// todo: add typeevent fillter from dashadmin + add manmarit fillter from dashadmin
-const AdminSignInForm = () => {
+const AdminSignInForm = (props) => {
 	const [reportDB, setReportDB] = useState([]);
 	const [isError, setIsError] = useState(false);
 
 	const [data, setData] = useState([]);
-	const [reportDBOgda, setReportDBOgda] = useState([]);
+	const [reportDBFillter, setReportDFillter] = useState([]);
 
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
@@ -291,6 +290,57 @@ const AdminSignInForm = () => {
 		}
 	}
 
+	function reportDBFl(report, dataUnit, unit) {
+		/*//? taking all the reports + the unit array that we want to filter from said reports and the name of the unit */
+		//* filltering by white mode and dark mode
+		props.theme == "white-content"
+			? setReportDFillter(
+					report.filter((rp) =>
+						// unit == "pikod"
+						// 	? dataUnit.includes(rp.pikod)
+						unit == "ogda"
+							? dataUnit.includes(rp.ogda)
+							: unit == "hativa"
+							? dataUnit.includes(rp.hativa)
+							: null
+					)
+			  )
+			: setReportDFillter(
+					report.filter((rp) =>
+						// unit == "pikod"
+						// 	? dataUnit.includes(rp.pikodrep)
+						unit == "ogda"
+							? dataUnit.includes(rp.ogdarep)
+							: unit == "hativa"
+							? dataUnit.includes(rp.hativarep)
+							: null
+					)
+			  );
+	}
+
+	function reportSwitch() {
+		switch (true) {
+			//* the order is important - must be from the lowest level to the highest
+			case typeof data.hativa == "object": //? checks if the the array exists
+				reportDBFl(reportDB, data.hativa, "hativa");
+				// console.log(data.hativa);
+				break;
+			case typeof data.ogda == "object":
+				reportDBFl(reportDB, data.ogda, "ogda");
+				// console.log(data.ogda);
+				break;
+			// case typeof data.pikod == "object":
+			// 	reportDBFl(reportDB, data.pikod, "pikod");
+			// 	// console.log(data.pikod);
+			// 	break;
+
+			default:
+				setReportDFillter(reportDB);
+				console.log("def");
+				break;
+		}
+	}
+
 	const options = {
 		//* on civil
 		responsive: true,
@@ -304,13 +354,15 @@ const AdminSignInForm = () => {
 		},
 	};
 	//* on Army :
-	/*
-			responsive: true,
-			legend: {
-				display: false,
-			},
-	};
-	 */
+	//! brakes after 2-3 fillter because of the size of the data
+	// 		responsive: true,
+	// 		legend: {
+	// 			display: true,
+	// 			position: "right",
+	// 			align: "center",
+	// 			fullSize: true,
+	// 		},
+	// };
 
 	const labels = [
 		"תאונת כלי רכב",
@@ -384,36 +436,12 @@ const AdminSignInForm = () => {
 		],
 	};
 
-	function sumpikods(arr1, arr2) {
-		let sumallpikods = [];
-		for (let i = 0; i < arr1.length; i++) {
-			let sum = 0;
-			for (let j = 0; j < arr2.length; j++) {
-				if (arr2[j].pikod == arr1[i]._id) sum++;
-			}
-			sumallpikods[i] = sum;
-		}
-		return sumallpikods;
-	}
-
-	function sumpikodsrep(arr1, arr2) {
-		let sumallpikods = [];
-		for (let i = 0; i < arr1.length; i++) {
-			let sum = 0;
-			for (let j = 0; j < arr2.length; j++) {
-				if (arr2[j].pikodrep == arr1[i]._id) sum++;
-			}
-			sumallpikods[i] = sum;
-		}
-		return sumallpikods;
-	}
-
-	const datapikodrep = {
-		labels: pikods.map((pikod, index) => pikod.name),
+	const dataeventFilltered = {
+		labels: labels,
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumpikodsrep(pikods, reportDB),
+				data: sumtypereport(labels, reportDBFillter, eventTypeArray),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -449,12 +477,77 @@ const AdminSignInForm = () => {
 		],
 	};
 
+	function sumpikods(arr1, arr2) {
+		let sumallpikods = [];
+		for (let i = 0; i < arr1.length; i++) {
+			let sum = 0;
+			for (let j = 0; j < arr2.length; j++) {
+				if (arr2[j].pikod == arr1[i]._id) sum++;
+			}
+			sumallpikods[i] = sum;
+		}
+		return sumallpikods;
+	}
+
+	function sumpikodsrep(arr1, arr2) {
+		let sumallpikods = [];
+		for (let i = 0; i < arr1.length; i++) {
+			let sum = 0;
+			for (let j = 0; j < arr2.length; j++) {
+				if (arr2[j].pikodrep == arr1[i]._id) sum++;
+			}
+			sumallpikods[i] = sum;
+		}
+		return sumallpikods;
+	}
+
 	const datapikod = {
 		labels: pikods.map((pikod, index) => pikod.name),
 		datasets: [
 			{
 				label: "# of Votes",
 				data: sumpikods(pikods, reportDB),
+				backgroundColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderColor: [
+					"rgba(255, 99, 132, 1)",
+					"rgba(54, 162, 235, 1)",
+					"rgba(255, 206, 86, 1)",
+					"rgba(75, 192, 192, 1)",
+					"rgba(153, 102, 255, 1)",
+					"rgba(255, 159, 64, 1)",
+					"rgba(157, 241, 223, 1)",
+					"rgba(130, 0, 0, 1)",
+					"rgba(78, 108, 80, 1)",
+					"rgba(207, 77, 206, 1)",
+					"rgba(61, 23, 102, 1)",
+					"rgba(0, 255, 246, 1)",
+					"rgba(255, 173, 188, 1)",
+				],
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const datapikodrep = {
+		labels: pikods.map((pikod, index) => pikod.name),
+		datasets: [
+			{
+				label: "# of Votes",
+				data: sumpikodsrep(pikods, reportDB),
 				backgroundColor: [
 					"rgba(255, 99, 132, 1)",
 					"rgba(54, 162, 235, 1)",
@@ -544,46 +637,88 @@ const AdminSignInForm = () => {
 	// 	data.pikod.includes(report.pikod)
 	// );
 
-	const dataeventOgda = {
-		labels: labels,
-		datasets: [
-			{
-				label: "# of Votes",
-				data: sumtypereport(labels, reportDBOgda, eventTypeArray),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderWidth: 1,
-			},
-		],
-	};
+	// const dataeventOgda = {
+	// 	labels: labels,
+	// 	datasets: [
+	// 		{
+	// 			label: "# of Votes",
+	// 			data: sumtypereport(labels, reportDBFillter, eventTypeArray),
+	// 			backgroundColor: [
+	// 				"rgba(255, 99, 132, 1)",
+	// 				"rgba(54, 162, 235, 1)",
+	// 				"rgba(255, 206, 86, 1)",
+	// 				"rgba(75, 192, 192, 1)",
+	// 				"rgba(153, 102, 255, 1)",
+	// 				"rgba(255, 159, 64, 1)",
+	// 				"rgba(157, 241, 223, 1)",
+	// 				"rgba(130, 0, 0, 1)",
+	// 				"rgba(78, 108, 80, 1)",
+	// 				"rgba(207, 77, 206, 1)",
+	// 				"rgba(61, 23, 102, 1)",
+	// 				"rgba(0, 255, 246, 1)",
+	// 				"rgba(255, 173, 188, 1)",
+	// 			],
+	// 			borderColor: [
+	// 				"rgba(255, 99, 132, 1)",
+	// 				"rgba(54, 162, 235, 1)",
+	// 				"rgba(255, 206, 86, 1)",
+	// 				"rgba(75, 192, 192, 1)",
+	// 				"rgba(153, 102, 255, 1)",
+	// 				"rgba(255, 159, 64, 1)",
+	// 				"rgba(157, 241, 223, 1)",
+	// 				"rgba(130, 0, 0, 1)",
+	// 				"rgba(78, 108, 80, 1)",
+	// 				"rgba(207, 77, 206, 1)",
+	// 				"rgba(61, 23, 102, 1)",
+	// 				"rgba(0, 255, 246, 1)",
+	// 				"rgba(255, 173, 188, 1)",
+	// 			],
+	// 			borderWidth: 1,
+	// 		},
+	// 	],
+	// };
+
+	// const datapikodFilttered = {
+	// 	labels: pikods.map((pikod, index) => pikod.name),
+	// 	datasets: [
+	// 		{
+	// 			label: "# of Votes",
+	// 			data: sumpikods(pikods, reportDBFillter),
+	// 			backgroundColor: [
+	// 				"rgba(255, 99, 132, 1)",
+	// 				"rgba(54, 162, 235, 1)",
+	// 				"rgba(255, 206, 86, 1)",
+	// 				"rgba(75, 192, 192, 1)",
+	// 				"rgba(153, 102, 255, 1)",
+	// 				"rgba(255, 159, 64, 1)",
+	// 				"rgba(157, 241, 223, 1)",
+	// 				"rgba(130, 0, 0, 1)",
+	// 				"rgba(78, 108, 80, 1)",
+	// 				"rgba(207, 77, 206, 1)",
+	// 				"rgba(61, 23, 102, 1)",
+	// 				"rgba(0, 255, 246, 1)",
+	// 				"rgba(255, 173, 188, 1)",
+	// 			],
+	// 			borderColor: [
+	// 				"rgba(255, 99, 132, 1)",
+	// 				"rgba(54, 162, 235, 1)",
+	// 				"rgba(255, 206, 86, 1)",
+	// 				"rgba(75, 192, 192, 1)",
+	// 				"rgba(153, 102, 255, 1)",
+	// 				"rgba(255, 159, 64, 1)",
+	// 				"rgba(157, 241, 223, 1)",
+	// 				"rgba(130, 0, 0, 1)",
+	// 				"rgba(78, 108, 80, 1)",
+	// 				"rgba(207, 77, 206, 1)",
+	// 				"rgba(61, 23, 102, 1)",
+	// 				"rgba(0, 255, 246, 1)",
+	// 				"rgba(255, 173, 188, 1)",
+	// 			],
+	// 			borderWidth: 1,
+	// 		},
+	// 	],
+	// };
+	// console.log(arryogda);
 
 	const dataogda = {
 		labels: arryogda.map((ogda) => ogda.name),
@@ -787,44 +922,16 @@ const AdminSignInForm = () => {
 		],
 	};
 
-	function reportDBFl(report, dataUnit, unit) {
-		props.theme == "white-content"
-			? setReportDBOgda(
-					report.filter((rp) =>
-						unit == "pikod"
-							? dataUnit.includes(rp.pikod)
-							: unit == "ogda"
-							? dataUnit.includes(rp.ogda)
-							: unit == "hativa"
-							? dataUnit.includes(rp.hativa)
-							: null
-					)
-			  )
-			: setReportDBOgda(
-					report.filter((rp) =>
-						unit == "pikod"
-							? dataUnit.includes(rp.pikodrep)
-							: unit == "ogda"
-							? dataUnit.includes(rp.ogdarep)
-							: unit == "hativa"
-							? dataUnit.includes(rp.hativarep)
-							: null
-					)
-			  );
-	}
+	//* --------------------- useEffects -------------------------------------
 
+	//* manmait - reporting + typeevent clock
 	useEffect(() => {
-		typeof data.pikod == "object"
-			? reportDBFl(reportDB, data.pikod, "pikod")
-			: typeof data.ogda == "object"
-			? reportDBFl(reportDB, data.ogda, "ogda")
-			: typeof data.hativa == "object"
-			? reportDBFl(reportDB, data.hativa, "hativa")
-			: setReportDBOgda(reportDB);
-
-		console.table(reportDBOgda);
+		reportSwitch();
+		console.table(reportDBFillter);
 		// console.log(typeof data.gdod);
-		console.log(reportDBOgda.length);
+		// console.log(reportDBFillter.length);
+
+		console.log(reportDB.reduce((a, b) => a.damageCost + b.damageCost, 0));
 
 		// console.log(props.theme);
 	}, [data, props.theme]);
@@ -1182,116 +1289,198 @@ const AdminSignInForm = () => {
 						</Col>
 					</Row>
 				)}
-
-				<Row>
-					<Col lg="12">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">אירועים אחרונים</h3>
-							</CardHeader>
-							<CardBody>
-								<table
-									className="tablesorter"
-									responsive
-								>
-									<thead className="text-primary">
-										<tr>
-											<th
-												className="text-center"
-												style={{ width: "20%" }}
-											>
-												יחידה מנמרית{" "}
-											</th>
-											<th
-												className="text-center"
-												style={{ width: "30%" }}
-											>
-												סוג אירוע
-											</th>
-											<th
-												className="text-center"
-												style={{ width: "50%" }}
-											>
-												פירוט האירוע
-											</th>
-										</tr>
-									</thead>
-									{data.fromdate && data.todate ? (
-										<>
-											{data.length == 0 && !data.pikod ? (
-												<tbody>
-													{reportDB
-														.filter(
-															(report) =>
-																new Date(report.datevent).setHours(
-																	0,
-																	0,
-																	0,
-																	0
-																) >=
-																	new Date(data.fromdate).setHours(
-																		0,
-																		0,
-																		0,
-																		0
-																	) &&
-																new Date(report.datevent).setHours(
-																	0,
-																	0,
-																	0,
-																	0
-																) <= new Date(data.todate).setHours(0, 0, 0, 0)
-														)
-														.slice(0, 5)
-														.map((report, index) => (
-															<tr>
-																<td>
-																	<p>{getname(report.gdod, gdodim)}</p>
-																</td>
-																<td>{eventTypeArray[report.typevent]}</td>
-																<td>
-																	<div
-																		style={{
-																			width: "100%",
-																			height: "50px",
-																			margin: "0",
-																			padding: "0",
-																			overflow: "auto",
-																		}}
-																	>
-																		{report.pirot}
-																	</div>
-																</td>
-															</tr>
-														))}
-												</tbody>
-											) : data.pikod ? (
-												<tbody>
-													{reportDB
-														.filter(
-															(report) =>
-																new Date(report.datevent).setHours(
-																	0,
-																	0,
-																	0,
-																	0
-																) >=
-																	new Date(data.fromdate).setHours(
-																		0,
-																		0,
-																		0,
-																		0
-																	) &&
-																new Date(report.datevent).setHours(
-																	0,
-																	0,
-																	0,
-																	0
-																) <= new Date(data.todate).setHours(0, 0, 0, 0)
-														)
-														.slice(0, 5)
-														.map((report, index) =>
-															data.pikod.includes(report.pikod) ? (
+				{props.theme == "white-content" ? (
+					<>
+						<Row>
+							<Col lg="12">
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											אירועים אחרונים
+										</h3>
+									</CardHeader>
+									<CardBody>
+										<table
+											className="tablesorter"
+											responsive
+										>
+											<thead className="text-primary">
+												<tr>
+													<th
+														className="text-center"
+														style={{ width: "20%" }}
+													>
+														יחידה מנמרית
+													</th>
+													<th
+														className="text-center"
+														style={{ width: "30%" }}
+													>
+														סוג אירוע
+													</th>
+													<th
+														className="text-center"
+														style={{ width: "50%" }}
+													>
+														פירוט האירוע
+													</th>
+												</tr>
+											</thead>
+											{data.fromdate && data.todate ? (
+												<>
+													{!data.ogda ? (
+														<tbody>
+															{reportDB
+																.filter(
+																	(report) =>
+																		new Date(report.datevent).setHours(
+																			0,
+																			0,
+																			0,
+																			0
+																		) >=
+																			new Date(data.fromdate).setHours(
+																				0,
+																				0,
+																				0,
+																				0
+																			) &&
+																		new Date(report.datevent).setHours(
+																			0,
+																			0,
+																			0,
+																			0
+																		) <=
+																			new Date(data.todate).setHours(0, 0, 0, 0)
+																)
+																.slice(0, 5)
+																.map((report, index) => (
+																	<tr>
+																		<td>
+																			<p>{getname(report.gdod, gdodim)}</p>
+																		</td>
+																		<td>{eventTypeArray[report.typevent]}</td>
+																		<td>
+																			<div
+																				style={{
+																					width: "100%",
+																					height: "50px",
+																					margin: "0",
+																					padding: "0",
+																					overflow: "auto",
+																				}}
+																			>
+																				{report.pirot}
+																			</div>
+																		</td>
+																	</tr>
+																))}
+														</tbody>
+													) : data.pikod ? (
+														<tbody>
+															{reportDBFillter
+																.filter(
+																	(report) =>
+																		new Date(report.datevent).setHours(
+																			0,
+																			0,
+																			0,
+																			0
+																		) >=
+																			new Date(data.fromdate).setHours(
+																				0,
+																				0,
+																				0,
+																				0
+																			) &&
+																		new Date(report.datevent).setHours(
+																			0,
+																			0,
+																			0,
+																			0
+																		) <=
+																			new Date(data.todate).setHours(0, 0, 0, 0)
+																)
+																.slice(0, 5)
+																.map((report, index) =>
+																	data.pikod.includes(report.pikod) ? (
+																		<tr>
+																			<td>
+																				<p>{getname(report.gdod, gdodim)}</p>
+																			</td>
+																			<td>{eventTypeArray[report.typevent]}</td>
+																			<td>
+																				<div
+																					style={{
+																						width: "100%",
+																						height: "50px",
+																						margin: "0",
+																						padding: "0",
+																						overflow: "auto",
+																					}}
+																				>
+																					{report.pirot}
+																				</div>
+																			</td>
+																		</tr>
+																	) : null
+																)}
+														</tbody>
+													) : !data.ogda ? (
+														<tbody>
+															{reportDB
+																.filter(
+																	(report) =>
+																		new Date(report.datevent).setHours(
+																			0,
+																			0,
+																			0,
+																			0
+																		) >=
+																			new Date(data.fromdate).setHours(
+																				0,
+																				0,
+																				0,
+																				0
+																			) &&
+																		new Date(report.datevent).setHours(
+																			0,
+																			0,
+																			0,
+																			0
+																		) <=
+																			new Date(data.todate).setHours(0, 0, 0, 0)
+																)
+																.slice(0, 5)
+																.map((report, index) => (
+																	<tr>
+																		<td>
+																			<p>{getname(report.gdod, gdodim)}</p>
+																		</td>
+																		<td>{eventTypeArray[report.typevent]}</td>
+																		<td>
+																			<div
+																				style={{
+																					width: "100%",
+																					height: "50px",
+																					margin: "0",
+																					padding: "0",
+																					overflow: "auto",
+																				}}
+																			>
+																				{report.pirot}
+																			</div>
+																		</td>
+																	</tr>
+																))}
+														</tbody>
+													) : null}
+												</>
+											) : (
+												<>
+													{!data.ogda ? (
+														<tbody>
+															{reportDB.slice(0, 5).map((report, index) => (
 																<tr>
 																	<td>
 																		<p>{getname(report.gdod, gdodim)}</p>
@@ -1311,66 +1500,223 @@ const AdminSignInForm = () => {
 																		</div>
 																	</td>
 																</tr>
-															) : null
-														)}
-												</tbody>
-											) : !data.pikod ? (
-												<tbody>
-													{reportDB
-														.filter(
-															(report) =>
-																new Date(report.datevent).setHours(
-																	0,
-																	0,
-																	0,
-																	0
-																) >=
-																	new Date(data.fromdate).setHours(
-																		0,
-																		0,
-																		0,
-																		0
-																	) &&
-																new Date(report.datevent).setHours(
-																	0,
-																	0,
-																	0,
-																	0
-																) <= new Date(data.todate).setHours(0, 0, 0, 0)
-														)
-														.slice(0, 5)
-														.map((report, index) => (
-															<tr>
-																<td>
-																	<p>{getname(report.gdod, gdodim)}</p>
-																</td>
-																<td>{eventTypeArray[report.typevent]}</td>
-																<td>
-																	<div
-																		style={{
-																			width: "100%",
-																			height: "50px",
-																			margin: "0",
-																			padding: "0",
-																			overflow: "auto",
-																		}}
-																	>
-																		{report.pirot}
-																	</div>
-																</td>
-															</tr>
-														))}
-												</tbody>
-											) : null}
-										</>
-									) : (
-										<>
-											{data.length == 0 && !data.pikod ? (
+															))}
+														</tbody>
+													) : data.pikod ? (
+														<tbody>
+															{reportDBFillter
+																.slice(0, 5)
+																.map((report, index) =>
+																	data.pikod.includes(report.pikod) ? (
+																		<tr>
+																			<td>
+																				<p>{getname(report.gdod, gdodim)}</p>
+																			</td>
+																			<td>{eventTypeArray[report.typevent]}</td>
+																			<td>
+																				<div
+																					style={{
+																						width: "100%",
+																						height: "50px",
+																						margin: "0",
+																						padding: "0",
+																						overflow: "auto",
+																					}}
+																				>
+																					{report.pirot}
+																				</div>
+																			</td>
+																		</tr>
+																	) : null
+																)}
+														</tbody>
+													) : !data.ogda ? (
+														<tbody>
+															{reportDB.slice(0, 5).map((report, index) => (
+																<tr>
+																	<td>
+																		<p>{getname(report.gdod, gdodim)}</p>
+																	</td>
+																	<td>{eventTypeArray[report.typevent]}</td>
+																	<td>
+																		<div
+																			style={{
+																				width: "100%",
+																				height: "50px",
+																				margin: "0",
+																				padding: "0",
+																				overflow: "auto",
+																			}}
+																		>
+																			{report.pirot}
+																		</div>
+																	</td>
+																</tr>
+															))}
+														</tbody>
+													) : null}
+												</>
+											)}
+										</table>
+									</CardBody>
+								</Card>
+							</Col>
+						</Row>
+						<Row>
+							<Col lg="6">
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											{" "}
+											אירועים לפי סוג אירוע
+										</h3>
+									</CardHeader>
+									<CardBody>
+										{!data.ogda ? (
+											<Doughnut
+												data={dataevent}
+												options={options}
+											/>
+										) : (
+											<Doughnut
+												data={dataeventFilltered}
+												options={options}
+											/>
+										)}
+									</CardBody>
+								</Card>
+							</Col>
+							{!data.pikod ? (
+								<Col lg="6">
+									<Card className="card-chart">
+										<CardHeader>
+											<h3 className="card-category text-center">
+												{" "}
+												מספר אירועים לפי פיקוד
+											</h3>
+										</CardHeader>
+										<CardBody>
+											{!data.ogda ? (
+												<Doughnut
+													data={datapikod}
+													options={options}
+												/>
+											) : //* was removed
+											/*
+									<Doughnut
+										data={datapikodFilttered}
+										options={options}
+									/>
+									*/
+											null}
+										</CardBody>
+									</Card>
+								</Col>
+							) : null}
+							{data.pikod && !data.ogda && !data.hativa ? (
+								<Col lg="6">
+									<Card className="card-chart">
+										<CardHeader>
+											<h3 className="card-category text-center">
+												{" "}
+												{}
+												מספר אירועים לפי אוגדה
+											</h3>
+										</CardHeader>
+										<CardBody>
+											<Doughnut
+												data={dataogda}
+												options={options}
+											/>
+										</CardBody>
+									</Card>
+								</Col>
+							) : null}
+							<>
+								{data.ogda && !data.hativa ? (
+									<Col lg="6">
+										<Card className="card-chart">
+											<CardHeader>
+												<h3 className="card-category text-center">
+													{" "}
+													מספר אירועים לפי חטיבה
+												</h3>
+											</CardHeader>
+											<CardBody>
+												<Doughnut
+													data={datahativa}
+													options={options}
+												/>
+											</CardBody>
+										</Card>
+									</Col>
+								) : null}
+							</>
+							<>
+								{data.hativa ? (
+									<Col lg="6">
+										<Card className="card-chart">
+											<CardHeader>
+												<h3 className="card-category text-center">
+													{" "}
+													מספר אירועים לפי גדוד
+												</h3>
+											</CardHeader>
+											<CardBody>
+												<Doughnut
+													data={datagdod}
+													options={options}
+												/>
+											</CardBody>
+										</Card>
+									</Col>
+								) : null}
+							</>
+						</Row>
+					</>
+				) : (
+					<>
+						<Row>
+							<Col lg="12">
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											אירועים אחרונים
+										</h3>
+									</CardHeader>
+									<CardBody>
+										<table
+											className="tablesorter"
+											responsive
+										>
+											<thead className="text-primary">
+												<tr>
+													<th
+														className="text-center"
+														style={{ width: "20%" }}
+													>
+														יחידה מדווחת
+													</th>
+													<th
+														className="text-center"
+														style={{ width: "30%" }}
+													>
+														סוג אירוע
+													</th>
+													<th
+														className="text-center"
+														style={{ width: "50%" }}
+													>
+														פירוט האירוע
+													</th>
+												</tr>
+											</thead>
+											{data.length == 0 && !data.ogda ? (
 												<tbody>
 													{reportDB.slice(0, 5).map((report, index) => (
 														<tr>
 															<td>
-																<p>{getname(report.gdod, gdodim)}</p>
+																<p>{getname(report.gdodrep, gdodim)}</p>
 															</td>
 															<td>{eventTypeArray[report.typevent]}</td>
 															<td>
@@ -1392,10 +1738,10 @@ const AdminSignInForm = () => {
 											) : data.pikod ? (
 												<tbody>
 													{reportDB.slice(0, 5).map((report, index) =>
-														data.pikod.includes(report.pikod) ? (
+														data.pikod.includes(report.pikodrep) ? (
 															<tr>
 																<td>
-																	<p>{getname(report.gdod, gdodim)}</p>
+																	<p>{getname(report.gdodrep, gdodim)}</p>
 																</td>
 																<td>{eventTypeArray[report.typevent]}</td>
 																<td>
@@ -1415,12 +1761,12 @@ const AdminSignInForm = () => {
 														) : null
 													)}
 												</tbody>
-											) : !data.pikod ? (
+											) : !data.ogda ? (
 												<tbody>
 													{reportDB.slice(0, 5).map((report, index) => (
 														<tr>
 															<td>
-																<p>{getname(report.gdod, gdodim)}</p>
+																<p>{getname(report.gdodrep, gdodim)}</p>
 															</td>
 															<td>{eventTypeArray[report.typevent]}</td>
 															<td>
@@ -1440,54 +1786,52 @@ const AdminSignInForm = () => {
 													))}
 												</tbody>
 											) : null}
-										</>
-									)}
-								</table>
-							</CardBody>
-						</Card>
-					</Col>
-				</Row>
-				<Row>
-					<Col lg="6">
-						<Card className="card-chart">
-							<CardHeader>
-								<h3 className="card-category text-center">
-									{" "}
-									אירועים לפי סוג אירוע
-								</h3>
-							</CardHeader>
-							<CardBody>
-								{!data.ogda && !data.hativa ? (
-									<Doughnut
-										data={dataevent}
-										options={options}
-									/>
-								) : (
-									<Doughnut
-										data={dataeventOgda}
-										options={options}
-									/>
-								)}
-							</CardBody>
-						</Card>
-					</Col>
-					{!data.ogda ? (
-						<Col lg="6">
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים לפי אוגדה
-									</h3>
-								</CardHeader>
-								<CardBody>
-									{!data.ogda ? (
-										<Doughnut
-											data={dataogda}
-											options={options}
-										/>
-									) : //* was removed
-									/*
+										</table>
+									</CardBody>
+								</Card>
+							</Col>
+						</Row>
+						<Row>
+							<Col lg="6">
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											{" "}
+											אירועים לפי סוג אירוע
+										</h3>
+									</CardHeader>
+									<CardBody>
+										{!data.ogda ? (
+											<Doughnut
+												data={dataevent}
+												options={options}
+											/>
+										) : (
+											<Doughnut
+												data={dataeventFilltered}
+												options={options}
+											/>
+										)}
+									</CardBody>
+								</Card>
+							</Col>
+							{!data.pikod ? (
+								<Col lg="6">
+									<Card className="card-chart">
+										<CardHeader>
+											<h3 className="card-category text-center">
+												{" "}
+												מספר אירועים לפי פיקוד
+											</h3>
+										</CardHeader>
+										<CardBody>
+											{!data.ogda ? (
+												<Doughnut
+													data={datapikodrep}
+													options={options}
+												/>
+											) : //* was removed
+											/*
 									<Doughnut
 										data={datapikodFilttered}
 										options={options}
@@ -1498,7 +1842,7 @@ const AdminSignInForm = () => {
 									</Card>
 								</Col>
 							) : null}
-							{!data.pikod && !data.ogda && !data.hativa ? (
+							{data.pikod && !data.ogda && !data.hativa ? (
 								<Col lg="6">
 									<Card className="card-chart">
 										<CardHeader>
