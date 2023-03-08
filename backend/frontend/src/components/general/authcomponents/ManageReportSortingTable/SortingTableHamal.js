@@ -1014,7 +1014,7 @@ const SortingTableHamal = ({ match }) => {
 																return <td>הנתקות גלגל</td>;
 															if (cell.value == "4") return <td>שריפה</td>;
 															if (cell.value == "5")
-																return <td>אירוע נשק / תחמושת</td>;
+																return <td>אירוע נשו"ת</td>;
 															if (cell.value == "6")
 																return <td>תאונת עבודה אנשי טנ"א</td>;
 															if (cell.value == "7")
@@ -1231,7 +1231,7 @@ const SortingTableHamal = ({ match }) => {
 													if (cell.value == "3") return <td>הנתקות גלגל</td>;
 													if (cell.value == "4") return <td>שריפה</td>;
 													if (cell.value == "5")
-														return <td>אירוע נשק / תחמושת</td>;
+														return <td>אירוע נשו"ת</td>;
 													if (cell.value == "6")
 														return <td>תאונת עבודה אנשי טנ"א</td>;
 													if (cell.value == "7") return <td>פריקת מטפים</td>;

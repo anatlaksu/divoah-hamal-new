@@ -894,7 +894,7 @@ const CarDataFormModalView = (match) => {
 															<option value={"2"}>התהפכות</option>
 															<option value={"3"}>הנתקות גלגל</option>
 															<option value={"4"}>שריפה</option>
-															<option value={"5"}>אירועי נשק / תחמושת</option>
+															<option value={"5"}>אירוע נשו"ת</option>
 															<option value={"6"}>תאונת עבודה אנשי טנ"א</option>
 															<option value={"7"}>פריקת מטפים</option>
 															<option value={"9"}>חילוץ</option>
@@ -1031,7 +1031,7 @@ const CarDataFormModalView = (match) => {
 																	paddingTop: "10px",
 																}}
 															>
-																סוג הנשק
+																סוג הנשק/ תחמושת
 															</div>
 															<FormGroup>
 																<Input

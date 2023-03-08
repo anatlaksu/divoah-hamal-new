@@ -445,6 +445,7 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += "כמות הנפגעים ריקה \n";
 		}
+		if(data.nifga== "1"){
 		for (let i = 0; i < infohurtarray.length; i++) {
 			if (!infohurtarray[i].dargahurt) {
 				ErrorReason += "   לא הוזן דרגת פגיעה \n";
@@ -455,6 +456,7 @@ const Report = ({ props }) => {
 				flag = false;
 			}
 		}
+	}
 
 		if (flag == true) {
 			SendFormData(event);

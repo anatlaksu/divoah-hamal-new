@@ -426,7 +426,7 @@ const CarDataFormModalHatal = (match) => {
 		if (data.typevent === "5") {
 			if (data.selneshek == "") {
 				flag = false;
-				ErrorReason += " סוג הנשק ריק\n";
+				ErrorReason += " סוג הנשק/ תחמושת ריק\n";
 			}
 			if (
 				!document.getElementById("YES").checked &&

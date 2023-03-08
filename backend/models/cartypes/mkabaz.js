@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const mkabazSchema = new mongoose.Schema({
-	// _id: { type: String },
+	_id: { type: String },
 	name: { type: String },
 	magadss: { type: String },
 	isRekem: { type: Boolean },

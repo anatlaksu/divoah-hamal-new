@@ -135,6 +135,10 @@ function Signin() {
 	}, []);
 
 	useEffect(() => {
+		localStorage.clear();
+	}, []);
+
+	useEffect(() => {
 		clickSubmit();
 	}, [values.personalnumber]);
 
