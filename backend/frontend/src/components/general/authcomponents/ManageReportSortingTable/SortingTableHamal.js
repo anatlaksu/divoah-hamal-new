@@ -41,6 +41,7 @@ const SortingTableHamal = ({ match }) => {
 	const columns = useMemo(() => COLUMNSSUM, []);
 	const { user } = isAuthenticated();
 	const [data, setData] = useState([]);
+	
 	const [isError, setIsError] = useState(false);
 	//* the difference between the date the report was created and the date the incident happened
 	const [diff, setDiff] = useState([]);
@@ -55,18 +56,12 @@ const SortingTableHamal = ({ match }) => {
 
 	const [reportDB, setReportDB] = useState([]);
 	// const [reportDBPikod, setReportDBPikod] = useState([]);
+//* get gdod
+	const [gdods, setGdods] = useState([]);
+	const [gdodsop, setGdodsop] = useState([]);
+//* set gdod fillter
+const [gdodsfillter, setGdodsfillter] = useState([]);
 
-	// const [gdods, setGdods] = useState([]);
-	// const [hativas, setHativas] = useState([]);
-	// const [ogdas, setOgdas] = useState([]);
-	// const [pikods, setPikods] = useState([]);
-	// //* options
-	// const [gdodsop, setGdodsop] = useState([]);
-	// const [hativasop, setHativasop] = useState([]);
-	// const [ogdasop, setOgdasop] = useState([]);
-	// const [pikodsop, setPikodsop] = useState([]);
-
-	// const [gdodim, setGdodim] = useState([]);
 
 	const [date, setDate] = useState([]);
 
@@ -74,6 +69,56 @@ const SortingTableHamal = ({ match }) => {
 	const toggleCollapse = () => {
 		setcollapseOpen(!collapseOpen);
 	};
+
+	const loadGdods = async () => {
+		await axios
+			.get("http://localhost:8000/api/gdod")
+			.then((response) => {
+				setGdods(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const animatedComponents = makeAnimated();
+
+
+	function setoptions(gd) {
+		
+		// setPikodsop(
+		// 	pk.map((item, index) => {
+		// 		let val = pk[index]._id;
+		// 		let lab = pk[index].name;
+		// 		return { value: val, label: lab };
+		// 	})
+		// );
+		// setOgdasop(
+		// 	og.map((item, index) => {
+		// 		let val = og[index]._id;
+		// 		let lab = og[index].name;
+		// 		return { value: val, label: lab };
+		// 	})
+		// );
+		// setHativasop(
+		// 	ht.map((item, index) => {
+		// 		let val = ht[index]._id;
+		// 		let lab = ht[index].name;
+		// 		return { value: val, label: lab };
+		// 	})
+		// );
+		setGdodsop(
+			gd.map((item, index) => {
+				let val = gd[index]._id;
+				let lab = gd[index].name;
+				return { value: val, label: lab };
+			}
+			)
+		);
+		
+	}
 
 	// const animatedComponents = makeAnimated();
 
@@ -315,6 +360,7 @@ const SortingTableHamal = ({ match }) => {
 		console.log(evt.target.value);
 		console.log(evt.target.name);
 		setDate({ ...date, [evt.target.name]: value });
+		console.log(date);
 		console.log(new Date(date.fromdate).setHours(0, 0, 0, 0));
 		console.log(date.todate);
 	}
@@ -378,6 +424,29 @@ const SortingTableHamal = ({ match }) => {
 		window.location.reload();
 	}
 
+	function handleChange2(selectedOption, name) {
+		// loadReports()
+		console.log(selectedOption.value);
+		// const val = selectedOption.value + ""
+		// console.log(val);
+		console.log(name.name);
+		// console.log(selectedOption);
+
+		if (!(selectedOption.value == "בחר")) {
+			// console.log(selectedOption);
+			setGdodsfillter({ ...gdodsfillter, [name.name]: selectedOption.value });
+			console.log(data);
+			// setData(data.filter((rep) => rep.gdod == gdodsfillter.gdod ))
+			// console.log(gdodsfillter.gdod);
+			// console.log(data.gdod);
+		} else {
+			let tempdata = { ...data };
+			delete tempdata[name];
+			// setData(tempdata);
+		}
+	}
+
+
 	// ? -------------- idk if needs to be in admin route -----------------------
 	//units
 
@@ -417,18 +486,6 @@ const SortingTableHamal = ({ match }) => {
 	// }, []);
 
 	const loadReports = () => {
-		axios.get(`http://localhost:8000/report`).then((res) => {
-			// console.log(res);
-			// console.log(res.data);
-			setReportDB(res.data);
-		});
-	};
-
-	useEffect(() => {
-		loadReports();
-	}, []);
-
-	useEffect(() => {
 		user.role === "2"
 			? axios
 					.get(`http://localhost:8000/report/`)
@@ -447,13 +504,58 @@ const SortingTableHamal = ({ match }) => {
 					.then((response) => {
 						console.log(user.pikod);
 						console.log(response.data);
-						setData(response.data);
+						const reports = response.data;
+
+						reports.reverse();
+						setData(reports);
 					})
 					.catch((error) => {
 						console.log(error);
 						setIsError(true);
 					});
+	};
+
+	useEffect(() => {
+		loadGdods()
+		// loadReports();
 	}, []);
+
+	useEffect(() => {
+		setoptions(gdods)
+	}, [gdods]);
+
+	useEffect(() => {
+loadReports()
+	}, []);
+
+	useEffect(() => {
+		// console.log("check");
+		
+		console.log(gdodsfillter);
+		console.log(gdodsop);
+		// console.log(gdodsop.map((op) => op.value ));
+		let gdodopvals = gdodsop.map((op) => op.value)
+		if (!gdodopvals.includes("select")) {
+			gdodsop.unshift({value: "select",label: "בחר"})
+
+		}
+		if (gdodsfillter.gdod != undefined || gdodsfillter.gdod != null) {
+			setData(data.filter((rep) =>gdodsfillter.gdod == rep.gdod))
+			if (data.length == 0) {
+				loadReports()
+			}
+		} else {
+			loadReports()
+		} if (gdodsfillter.gdod == "select") {
+			loadReports()
+		}
+
+	}, [gdodsfillter]);
+
+	// useEffect(() => {
+	// 	loadGdods();
+	// }, []);
+
 
 	// useEffect(() => {
 	// 	loadPikods();
@@ -557,335 +659,31 @@ const SortingTableHamal = ({ match }) => {
 											/>
 										</Col>
 									</Row>
+									
 								</Col>
 							</Row>
-							{/* {user.role === "2" ? (
-								<Row style={{ margin: "0px" }}>
-									<Col
-										xs={12}
-										md={8}
-										style={{ textAlign: "right" }}
-									>
-										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
-											{!data.ogda ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>פיקוד</h6>
-													<Select
-														closeMenuOnSelect={false}
-														components={animatedComponents}
-														isMulti
-														options={pikodsop}
-														// data={pikods}
-														onChange={handleChange8}
-														name={"pikod"}
-														val={data.pikod ? data.pikod : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>פיקוד</h6>
-													<Select
-														closeMenuOnSelect={false}
-														components={animatedComponents}
-														isMulti
-														options={pikodsop}
-														handleChange2={handleChange8}
-														name={"pikod"}
-														val={data.pikod ? data.pikod : undefined}
-														isDisabled={true}
-														// isDisabled={
-														// 	!data.ogda
-														// 		? true
-														// 		: data.ogda.length < 1
-														// 		? false
-														// 		: true
-														// }
-													/>
-												</Col>
-											)}
+							<Row style={{ margin: "0px" }}>
+							<Col
+							 md={4}
+												style={{
+													justifyContent: "right",
+													alignContent: "right",
+													textAlign: "right",
+												}}
+											>
+												<h6>גדוד</h6>
+												<Select
+												// components={animatedComponents}
+												options={gdodsop}
+												placeholder="בחר"
+													onChange={handleChange2}
+													name={"gdod"}
+													val={data.gdod ? data.gdod : undefined}
+												/>
+											</Col>
 
-											<>
-												{data.pikod && !data.hativa ? (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>אוגדה</h6>
-														<Select
-															closeMenuOnSelect={false}
-															components={animatedComponents}
-															isMulti
-															options={ogdasop}
-															onChange={handleChange8}
-															name={"ogda"}
-															val={data.ogda ? data.ogda : undefined}
-														/>
-													</Col>
-												) : (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>אוגדה</h6>
-														<Select
-															components={animatedComponents}
-															isMulti
-															options={ogdasop}
-															onChange={handleChange8}
-															name={"ogda"}
-															val={data.ogda ? data.ogda : undefined}
-															isDisabled={true}
-															// isDisabled={
-															// 	!data.hativa
-															// 		? true
-															// 		: data.hativa.length < 1
-															// 		? false
-															// 		: true
-															// }
-														/>
-													</Col>
-												)}
-											</>
+							</Row>
 
-											<>
-												{data.ogda && !data.gdod ? (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>חטיבה</h6>
-														<Select
-															components={animatedComponents}
-															isMulti
-															options={hativasop}
-															onChange={handleChange8}
-															name={"hativa"}
-															val={data.hativa ? data.hativa : undefined}
-														/>
-													</Col>
-												) : (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>חטיבה</h6>
-														<Select
-															components={animatedComponents}
-															isMulti
-															options={hativasop}
-															onChange={handleChange8}
-															name={"hativa"}
-															val={data.hativa ? data.hativa : undefined}
-															isDisabled={true}
-														/>
-													</Col>
-												)}
-											</>
-											<>
-											{data.hativa ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-															components={animatedComponents}
-															isMulti
-															options={gdodsop}
-															onChange={handleChange8}
-															name={"gdod"}
-															val={data.gdod ? data.gdod : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-															components={animatedComponents}
-															isMulti
-															options={gdodsop}
-															onChange={handleChange8}
-															name={"gdod"}
-															val={data.gdod ? data.gdod : undefined}
-															isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
-										</Row>
-									</Col>
-								</Row>
-								):(
-									<Row style={{ margin: "0px" }}>
-									<Col
-										xs={12}
-										md={8}
-										style={{ textAlign: "right" }}
-									>
-										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
-										{!data.hativa ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>אוגדה</h6>
-												<Select
-													closeMenuOnSelect={false}
-													components={animatedComponents}
-													isMulti
-													options={ogdasop}
-													onChange={handleChange8}
-													name={"ogda"}
-													val={data.ogda ? data.ogda : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>אוגדה</h6>
-												<Select
-													components={animatedComponents}
-													isMulti
-													options={ogdasop}
-													onChange={handleChange8}
-													name={"ogda"}
-													val={data.ogda ? data.ogda : undefined}
-													isDisabled={true}
-													// isDisabled={
-													// 	!data.hativa
-													// 		? true
-													// 		: data.hativa.length < 1
-													// 		? false
-													// 		: true
-													// }
-												/>
-											</Col>
-										)}
-									<>
-										{data.ogda && !data.gdod ? (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>חטיבה</h6>
-												<Select
-													components={animatedComponents}
-													isMulti
-													options={hativasop}
-													onChange={handleChange8}
-													name={"hativa"}
-													val={data.hativa ? data.hativa : undefined}
-												/>
-											</Col>
-										) : (
-											<Col
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>חטיבה</h6>
-												<Select
-													components={animatedComponents}
-													isMulti
-													options={hativasop}
-													onChange={handleChange8}
-													name={"hativa"}
-													val={data.hativa ? data.hativa : undefined}
-													isDisabled={true}
-												/>
-												</Col>
-											)}
-										</>
-										<>
-											{data.hativa ? (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-															components={animatedComponents}
-															isMulti
-															options={gdodsop}
-															onChange={handleChange8}
-															name={"gdod"}
-															val={data.gdod ? data.gdod : undefined}
-													/>
-												</Col>
-											) : (
-												<Col
-													style={{
-														justifyContent: "right",
-														alignContent: "right",
-														textAlign: "right",
-													}}
-												>
-													<h6>גדוד</h6>
-													<Select
-															components={animatedComponents}
-															isMulti
-															options={gdodsop}
-															onChange={handleChange8}
-															name={"gdod"}
-															val={data.gdod ? data.gdod : undefined}
-															isDisabled={true}
-													/>
-												</Col>
-											)}
-										</>
-										</Row>
-									</Col>
-								</Row>
-								)} */}
 						</Card>
 					</Collapse>
 				</div>
@@ -978,6 +776,233 @@ const SortingTableHamal = ({ match }) => {
 					</thead>
 					{date.fromdate && date.todate ? (
 						<>
+						{data.gdod ? (
+							<tbody {...getTableBodyProps()}>
+								{page
+									.filter(
+										(row) =>
+											new Date(row.original.datevent).setHours(0, 0, 0, 0) >=
+												new Date(date.fromdate).setHours(0, 0, 0, 0) &&
+											new Date(row.original.datevent).setHours(0, 0, 0, 0) <=
+												new Date(date.todate).setHours(0, 0, 0, 0)
+									).filter((row)=> gdodsfillter.gdod === row.original.gdod)
+									.map((row, index) => {
+										prepareRow(row);
+										return (
+											<tr {...row.getRowProps()}>
+												{row.cells.map((cell) => {
+													if (
+														cell.column.id != "typevent" &&
+														cell.column.id != "pirot" &&
+														cell.column.id != "createdAt" &&
+														cell.column.id != "datevent" &&
+														cell.column.id != "difftime" &&
+														cell.column.id != "tipul"
+													) {
+														return (
+															<td {...cell.getCellProps()}>
+																{cell.render("Cell")}
+															</td>
+														);
+													} else {
+														if (cell.column.id == "typevent") {
+															if (cell.value == "1")
+																return <td>תאונת כלי רכב</td>;
+															if (cell.value == "2") return <td>התהפכות</td>;
+															if (cell.value == "3")
+																return <td>הנתקות גלגל</td>;
+															if (cell.value == "4") return <td>שריפה</td>;
+															if (cell.value == "5")
+																return <td>אירוע נשו"ת</td>;
+															if (cell.value == "6")
+																return <td>תאונת עבודה אנשי טנ"א</td>;
+															if (cell.value == "7")
+																return <td>פריקת מטפים</td>;
+															if (cell.value == "9") return <td>חילוץ</td>;
+															if (cell.value == "10")
+																return <td>נזק לתשתיות אחזקה / הח"י</td>;
+															if (cell.value == "11")
+																return <td>אי קיום שגרת אחזקה</td>;
+															if (cell.value == "12") return <td>אחר</td>;
+															if (cell.value == "רקם") return <td>רק"ם</td>;
+														}
+														if (cell.column.id == "pirot") {
+															return (
+																<td>
+																	<div
+																		style={{
+																			width: "100%",
+																			height: "60px",
+																			margin: "0",
+																			padding: "0",
+																			overflow: "auto",
+																		}}
+																	>
+																		{cell.value}
+																	</div>
+																</td>
+															);
+														}
+
+														if (cell.column.id == "createdAt") {
+															return (
+																<td>
+																	{cell.value
+																		.slice(0, 10)
+																		.split("-")
+																		.reverse()
+																		.join("-")}
+																</td>
+															);
+														}
+														if (cell.column.id == "datevent") {
+															return (
+																<td>
+																	{cell.value
+																		.slice(0, 10)
+																		.split("-")
+																		.reverse()
+																		.join("-")}
+																</td>
+															);
+														}
+
+														// * ------------- added difftime --------------------------------
+
+														if (cell.column.id == "difftime") {
+															return <td>{diff[index]}</td>;
+														}
+														if (cell.column.id == "tipul") {
+															if (
+																row.original.resevent === "4" &&
+																row.original.nifga === 2
+															)
+																return (
+																	<td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>
+																);
+															else {
+																if (row.original.resevent === "4")
+																	return <td>סיבת אירוע חסרה</td>;
+																else {
+																	if (row.original.nifga === 2)
+																		return <td>לא ידוע על נפגעים</td>;
+																	else return <td>לא</td>;
+																}
+															}
+														}
+													}
+												})}
+												{/*//* -------- update report --------------- */}
+												{row.original.typevent != "רקם" ? (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* {console.log(row.original.typevent)} */}
+															{/* <Link to={`/editreport/${row.original._id}`}> */}
+															<button
+																className="btn-new"
+																id={row.index}
+																value={row.original._id}
+																onClick={Toggle}
+															>
+																עדכן
+															</button>
+														</div>{" "}
+													</td>
+												) : (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* {console.log(row.original.typevent)} */}
+															{/* <Link to={`/editreport/${row.original._id}`}> */}
+															<button
+																className="btn-new"
+																id={row.index}
+																value={row.original._id}
+																onClick={Toggle}
+															>
+																עדכן
+															</button>
+														</div>{" "}
+													</td>
+												)}
+												{/* // ? row.original._id=user._id*/}
+												{/*//* -------- view report --------------- */}
+												{row.original.typevent != "רקם" ? (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+															{/* <Link to={`/wachreport/${row.original._id}`}> */}
+															<button
+																value={row.original._id}
+																onClick={ToggleView}
+																className="btn-new-delete"
+															>
+																צפייה
+															</button>
+														</div>
+													</td>
+												) : (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+															{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
+															<button
+																value={row.original._id}
+																onClick={ToggleView}
+																className="btn-new-delete"
+															>
+																צפייה
+															</button>
+														</div>
+													</td>
+												)}
+											</tr>
+										);
+									})}
+							</tbody>
+
+						):(
 							<tbody {...getTableBodyProps()}>
 								{page
 									.filter(
@@ -1202,8 +1227,235 @@ const SortingTableHamal = ({ match }) => {
 										);
 									})}
 							</tbody>
+
+						)}
 						</>
 					) : (
+						<>
+						{data.gdod ? (
+							<tbody {...getTableBodyProps()}>
+
+								{page
+									.filter(
+										(row) => gdodsfillter.gdod == row.original.gdod)
+									.map((row, index) => {
+
+										prepareRow(row);
+										return (
+											<tr {...row.getRowProps()}>
+												{row.cells.map((cell) => {
+													if (
+														cell.column.id != "typevent" &&
+														cell.column.id != "pirot" &&
+														cell.column.id != "createdAt" &&
+														cell.column.id != "datevent" &&
+														cell.column.id != "difftime" &&
+														cell.column.id != "tipul"
+													) {
+														return (
+															<td {...cell.getCellProps()}>
+																{cell.render("Cell")}
+															</td>
+														);
+													} else {
+														if (cell.column.id == "typevent") {
+															if (cell.value == "1")
+																return <td>תאונת כלי רכב</td>;
+															if (cell.value == "2") return <td>התהפכות</td>;
+															if (cell.value == "3")
+																return <td>הנתקות גלגל</td>;
+															if (cell.value == "4") return <td>שריפה</td>;
+															if (cell.value == "5")
+																return <td>אירוע נשו"ת</td>;
+															if (cell.value == "6")
+																return <td>תאונת עבודה אנשי טנ"א</td>;
+															if (cell.value == "7")
+																return <td>פריקת מטפים</td>;
+															if (cell.value == "9") return <td>חילוץ</td>;
+															if (cell.value == "10")
+																return <td>נזק לתשתיות אחזקה / הח"י</td>;
+															if (cell.value == "11")
+																return <td>אי קיום שגרת אחזקה</td>;
+															if (cell.value == "12") return <td>אחר</td>;
+															if (cell.value == "רקם") return <td>רק"ם</td>;
+														}
+														if (cell.column.id == "pirot") {
+															return (
+																<td>
+																	<div
+																		style={{
+																			width: "100%",
+																			height: "60px",
+																			margin: "0",
+																			padding: "0",
+																			overflow: "auto",
+																		}}
+																	>
+																		{cell.value}
+																	</div>
+																</td>
+															);
+														}
+
+														if (cell.column.id == "createdAt") {
+															return (
+																<td>
+																	{cell.value
+																		.slice(0, 10)
+																		.split("-")
+																		.reverse()
+																		.join("-")}
+																</td>
+															);
+														}
+														if (cell.column.id == "datevent") {
+															return (
+																<td>
+																	{cell.value
+																		.slice(0, 10)
+																		.split("-")
+																		.reverse()
+																		.join("-")}
+																</td>
+															);
+														}
+
+														// * ------------- added difftime --------------------------------
+
+														if (cell.column.id == "difftime") {
+															return <td>{diff[index]}</td>;
+														}
+														if (cell.column.id == "tipul") {
+															if (
+																row.original.resevent === "4" &&
+																row.original.nifga === 2
+															)
+																return (
+																	<td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>
+																);
+															else {
+																if (row.original.resevent === "4")
+																	return <td>סיבת אירוע חסרה</td>;
+																else {
+																	if (row.original.nifga === 2)
+																		return <td>לא ידוע על נפגעים</td>;
+																	else return <td>לא</td>;
+																}
+															}
+														}
+													}
+												})}
+												{/*//* -------- update report --------------- */}
+												{row.original.typevent != "רקם" ? (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* {console.log(row.original.typevent)} */}
+															{/* <Link to={`/editreport/${row.original._id}`}> */}
+															<button
+																className="btn-new"
+																id={row.index}
+																value={row.original._id}
+																onClick={Toggle}
+															>
+																עדכן
+															</button>
+														</div>{" "}
+													</td>
+												) : (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* {console.log(row.original.typevent)} */}
+															{/* <Link to={`/editreport/${row.original._id}`}> */}
+															<button
+																className="btn-new"
+																id={row.index}
+																value={row.original._id}
+																onClick={Toggle}
+															>
+																עדכן
+															</button>
+														</div>{" "}
+													</td>
+												)}
+												{/* // ? row.original._id=user._id*/}
+												{/*//* -------- view report --------------- */}
+												{row.original.typevent != "רקם" ? (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+															{/* <Link to={`/wachreport/${row.original._id}`}> */}
+															<button
+																value={row.original._id}
+																onClick={ToggleView}
+																className="btn-new-delete"
+															>
+																צפייה
+															</button>
+														</div>
+													</td>
+												) : (
+													<td role="cell">
+														{" "}
+														<div
+															style={{
+																display: "flex",
+																alignItems: "center",
+																justifyContent: "center",
+															}}
+														>
+															{" "}
+															{/* // ? <button
+                        className="btn-new-delete"
+                        onClick={() => UserDelete(row.original._id)}
+                      >
+                        צפייה
+                      </button> */}
+															{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
+															<button
+																value={row.original._id}
+																onClick={ToggleView}
+																className="btn-new-delete"
+															>
+																צפייה
+															</button>
+														</div>
+													</td>
+												)}
+											</tr>
+										);
+									})}
+							</tbody>
+						):(
+
 						<tbody {...getTableBodyProps()}>
 							{/* added an index so i could pull the diff for each row */}
 							{page.map((row, index) => {
@@ -1417,6 +1669,10 @@ const SortingTableHamal = ({ match }) => {
 								);
 							})}
 						</tbody>
+
+					   )}
+					   </>
+
 					)}
 				</table>
 				<div className="pagination">
