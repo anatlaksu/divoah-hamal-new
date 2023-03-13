@@ -1804,67 +1804,9 @@ const CarDataFormModalView = (match) => {
 													</div>
 												</Form>
 												{data.nifga == 1 ? (
-													<>
-														<div>
-															{infohurtarray.length == 0 ? (
-																<Row>
-																	<Col
-																		style={{
-																			display: "flex",
-																			textAlign: "right",
-																		}}
-																	>
-																		<Button
-																			style={{
-																				width: "100px",
-																				padding: "5px",
-																			}}
-																			disabled
-																			type="button"
-																			onClick={() => {
-																				setinfohurtarray((currentSpec) => [
-																					...currentSpec,
-																					{ id: generate() },
-																				]);
-																			}}
-																		>
-																			הוסף נפגע
-																		</Button>
-																	</Col>
-																</Row>
-															) : (
-																infohurtarray.map((p, index) => {
+												infohurtarray.map((p, index) => {
 																	return (
 																		<div>
-																			{index == 0 ? (
-																				<Row>
-																					<Col
-																						style={{
-																							display: "flex",
-																							textAlign: "right",
-																						}}
-																					>
-																						<Button
-																							style={{
-																								width: "100px",
-																								padding: "5px",
-																							}}
-																							type="button"
-																							disabled
-																							onClick={() => {
-																								setinfohurtarray(
-																									(currentSpec) => [
-																										...currentSpec,
-																										{ id: generate() },
-																									]
-																								);
-																							}}
-																						>
-																							הוסף נפגע
-																						</Button>
-																					</Col>
-																				</Row>
-																			) : null}
 																			{
 																				<Row>
 																					<Col
@@ -1961,28 +1903,9 @@ const CarDataFormModalView = (match) => {
 																					</Col>
 																				</Row>
 																			}
-																			<Button
-																				type="button"
-																				disabled
-																				onClick={() => {
-																					setinfohurtarray((currentSpec) =>
-																						currentSpec.filter(
-																							(x) => x.id !== p.id
-																						)
-																					);
-																				}}
-																			>
-																				<img
-																					src={deletepic}
-																					height="20px"
-																				></img>
-																			</Button>
 																		</div>
 																	);
-																})
-															)}
-														</div>
-													</>
+												})
 												) : null}
 											</CardBody>
 										) : (
@@ -2611,67 +2534,9 @@ const CarDataFormModalView = (match) => {
 												</Form>
 
 												{data.nifga == 1 ? (
-													<>
-														<div>
-															{infohurtarray.length == 0 ? (
-																<Row>
-																	<Col
-																		style={{
-																			display: "flex",
-																			textAlign: "right",
-																		}}
-																	>
-																		<Button
-																			style={{
-																				width: "100px",
-																				padding: "5px",
-																			}}
-																			disabled
-																			type="button"
-																			onClick={() => {
-																				setinfohurtarray((currentSpec) => [
-																					...currentSpec,
-																					{ id: generate() },
-																				]);
-																			}}
-																		>
-																			הוסף נפגע
-																		</Button>
-																	</Col>
-																</Row>
-															) : (
-																infohurtarray.map((p, index) => {
+												infohurtarray.map((p, index) => {
 																	return (
 																		<div>
-																			{index == 0 ? (
-																				<Row>
-																					<Col
-																						style={{
-																							display: "flex",
-																							textAlign: "right",
-																						}}
-																					>
-																						<Button
-																							style={{
-																								width: "100px",
-																								padding: "5px",
-																							}}
-																							type="button"
-																							disabled
-																							onClick={() => {
-																								setinfohurtarray(
-																									(currentSpec) => [
-																										...currentSpec,
-																										{ id: generate() },
-																									]
-																								);
-																							}}
-																						>
-																							הוסף נפגע
-																						</Button>
-																					</Col>
-																				</Row>
-																			) : null}
 																			{
 																				<Row>
 																					<Col
@@ -2768,28 +2633,9 @@ const CarDataFormModalView = (match) => {
 																					</Col>
 																				</Row>
 																			}
-																			<Button
-																				type="button"
-																				disabled
-																				onClick={() => {
-																					setinfohurtarray((currentSpec) =>
-																						currentSpec.filter(
-																							(x) => x.id !== p.id
-																						)
-																					);
-																				}}
-																			>
-																				<img
-																					src={deletepic}
-																					height="20px"
-																				></img>
-																			</Button>
 																		</div>
 																	);
-																})
-															)}
-														</div>
-													</>
+												})
 												) : null}
 											</CardBody>
 										)}
