@@ -332,7 +332,7 @@ const SortingTable = ({ match }) => {
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th style={{ width: "30%" }}>
+									<th style={{ width: "25%" }}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>

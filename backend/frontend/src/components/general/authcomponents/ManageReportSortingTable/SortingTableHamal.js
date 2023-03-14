@@ -67,8 +67,8 @@ const SortingTableHamal = ({ match }) => {
 //* set gdod fillter
 const [gdodsfillter, setGdodsfillter] = useState([]);
 
-
 	const [date, setDate] = useState([]);
+	const [tyevent, setTyevent] = useState([]);
 
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const toggleCollapse = () => {
@@ -423,6 +423,16 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		console.log(date.todate);
 	}
 
+	function handleChange2(evt) {
+		const value = evt.target.value;
+		console.log(evt.target.value);
+		console.log(evt.target.name);
+		setTyevent({ ...tyevent, [evt.target.name]: value });
+		console.log(tyevent.typevent);
+		console.log(isNaN(tyevent.typevent));
+	}
+
+
 	//* ------------ modal --------------------------------
 
 	function Toggle(evt) {
@@ -481,67 +491,6 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		setisviewmodalopen(!isviewmodalopen);
 		window.location.reload();
 	}
-
-	function handleChange2(selectedOption, name) {
-		// loadReports()
-		console.log(selectedOption.value);
-		// const val = selectedOption.value + ""
-		// console.log(val);
-		console.log(name.name);
-		// console.log(selectedOption);
-
-		if (!(selectedOption.value == "בחר")) {
-			// console.log(selectedOption);
-			setGdodsfillter({ ...gdodsfillter, [name.name]: selectedOption.value });
-			console.log(data);
-			// setData(data.filter((rep) => rep.gdod == gdodsfillter.gdod ))
-			// console.log(gdodsfillter.gdod);
-			// console.log(data.gdod);
-		} else {
-			let tempdata = { ...data };
-			delete tempdata[name];
-			// setData(tempdata);
-		}
-	}
-
-
-	// ? -------------- idk if needs to be in admin route -----------------------
-	//units
-
-	// const UserDelete = (UserId) => {
-	// 	axios
-	// 		.post(`http://localhost:8000/api/user/remove/${UserId}`)
-	// 		.then((response) => {
-	// 			loadUsers();
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 		});
-	// };
-
-	// const loadUsers = () => {
-	// 	axios
-	// 		.get("http://localhost:8000/api/usersvalidated")
-	// 		.then((response) => {
-	// 			setData(response.data);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 		});
-	// };
-
-	// ? ------------------- was commented out ---------------------------------
-	// useEffect(() => {
-	//   (async () => {
-	//     console.log("================================================");
-	//     console.log(user.personalnumber);
-	//     const result = await axios.get(
-	//       `http://localhost:8000/report/requestByPersonalnumber/${user.personalnumber}`
-	//     );
-	//     console.log(result);
-	//     setData(result.data);
-	//   })();
-	// }, []);
 
 	function getname(idnum, arr) {
 		for (let i = 0; i < arr.length; i++) {
@@ -731,25 +680,32 @@ loadReports();
 								</Col>
 							</Row>
 							<Row style={{ margin: "0px" }}>
-							<Col
-							 md={4}
-												style={{
-													justifyContent: "right",
-													alignContent: "right",
-													textAlign: "right",
-												}}
-											>
-												<h6>גדוד</h6>
-												<Select
-												// components={animatedComponents}
-												options={gdodsop}
-												placeholder="בחר"
-													onChange={handleChange2}
-													name={"gdod"}
-													val={data.gdod ? data.gdod : undefined}
-												/>
-											</Col>
-
+							<Col md={4}>
+							<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										סוג אירוע
+									</div>
+										<Input
+											placeholder="סוג אירוע"
+											type="select"
+											name="typevent"
+											value={tyevent.typevent}
+											onChange={handleChange2}
+										>
+											<option value={"בחר"}>בחר</option>
+											<option value={"1"}>תאונת כלי רכב</option>
+											<option value={"2"}>התהפכות</option>
+											<option value={"3"}>הנתקות גלגל</option>
+											<option value={"4"}>שריפה</option>
+											<option value={"5"}>אירוע נשו"ת</option>
+											<option value={"6"}>תאונת עבודה אנשי טנ"א</option>
+											<option value={"7"}>פריקת מטפים</option>
+											<option value={"9"}>חילוץ</option>
+											<option value={"10"}>נזק לתשתיות אחזקה / הח"י</option>
+											<option value={"11"}>אי קיום שגרת אחזקה</option>
+											<option value={"12"}>אחר</option>
+											<option value={"רקם"}>רק"ם</option>
+										</Input>
+							</Col>
 							</Row>
 
 						</Card>
@@ -844,6 +800,8 @@ loadReports();
 					</thead>
 					{date.fromdate && date.todate ? (
 						<>
+						{(tyevent.typevent== "בחר" || !tyevent.typevent) ? (
+
 							<tbody {...getTableBodyProps()}>
 								{page
 									.filter(
@@ -1085,12 +1043,259 @@ loadReports();
 										);
 									})}
 							</tbody>
+						):(							
+						<tbody {...getTableBodyProps()}>
+						{page
+							.filter(
+								(row) =>
+									new Date(row.original.datevent).setHours(0, 0, 0, 0) >=
+										new Date(date.fromdate).setHours(0, 0, 0, 0) &&
+									new Date(row.original.datevent).setHours(0, 0, 0, 0) <=
+										new Date(date.todate).setHours(0, 0, 0, 0)
+							)
+							.filter((row) => row.original.typevent === tyevent.typevent)							
+							.map((row, index) => {
+								prepareRow(row);
+								return (
+									<tr {...row.getRowProps()}>
+										{row.cells.map((cell) => {
+											if (
+												cell.column.id != "typevent" &&
+												cell.column.id != "pirot" &&
+												cell.column.id != "createdAt" &&
+												cell.column.id != "datevent" &&
+												cell.column.id != "difftime" &&
+												cell.column.id != "tipul"&&
+												cell.column.id != "pikodrep"&&
+												cell.column.id != "ogdarep"&&
+												cell.column.id != "hativarep"&&
+												cell.column.id != "gdodrep"		
+											) {
+												return (
+													<td {...cell.getCellProps()}>
+														{cell.render("Cell")}
+													</td>
+												);
+											} else {
+												if (cell.column.id == "typevent") {
+													if (cell.value == "1")
+														return <td>תאונת כלי רכב</td>;
+													if (cell.value == "2") return <td>התהפכות</td>;
+													if (cell.value == "3")
+														return <td>הנתקות גלגל</td>;
+													if (cell.value == "4") return <td>שריפה</td>;
+													if (cell.value == "5")
+														return <td>אירוע נשו"ת</td>;
+													if (cell.value == "6")
+														return <td>תאונת עבודה אנשי טנ"א</td>;
+													if (cell.value == "7")
+														return <td>פריקת מטפים</td>;
+													if (cell.value == "9") return <td>חילוץ</td>;
+													if (cell.value == "10")
+														return <td>נזק לתשתיות אחזקה / הח"י</td>;
+													if (cell.value == "11")
+														return <td>אי קיום שגרת אחזקה</td>;
+													if (cell.value == "12") return <td>אחר</td>;
+													if (cell.value == "רקם") return <td>רק"ם</td>;
+												}
+												if (cell.column.id == "pirot") {
+													return (
+														<td>
+															<div
+																style={{
+																	width: "100%",
+																	height: "60px",
+																	margin: "0",
+																	padding: "0",
+																	overflow: "auto",
+																}}
+															>
+																{cell.value}
+															</div>
+														</td>
+													);
+												}
+
+												if (cell.column.id == "pikodrep") {
+													return <td>{getname(cell.value,pikodsrep)}</td>;
+												}
+												if (cell.column.id == "ogdarep") {
+													return <td>{getname(cell.value,ogdasrep)}</td>;
+												}
+												if (cell.column.id == "hativarep") {
+													return <td>{getname(cell.value,hativasrep)}</td>;
+												}
+												if (cell.column.id == "gdodrep") {
+													return <td>{getname(cell.value,gdodsrep)}</td>;
+												}		
+
+												if (cell.column.id == "createdAt") {
+													return (
+														<td>
+															{cell.value
+																.slice(0, 10)
+																.split("-")
+																.reverse()
+																.join("-")}
+														</td>
+													);
+												}
+												if (cell.column.id == "datevent") {
+													return (
+														<td>
+															{cell.value
+																.slice(0, 10)
+																.split("-")
+																.reverse()
+																.join("-")}
+														</td>
+													);
+												}
+
+												// * ------------- added difftime --------------------------------
+
+												if (cell.column.id == "difftime") {
+													return <td>{diff[index]}</td>;
+												}
+												if (cell.column.id == "tipul") {
+													if (
+														row.original.resevent === "4" &&
+														row.original.nifga === 2
+													)
+														return (
+															<td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>
+														);
+													else {
+														if (row.original.resevent === "4")
+															return <td>סיבת אירוע חסרה</td>;
+														else {
+															if (row.original.nifga === 2)
+																return <td>לא ידוע על נפגעים</td>;
+															else return <td>לא</td>;
+														}
+													}
+												}
+											}
+										})}
+										{/*//* -------- update report --------------- */}
+										{row.original.typevent != "רקם" ? (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* {console.log(row.original.typevent)} */}
+													{/* <Link to={`/editreport/${row.original._id}`}> */}
+													<button
+														className="btn-new"
+														id={row.index}
+														value={row.original._id}
+														onClick={Toggle}
+													>
+														עדכן
+													</button>
+												</div>{" "}
+											</td>
+										) : (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* {console.log(row.original.typevent)} */}
+													{/* <Link to={`/editreport/${row.original._id}`}> */}
+													<button
+														className="btn-new"
+														id={row.index}
+														value={row.original._id}
+														onClick={Toggle}
+													>
+														עדכן
+													</button>
+												</div>{" "}
+											</td>
+										)}
+										{/* // ? row.original._id=user._id*/}
+										{/*//* -------- view report --------------- */}
+										{row.original.typevent != "רקם" ? (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* // ? <button
+				className="btn-new-delete"
+				onClick={() => UserDelete(row.original._id)}
+			  >
+				צפייה
+			  </button> */}
+													{/* <Link to={`/wachreport/${row.original._id}`}> */}
+													<button
+														value={row.original._id}
+														onClick={ToggleView}
+														className="btn-new-delete"
+													>
+														צפייה
+													</button>
+												</div>
+											</td>
+										) : (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* // ? <button
+				className="btn-new-delete"
+				onClick={() => UserDelete(row.original._id)}
+			  >
+				צפייה
+			  </button> */}
+													{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
+													<button
+														value={row.original._id}
+														onClick={ToggleView}
+														className="btn-new-delete"
+													>
+														צפייה
+													</button>
+												</div>
+											</td>
+										)}
+									</tr>
+								);
+							})}
+					    </tbody>
+						)}
 						</>
 					) : (
+						<>
+						{(tyevent.typevent== "בחר" || !tyevent.typevent) ? (
 
-						<tbody {...getTableBodyProps()}>
+							<tbody {...getTableBodyProps()}>
 							{/* added an index so i could pull the diff for each row */}
-							{page.map((row, index) => {
+							{page
+							.map((row, index) => {
 								prepareRow(row);
 								return (
 									<tr {...row.getRowProps()}>
@@ -1273,11 +1478,11 @@ loadReports();
 												>
 													{" "}
 													{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
+							className="btn-new-delete"
+							onClick={() => UserDelete(row.original._id)}
+							>
+							צפייה
+							</button> */}
 													{/* <Link to={`/wachreport/${row.original._id}`}> */}
 													<button
 														value={row.original._id}
@@ -1300,11 +1505,11 @@ loadReports();
 												>
 													{" "}
 													{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
+							className="btn-new-delete"
+							onClick={() => UserDelete(row.original._id)}
+							>
+							צפייה
+							</button> */}
 													{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
 													<button
 														value={row.original._id}
@@ -1319,7 +1524,244 @@ loadReports();
 									</tr>
 								);
 							})}
-						</tbody>
+							</tbody>
+						):(
+							<tbody {...getTableBodyProps()}>
+							{/* added an index so i could pull the diff for each row */}
+							{page
+							.filter((row) => row.original.typevent === tyevent.typevent)							
+							.map((row, index) => {
+								prepareRow(row);
+								return (
+									<tr {...row.getRowProps()}>
+										{row.cells.map((cell) => {
+											if (
+												cell.column.id != "typevent" &&
+												cell.column.id != "pirot" &&
+												cell.column.id != "createdAt" &&
+												cell.column.id != "datevent" &&
+												cell.column.id != "difftime" &&
+												cell.column.id != "tipul"&&
+												cell.column.id != "pikodrep"&&
+												cell.column.id != "ogdarep"&&
+												cell.column.id != "hativarep"&&
+												cell.column.id != "gdodrep"
+											) {
+												return (
+													<td {...cell.getCellProps()}>
+														{cell.render("Cell")}
+													</td>
+												);
+											} else {
+												if (cell.column.id == "typevent") {
+													if (cell.value == "1") return <td>תאונת כלי רכב</td>;
+													if (cell.value == "2") return <td>התהפכות</td>;
+													if (cell.value == "3") return <td>הנתקות גלגל</td>;
+													if (cell.value == "4") return <td>שריפה</td>;
+													if (cell.value == "5")
+														return <td>אירוע נשו"ת</td>;
+													if (cell.value == "6")
+														return <td>תאונת עבודה אנשי טנ"א</td>;
+													if (cell.value == "7") return <td>פריקת מטפים</td>;
+													if (cell.value == "9") return <td>חילוץ</td>;
+													if (cell.value == "10")
+														return <td>נזק לתשתיות אחזקה / הח"י</td>;
+													if (cell.value == "11")
+														return <td>אי קיום שגרת אחזקה</td>;
+													if (cell.value == "12") return <td>אחר</td>;
+													if (cell.value == "רקם") return <td>רק"ם</td>;
+												}
+												if (cell.column.id == "pirot") {
+													return (
+														<td>
+															<div
+																style={{
+																	width: "100%",
+																	height: "60px",
+																	margin: "0",
+																	padding: "0",
+																	overflow: "auto",
+																}}
+															>
+																{cell.value}
+															</div>
+														</td>
+													);
+												}
+
+												if (cell.column.id == "pikodrep") {
+													return <td>{getname(cell.value,pikodsrep)}</td>;
+												}
+												if (cell.column.id == "ogdarep") {
+													return <td>{getname(cell.value,ogdasrep)}</td>;
+												}
+												if (cell.column.id == "hativarep") {
+													return <td>{getname(cell.value,hativasrep)}</td>;
+												}
+												if (cell.column.id == "gdodrep") {
+													return <td>{getname(cell.value,gdodsrep)}</td>;
+												}
+
+
+
+												if (cell.column.id == "createdAt") {
+													return (
+														<td>
+															{cell.value
+																.slice(0, 10)
+																.split("-")
+																.reverse()
+																.join("-")}
+														</td>
+													);
+												}
+
+												if (cell.column.id == "datevent") {
+													return (
+														<td>
+															{cell.value
+																.slice(0, 10)
+																.split("-")
+																.reverse()
+																.join("-")}
+														</td>
+													);
+												}
+
+												// * ------------- added difftime --------------------------------
+
+												if (cell.column.id == "difftime") {
+													return <td>{diff[index]}</td>;
+												}
+												if (cell.column.id == "tipul") {
+													if (
+														row.original.resevent === "4" &&
+														row.original.nifga === 2
+													)
+														return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+													else {
+														if (row.original.resevent === "4")
+															return <td>סיבת אירוע חסרה</td>;
+														else {
+															if (row.original.nifga === 2)
+																return <td>לא ידוע על נפגעים</td>;
+															else return <td>לא</td>;
+														}
+													}
+												}
+											}
+										})}
+										{/*//* -------- update report --------------- */}
+										{row.original.typevent != "רקם" ? (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* {console.log(row.original.typevent)} */}
+													{/* <Link to={`/editreport/${row.original._id}`}> */}
+													<button
+														className="btn-new"
+														id={row.index}
+														value={row.original._id}
+														onClick={Toggle}
+													>
+														עדכן
+													</button>
+												</div>{" "}
+											</td>
+										) : (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* {console.log(row.original.typevent)} */}
+													{/* <Link to={`/editreport/${row.original._id}`}> */}
+													<button
+														className="btn-new"
+														id={row.index}
+														value={row.original._id}
+														onClick={Toggle}
+													>
+														עדכן
+													</button>
+												</div>{" "}
+											</td>
+										)}
+										{/* // ? row.original._id=user._id*/}
+										{/*//* -------- view report --------------- */}
+										{row.original.typevent != "רקם" ? (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* // ? <button
+							className="btn-new-delete"
+							onClick={() => UserDelete(row.original._id)}
+							>
+							צפייה
+							</button> */}
+													{/* <Link to={`/wachreport/${row.original._id}`}> */}
+													<button
+														value={row.original._id}
+														onClick={ToggleView}
+														className="btn-new-delete"
+													>
+														צפייה
+													</button>
+												</div>
+											</td>
+										) : (
+											<td role="cell">
+												{" "}
+												<div
+													style={{
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+												>
+													{" "}
+													{/* // ? <button
+							className="btn-new-delete"
+							onClick={() => UserDelete(row.original._id)}
+							>
+							צפייה
+							</button> */}
+													{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
+													<button
+														value={row.original._id}
+														onClick={ToggleView}
+														className="btn-new-delete"
+													>
+														צפייה
+													</button>
+												</div>
+											</td>
+										)}
+									</tr>
+								);
+							})}
+							</tbody>
+						)}
+					</>
 					)}
 				</table>
 				<div className="pagination">

@@ -59,6 +59,65 @@ const SortingTableRekem = ({ match }) => {
 		setcollapseOpen(!collapseOpen);
 	};
 
+	const [gdodsrep, setGdodsrep] = useState([]);
+	const [hativasrep, setHativasrep] = useState([]);
+	const [ogdasrep, setOgdasrep] = useState([]);
+	const [pikodsrep, setPikodsrep] = useState([]);
+
+	const loadpikodsrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/pikod")
+			.then((response) => {
+				setPikodsrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const loadogdasrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/ogda")
+			.then((response) => {
+				setOgdasrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const loadhativasrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/hativa")
+			.then((response) => {
+				setHativasrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const loadgdodsrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/gdod")
+			.then((response) => {
+				setGdodsrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+
+
 	// ! alternative is to enter the timestamp to the database and then call it like we do with the other columns
 	// * ------ geting only on loading the difference btween the dates --------------------------------
 
@@ -122,6 +181,12 @@ const SortingTableRekem = ({ match }) => {
 		setDate({ ...date, [evt.target.name]: value });
 		console.log(new Date(date.fromdate).setHours(0, 0, 0, 0));
 		console.log(date.todate);
+	}
+
+	function getname(idnum, arr) {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i]._id == idnum) return arr[i].name;
+		}
 	}
 
 	//* ------------ modal --------------------------------
@@ -235,6 +300,14 @@ const SortingTableRekem = ({ match }) => {
 				setIsError(true);
 			});
 	}, []);
+
+	useEffect(() => {
+		loadgdodsrep();
+		loadhativasrep();
+		loadogdasrep();
+		loadpikodsrep();
+	}, []);
+
 
 	const {
 		getTableProps,
@@ -727,7 +800,7 @@ const SortingTableRekem = ({ match }) => {
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th style={{ width: "18%" }}>
+									<th style={{ width: "12.5%" }}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -771,7 +844,14 @@ const SortingTableRekem = ({ match }) => {
 														cell.column.id != "typevent" &&
 														cell.column.id != "pirot" &&
 														cell.column.id != "createdAt" &&
-														cell.column.id != "datevent"
+														cell.column.id != "datevent"&&
+														cell.column.id != "difftime" &&
+														cell.column.id != "tipul"&&
+														cell.column.id != "pikodrep"&&
+														cell.column.id != "ogdarep"&&
+														cell.column.id != "hativarep"&&
+														cell.column.id != "gdodrep"		
+		
 													) {
 														return (
 															<td {...cell.getCellProps()}>
@@ -787,7 +867,7 @@ const SortingTableRekem = ({ match }) => {
 																return <td>הנתקות גלגל</td>;
 															if (cell.value == "4") return <td>שריפה</td>;
 															if (cell.value == "5")
-																return <td>אירוע נשו"ת</td>;
+																return <td>אירוע נשק / תחמושת</td>;
 															if (cell.value == "6")
 																return <td>תאונת עבודה אנשי טנ"א</td>;
 															if (cell.value == "7")
@@ -818,6 +898,20 @@ const SortingTableRekem = ({ match }) => {
 															);
 														}
 
+														if (cell.column.id == "pikodrep") {
+															return <td>{getname(cell.value,pikodsrep)}</td>;
+														}
+														if (cell.column.id == "ogdarep") {
+															return <td>{getname(cell.value,ogdasrep)}</td>;
+														}
+														if (cell.column.id == "hativarep") {
+															return <td>{getname(cell.value,hativasrep)}</td>;
+														}
+														if (cell.column.id == "gdodrep") {
+															return <td>{getname(cell.value,gdodsrep)}</td>;
+														}		
+		
+
 														if (cell.column.id == "createdAt") {
 															return (
 																<td>
@@ -841,6 +935,29 @@ const SortingTableRekem = ({ match }) => {
 																</td>
 															);
 														}
+
+														if (cell.column.id == "difftime") {
+															return <td>{diff[index]}</td>;
+														}
+														if (cell.column.id == "tipul") {
+															if (
+																row.original.resevent === "4" &&
+																row.original.nifga === 2
+															)
+																return (
+																	<td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>
+																);
+															else {
+																if (row.original.resevent === "4")
+																	return <td>סיבת אירוע חסרה</td>;
+																else {
+																	if (row.original.nifga === 2)
+																		return <td>לא ידוע על נפגעים</td>;
+																	else return <td>לא</td>;
+																}
+															}
+														}
+		
 													}
 												})}
 
@@ -964,7 +1081,11 @@ const SortingTableRekem = ({ match }) => {
 												cell.column.id != "createdAt" &&
 												cell.column.id != "datevent" &&
 												cell.column.id != "difftime" &&
-												cell.column.id != "status"
+												cell.column.id != "tipul"&&
+												cell.column.id != "pikodrep"&&
+												cell.column.id != "ogdarep"&&
+												cell.column.id != "hativarep"&&
+												cell.column.id != "gdodrep"		
 											) {
 												return (
 													<td {...cell.getCellProps()}>
@@ -978,7 +1099,7 @@ const SortingTableRekem = ({ match }) => {
 													if (cell.value == "3") return <td>הנתקות גלגל</td>;
 													if (cell.value == "4") return <td>שריפה</td>;
 													if (cell.value == "5")
-														return <td>אירוע נשו"ת</td>;
+														return <td>אירוע נשק / תחמושת</td>;
 													if (cell.value == "6")
 														return <td>תאונת עבודה אנשי טנ"א</td>;
 													if (cell.value == "7") return <td>פריקת מטפים</td>;
@@ -1006,6 +1127,19 @@ const SortingTableRekem = ({ match }) => {
 															</div>
 														</td>
 													);
+												}
+
+												if (cell.column.id == "pikodrep") {
+													return <td>{getname(cell.value,pikodsrep)}</td>;
+												}
+												if (cell.column.id == "ogdarep") {
+													return <td>{getname(cell.value,ogdasrep)}</td>;
+												}
+												if (cell.column.id == "hativarep") {
+													return <td>{getname(cell.value,hativasrep)}</td>;
+												}
+												if (cell.column.id == "gdodrep") {
+													return <td>{getname(cell.value,gdodsrep)}</td>;
 												}
 
 												if (cell.column.id == "createdAt") {
@@ -1037,15 +1171,21 @@ const SortingTableRekem = ({ match }) => {
 												if (cell.column.id == "difftime") {
 													return <td>{diff[index]}</td>;
 												}
-												// * ------------- added status --------------------------------
-												if (cell.column.id == "status") {
-													if (cell.value == "0") {
-														return <td>בטיפול</td>;
-													}
-													if (cell.value == "1") {
-														return <td>סגור</td>;
-													} else {
-														return <td>בטיפול</td>;
+
+												if (cell.column.id == "tipul") {
+													if (
+														row.original.resevent === "4" &&
+														row.original.nifga === 2
+													)
+														return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+													else {
+														if (row.original.resevent === "4")
+															return <td>סיבת אירוע חסרה</td>;
+														else {
+															if (row.original.nifga === 2)
+																return <td>לא ידוע על נפגעים</td>;
+															else return <td>לא</td>;
+														}
 													}
 												}
 											}
