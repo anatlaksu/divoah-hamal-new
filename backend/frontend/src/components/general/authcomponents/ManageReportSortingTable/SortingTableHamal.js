@@ -54,6 +54,11 @@ const SortingTableHamal = ({ match }) => {
 	const [isviewmodalopen, setisviewmodalopen] = useState(false);
 	const [viewmodalid, setViewmodalid] = useState(undefined);
 
+	const [gdodsrep, setGdodsrep] = useState([]);
+	const [hativasrep, setHativasrep] = useState([]);
+	const [ogdasrep, setOgdasrep] = useState([]);
+	const [pikodsrep, setPikodsrep] = useState([]);
+
 	const [reportDB, setReportDB] = useState([]);
 	// const [reportDBPikod, setReportDBPikod] = useState([]);
 //* get gdod
@@ -69,6 +74,59 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	const toggleCollapse = () => {
 		setcollapseOpen(!collapseOpen);
 	};
+
+	const loadpikodsrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/pikod")
+			.then((response) => {
+				setPikodsrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const loadogdasrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/ogda")
+			.then((response) => {
+				setOgdasrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const loadhativasrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/hativa")
+			.then((response) => {
+				setHativasrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const loadgdodsrep = async () => {
+		await axios
+			.get("http://localhost:8000/api/gdod")
+			.then((response) => {
+				setGdodsrep(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
 
 	const loadGdods = async () => {
 		await axios
@@ -485,6 +543,12 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	//   })();
 	// }, []);
 
+	function getname(idnum, arr) {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i]._id == idnum) return arr[i].name;
+		}
+	}
+
 	const loadReports = () => {
 		user.role === "2"
 			? axios
@@ -516,16 +580,20 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	};
 
 	useEffect(() => {
-		loadGdods()
+		loadGdods();
+		loadgdodsrep();
+		loadhativasrep();
+		loadogdasrep();
+		loadpikodsrep();
 		// loadReports();
 	}, []);
 
 	useEffect(() => {
-		setoptions(gdods)
+		setoptions(gdods);
 	}, [gdods]);
 
 	useEffect(() => {
-loadReports()
+loadReports();
 	}, []);
 
 	useEffect(() => {
@@ -636,7 +704,7 @@ loadReports()
 											xs={12}
 											md={6}
 										>
-											<div style={{ textAlign: "right" }}>מתאריך</div>
+											<div style={{ textAlign: "right" }}>אירועים מתאריך</div>
 											<Input
 												placeholder="תאריך התחלה"
 												type="date"
@@ -649,7 +717,7 @@ loadReports()
 											xs={12}
 											md={6}
 										>
-											<div style={{ textAlign: "right" }}>עד תאריך</div>
+											<div style={{ textAlign: "right" }}>עד אירועים מתאריך</div>
 											<Input
 												placeholder="תאריך סיום"
 												type="date"
@@ -750,7 +818,7 @@ loadReports()
 						{headerGroups.map((headerGroup) => (
 							<tr {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column) => (
-									<th style={{ width: "18%" }}>
+									<th style={{ width: "12.5%" }}>
 										<div
 											{...column.getHeaderProps(column.getSortByToggleProps())}
 										>
@@ -776,233 +844,6 @@ loadReports()
 					</thead>
 					{date.fromdate && date.todate ? (
 						<>
-						{data.gdod ? (
-							<tbody {...getTableBodyProps()}>
-								{page
-									.filter(
-										(row) =>
-											new Date(row.original.datevent).setHours(0, 0, 0, 0) >=
-												new Date(date.fromdate).setHours(0, 0, 0, 0) &&
-											new Date(row.original.datevent).setHours(0, 0, 0, 0) <=
-												new Date(date.todate).setHours(0, 0, 0, 0)
-									).filter((row)=> gdodsfillter.gdod === row.original.gdod)
-									.map((row, index) => {
-										prepareRow(row);
-										return (
-											<tr {...row.getRowProps()}>
-												{row.cells.map((cell) => {
-													if (
-														cell.column.id != "typevent" &&
-														cell.column.id != "pirot" &&
-														cell.column.id != "createdAt" &&
-														cell.column.id != "datevent" &&
-														cell.column.id != "difftime" &&
-														cell.column.id != "tipul"
-													) {
-														return (
-															<td {...cell.getCellProps()}>
-																{cell.render("Cell")}
-															</td>
-														);
-													} else {
-														if (cell.column.id == "typevent") {
-															if (cell.value == "1")
-																return <td>תאונת כלי רכב</td>;
-															if (cell.value == "2") return <td>התהפכות</td>;
-															if (cell.value == "3")
-																return <td>הנתקות גלגל</td>;
-															if (cell.value == "4") return <td>שריפה</td>;
-															if (cell.value == "5")
-																return <td>אירוע נשו"ת</td>;
-															if (cell.value == "6")
-																return <td>תאונת עבודה אנשי טנ"א</td>;
-															if (cell.value == "7")
-																return <td>פריקת מטפים</td>;
-															if (cell.value == "9") return <td>חילוץ</td>;
-															if (cell.value == "10")
-																return <td>נזק לתשתיות אחזקה / הח"י</td>;
-															if (cell.value == "11")
-																return <td>אי קיום שגרת אחזקה</td>;
-															if (cell.value == "12") return <td>אחר</td>;
-															if (cell.value == "רקם") return <td>רק"ם</td>;
-														}
-														if (cell.column.id == "pirot") {
-															return (
-																<td>
-																	<div
-																		style={{
-																			width: "100%",
-																			height: "60px",
-																			margin: "0",
-																			padding: "0",
-																			overflow: "auto",
-																		}}
-																	>
-																		{cell.value}
-																	</div>
-																</td>
-															);
-														}
-
-														if (cell.column.id == "createdAt") {
-															return (
-																<td>
-																	{cell.value
-																		.slice(0, 10)
-																		.split("-")
-																		.reverse()
-																		.join("-")}
-																</td>
-															);
-														}
-														if (cell.column.id == "datevent") {
-															return (
-																<td>
-																	{cell.value
-																		.slice(0, 10)
-																		.split("-")
-																		.reverse()
-																		.join("-")}
-																</td>
-															);
-														}
-
-														// * ------------- added difftime --------------------------------
-
-														if (cell.column.id == "difftime") {
-															return <td>{diff[index]}</td>;
-														}
-														if (cell.column.id == "tipul") {
-															if (
-																row.original.resevent === "4" &&
-																row.original.nifga === 2
-															)
-																return (
-																	<td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>
-																);
-															else {
-																if (row.original.resevent === "4")
-																	return <td>סיבת אירוע חסרה</td>;
-																else {
-																	if (row.original.nifga === 2)
-																		return <td>לא ידוע על נפגעים</td>;
-																	else return <td>לא</td>;
-																}
-															}
-														}
-													}
-												})}
-												{/*//* -------- update report --------------- */}
-												{row.original.typevent != "רקם" ? (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* {console.log(row.original.typevent)} */}
-															{/* <Link to={`/editreport/${row.original._id}`}> */}
-															<button
-																className="btn-new"
-																id={row.index}
-																value={row.original._id}
-																onClick={Toggle}
-															>
-																עדכן
-															</button>
-														</div>{" "}
-													</td>
-												) : (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* {console.log(row.original.typevent)} */}
-															{/* <Link to={`/editreport/${row.original._id}`}> */}
-															<button
-																className="btn-new"
-																id={row.index}
-																value={row.original._id}
-																onClick={Toggle}
-															>
-																עדכן
-															</button>
-														</div>{" "}
-													</td>
-												)}
-												{/* // ? row.original._id=user._id*/}
-												{/*//* -------- view report --------------- */}
-												{row.original.typevent != "רקם" ? (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-															{/* <Link to={`/wachreport/${row.original._id}`}> */}
-															<button
-																value={row.original._id}
-																onClick={ToggleView}
-																className="btn-new-delete"
-															>
-																צפייה
-															</button>
-														</div>
-													</td>
-												) : (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-															{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
-															<button
-																value={row.original._id}
-																onClick={ToggleView}
-																className="btn-new-delete"
-															>
-																צפייה
-															</button>
-														</div>
-													</td>
-												)}
-											</tr>
-										);
-									})}
-							</tbody>
-
-						):(
 							<tbody {...getTableBodyProps()}>
 								{page
 									.filter(
@@ -1023,7 +864,11 @@ loadReports()
 														cell.column.id != "createdAt" &&
 														cell.column.id != "datevent" &&
 														cell.column.id != "difftime" &&
-														cell.column.id != "tipul"
+														cell.column.id != "tipul"&&
+														cell.column.id != "pikodrep"&&
+														cell.column.id != "ogdarep"&&
+														cell.column.id != "hativarep"&&
+														cell.column.id != "gdodrep"		
 													) {
 														return (
 															<td {...cell.getCellProps()}>
@@ -1069,6 +914,19 @@ loadReports()
 																</td>
 															);
 														}
+
+														if (cell.column.id == "pikodrep") {
+															return <td>{getname(cell.value,pikodsrep)}</td>;
+														}
+														if (cell.column.id == "ogdarep") {
+															return <td>{getname(cell.value,ogdasrep)}</td>;
+														}
+														if (cell.column.id == "hativarep") {
+															return <td>{getname(cell.value,hativasrep)}</td>;
+														}
+														if (cell.column.id == "gdodrep") {
+															return <td>{getname(cell.value,gdodsrep)}</td>;
+														}		
 
 														if (cell.column.id == "createdAt") {
 															return (
@@ -1227,234 +1085,8 @@ loadReports()
 										);
 									})}
 							</tbody>
-
-						)}
 						</>
 					) : (
-						<>
-						{data.gdod ? (
-							<tbody {...getTableBodyProps()}>
-
-								{page
-									.filter(
-										(row) => gdodsfillter.gdod == row.original.gdod)
-									.map((row, index) => {
-
-										prepareRow(row);
-										return (
-											<tr {...row.getRowProps()}>
-												{row.cells.map((cell) => {
-													if (
-														cell.column.id != "typevent" &&
-														cell.column.id != "pirot" &&
-														cell.column.id != "createdAt" &&
-														cell.column.id != "datevent" &&
-														cell.column.id != "difftime" &&
-														cell.column.id != "tipul"
-													) {
-														return (
-															<td {...cell.getCellProps()}>
-																{cell.render("Cell")}
-															</td>
-														);
-													} else {
-														if (cell.column.id == "typevent") {
-															if (cell.value == "1")
-																return <td>תאונת כלי רכב</td>;
-															if (cell.value == "2") return <td>התהפכות</td>;
-															if (cell.value == "3")
-																return <td>הנתקות גלגל</td>;
-															if (cell.value == "4") return <td>שריפה</td>;
-															if (cell.value == "5")
-																return <td>אירוע נשו"ת</td>;
-															if (cell.value == "6")
-																return <td>תאונת עבודה אנשי טנ"א</td>;
-															if (cell.value == "7")
-																return <td>פריקת מטפים</td>;
-															if (cell.value == "9") return <td>חילוץ</td>;
-															if (cell.value == "10")
-																return <td>נזק לתשתיות אחזקה / הח"י</td>;
-															if (cell.value == "11")
-																return <td>אי קיום שגרת אחזקה</td>;
-															if (cell.value == "12") return <td>אחר</td>;
-															if (cell.value == "רקם") return <td>רק"ם</td>;
-														}
-														if (cell.column.id == "pirot") {
-															return (
-																<td>
-																	<div
-																		style={{
-																			width: "100%",
-																			height: "60px",
-																			margin: "0",
-																			padding: "0",
-																			overflow: "auto",
-																		}}
-																	>
-																		{cell.value}
-																	</div>
-																</td>
-															);
-														}
-
-														if (cell.column.id == "createdAt") {
-															return (
-																<td>
-																	{cell.value
-																		.slice(0, 10)
-																		.split("-")
-																		.reverse()
-																		.join("-")}
-																</td>
-															);
-														}
-														if (cell.column.id == "datevent") {
-															return (
-																<td>
-																	{cell.value
-																		.slice(0, 10)
-																		.split("-")
-																		.reverse()
-																		.join("-")}
-																</td>
-															);
-														}
-
-														// * ------------- added difftime --------------------------------
-
-														if (cell.column.id == "difftime") {
-															return <td>{diff[index]}</td>;
-														}
-														if (cell.column.id == "tipul") {
-															if (
-																row.original.resevent === "4" &&
-																row.original.nifga === 2
-															)
-																return (
-																	<td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>
-																);
-															else {
-																if (row.original.resevent === "4")
-																	return <td>סיבת אירוע חסרה</td>;
-																else {
-																	if (row.original.nifga === 2)
-																		return <td>לא ידוע על נפגעים</td>;
-																	else return <td>לא</td>;
-																}
-															}
-														}
-													}
-												})}
-												{/*//* -------- update report --------------- */}
-												{row.original.typevent != "רקם" ? (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* {console.log(row.original.typevent)} */}
-															{/* <Link to={`/editreport/${row.original._id}`}> */}
-															<button
-																className="btn-new"
-																id={row.index}
-																value={row.original._id}
-																onClick={Toggle}
-															>
-																עדכן
-															</button>
-														</div>{" "}
-													</td>
-												) : (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* {console.log(row.original.typevent)} */}
-															{/* <Link to={`/editreport/${row.original._id}`}> */}
-															<button
-																className="btn-new"
-																id={row.index}
-																value={row.original._id}
-																onClick={Toggle}
-															>
-																עדכן
-															</button>
-														</div>{" "}
-													</td>
-												)}
-												{/* // ? row.original._id=user._id*/}
-												{/*//* -------- view report --------------- */}
-												{row.original.typevent != "רקם" ? (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-															{/* <Link to={`/wachreport/${row.original._id}`}> */}
-															<button
-																value={row.original._id}
-																onClick={ToggleView}
-																className="btn-new-delete"
-															>
-																צפייה
-															</button>
-														</div>
-													</td>
-												) : (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-															{/* <Link to={`/wachreportrekem/${row.original._id}`}> */}
-															<button
-																value={row.original._id}
-																onClick={ToggleView}
-																className="btn-new-delete"
-															>
-																צפייה
-															</button>
-														</div>
-													</td>
-												)}
-											</tr>
-										);
-									})}
-							</tbody>
-						):(
 
 						<tbody {...getTableBodyProps()}>
 							{/* added an index so i could pull the diff for each row */}
@@ -1469,7 +1101,11 @@ loadReports()
 												cell.column.id != "createdAt" &&
 												cell.column.id != "datevent" &&
 												cell.column.id != "difftime" &&
-												cell.column.id != "tipul"
+												cell.column.id != "tipul"&&
+												cell.column.id != "pikodrep"&&
+												cell.column.id != "ogdarep"&&
+												cell.column.id != "hativarep"&&
+												cell.column.id != "gdodrep"
 											) {
 												return (
 													<td {...cell.getCellProps()}>
@@ -1512,6 +1148,21 @@ loadReports()
 														</td>
 													);
 												}
+
+												if (cell.column.id == "pikodrep") {
+													return <td>{getname(cell.value,pikodsrep)}</td>;
+												}
+												if (cell.column.id == "ogdarep") {
+													return <td>{getname(cell.value,ogdasrep)}</td>;
+												}
+												if (cell.column.id == "hativarep") {
+													return <td>{getname(cell.value,hativasrep)}</td>;
+												}
+												if (cell.column.id == "gdodrep") {
+													return <td>{getname(cell.value,gdodsrep)}</td>;
+												}
+
+
 
 												if (cell.column.id == "createdAt") {
 													return (
@@ -1669,10 +1320,6 @@ loadReports()
 								);
 							})}
 						</tbody>
-
-					   )}
-					   </>
-
 					)}
 				</table>
 				<div className="pagination">
