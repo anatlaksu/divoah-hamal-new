@@ -24,14 +24,15 @@ import { Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
+import ToggleDarkModeButton from "../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
 
 const AdminSignInForm = (props) => {
-	const [reportDB, setReportDB] = useState([]);
 	const [isError, setIsError] = useState(false);
-
+	//* main data
+	const [reportDB, setReportDB] = useState([]);
 	const [data, setData] = useState([]);
 	const [reportDBFillter, setReportDFillter] = useState([]);
-
+	//* units
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
 	const [ogdas, setOgdas] = useState([]);
@@ -45,6 +46,8 @@ const AdminSignInForm = (props) => {
 	const [gdodim, setGdodim] = useState([]);
 
 	// const [filter, setFilter] = useState([]);
+	//* dark mode button
+	const [color, setcolor] = useState("white");
 
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const toggleCollapse = () => {
@@ -975,6 +978,24 @@ const AdminSignInForm = (props) => {
 													onChange={handleChange}
 												/>
 											</Col>
+										</Row>
+										<Row className="mt-3">
+											{props.theme == "white-content" ? (
+												<div
+													className="ml-3 mr-3"
+													style={{ textAlign: "right" }}
+												>
+													יחידה מדווחת
+												</div>
+											) : (
+												<div
+													className="ml-3 mr-3"
+													style={{ textAlign: "right" }}
+												>
+													יחידה מנמרי"ת
+												</div>
+											)}
+											<ToggleDarkModeButton color={color} />
 										</Row>
 
 										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
