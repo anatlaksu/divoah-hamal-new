@@ -200,6 +200,9 @@ const AdminSignInForm = (props) => {
 				const reports = res.data;
 				reports.reverse();
 				setReportDB(reports);
+				if (reportDBFillter.length == 0) {
+					setReportDFillter(reports);
+				}
 			});
 	};
 
@@ -973,7 +976,13 @@ const AdminSignInForm = (props) => {
 		data.fromdate && data.todate
 			? loadReportsByDate(data.fromdate, data.todate)
 			: loadReports();
-	}, [data.fromdate, data.todate]);
+	}, [data]);
+
+	// useEffect(() => {
+	// 	data.fromdate && data.todate
+	// 		? loadReportsByDate(data.fromdate, data.todate)
+	// 		: loadReports();
+	// }, [data.fromdate, data.todate]);
 
 	useEffect(() => {
 		initWithUserData();
@@ -1742,6 +1751,11 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 											/>
+										) : reportDB.length == 0 ? (
+											<Doughnut
+												data={dataevent}
+												options={options}
+											/>
 										) : (
 											<Doughnut
 												data={dataeventFilltered}
@@ -1967,6 +1981,11 @@ const AdminSignInForm = (props) => {
 									</CardHeader>
 									<CardBody>
 										{!data.ogda ? (
+											<Doughnut
+												data={dataevent}
+												options={options}
+											/>
+										) : reportDB.length == 0 ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
