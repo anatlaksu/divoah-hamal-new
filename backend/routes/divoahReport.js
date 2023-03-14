@@ -385,8 +385,11 @@ router
 		}
 		Report.aggregate(finalquerry)
 			.then((result) => {
-				console.log(result);
+				console.log(result.length);
 				if (result.length != 0) {
+					res.json(result);
+				} else {
+					console.log("empty");
 					res.json(result);
 				}
 			})
@@ -449,8 +452,11 @@ router.route("/byDate/readall/:fromdate/:todate").get((req, res) => {
 	}
 	Report.aggregate(finalquerry)
 		.then((result) => {
-			console.log(result);
+			console.log(result.length);
 			if (result.length != 0) {
+				res.json(result);
+			} else {
+				console.log("empty");
 				res.json(result);
 			}
 		})

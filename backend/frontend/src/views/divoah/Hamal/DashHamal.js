@@ -24,14 +24,16 @@ import { Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
+import ToggleDarkModeButton from "../../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
 
 import { isAuthenticated } from "auth";
 const AdminSignInForm = (props) => {
-	const [reportDB, setReportDB] = useState([]);
 	const [isError, setIsError] = useState(false);
-
+	//* main data
+	const [reportDB, setReportDB] = useState([]);
 	const [data, setData] = useState([]);
 	const [reportDBFillter, setReportDFillter] = useState([]);
+	//* units
 
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
@@ -45,6 +47,8 @@ const AdminSignInForm = (props) => {
 
 	const [gdodim, setGdodim] = useState([]);
 
+	//* dark mode button
+	const [color, setcolor] = useState("white");
 	// const [filter, setFilter] = useState([]);
 
 	const { user } = isAuthenticated();
@@ -196,6 +200,9 @@ const AdminSignInForm = (props) => {
 				const reports = res.data;
 				reports.reverse();
 				setReportDB(reports);
+				if (reportDBFillter.length == 0) {
+					setReportDFillter(reports);
+				}
 			});
 	};
 
@@ -969,7 +976,13 @@ const AdminSignInForm = (props) => {
 		data.fromdate && data.todate
 			? loadReportsByDate(data.fromdate, data.todate)
 			: loadReports();
-	}, [data.fromdate, data.todate]);
+	}, [data]);
+
+	// useEffect(() => {
+	// 	data.fromdate && data.todate
+	// 		? loadReportsByDate(data.fromdate, data.todate)
+	// 		: loadReports();
+	// }, [data.fromdate, data.todate]);
 
 	useEffect(() => {
 		initWithUserData();
@@ -1011,6 +1024,10 @@ const AdminSignInForm = (props) => {
 	}
 
 	function gettotal(arr) {
+		arr = arr.map((num) => {
+			return +num;
+		});
+		console.log(arr);
 		let sum = arr.reduce(function (a, b) {
 			return a + b;
 		}, 0);
@@ -1063,6 +1080,25 @@ const AdminSignInForm = (props) => {
 													onChange={handleChange}
 												/>
 											</Col>
+										</Row>
+
+										<Row className="mt-3">
+											{props.theme == "white-content" ? (
+												<div
+													className="ml-3 mr-3"
+													style={{ textAlign: "right" }}
+												>
+													יחידה מדווחת
+												</div>
+											) : (
+												<div
+													className="ml-3 mr-3"
+													style={{ textAlign: "right" }}
+												>
+													יחידה מנמרי"ת
+												</div>
+											)}
+											<ToggleDarkModeButton color={color} />
 										</Row>
 
 										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
@@ -1171,19 +1207,37 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody>
-									<h2 className="text-center">
-										{gettotal(
-											reportDB
-												.filter(
-													(report) =>
-														new Date(report.datevent).setHours(0, 0, 0, 0) >=
-															new Date(data.fromdate).setHours(0, 0, 0, 0) &&
-														new Date(report.datevent).setHours(0, 0, 0, 0) <=
-															new Date(data.todate).setHours(0, 0, 0, 0)
-												)
-												.map((report) => report.damageCost)
-										)}
-									</h2>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									)}
 								</CardBody>
 							</Card>
 						</Col>
@@ -1196,19 +1250,37 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									<h2 className="text-center">
-										{gettotal(
-											reportDB
-												.filter(
-													(report) =>
-														new Date(report.datevent).setHours(0, 0, 0, 0) >=
-															new Date(data.fromdate).setHours(0, 0, 0, 0) &&
-														new Date(report.datevent).setHours(0, 0, 0, 0) <=
-															new Date(data.todate).setHours(0, 0, 0, 0)
-												)
-												.map((report) => report.totalWorkHours)
-										)}
-									</h2>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									)}
 								</CardBody>
 							</Card>
 						</Col>
@@ -1221,19 +1293,37 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									<h2 className="text-center">
-										{gettotal(
-											reportDB
-												.filter(
-													(report) =>
-														new Date(report.datevent).setHours(0, 0, 0, 0) >=
-															new Date(data.fromdate).setHours(0, 0, 0, 0) &&
-														new Date(report.datevent).setHours(0, 0, 0, 0) <=
-															new Date(data.todate).setHours(0, 0, 0, 0)
-												)
-												.map((report) => report.totalCostWorkHours)
-										)}
-									</h2>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									)}
 								</CardBody>
 							</Card>
 						</Col>
@@ -1242,17 +1332,32 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<h2 className="text-center">
-									{getnumevt(
-										reportDB.filter(
-											(report) =>
-												new Date(report.datevent).setHours(0, 0, 0, 0) >=
-													new Date(data.fromdate).setHours(0, 0, 0, 0) &&
-												new Date(report.datevent).setHours(0, 0, 0, 0) <=
-													new Date(data.todate).setHours(0, 0, 0, 0)
-										)
-									)}
-								</h2>
+								{data.pikod ? (
+									<h2 className="text-center">
+										{getnumevt(
+											reportDBFillter.filter(
+												(report) =>
+													new Date(report.datevent).setHours(0, 0, 0, 0) >=
+														new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+													new Date(report.datevent).setHours(0, 0, 0, 0) <=
+														new Date(data.todate).setHours(0, 0, 0, 0)
+											)
+										)}
+									</h2>
+								) : (
+									<h2 className="text-center">
+										{getnumevt(
+											reportDB.filter(
+												(report) =>
+													new Date(report.datevent).setHours(0, 0, 0, 0) >=
+														new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+													new Date(report.datevent).setHours(0, 0, 0, 0) <=
+														new Date(data.todate).setHours(0, 0, 0, 0)
+											)
+										)}
+									</h2>
+								)}
+
 								<CardBody></CardBody>
 							</Card>
 						</Col>
@@ -1265,9 +1370,23 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody>
-									<h2 className="text-center">
-										{gettotal(reportDB.map((report) => report.damageCost))}
-									</h2>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									)}
 								</CardBody>
 							</Card>
 						</Col>
@@ -1280,9 +1399,23 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									<h2 className="text-center">
-										{gettotal(reportDB.map((report) => report.totalWorkHours))}
-									</h2>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									)}
 								</CardBody>
 							</Card>
 						</Col>
@@ -1295,11 +1428,23 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									<h2 className="text-center">
-										{gettotal(
-											reportDB.map((report) => report.totalCostWorkHours)
-										)}
-									</h2>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									)}
 								</CardBody>
 							</Card>
 						</Col>
@@ -1308,7 +1453,11 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<h2 className="text-center">{getnumevt(reportDB)}</h2>
+								{data.pikod ? (
+									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
+								) : (
+									<h2 className="text-center">{getnumevt(reportDB)}</h2>
+								)}
 								<CardBody></CardBody>
 							</Card>
 						</Col>
@@ -1602,6 +1751,11 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 											/>
+										) : reportDB.length == 0 ? (
+											<Doughnut
+												data={dataevent}
+												options={options}
+											/>
 										) : (
 											<Doughnut
 												data={dataeventFilltered}
@@ -1827,6 +1981,11 @@ const AdminSignInForm = (props) => {
 									</CardHeader>
 									<CardBody>
 										{!data.ogda ? (
+											<Doughnut
+												data={dataevent}
+												options={options}
+											/>
+										) : reportDB.length == 0 ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
