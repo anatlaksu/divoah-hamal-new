@@ -553,18 +553,18 @@ const CarDataFormModal = (match) => {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
-		if(data.nifga== "1"){
-		for (let i = 0; i < infohurtarray.length; i++) {
-			if (!infohurtarray[i].dargahurt) {
-				ErrorReason += "   לא הוזן דרגת פגיעה \n";
-				flag = false;
-			}
-			if (!infohurtarray[i].mikomhurt) {
-				ErrorReason += "   לא הוזן כמות ימים \n";
-				flag = false;
+		if (data.nifga == "1") {
+			for (let i = 0; i < infohurtarray.length; i++) {
+				if (!infohurtarray[i].dargahurt) {
+					ErrorReason += "   לא הוזן דרגת פגיעה \n";
+					flag = false;
+				}
+				if (!infohurtarray[i].mikomhurt) {
+					ErrorReason += "   לא הוזן כמות ימים \n";
+					flag = false;
+				}
 			}
 		}
-	}
 
 		if (flag == true) {
 			FixUser(event);
@@ -663,18 +663,18 @@ const CarDataFormModal = (match) => {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
-		if(data.nifga== "1"){
-		for (let i = 0; i < infohurtarray.length; i++) {
-			if (!infohurtarray[i].dargahurt) {
-				ErrorReason += "   לא הוזן דרגת פגיעה \n";
-				flag = false;
-			}
-			if (!infohurtarray[i].mikomhurt) {
-				ErrorReason += "   לא הוזן כמות ימים \n";
-				flag = false;
+		if (data.nifga == "1") {
+			for (let i = 0; i < infohurtarray.length; i++) {
+				if (!infohurtarray[i].dargahurt) {
+					ErrorReason += "   לא הוזן דרגת פגיעה \n";
+					flag = false;
+				}
+				if (!infohurtarray[i].mikomhurt) {
+					ErrorReason += "   לא הוזן כמות ימים \n";
+					flag = false;
+				}
 			}
 		}
-	}
 
 		if (flag == true) {
 			FixUser(event);
@@ -727,15 +727,13 @@ const CarDataFormModal = (match) => {
 			nifga: data.nifga,
 			hurtarray: infohurtarray,
 			wnifga: data.wnifga,
-			totalwork: data.totalwork ? undefined || null || NaN : 0,
-			totalWorkHours: data.totalWorkHours ? undefined || null || NaN : 0,
-			totalCostWorkHours: data.totalCostWorkHours
-				? undefined || null || NaN
-				: 0,
-			damageCost: data.damageCost ? undefined || null || NaN : 0,
-			spareCost: data.spareCost ? undefined || null || NaN : 0,
+			totalwork: data.totalwork,
+			totalWorkHours: data.totalWorkHours,
+			totalCostWorkHours: data.totalCostWorkHours,
+			damageCost: data.damageCost,
+			spareCost: data.spareCost,
 		};
-		console.log(report.gdod);
+		// console.log(report.gdod);
 		if (!(report.gdod == "בחר")) {
 			if (!(report.gdodrep == "בחר")) {
 				axios

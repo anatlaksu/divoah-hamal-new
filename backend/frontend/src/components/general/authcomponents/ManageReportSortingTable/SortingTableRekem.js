@@ -116,8 +116,6 @@ const SortingTableRekem = ({ match }) => {
 			});
 	};
 
-
-
 	// ! alternative is to enter the timestamp to the database and then call it like we do with the other columns
 	// * ------ geting only on loading the difference btween the dates --------------------------------
 
@@ -307,7 +305,6 @@ const SortingTableRekem = ({ match }) => {
 		loadogdasrep();
 		loadpikodsrep();
 	}, []);
-
 
 	const {
 		getTableProps,
@@ -734,7 +731,7 @@ const SortingTableRekem = ({ match }) => {
 
 			{/*//* ----- modals --------------------------------
 				//? ++ unittype={props.unittype} unitid={props.unitid} */}
-			{user.role == "3" ? (
+			{user.role == "3" || user.role == "2" ? (
 				<CarDataFormModalHatal
 					style={{
 						minHeight: "100%",
@@ -844,14 +841,13 @@ const SortingTableRekem = ({ match }) => {
 														cell.column.id != "typevent" &&
 														cell.column.id != "pirot" &&
 														cell.column.id != "createdAt" &&
-														cell.column.id != "datevent"&&
+														cell.column.id != "datevent" &&
 														cell.column.id != "difftime" &&
-														cell.column.id != "tipul"&&
-														cell.column.id != "pikodrep"&&
-														cell.column.id != "ogdarep"&&
-														cell.column.id != "hativarep"&&
-														cell.column.id != "gdodrep"		
-		
+														cell.column.id != "tipul" &&
+														cell.column.id != "pikodrep" &&
+														cell.column.id != "ogdarep" &&
+														cell.column.id != "hativarep" &&
+														cell.column.id != "gdodrep"
 													) {
 														return (
 															<td {...cell.getCellProps()}>
@@ -899,18 +895,17 @@ const SortingTableRekem = ({ match }) => {
 														}
 
 														if (cell.column.id == "pikodrep") {
-															return <td>{getname(cell.value,pikodsrep)}</td>;
+															return <td>{getname(cell.value, pikodsrep)}</td>;
 														}
 														if (cell.column.id == "ogdarep") {
-															return <td>{getname(cell.value,ogdasrep)}</td>;
+															return <td>{getname(cell.value, ogdasrep)}</td>;
 														}
 														if (cell.column.id == "hativarep") {
-															return <td>{getname(cell.value,hativasrep)}</td>;
+															return <td>{getname(cell.value, hativasrep)}</td>;
 														}
 														if (cell.column.id == "gdodrep") {
-															return <td>{getname(cell.value,gdodsrep)}</td>;
-														}		
-		
+															return <td>{getname(cell.value, gdodsrep)}</td>;
+														}
 
 														if (cell.column.id == "createdAt") {
 															return (
@@ -957,7 +952,6 @@ const SortingTableRekem = ({ match }) => {
 																}
 															}
 														}
-		
 													}
 												})}
 
@@ -1081,11 +1075,11 @@ const SortingTableRekem = ({ match }) => {
 												cell.column.id != "createdAt" &&
 												cell.column.id != "datevent" &&
 												cell.column.id != "difftime" &&
-												cell.column.id != "tipul"&&
-												cell.column.id != "pikodrep"&&
-												cell.column.id != "ogdarep"&&
-												cell.column.id != "hativarep"&&
-												cell.column.id != "gdodrep"		
+												cell.column.id != "tipul" &&
+												cell.column.id != "pikodrep" &&
+												cell.column.id != "ogdarep" &&
+												cell.column.id != "hativarep" &&
+												cell.column.id != "gdodrep"
 											) {
 												return (
 													<td {...cell.getCellProps()}>
@@ -1130,16 +1124,16 @@ const SortingTableRekem = ({ match }) => {
 												}
 
 												if (cell.column.id == "pikodrep") {
-													return <td>{getname(cell.value,pikodsrep)}</td>;
+													return <td>{getname(cell.value, pikodsrep)}</td>;
 												}
 												if (cell.column.id == "ogdarep") {
-													return <td>{getname(cell.value,ogdasrep)}</td>;
+													return <td>{getname(cell.value, ogdasrep)}</td>;
 												}
 												if (cell.column.id == "hativarep") {
-													return <td>{getname(cell.value,hativasrep)}</td>;
+													return <td>{getname(cell.value, hativasrep)}</td>;
 												}
 												if (cell.column.id == "gdodrep") {
-													return <td>{getname(cell.value,gdodsrep)}</td>;
+													return <td>{getname(cell.value, gdodsrep)}</td>;
 												}
 
 												if (cell.column.id == "createdAt") {

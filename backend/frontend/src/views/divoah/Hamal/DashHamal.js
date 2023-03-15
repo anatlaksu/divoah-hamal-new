@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ToggleButton from "react-toggle-button";
 
 import { Link, withRouter, Redirect } from "react-router-dom";
 import {
@@ -46,6 +47,8 @@ const AdminSignInForm = (props) => {
 	const [pikodsop, setPikodsop] = useState([]);
 
 	const [gdodim, setGdodim] = useState([]);
+	//*manmarit reporting
+	const [manmarit, setmanmarit] = useState(true);
 
 	//* dark mode button
 	const [color, setcolor] = useState("white");
@@ -179,7 +182,7 @@ const AdminSignInForm = (props) => {
 				// console.log(res);
 				// console.log(res.data);
 				const reports = res.data;
-				// console.log(reports);
+				console.log(reports);
 				reports.reverse();
 				setReportDB(reports);
 			});
@@ -318,7 +321,7 @@ const AdminSignInForm = (props) => {
 	function reportDBFl(report, dataUnit, unit) {
 		/*//? taking all the reports + the unit array that we want to filter from said reports and the name of the unit */
 		//* filltering by white mode and dark mode
-		props.theme == "white-content"
+		manmarit
 			? setReportDFillter(
 					report.filter((rp) =>
 						// unit == "pikod"
@@ -958,8 +961,8 @@ const AdminSignInForm = (props) => {
 
 		console.log(reportDB.reduce((a, b) => a.damageCost + b.damageCost, 0));
 
-		// console.log(props.theme);
-	}, [data, props.theme]);
+		// console.log(manmarit);
+	}, [data, manmarit]);
 
 	const initWithUserData = () => {
 		setData({
@@ -1083,7 +1086,7 @@ const AdminSignInForm = (props) => {
 										</Row>
 
 										<Row className="mt-3">
-											{props.theme == "white-content" ? (
+											{manmarit ? (
 												<div
 													className="ml-3 mr-3"
 													style={{ textAlign: "right" }}
@@ -1098,7 +1101,38 @@ const AdminSignInForm = (props) => {
 													יחידה מנמרי"ת
 												</div>
 											)}
-											<ToggleDarkModeButton color={color} />
+											<ToggleButton
+												colors={{
+													activeThumb: {
+														base: "rgb(250,250,250)",
+													},
+													inactiveThumb: {
+														base: "rgb(62,130,247)",
+													},
+													active: {
+														base: "rgb(62,130,247)",
+														hover: "rgb(84 155 245)",
+													},
+													inactive: {
+														base: "rgb(65,66,68)",
+														hover: "rgb(95,96,98)",
+													},
+												}}
+												inactiveLabel={
+													/*<img src={darkmodeimg} style={{ width: '15px', height: '15px' }}></img>*/ <p>
+														בהיר
+													</p>
+												}
+												activeLabel={
+													/*<img src={lightmodeimg} style={{ width: '15px', height: '15px' }}></img>*/ <p>
+														כהה
+													</p>
+												}
+												value={manmarit}
+												onToggle={() => {
+													setmanmarit(!manmarit);
+												}}
+											/>
 										</Row>
 
 										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
@@ -1463,7 +1497,7 @@ const AdminSignInForm = (props) => {
 						</Col>
 					</Row>
 				)}
-				{props.theme == "white-content" ? (
+				{manmarit ? (
 					<>
 						<Row>
 							<Col lg="12">
