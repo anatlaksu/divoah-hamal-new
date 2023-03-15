@@ -54,6 +54,11 @@ const SortingTableHamal = ({ match }) => {
 	const [isviewmodalopen, setisviewmodalopen] = useState(false);
 	const [viewmodalid, setViewmodalid] = useState(undefined);
 
+	const [gdodsop, setGdodsop] = useState([]);
+	const [hativasop, setHativasop] = useState([]);
+	const [ogdasop, setOgdasop] = useState([]);
+	const [pikodsop, setPikodsop] = useState([]);
+
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
 	const [ogdas, setOgdas] = useState([]);
@@ -275,6 +280,37 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		// console.log(expired);
 	}, [data]);
 
+	function setoptions(pk, og, ht, gd) {
+		setPikodsop(
+			pk.map((item, index) => {
+				let val = pk[index]._id;
+				let lab = pk[index].name;
+				return { value: val, label: lab };
+			})
+		);
+		setOgdasop(
+			og.map((item, index) => {
+				let val = og[index]._id;
+				let lab = og[index].name;
+				return { value: val, label: lab };
+			})
+		);
+		setHativasop(
+			ht.map((item, index) => {
+				let val = ht[index]._id;
+				let lab = ht[index].name;
+				return { value: val, label: lab };
+			})
+		);
+		setGdodsop(
+			gd.map((item, index) => {
+				let val = gd[index]._id;
+				let lab = gd[index].name;
+				return { value: val, label: lab };
+			})
+		);
+	}
+
 	function handleChange(evt) {
 		const value = evt.target.value;
 		console.log(evt.target.value);
@@ -294,13 +330,13 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		console.log(isNaN(tyevent.typevent));
 	}
 
-	function handleChange3(evt) {
-		const value = evt.target.value;
-		console.log(evt.target.value);
-		console.log(evt.target.name);
-		setDataunit({ ...dataunit, [evt.target.name]: value });
-		console.log(dataunit.pikod);
-	}
+	// function handleChange3(evt) {
+	// 	const value = evt.target.value;
+	// 	console.log(evt.target.value);
+	// 	console.log(evt.target.name);
+	// 	setDataunit({ ...dataunit, [evt.target.name]: value });
+	// 	console.log(dataunit.pikod);
+	// }
 
 	// function handleChange3(selectedOption, name) {
 	// 	// console.log(selectedOption.value);
@@ -313,6 +349,57 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	// 		setDataunit(tempdata);
 	// 	}
 	// }
+
+	function handleChange3(selectedOption, name) {
+		// console.log(selectedOption[0].value);
+		// console.log(name);
+		if (!(selectedOption.value == "בחר")) {
+			let tempvalues = [];
+			let tempnames = [];
+			for (let i = 0; i < selectedOption.length; i++) {
+				tempvalues.push(selectedOption[i].value);
+				tempnames.push(selectedOption[i].label);
+			}
+			// console.log(tempvalues);
+			// console.log(tempnames);
+			// console.log(name.name);
+			if (tempvalues.length > 0) {
+				setDataunit({ ...dataunit, [name.name]: tempvalues });
+			} else {
+				// console.log(name.name);
+				if (name.name == "gdod") {
+					delete dataunit.gdod;
+					setDataunit({ ...dataunit });
+				}
+				if (name.name == "hativa") {
+					delete dataunit.hativa;
+					setDataunit({ ...dataunit });
+				}
+				if (name.name == "ogda") {
+					delete dataunit.ogda;
+					setDataunit({ ...dataunit });
+				}
+				if (name.name == "pikod") {
+					delete dataunit.pikod;
+					setDataunit({ ...dataunit });
+				}
+			}
+
+			// console.log(data);
+			// console.log(data.pikod);
+			// console.log(data.ogda);
+			// console.log(data.hativa);
+			// console.log(data.pikod.map((item,index) => {
+
+			// }));
+		} else {
+			let tempfilter = { ...dataunit };
+			delete tempfilter[name];
+			setDataunit(tempfilter);
+			console.log(tempfilter);
+		}
+	}
+
 
 	//* ------------ modal --------------------------------
 
@@ -461,6 +548,10 @@ loadReports();
 		loadGdods(dataunit.hativa);
 	}, [dataunit.hativa]);
 
+	useEffect(() => {
+		setoptions(pikods, ogdas, hativas, gdods);
+		// console.log(pikodsop);
+	}, [gdods, hativas, ogdas, pikods]);
 
 	const {
 		getTableProps,
@@ -542,7 +633,7 @@ loadReports();
 									
 								</Col>
 							</Row>
-							{/* <Row style={{ margin: "0px" }}>
+							<Row style={{ margin: "0px" }}>
 								<Col
 									xs={12}
 									md={8}
@@ -559,7 +650,8 @@ loadReports();
 											>
 												<h6>פיקוד</h6>
 												<Select
-													dataunit={pikods}
+												options={pikodsop}
+													// dataunit={pikods}
 													handleChange2={handleChange3}
 													name={"pikod"}
 													val={dataunit.pikod ? dataunit.pikod : undefined}
@@ -575,7 +667,8 @@ loadReports();
 											>
 												<h6>פיקוד</h6>
 												<Select
-													dataunit={pikods}
+												options={pikodsop}
+													// dataunit={pikods}
 													handleChange2={handleChange3}
 													name={"pikod"}
 													val={dataunit.pikod ? dataunit.pikod : undefined}
@@ -595,7 +688,8 @@ loadReports();
 												>
 													<h6>אוגדה</h6>
 													<Select
-														dataunit={ogdas}
+													options={ogdasop}
+														// dataunit={ogdas}
 														handleChange2={handleChange3}
 														name={"ogda"}
 														val={dataunit.ogda ? dataunit.ogda : undefined}
@@ -611,7 +705,8 @@ loadReports();
 												>
 													<h6>אוגדה</h6>
 													<Select
-														dataunit={ogdas}
+													options={ogdasop}
+														// dataunit={ogdas}
 														handleChange2={handleChange3}
 														name={"ogda"}
 														val={dataunit.ogda ? dataunit.ogda : undefined}
@@ -632,7 +727,8 @@ loadReports();
 												>
 													<h6>חטיבה</h6>
 													<Select
-														dataunit={hativas}
+													options={hativasop}
+														// dataunit={hativas}
 														handleChange2={handleChange3}
 														name={"hativa"}
 														val={dataunit.hativa ? dataunit.hativa : undefined}
@@ -648,7 +744,8 @@ loadReports();
 												>
 													<h6>חטיבה</h6>
 													<Select
-														dataunit={hativas}
+													options={hativasop}
+														// dataunit={hativas}
 														handleChange2={handleChange3}
 														name={"hativa"}
 														val={dataunit.hativa ? dataunit.hativa : undefined}
@@ -669,7 +766,8 @@ loadReports();
 												>
 													<h6>גדוד</h6>
 													<Select
-														dataunit={gdods}
+													options={gdodsop}
+														// dataunit={gdods}
 														handleChange2={handleChange3}
 														name={"gdod"}
 														val={dataunit.gdod ? dataunit.gdod : undefined}
@@ -685,7 +783,8 @@ loadReports();
 												>
 													<h6>גדוד</h6>
 													<Select
-														dataunit={gdods}
+													options={gdodsop}
+														// dataunit={gdods}
 														handleChange2={handleChange3}
 														name={"gdod"}
 														val={dataunit.gdod ? dataunit.gdod : undefined}
@@ -697,10 +796,10 @@ loadReports();
 									</Row>
 
 								</Col>
-							</Row> */}
+							</Row>
 
 {/* -------------------------------------------------- only for check units filter -------------------------------------*/}
-                            <Row style={{ margin: "0px" }}>
+                            {/* <Row style={{ margin: "0px" }}>
 							<Col md={2}>
 							<div style={{ textAlign: "right", paddingTop: "10px" }}>
 								פיקוד
@@ -773,7 +872,7 @@ loadReports();
 										</Input>
 							</Col>
 
-							</Row>
+							</Row> */}
 {/* -------------------------------------------------- only for check units filter -------------------------------------*/}
 
 							<Row style={{ margin: "0px" }}>
