@@ -88,7 +88,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		await axios
 			.get("http://localhost:8000/api/pikod")
 			.then((response) => {
-				setPikods(response.dataunit);
+				setPikods(response.data);
 				// setPikodsrep(response.data);
 			})
 			.catch((error) => {
@@ -351,7 +351,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	// }
 
 	function handleChange3(selectedOption, name) {
-		// console.log(selectedOption[0].value);
+		console.log(selectedOption.value);
 		// console.log(name);
 		if (!(selectedOption.value == "בחר")) {
 			let tempvalues = [];
@@ -360,8 +360,8 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 				tempvalues.push(selectedOption[i].value);
 				tempnames.push(selectedOption[i].label);
 			}
-			// console.log(tempvalues);
-			// console.log(tempnames);
+			console.log(tempvalues);
+			console.log(tempnames);
 			// console.log(name.name);
 			if (tempvalues.length > 0) {
 				setDataunit({ ...dataunit, [name.name]: tempvalues });
@@ -549,6 +549,7 @@ loadReports();
 	}, [dataunit.hativa]);
 
 	useEffect(() => {
+		console.log(pikods);
 		setoptions(pikods, ogdas, hativas, gdods);
 		// console.log(pikodsop);
 	}, [gdods, hativas, ogdas, pikods]);
@@ -652,7 +653,7 @@ loadReports();
 												<Select
 												options={pikodsop}
 													// dataunit={pikods}
-													handleChange2={handleChange3}
+													onChange={handleChange3}
 													name={"pikod"}
 													val={dataunit.pikod ? dataunit.pikod : undefined}
 												/>
@@ -669,7 +670,7 @@ loadReports();
 												<Select
 												options={pikodsop}
 													// dataunit={pikods}
-													handleChange2={handleChange3}
+													onChange={handleChange3}
 													name={"pikod"}
 													val={dataunit.pikod ? dataunit.pikod : undefined}
 													isDisabled={true}
@@ -690,7 +691,7 @@ loadReports();
 													<Select
 													options={ogdasop}
 														// dataunit={ogdas}
-														handleChange2={handleChange3}
+														onChange={handleChange3}
 														name={"ogda"}
 														val={dataunit.ogda ? dataunit.ogda : undefined}
 													/>
@@ -707,7 +708,7 @@ loadReports();
 													<Select
 													options={ogdasop}
 														// dataunit={ogdas}
-														handleChange2={handleChange3}
+														onChange={handleChange3}
 														name={"ogda"}
 														val={dataunit.ogda ? dataunit.ogda : undefined}
 														isDisabled={true}
@@ -729,7 +730,7 @@ loadReports();
 													<Select
 													options={hativasop}
 														// dataunit={hativas}
-														handleChange2={handleChange3}
+														onChange={handleChange3}
 														name={"hativa"}
 														val={dataunit.hativa ? dataunit.hativa : undefined}
 													/>
@@ -746,7 +747,7 @@ loadReports();
 													<Select
 													options={hativasop}
 														// dataunit={hativas}
-														handleChange2={handleChange3}
+														onChange={handleChange3}
 														name={"hativa"}
 														val={dataunit.hativa ? dataunit.hativa : undefined}
 														isDisabled={true}
@@ -768,7 +769,7 @@ loadReports();
 													<Select
 													options={gdodsop}
 														// dataunit={gdods}
-														handleChange2={handleChange3}
+														onChange={handleChange3}
 														name={"gdod"}
 														val={dataunit.gdod ? dataunit.gdod : undefined}
 													/>
@@ -785,7 +786,7 @@ loadReports();
 													<Select
 													options={gdodsop}
 														// dataunit={gdods}
-														handleChange2={handleChange3}
+														onChange={handleChange3}
 														name={"gdod"}
 														val={dataunit.gdod ? dataunit.gdod : undefined}
 														isDisabled={true}
