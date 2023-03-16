@@ -109,8 +109,8 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 						pikod: temppikodids[i],
 					})
 					.then((response) => {
-						for (let j = 0; j < response.dataunit.length; j++)
-							temppikodsogdas.push(response.dataunit[j]);
+						for (let j = 0; j < response.data.length; j++)
+							temppikodsogdas.push(response.data[j]);
 					})
 					.catch((error) => {
 						console.log(error);
@@ -134,8 +134,8 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 						ogda: tempogdaids[i],
 					})
 					.then((response) => {
-						for (let j = 0; j < response.dataunit.length; j++)
-							tempogdashativas.push(response.dataunit[j]);
+						for (let j = 0; j < response.data.length; j++)
+							tempogdashativas.push(response.data[j]);
 					})
 					.catch((error) => {
 						console.log(error);
@@ -159,8 +159,8 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 						hativa: temphativaids[i],
 					})
 					.then((response) => {
-						for (let j = 0; j < response.dataunit.length; j++)
-							temphativasgdods.push(response.dataunit[j]);
+						for (let j = 0; j < response.data.length; j++)
+							temphativasgdods.push(response.data[j]);
 					})
 					.catch((error) => {
 						console.log(error);
@@ -280,6 +280,13 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		// console.log(expired);
 	}, [data]);
 
+	function addSelect(op) {
+		let pvals = op.map ((p)=>p.value)
+		if (!pvals.includes("select")) {
+			op.unshift({value: "select",label: "בחר"})
+		}
+	}
+
 	function setoptions(pk, og, ht, gd) {
 		setPikodsop(
 			pk.map((item, index) => {
@@ -309,7 +316,14 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 				return { value: val, label: lab };
 			})
 		);
+addSelect(pk)
+addSelect(og)
+addSelect(ht)
+addSelect(gd)
 	}
+
+
+
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -352,37 +366,43 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 
 	function handleChange3(selectedOption, name) {
 		console.log(selectedOption.value);
-		// console.log(name);
+		console.log(name.name);
 		if (!(selectedOption.value == "בחר")) {
-			let tempvalues = [];
-			let tempnames = [];
-			for (let i = 0; i < selectedOption.length; i++) {
-				tempvalues.push(selectedOption[i].value);
-				tempnames.push(selectedOption[i].label);
-			}
-			console.log(tempvalues);
-			console.log(tempnames);
+			// let tempvalues = [];
+			// let tempnames = [];
+			// for (let i = 0; i < selectedOption.length; i++) {
+			// 	tempvalues.push(selectedOption[i].value);
+			// 	tempnames.push(selectedOption[i].label);
+			// }
+			// console.log(tempvalues);
+			// console.log(tempnames);
 			// console.log(name.name);
-			if (tempvalues.length > 0) {
-				setDataunit({ ...dataunit, [name.name]: tempvalues });
-			} else {
-				// console.log(name.name);
-				if (name.name == "gdod") {
-					delete dataunit.gdod;
-					setDataunit({ ...dataunit });
-				}
-				if (name.name == "hativa") {
-					delete dataunit.hativa;
-					setDataunit({ ...dataunit });
-				}
-				if (name.name == "ogda") {
-					delete dataunit.ogda;
-					setDataunit({ ...dataunit });
-				}
-				if (name.name == "pikod") {
-					delete dataunit.pikod;
-					setDataunit({ ...dataunit });
-				}
+			// if (tempvalues.length > 0) {
+				
+				setDataunit({ ...dataunit, [name.name]: selectedOption.value });
+				console.log(dataunit);
+			//  else {
+			// 	// console.log(name.name);
+				// if (name.name == "gdod") {
+				// 	addSelect(gdodsop)
+				// 	// delete dataunit.gdod;
+				// 	// setDataunit({ ...dataunit });
+				// }
+				// if (name.name == "hativa") {
+				// 	addSelect(hativasop)
+				// 	// delete dataunit.hativa;
+				// 	// setDataunit({ ...dataunit });
+				// }
+				// if (name.name == "ogda") {
+				// 	addSelect(ogdasop)
+				// 	// delete dataunit.ogda;
+				// 	// setDataunit({ ...dataunit });
+				// }	
+				// if (name.name == "pikod") {
+				// 	addSelect(pikodsop)
+				// 	// delete dataunit.pikod;
+				// 	// setDataunit({ ...dataunit });
+				// }
 			}
 
 			// console.log(data);
@@ -392,12 +412,12 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 			// console.log(data.pikod.map((item,index) => {
 
 			// }));
-		} else {
-			let tempfilter = { ...dataunit };
-			delete tempfilter[name];
-			setDataunit(tempfilter);
-			console.log(tempfilter);
-		}
+		//  else {
+		// 	let tempfilter = { ...dataunit };
+		// 	delete tempfilter[name];
+		// 	setDataunit(tempfilter);
+		// 	console.log(tempfilter);
+		// }
 	}
 
 
@@ -509,6 +529,16 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 loadReports();
 	}, []);
 
+	// useEffect (() => {
+	// 			pikodsop.unshift({value: "select",label: "בחר"})
+	// 	ogdasop.unshift({value: "select",label: "בחר"})
+	// 	hativasop.unshift({value: "select",label: "בחר"})
+	// 	gdodsop.unshift({value: "select",label: "בחר"})
+	// },[])
+
+
+
+
 	// useEffect(() => {
 	// 	// console.log("check");
 		
@@ -549,10 +579,28 @@ loadReports();
 	}, [dataunit.hativa]);
 
 	useEffect(() => {
-		console.log(pikods);
+		console.log(dataunit);
+		// console.log(pikods);
+		// console.log(ogdas);
+		// console.log(hativas);
+		// console.log(gdods);
+		// pikodsop.unshift({value: "select",label: "בחר"})
+		// ogdasop.unshift({value: "select",label: "בחר"})
+		// hativasop.unshift({value: "select",label: "בחר"})
+		// gdodsop.unshift({value: "select",label: "בחר"})
 		setoptions(pikods, ogdas, hativas, gdods);
+
+
 		// console.log(pikodsop);
 	}, [gdods, hativas, ogdas, pikods]);
+
+	// useEffect (() => {
+	// 	pikodsop.unshift({value: "select",label: "בחר"})
+	// },[dataunit])
+
+	// useEffect(()=> {
+	// 	console.log(pikodsop);
+	// },[pikodsop])
 
 	const {
 		getTableProps,
