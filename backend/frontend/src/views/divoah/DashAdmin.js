@@ -870,6 +870,78 @@ const AdminSignInForm = (props) => {
 		],
 	};
 
+	// ------------------------------------------------------- graf by month ---------------------------------
+
+const databymonth = {
+  labels: ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
+  datasets: [{
+    label: 'פיקוד',
+    data: [34, 59, 80, 81, 56, 55, 40,23,23,34,11,90],
+    fill: false,
+    borderColor: 'rgb(226, 24, 24)',
+    tension: 0.1
+  },
+  {
+    label: 'אוגדה',
+    data: [18, 32, 43, 8, 2, 31, 90,44,2,56,98,23],
+    fill: false,
+    borderColor: 'rgb(255, 221, 131)',
+    tension: 0.1
+},
+	{
+	    label: 'חטיבה',
+		 data: [1, 23, 47, 34, 32, 34, 56,67,8,89,45,33],
+		 fill: false,
+		 borderColor: 'rgb(0, 35, 91)',
+		 tension: 0.1
+	},
+	{
+		label: 'גדוד',
+		data: [56, 56,34, 56, 9, 78, 67,45,34,23,92,13],
+		fill: false,
+		borderColor: 'rgb(93, 156, 89)',
+		tension: 0.1
+	}		  
+  ]
+};
+
+const databymonthrep = {
+	labels: ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
+	datasets: [{
+	  label: 'פיקוד',
+	  data: [34, 59, 80, 81, 56, 55, 40,23,23,34,11,90],
+	  fill: false,
+	  borderColor: 'rgb(226, 24, 24)',
+	  tension: 0.1
+	},
+	{
+	  label: 'אוגדה',
+	  data: [18, 32, 43, 8, 2, 31, 90,44,2,56,98,23],
+	  fill: false,
+	  borderColor: 'rgb(255, 221, 131)',
+	  tension: 0.1
+  },
+	  {
+		  label: 'חטיבה',
+		   data: [1, 23, 47, 34, 32, 34, 56,67,8,89,45,33],
+		   fill: false,
+		   borderColor: 'rgb(0, 35, 91)',
+		   tension: 0.1
+	  },
+	  {
+		  label: 'גדוד',
+		  data: [56, 56,34, 56, 9, 78, 67,45,34,23,92,13],
+		  fill: false,
+		  borderColor: 'rgb(93, 156, 89)',
+		  tension: 0.1
+	  }		 
+	   
+	]
+  };
+
+// ------------------------------------------------------- graf by month ---------------------------------
+  
+
 	//* --------------------- useEffects -------------------------------------
 
 	//* manmait - reporting + typeevent clock
@@ -1844,6 +1916,23 @@ const AdminSignInForm = (props) => {
 								) : null}
 							</>
 						</Row>
+						<Row>
+							<Col lg="12">
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											{" "}
+											מספר אירועים לפי חודשים
+										</h3>
+									</CardHeader>
+									<CardBody>
+											<Line
+												data={databymonth}
+											/>
+									</CardBody>
+								</Card>
+							</Col>
+                        </Row>
 					</>
 				) : (
 					<>
@@ -2078,6 +2167,23 @@ const AdminSignInForm = (props) => {
 								) : null}
 							</>
 						</Row>
+						<Row>
+							<Col lg="12">
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											{" "}
+											מספר אירועים לפי חודשים
+										</h3>
+									</CardHeader>
+									<CardBody>
+											<Line
+												data={databymonthrep}
+											/>
+									</CardBody>
+								</Card>
+							</Col>
+                        </Row>
 					</>
 				)}
 			</Container>
