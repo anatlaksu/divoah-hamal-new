@@ -21,7 +21,7 @@ import {
 import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
-import { Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
+import { Line, Pie, Doughnut, PolarArea, Bar } from "react-chartjs-2";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
@@ -950,6 +950,186 @@ const AdminSignInForm = (props) => {
 		],
 	};
 
+	const optionsBar = {
+		//* on civil
+		responsive: true,
+		scales: {
+			x: {
+			  stacked: true,
+			},
+			y: {
+			  stacked: true
+			}
+		  }
+	};
+
+// ------------------------------------------------------- graf by month ---------------------------------
+	const monthlabel= ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+
+	const databymonthogda = {
+		labels: monthlabel,
+		datasets: ogdamonth(arryogda,reportDB).map((mo)=> mo)
+	  };
+	
+	  const databymonthhativa = {
+		labels: monthlabel,
+		datasets: hativamonth(arryhativa,reportDB).map((mo)=> mo)
+	  };
+	
+	  const databymonthgdod = {
+		labels: monthlabel,
+		datasets: gdodmonth(arrygdod,reportDB).map((mo)=> mo)
+	  };
+
+	  function ogdamonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].ogda==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+	function hativamonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].hativa==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+	function gdodmonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].gdod==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+
+	const databymonthogdarep = {
+		labels: monthlabel,
+		datasets: ogdarepmonth(arryogda,reportDB).map((mo)=> mo)
+	  };
+	
+	  const databymonthhativarep = {
+		labels: monthlabel,
+		datasets: hativarepmonth(arryhativa,reportDB).map((mo)=> mo)
+	  };
+	
+	  const databymonthgdodrep = {
+		labels: monthlabel,
+		datasets: gdodrepmonth(arrygdod,reportDB).map((mo)=> mo)
+	  };
+
+	  function ogdarepmonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].ogdarep==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+	function hativarepmonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].hativarep==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+	function gdodrepmonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].gdodrep==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+// ------------------------------------------------------- graf by month ---------------------------------
+	
 	//* --------------------- useEffects -------------------------------------
 
 	//* manmait - reporting + typeevent clock
@@ -1886,6 +2066,67 @@ const AdminSignInForm = (props) => {
 								) : null}
 							</>
 						</Row>
+						<Row>
+							{data.pikod && !data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל אוגדה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthogda}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+						) : null}
+						<>
+								{data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל חטיבה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthhativa}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+							<>
+								{data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל גדוד לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthgdod}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+                        </Row>
+
 					</>
 				) : (
 					<>
@@ -2120,6 +2361,67 @@ const AdminSignInForm = (props) => {
 								) : null}
 							</>
 						</Row>
+						<Row>
+							{data.pikod && !data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל אוגדה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthogdarep}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+						) : null}
+						<>
+								{data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל חטיבה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthhativarep}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+							<>
+								{data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל גדוד לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthgdodrep}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+                        </Row>
+
 					</>
 				)}
 			</Container>
