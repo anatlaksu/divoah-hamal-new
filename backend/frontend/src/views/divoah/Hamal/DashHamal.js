@@ -1785,7 +1785,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 											/>
-										) : !data.pikod ? (
+										) : !data.ogda ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
@@ -2019,7 +2019,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 											/>
-										) : !data.pikod ? (
+										) : !data.ogda ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
