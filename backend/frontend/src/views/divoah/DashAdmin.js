@@ -22,7 +22,7 @@ import {
 import axios from "axios";
 import history from "history.js";
 import { toast } from "react-toastify";
-import { Line, Pie, Doughnut, PolarArea } from "react-chartjs-2";
+import { Line, Pie, Doughnut, PolarArea, Bar } from "react-chartjs-2";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
@@ -396,6 +396,20 @@ const AdminSignInForm = (props) => {
 	// 			fullSize: true,
 	// 		},
 	// };
+
+	const optionsBar = {
+		//* on civil
+		responsive: true,
+		scales: {
+			x: {
+			  stacked: true,
+			},
+			y: {
+			  stacked: true
+			}
+		  }
+	};
+
 
 	const labels = [
 		"תאונת כלי רכב",
@@ -871,73 +885,226 @@ const AdminSignInForm = (props) => {
 	};
 
 	// ------------------------------------------------------- graf by month ---------------------------------
+	const monthlabel= ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
 
-const databymonth = {
-  labels: ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
-  datasets: [{
-    label: 'פיקוד',
-    data: [34, 59, 80, 81, 56, 55, 40,23,23,34,11,90],
-    fill: false,
-    borderColor: 'rgb(226, 24, 24)',
-    tension: 0.1
-  },
-  {
-    label: 'אוגדה',
-    data: [18, 32, 43, 8, 2, 31, 90,44,2,56,98,23],
-    fill: false,
-    borderColor: 'rgb(255, 221, 131)',
-    tension: 0.1
-},
-	{
-	    label: 'חטיבה',
-		 data: [1, 23, 47, 34, 32, 34, 56,67,8,89,45,33],
-		 fill: false,
-		 borderColor: 'rgb(0, 35, 91)',
-		 tension: 0.1
-	},
-	{
-		label: 'גדוד',
-		data: [56, 56,34, 56, 9, 78, 67,45,34,23,92,13],
-		fill: false,
-		borderColor: 'rgb(93, 156, 89)',
-		tension: 0.1
-	}		  
-  ]
-};
+	const databymonthpikod = {
+		labels: monthlabel,
+		datasets: pikodmonth(pikods,reportDB).map((mo)=> mo)
+	  };
+	
+	  const databymonthogda = {
+		labels: monthlabel,
+		datasets: ogdamonth(arryogda,reportDB).map((mo)=> mo)
+	  };
+	
+	  const databymonthhativa = {
+		labels: monthlabel,
+		datasets: hativamonth(arryhativa,reportDB).map((mo)=> mo)
+	  };
+	
+	  const databymonthgdod = {
+		labels: monthlabel,
+		datasets: gdodmonth(arrygdod,reportDB).map((mo)=> mo)
+	  };
 
-const databymonthrep = {
-	labels: ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
-	datasets: [{
-	  label: 'פיקוד',
-	  data: [34, 59, 80, 81, 56, 55, 40,23,23,34,11,90],
-	  fill: false,
-	  borderColor: 'rgb(226, 24, 24)',
-	  tension: 0.1
-	},
-	{
-	  label: 'אוגדה',
-	  data: [18, 32, 43, 8, 2, 31, 90,44,2,56,98,23],
-	  fill: false,
-	  borderColor: 'rgb(255, 221, 131)',
-	  tension: 0.1
-  },
-	  {
-		  label: 'חטיבה',
-		   data: [1, 23, 47, 34, 32, 34, 56,67,8,89,45,33],
-		   fill: false,
-		   borderColor: 'rgb(0, 35, 91)',
-		   tension: 0.1
-	  },
-	  {
-		  label: 'גדוד',
-		  data: [56, 56,34, 56, 9, 78, 67,45,34,23,92,13],
-		  fill: false,
-		  borderColor: 'rgb(93, 156, 89)',
-		  tension: 0.1
-	  }		 
-	   
-	]
+	  function pikodmonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].pikod==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+	function ogdamonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].ogda==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+	function hativamonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].hativa==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+	function gdodmonth(arr1,arr2){
+		let arrdata=[{label:"",data:[],backgroundColor:''}];
+		for(let i=0;i<arr1.length;i++)
+		{
+			arrdata[i].label=arr1[i].name;
+			arrdata[i].backgroundColor=getcolor();
+			for(let m=1;m<=12;m++){
+			let sumbynum=0;
+			  for(let j=0;j<arr2.length;j++){
+				  if(arr2[j].gdod==arr1[i]._id){
+				  if(new Date(arr2[j].datevent).getMonth()==m){
+					sumbynum++;
+				  }
+				}
+				}
+				arrdata[i].data[m]=sumbynum;
+			}
+			arrdata.push({label:"",data:[],backgroundColor:''})
+		}
+		return arrdata;
+	}
+	
+
+const databymonthpikodrep = {
+	labels: monthlabel,
+	datasets: pikodrepmonth(pikods,reportDB).map((mo)=> mo)
   };
+
+  const databymonthogdarep = {
+	labels: monthlabel,
+	datasets: ogdarepmonth(arryogda,reportDB).map((mo)=> mo)
+  };
+
+  const databymonthhativarep = {
+	labels: monthlabel,
+	datasets: hativarepmonth(arryhativa,reportDB).map((mo)=> mo)
+  };
+
+  const databymonthgdodrep = {
+	labels: monthlabel,
+	datasets: gdodrepmonth(arrygdod,reportDB).map((mo)=> mo)
+  };
+
+
+function pikodrepmonth(arr1,arr2){
+	let arrdata=[{label:"",data:[],backgroundColor:''}];
+	for(let i=0;i<arr1.length;i++)
+	{
+		arrdata[i].label=arr1[i].name;
+		arrdata[i].backgroundColor=getcolor();
+		for(let m=1;m<=12;m++){
+		let sumbynum=0;
+		  for(let j=0;j<arr2.length;j++){
+			  if(arr2[j].pikodrep==arr1[i]._id){
+			  if(new Date(arr2[j].datevent).getMonth()==m){
+				sumbynum++;
+			  }
+			}
+			}
+			arrdata[i].data[m]=sumbynum;
+		}
+		arrdata.push({label:"",data:[],backgroundColor:''})
+	}
+	return arrdata;
+}
+
+function ogdarepmonth(arr1,arr2){
+	let arrdata=[{label:"",data:[],backgroundColor:''}];
+	for(let i=0;i<arr1.length;i++)
+	{
+		arrdata[i].label=arr1[i].name;
+		arrdata[i].backgroundColor=getcolor();
+		for(let m=1;m<=12;m++){
+		let sumbynum=0;
+		  for(let j=0;j<arr2.length;j++){
+			  if(arr2[j].ogdarep==arr1[i]._id){
+			  if(new Date(arr2[j].datevent).getMonth()==m){
+				sumbynum++;
+			  }
+			}
+			}
+			arrdata[i].data[m]=sumbynum;
+		}
+		arrdata.push({label:"",data:[],backgroundColor:''})
+	}
+	return arrdata;
+}
+
+function hativarepmonth(arr1,arr2){
+	let arrdata=[{label:"",data:[],backgroundColor:''}];
+	for(let i=0;i<arr1.length;i++)
+	{
+		arrdata[i].label=arr1[i].name;
+		arrdata[i].backgroundColor=getcolor();
+		for(let m=1;m<=12;m++){
+		let sumbynum=0;
+		  for(let j=0;j<arr2.length;j++){
+			  if(arr2[j].hativarep==arr1[i]._id){
+			  if(new Date(arr2[j].datevent).getMonth()==m){
+				sumbynum++;
+			  }
+			}
+			}
+			arrdata[i].data[m]=sumbynum;
+		}
+		arrdata.push({label:"",data:[],backgroundColor:''})
+	}
+	return arrdata;
+}
+
+function gdodrepmonth(arr1,arr2){
+	let arrdata=[{label:"",data:[],backgroundColor:''}];
+	for(let i=0;i<arr1.length;i++)
+	{
+		arrdata[i].label=arr1[i].name;
+		arrdata[i].backgroundColor=getcolor();
+		for(let m=1;m<=12;m++){
+		let sumbynum=0;
+		  for(let j=0;j<arr2.length;j++){
+			  if(arr2[j].gdodrep==arr1[i]._id){
+			  if(new Date(arr2[j].datevent).getMonth()==m){
+				sumbynum++;
+			  }
+			}
+			}
+			arrdata[i].data[m]=sumbynum;
+		}
+		arrdata.push({label:"",data:[],backgroundColor:''})
+	}
+	return arrdata;
+}
+
 
 // ------------------------------------------------------- graf by month ---------------------------------
   
@@ -1261,6 +1428,12 @@ const databymonthrep = {
 						</Collapse>
 					</div>
 				</Row>
+				{/* <Row>
+					<CardHeader>
+					<h3 className="card-category text-center">{pikodmonth(pikods)}</h3>
+
+					</CardHeader>
+				</Row> */}
 				{/*//todo dont let the user put todate larger then from date or make a fail safe like in divoahReport lines 340 - 374 */}
 				{data.fromdate && data.todate ? (
 					<Row>
@@ -1917,22 +2090,86 @@ const databymonthrep = {
 							</>
 						</Row>
 						<Row>
+						{!data.pikod ? (
 							<Col lg="12">
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
 											{" "}
-											מספר אירועים לפי חודשים
+											מספר אירועים בכל פיקוד לפי חודשים
 										</h3>
 									</CardHeader>
 									<CardBody>
-											<Line
-												data={databymonth}
+									{!data.pikod ? (
+											<Bar
+												data={databymonthpikod}
+												options={optionsBar}
 											/>
+											) :null}
 									</CardBody>
 								</Card>
 							</Col>
+							) : null}
+							{data.pikod && !data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל אוגדה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthogda}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+						) : null}
+						<>
+								{data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל חטיבה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthhativa}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+							<>
+								{data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל גדוד לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthgdod}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
                         </Row>
+
 					</>
 				) : (
 					<>
@@ -2168,21 +2405,84 @@ const databymonthrep = {
 							</>
 						</Row>
 						<Row>
+						{!data.pikod ? (
 							<Col lg="12">
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
 											{" "}
-											מספר אירועים לפי חודשים
+											מספר אירועים בכל פיקוד לפי חודשים
 										</h3>
 									</CardHeader>
 									<CardBody>
-											<Line
-												data={databymonthrep}
+									{!data.pikod ? (
+											<Bar
+												data={databymonthpikodrep}
+												options={optionsBar}
 											/>
+											) :null}
 									</CardBody>
 								</Card>
 							</Col>
+							) : null}
+							{data.pikod && !data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל אוגדה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthogdarep}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+						) : null}
+						<>
+								{data.ogda && !data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל חטיבה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthhativarep}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+							<>
+								{data.hativa ? (
+							<Col lg="12">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל גדוד לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthgdodrep}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
                         </Row>
 					</>
 				)}
