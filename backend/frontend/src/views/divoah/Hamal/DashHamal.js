@@ -1785,7 +1785,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
@@ -2019,7 +2019,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}

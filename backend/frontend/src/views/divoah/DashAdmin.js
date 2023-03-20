@@ -426,6 +426,8 @@ const AdminSignInForm = (props) => {
 		return alldata;
 	}
 
+	// const fillterReport = reportDB.filter();
+
 	const dataevent = {
 		labels: labels,
 		datasets: [
@@ -872,77 +874,109 @@ const AdminSignInForm = (props) => {
 
 	// ------------------------------------------------------- graf by month ---------------------------------
 
-const databymonth = {
-  labels: ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
-  datasets: [{
-    label: 'פיקוד',
-    data: [34, 59, 80, 81, 56, 55, 40,23,23,34,11,90],
-    fill: false,
-    borderColor: 'rgb(226, 24, 24)',
-    tension: 0.1
-  },
-  {
-    label: 'אוגדה',
-    data: [18, 32, 43, 8, 2, 31, 90,44,2,56,98,23],
-    fill: false,
-    borderColor: 'rgb(255, 221, 131)',
-    tension: 0.1
-},
-	{
-	    label: 'חטיבה',
-		 data: [1, 23, 47, 34, 32, 34, 56,67,8,89,45,33],
-		 fill: false,
-		 borderColor: 'rgb(0, 35, 91)',
-		 tension: 0.1
-	},
-	{
-		label: 'גדוד',
-		data: [56, 56,34, 56, 9, 78, 67,45,34,23,92,13],
-		fill: false,
-		borderColor: 'rgb(93, 156, 89)',
-		tension: 0.1
-	}		  
-  ]
-};
+	const databymonth = {
+		labels: [
+			"ינואר",
+			"פברואר",
+			"מרץ",
+			"אפריל",
+			"מאי",
+			"יוני",
+			"יולי",
+			"אוגוסט",
+			"ספטמבר",
+			"אוקטובר",
+			"נובמבר",
+			"דצמבר",
+		],
+		datasets: [
+			{
+				label: "פיקוד",
+				data: [34, 59, 80, 81, 56, 55, 40, 23, 23, 34, 11, 90],
+				fill: false,
+				borderColor: "rgb(226, 24, 24)",
+				tension: 0.1,
+			},
+			{
+				label: "אוגדה",
+				data: [18, 32, 43, 8, 2, 31, 90, 44, 2, 56, 98, 23],
+				fill: false,
+				borderColor: "rgb(255, 221, 131)",
+				tension: 0.1,
+			},
+			{
+				label: "חטיבה",
+				data: [1, 23, 47, 34, 32, 34, 56, 67, 8, 89, 45, 33],
+				fill: false,
+				borderColor: "rgb(0, 35, 91)",
+				tension: 0.1,
+			},
+			{
+				label: "גדוד",
+				data: [56, 56, 34, 56, 9, 78, 67, 45, 34, 23, 92, 13],
+				fill: false,
+				borderColor: "rgb(93, 156, 89)",
+				tension: 0.1,
+			},
+		],
+	};
 
-const databymonthrep = {
-	labels: ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
-	datasets: [{
-	  label: 'פיקוד',
-	  data: [34, 59, 80, 81, 56, 55, 40,23,23,34,11,90],
-	  fill: false,
-	  borderColor: 'rgb(226, 24, 24)',
-	  tension: 0.1
-	},
-	{
-	  label: 'אוגדה',
-	  data: [18, 32, 43, 8, 2, 31, 90,44,2,56,98,23],
-	  fill: false,
-	  borderColor: 'rgb(255, 221, 131)',
-	  tension: 0.1
-  },
-	  {
-		  label: 'חטיבה',
-		   data: [1, 23, 47, 34, 32, 34, 56,67,8,89,45,33],
-		   fill: false,
-		   borderColor: 'rgb(0, 35, 91)',
-		   tension: 0.1
-	  },
-	  {
-		  label: 'גדוד',
-		  data: [56, 56,34, 56, 9, 78, 67,45,34,23,92,13],
-		  fill: false,
-		  borderColor: 'rgb(93, 156, 89)',
-		  tension: 0.1
-	  }		 
-	   
-	]
-  };
+	const databymonthrep = {
+		labels: [
+			"ינואר",
+			"פברואר",
+			"מרץ",
+			"אפריל",
+			"מאי",
+			"יוני",
+			"יולי",
+			"אוגוסט",
+			"ספטמבר",
+			"אוקטובר",
+			"נובמבר",
+			"דצמבר",
+		],
+		datasets: [
+			{
+				label: "פיקוד",
+				data: [34, 59, 80, 81, 56, 55, 40, 23, 23, 34, 11, 90],
+				fill: false,
+				borderColor: "rgb(226, 24, 24)",
+				tension: 0.1,
+			},
+			{
+				label: "אוגדה",
+				data: [18, 32, 43, 8, 2, 31, 90, 44, 2, 56, 98, 23],
+				fill: false,
+				borderColor: "rgb(255, 221, 131)",
+				tension: 0.1,
+			},
+			{
+				label: "חטיבה",
+				data: [1, 23, 47, 34, 32, 34, 56, 67, 8, 89, 45, 33],
+				fill: false,
+				borderColor: "rgb(0, 35, 91)",
+				tension: 0.1,
+			},
+			{
+				label: "גדוד",
+				data: [56, 56, 34, 56, 9, 78, 67, 45, 34, 23, 92, 13],
+				fill: false,
+				borderColor: "rgb(93, 156, 89)",
+				tension: 0.1,
+			},
+		],
+	};
 
-// ------------------------------------------------------- graf by month ---------------------------------
-  
+	// ------------------------------------------------------- graf by month ---------------------------------
 
 	//* --------------------- useEffects -------------------------------------
+
+	useEffect(() => {
+		data.fromdate && data.todate
+			? loadReportsByDate(data.fromdate, data.todate)
+			: loadReports();
+	}, [data]);
 
 	//* manmait - reporting + typeevent clock
 	useEffect(() => {
@@ -961,12 +995,6 @@ const databymonthrep = {
 		loadPikods();
 		loadGdodim();
 	}, []);
-
-	useEffect(() => {
-		data.fromdate && data.todate
-			? loadReportsByDate(data.fromdate, data.todate)
-			: loadReports();
-	}, [data]);
 
 	useEffect(() => {
 		setOgdas([]);
@@ -1815,7 +1843,7 @@ const databymonthrep = {
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
@@ -1926,13 +1954,11 @@ const databymonthrep = {
 										</h3>
 									</CardHeader>
 									<CardBody>
-											<Line
-												data={databymonth}
-											/>
+										<Line data={databymonth} />
 									</CardBody>
 								</Card>
 							</Col>
-                        </Row>
+						</Row>
 					</>
 				) : (
 					<>
@@ -2066,7 +2092,7 @@ const databymonthrep = {
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
@@ -2177,13 +2203,11 @@ const databymonthrep = {
 										</h3>
 									</CardHeader>
 									<CardBody>
-											<Line
-												data={databymonthrep}
-											/>
+										<Line data={databymonthrep} />
 									</CardBody>
 								</Card>
 							</Col>
-                        </Row>
+						</Row>
 					</>
 				)}
 			</Container>
