@@ -440,6 +440,8 @@ const AdminSignInForm = (props) => {
 		return alldata;
 	}
 
+	// const fillterReport = reportDB.filter();
+
 	const dataevent = {
 		labels: labels,
 		datasets: [
@@ -1106,10 +1108,15 @@ function gdodrepmonth(arr1,arr2){
 }
 
 
-// ------------------------------------------------------- graf by month ---------------------------------
-  
+	// ------------------------------------------------------- graf by month ---------------------------------
 
 	//* --------------------- useEffects -------------------------------------
+
+	useEffect(() => {
+		data.fromdate && data.todate
+			? loadReportsByDate(data.fromdate, data.todate)
+			: loadReports();
+	}, [data]);
 
 	//* manmait - reporting + typeevent clock
 	useEffect(() => {
@@ -1128,12 +1135,6 @@ function gdodrepmonth(arr1,arr2){
 		loadPikods();
 		loadGdodim();
 	}, []);
-
-	useEffect(() => {
-		data.fromdate && data.todate
-			? loadReportsByDate(data.fromdate, data.todate)
-			: loadReports();
-	}, [data]);
 
 	useEffect(() => {
 		setOgdas([]);
@@ -1988,7 +1989,7 @@ function gdodrepmonth(arr1,arr2){
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
@@ -2303,7 +2304,7 @@ function gdodrepmonth(arr1,arr2){
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}

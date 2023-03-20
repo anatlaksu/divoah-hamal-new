@@ -1780,12 +1780,12 @@ const AdminSignInForm = (props) => {
 										</h3>
 									</CardHeader>
 									<CardBody>
-										{!data.ogda ? (
+										{data.length == 0 ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.ogda ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
@@ -2014,12 +2014,12 @@ const AdminSignInForm = (props) => {
 										</h3>
 									</CardHeader>
 									<CardBody>
-										{!data.ogda ? (
+										{data.length == 0 ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
 											/>
-										) : reportDB.length == 0 ? (
+										) : !data.ogda ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
