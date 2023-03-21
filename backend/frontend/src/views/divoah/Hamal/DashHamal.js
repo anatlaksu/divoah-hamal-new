@@ -1421,7 +1421,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody>
-									{data.pikod ? (
+									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1464,7 +1464,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									{data.pikod ? (
+									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1507,7 +1507,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									{data.pikod ? (
+									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1546,7 +1546,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								{data.pikod ? (
+								{data.ogda ? (
 									<h2 className="text-center">
 										{getnumevt(
 											reportDBFillter.filter(
@@ -1584,7 +1584,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody>
-									{data.pikod ? (
+									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1613,7 +1613,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									{data.pikod ? (
+									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1642,7 +1642,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody>
-									{data.pikod ? (
+									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1667,7 +1667,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								{data.pikod ? (
+								{data.ogda ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
 									<h2 className="text-center">{getnumevt(reportDB)}</h2>
