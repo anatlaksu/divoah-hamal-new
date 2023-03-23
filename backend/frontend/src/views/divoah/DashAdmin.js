@@ -1555,7 +1555,7 @@ function gdodrepmonth(arr1,arr2){
 															new Date(report.datevent).setHours(0, 0, 0, 0) <=
 																new Date(data.todate).setHours(0, 0, 0, 0)
 													)
-													.filter((rep) => rep.typevent == "רקם")
+													.filter((rep) => rep.typevent  == "רקם")
 													.map((report) => report.totalCostWorkHours)
 											)}
 										</h2>

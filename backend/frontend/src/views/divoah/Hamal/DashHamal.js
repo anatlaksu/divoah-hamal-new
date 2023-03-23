@@ -1617,7 +1617,7 @@ const AdminSignInForm = (props) => {
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
-													.filter((rep) => rep.typevent == "רקם")
+													.filter((rep) => rep.typevent  == "רקם")
 													.map((report) => report.totalWorkHours)
 											)}
 										</h2>
