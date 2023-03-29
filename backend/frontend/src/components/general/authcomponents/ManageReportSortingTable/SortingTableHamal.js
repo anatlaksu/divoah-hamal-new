@@ -5949,9 +5949,12 @@ loadReports();
 								key={pageSize}
 								value={pageSize}
 							>
-								Show {pageSize}
+								הראה {pageSize}
 							</option>
 						))}
+						<option key={data.length} value={data.length}>
+							הראה הכל
+						</option>
 					</select>
 				</div>
 			</div>
