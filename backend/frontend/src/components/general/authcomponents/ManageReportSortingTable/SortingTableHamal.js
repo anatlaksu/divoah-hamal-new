@@ -292,7 +292,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	function setoptions(pk) {
 		const temp = []
 		if (pk.length != 0) {
-			temp.push({value: "select",label: "בחר"})
+			temp.push({value: "בחר",label: "בחר"})
 		}
 		pk.map((item)=>{
 			let val = item._id;
@@ -300,18 +300,20 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 			temp.push({ value: val, label: lab });
 		})
 
+		console.log(pk);
+
 		switch (true) {
 			case pk == pikods:
 				setPikodsop(temp);
 				break;
 			case pk == ogdas:
-				setOgdas(temp);
+				setOgdasop(temp);
 				break;
 			case pk == hativas:
-				setHativas(temp);
+				setHativasop(temp);
 				break;
 			case pk == gdods:
-				setGdods(temp);
+				setGdodsop(temp);
 				break;
 		
 			default:
@@ -405,29 +407,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 				
 				setDataunit({ ...dataunit, [name.name]: selectedOption.value });
 				console.log(dataunit);
-			//  else {
-			// 	// console.log(name.name);
-				// if (name.name == "gdod") {
-				// 	addSelect(gdodsop)
-				// 	// delete dataunit.gdod;
-				// 	// setDataunit({ ...dataunit });
-				// }
-				// if (name.name == "hativa") {
-				// 	addSelect(hativasop)
-				// 	// delete dataunit.hativa;
-				// 	// setDataunit({ ...dataunit });
-				// }
-				// if (name.name == "ogda") {
-				// 	addSelect(ogdasop)
-				// 	// delete dataunit.ogda;
-				// 	// setDataunit({ ...dataunit });
-				// }	
-				// if (name.name == "pikod") {
-				// 	addSelect(pikodsop)
-				// 	// delete dataunit.pikod;
-				// 	// setDataunit({ ...dataunit });
-				// }
-			}
+
 
 			// console.log(data);
 			// console.log(data.pikod);
@@ -442,7 +422,29 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		// 	setDataunit(tempfilter);
 		// 	console.log(tempfilter);
 		// }
-	}
+	} 			 else {
+		// console.log(name.name);
+		if (name.name == "gdod") {
+			addSelect(gdodsop)
+			delete dataunit.gdod;
+			setDataunit({ ...dataunit });
+		}
+		if (name.name == "hativa") {
+			addSelect(hativasop)
+			delete dataunit.hativa;
+			setDataunit({ ...dataunit });
+		}
+		if (name.name == "ogda") {
+			addSelect(ogdasop)
+			delete dataunit.ogda;
+			setDataunit({ ...dataunit });
+		}	
+		if (name.name == "pikod") {
+			addSelect(pikodsop)
+			delete dataunit.pikod;
+			setDataunit({ ...dataunit });
+		}
+	}}
 
 
 	//* ------------ modal --------------------------------
