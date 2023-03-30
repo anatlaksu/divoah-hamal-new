@@ -419,6 +419,8 @@ const AdminSignInForm = (props) => {
 		return alldata;
 	}
 
+	const colors=["rgb(230, 115, 136)","rgb(255, 94, 94)","rgb(255, 129, 94)","	rgb(255, 164, 94)","rgb(255, 199, 94)","rgb(255, 218, 94)","rgb(255, 235, 95)","rgb(255, 255, 94)","rgb(189, 213, 78)","rgb(118, 170, 62)","rgb(48, 128, 47)","rgb(31, 84, 83)","rgb(63, 90, 171)","rgb(94, 94, 255)","rgb(95, 79, 214)","rgb(94, 63, 171)","rgb(96, 48, 130)","rgb(121, 74, 148)","rgb(147, 104, 166)","rgb(195, 161, 201)"];
+
 	const reportEvent = reportDB.filter((report) =>
 		data.pikod.includes(report.pikod)
 	);
@@ -429,36 +431,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumtypereport(labels, reportEvent, eventTypeArray),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
+				backgroundColor: colors.map((col)=>col),
 				borderWidth: 1,
 			},
 		],
@@ -470,36 +443,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumtypereport(labels, reportDBFillter, eventTypeArray),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
+				backgroundColor:colors.map((col)=>col),
 				borderWidth: 1,
 			},
 		],
@@ -535,36 +479,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumpikods(pikods, reportDB),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
+				backgroundColor: randomcolor(pikods),
 				borderWidth: 1,
 			},
 		],
@@ -576,36 +491,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumpikodsrep(pikods, reportDB),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
+				backgroundColor: getcolor(pikods),
 				borderWidth: 1,
 			},
 		],
@@ -619,12 +505,9 @@ const AdminSignInForm = (props) => {
 	}
 
 	function randomcolor(arr1) {
-		const colors = [];
-		for (let i = 0; i < arr1.length; i++) {
-			colors.push(getcolor());
-			console.log(colors);
-		}
-		return colors;
+		console.log(arr1);
+		const colorsar = colors.map((col)=>col).slice(0,arr1.length+1);
+		return colorsar;
 	}
 
 	function sumogda(arr1, arr2) {
@@ -661,92 +544,6 @@ const AdminSignInForm = (props) => {
 		}
 	});
 
-	// const reportDBPikod = reportDB.filter((report) =>
-	// 	data.pikod.includes(report.pikod)
-	// );
-
-	// const dataeventOgda = {
-	// 	labels: labels,
-	// 	datasets: [
-	// 		{
-	// 			label: "# of Votes",
-	// 			data: sumtypereport(labels, reportDBFillter, eventTypeArray),
-	// 			backgroundColor: [
-	// 				"rgba(255, 99, 132, 1)",
-	// 				"rgba(54, 162, 235, 1)",
-	// 				"rgba(255, 206, 86, 1)",
-	// 				"rgba(75, 192, 192, 1)",
-	// 				"rgba(153, 102, 255, 1)",
-	// 				"rgba(255, 159, 64, 1)",
-	// 				"rgba(157, 241, 223, 1)",
-	// 				"rgba(130, 0, 0, 1)",
-	// 				"rgba(78, 108, 80, 1)",
-	// 				"rgba(207, 77, 206, 1)",
-	// 				"rgba(61, 23, 102, 1)",
-	// 				"rgba(0, 255, 246, 1)",
-	// 				"rgba(255, 173, 188, 1)",
-	// 			],
-	// 			borderColor: [
-	// 				"rgba(255, 99, 132, 1)",
-	// 				"rgba(54, 162, 235, 1)",
-	// 				"rgba(255, 206, 86, 1)",
-	// 				"rgba(75, 192, 192, 1)",
-	// 				"rgba(153, 102, 255, 1)",
-	// 				"rgba(255, 159, 64, 1)",
-	// 				"rgba(157, 241, 223, 1)",
-	// 				"rgba(130, 0, 0, 1)",
-	// 				"rgba(78, 108, 80, 1)",
-	// 				"rgba(207, 77, 206, 1)",
-	// 				"rgba(61, 23, 102, 1)",
-	// 				"rgba(0, 255, 246, 1)",
-	// 				"rgba(255, 173, 188, 1)",
-	// 			],
-	// 			borderWidth: 1,
-	// 		},
-	// 	],
-	// };
-
-	// const datapikodFilttered = {
-	// 	labels: pikods.map((pikod, index) => pikod.name),
-	// 	datasets: [
-	// 		{
-	// 			label: "# of Votes",
-	// 			data: sumpikods(pikods, reportDBFillter),
-	// 			backgroundColor: [
-	// 				"rgba(255, 99, 132, 1)",
-	// 				"rgba(54, 162, 235, 1)",
-	// 				"rgba(255, 206, 86, 1)",
-	// 				"rgba(75, 192, 192, 1)",
-	// 				"rgba(153, 102, 255, 1)",
-	// 				"rgba(255, 159, 64, 1)",
-	// 				"rgba(157, 241, 223, 1)",
-	// 				"rgba(130, 0, 0, 1)",
-	// 				"rgba(78, 108, 80, 1)",
-	// 				"rgba(207, 77, 206, 1)",
-	// 				"rgba(61, 23, 102, 1)",
-	// 				"rgba(0, 255, 246, 1)",
-	// 				"rgba(255, 173, 188, 1)",
-	// 			],
-	// 			borderColor: [
-	// 				"rgba(255, 99, 132, 1)",
-	// 				"rgba(54, 162, 235, 1)",
-	// 				"rgba(255, 206, 86, 1)",
-	// 				"rgba(75, 192, 192, 1)",
-	// 				"rgba(153, 102, 255, 1)",
-	// 				"rgba(255, 159, 64, 1)",
-	// 				"rgba(157, 241, 223, 1)",
-	// 				"rgba(130, 0, 0, 1)",
-	// 				"rgba(78, 108, 80, 1)",
-	// 				"rgba(207, 77, 206, 1)",
-	// 				"rgba(61, 23, 102, 1)",
-	// 				"rgba(0, 255, 246, 1)",
-	// 				"rgba(255, 173, 188, 1)",
-	// 			],
-	// 			borderWidth: 1,
-	// 		},
-	// 	],
-	// };
-	// console.log(arryogda);
 
 	const dataogda = {
 		labels: arryogda.map((ogda) => ogda.name),
@@ -754,22 +551,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumogda(arryogda, reportDB),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: ["rgba(200, 200, 200, 0.75)"],
+				backgroundColor: randomcolor(arryogda),
 				borderWidth: 1,
 			},
 		],
@@ -781,22 +563,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumogdarep(arryogda, reportDB),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: ["rgba(200, 200, 200, 0.75)"],
+				backgroundColor: randomcolor(arryogda),
 				borderWidth: 1,
 			},
 		],
@@ -840,22 +607,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumhativa(arryhativa, reportDB),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: ["rgba(200, 200, 200, 0.75)"],
+				backgroundColor: randomcolor(arryhativa),
 				borderWidth: 1,
 			},
 		],
@@ -867,22 +619,7 @@ const AdminSignInForm = (props) => {
 			{
 				label: "# of Votes",
 				data: sumhativarep(arryhativa, reportDB),
-				backgroundColor: [
-					"rgba(255, 99, 132, 1)",
-					"rgba(54, 162, 235, 1)",
-					"rgba(255, 206, 86, 1)",
-					"rgba(75, 192, 192, 1)",
-					"rgba(153, 102, 255, 1)",
-					"rgba(255, 159, 64, 1)",
-					"rgba(157, 241, 223, 1)",
-					"rgba(130, 0, 0, 1)",
-					"rgba(78, 108, 80, 1)",
-					"rgba(207, 77, 206, 1)",
-					"rgba(61, 23, 102, 1)",
-					"rgba(0, 255, 246, 1)",
-					"rgba(255, 173, 188, 1)",
-				],
-				borderColor: ["rgba(200, 200, 200, 0.75)"],
+				backgroundColor: randomcolor(arryhativa),
 				borderWidth: 1,
 			},
 		],
@@ -986,7 +723,7 @@ const AdminSignInForm = (props) => {
 		for(let i=0;i<arr1.length;i++)
 		{
 			arrdata[i].label=arr1[i].name;
-			arrdata[i].backgroundColor=getcolor();
+			arrdata[i].backgroundColor=colors[i];
 			for(let m=1;m<=12;m++){
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
@@ -1008,7 +745,7 @@ const AdminSignInForm = (props) => {
 		for(let i=0;i<arr1.length;i++)
 		{
 			arrdata[i].label=arr1[i].name;
-			arrdata[i].backgroundColor=getcolor();
+			arrdata[i].backgroundColor=colors[i];
 			for(let m=1;m<=12;m++){
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
@@ -1030,7 +767,7 @@ const AdminSignInForm = (props) => {
 		for(let i=0;i<arr1.length;i++)
 		{
 			arrdata[i].label=arr1[i].name;
-			arrdata[i].backgroundColor=getcolor();
+			arrdata[i].backgroundColor=colors[i];
 			for(let m=1;m<=12;m++){
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
@@ -1067,7 +804,7 @@ const AdminSignInForm = (props) => {
 		for(let i=0;i<arr1.length;i++)
 		{
 			arrdata[i].label=arr1[i].name;
-			arrdata[i].backgroundColor=getcolor();
+			arrdata[i].backgroundColor=colors[i];
 			for(let m=1;m<=12;m++){
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
@@ -1089,7 +826,7 @@ const AdminSignInForm = (props) => {
 		for(let i=0;i<arr1.length;i++)
 		{
 			arrdata[i].label=arr1[i].name;
-			arrdata[i].backgroundColor=getcolor();
+			arrdata[i].backgroundColor=colors[i];
 			for(let m=1;m<=12;m++){
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
@@ -1111,7 +848,7 @@ const AdminSignInForm = (props) => {
 		for(let i=0;i<arr1.length;i++)
 		{
 			arrdata[i].label=arr1[i].name;
-			arrdata[i].backgroundColor=getcolor();
+			arrdata[i].backgroundColor=colors[i];
 			for(let m=1;m<=12;m++){
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){

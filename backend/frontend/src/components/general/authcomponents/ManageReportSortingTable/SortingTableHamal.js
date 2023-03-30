@@ -289,39 +289,61 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		}
 	}
 
-	function setoptions(pk, og, ht, gd) {
-		setPikodsop(
-			pk.map((item, index) => {
-				let val = pk[index]._id;
-				let lab = pk[index].name;
-				return { value: val, label: lab };
-			})
-		);
-		setOgdasop(
-			og.map((item, index) => {
-				let val = og[index]._id;
-				let lab = og[index].name;
-				return { value: val, label: lab };
-			})
-		);
-		setHativasop(
-			ht.map((item, index) => {
-				let val = ht[index]._id;
-				let lab = ht[index].name;
-				return { value: val, label: lab };
-			})
-		);
-		setGdodsop(
-			gd.map((item, index) => {
-				let val = gd[index]._id;
-				let lab = gd[index].name;
-				return { value: val, label: lab };
-			})
-		);
-addSelect(pk)
-addSelect(og)
-addSelect(ht)
-addSelect(gd)
+	function setoptions(pk) {
+		const temp = []
+		if (pk.length != 0) {
+			temp.push({value: "select",label: "בחר"})
+		}
+		pk.map((item)=>{
+			let val = item._id;
+			let lab = item.name;
+			temp.push({ value: val, label: lab });
+		})
+
+		switch (true) {
+			case pk == pikods:
+				setPikodsop(temp);
+				break;
+			case pk == ogdas:
+				setOgdas(temp);
+				break;
+			case pk == hativas:
+				setHativas(temp);
+				break;
+			case pk == gdods:
+				setGdods(temp);
+				break;
+		
+			default:
+				break;
+		}
+
+		// setPikodsop(temp);
+		// setOgdasop(
+		// 	og.map((item, index) => {
+		// 		let val = og[index]._id;
+		// 		let lab = og[index].name;
+		// 		return { value: val, label: lab };
+		// 	})
+		// );
+		// setHativasop(
+		// 	ht.map((item, index) => {
+		// 		let val = ht[index]._id;
+		// 		let lab = ht[index].name;
+		// 		return { value: val, label: lab };
+		// 	})
+		// );
+		// setGdodsop(
+		// 	gd.map((item, index) => {
+		// 		let val = gd[index]._id;
+		// 		let lab = gd[index].name;
+		// 		return { value: val, label: lab };
+		// 	})
+		// );
+// addSelect(pk)
+// addSelect(og)
+// addSelect(ht)
+// addSelect(gd)
 	}
 
 
@@ -644,7 +666,10 @@ filteruse();
 		// ogdasop.unshift({value: "select",label: "בחר"})
 		// hativasop.unshift({value: "select",label: "בחר"})
 		// gdodsop.unshift({value: "select",label: "בחר"})
-		setoptions(pikods, ogdas, hativas, gdods);
+		setoptions(pikods);
+		setoptions(ogdas);
+		setoptions(hativas);
+		setoptions(gdods);
 
 
 		// console.log(pikodsop);
