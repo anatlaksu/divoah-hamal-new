@@ -202,7 +202,7 @@ const EditUserForm = ({ match }) => {
 										>
 											<option value="">הרשאה</option>
 											<option value="0">משתמש רגיל</option>
-											<option value="1">משתמש חמ"ל</option>
+											<option value="1">משתמש פיקוד</option>
 											<option value="2"> מנהל מערכת</option>
 											<option value="3"> משתמש חט"ל</option>
 

@@ -450,18 +450,18 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += "כמות הנפגעים ריקה \n";
 		}
-		if(data.nifga== "1"){
-		for (let i = 0; i < infohurtarray.length; i++) {
-			if (!infohurtarray[i].dargahurt) {
-				ErrorReason += "   לא הוזן דרגת פגיעה \n";
-				flag = false;
-			}
-			if (!infohurtarray[i].mikomhurt) {
-				ErrorReason += "   לא הוזן כמות ימים \n";
-				flag = false;
-			}
-		}
-	}
+	// 	if(data.nifga== "1"){
+	// 	for (let i = 0; i < infohurtarray.length; i++) {
+	// 		if (!infohurtarray[i].dargahurt) {
+	// 			ErrorReason += "   לא הוזן דרגת פגיעה \n";
+	// 			flag = false;
+	// 		}
+	// 		if (!infohurtarray[i].mikomhurt) {
+	// 			ErrorReason += "   לא הוזן כמות ימים \n";
+	// 			flag = false;
+	// 		}
+	// 	}
+	// }
 
 		if (flag == true) {
 			SendFormData(event);

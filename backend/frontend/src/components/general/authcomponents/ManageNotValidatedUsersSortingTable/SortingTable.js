@@ -111,7 +111,7 @@ const SortingTable = ({ match }) => {
                             if (cell.value == '0')
                               return <td>משתמש רגיל</td>
                             if (cell.value == '1')
-                              return <td>משתמש חמ"ל</td>
+                              return <td>משתמש פיקוד</td>
                           }
                         }
                       })
