@@ -45,6 +45,8 @@ const SortingTableHamal = ({ match }) => {
 	const [originaldata, setOriginaldata] = useState([])
 	
 	const [isError, setIsError] = useState(false);
+	const [over30, setover30] = useState(false);
+	
 	//* the difference between the date the report was created and the date the incident happened
 	const [diff, setDiff] = useState([]);
 	//* check if the report was created for more than 30 days
@@ -229,58 +231,58 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	// ! alternative is to enter the timestamp to the database and then call it like we do with the other columns
 	// * ------ geting only on loading the difference btween the dates --------------------------------
 
-	useEffect(() => {
-		console.log(user.personalnumber);
-		if (user.role == "0") {
-			history.push(`/historeport`);
-		}
-		// console.log(data.length);
-		// * ------ making the dates subtractable --------------------------------
-		//* created at:
-		const creatArray = data.map((item, index) => {
-			return new Date(data[index].createdAt);
-		});
-		//* the date the incident happened:
-		const dateArray = data.map((item, index) => {
-			return new Date(data[index].datevent);
-		});
-		//* today:
-		const today = new Date();
+	// useEffect(() => {
+	// 	console.log(user.personalnumber);
+	// 	if (user.role == "0") {
+	// 		history.push(`/historeport`);
+	// 	}
+	// 	// console.log(data.length);
+	// 	// * ------ making the dates subtractable --------------------------------
+	// 	//* created at:
+	// 	const creatArray = data.map((item, index) => {
+	// 		return new Date(data[index].createdAt);
+	// 	});
+	// 	//* the date the incident happened:
+	// 	const dateArray = data.map((item, index) => {
+	// 		return new Date(data[index].datevent);
+	// 	});
+	// 	//* today:
+	// 	const today = new Date();
 
-		// * ---------- makeing sure that there are not any problems --------------------------------
-		try {
-			setDiff(
-				creatArray.map((item, index) => {
-					//* ~~ == Math.floor
-					return ~~(
-						(creatArray[index].getTime() - dateArray[index].getTime()) /
-						86400000
-					);
-				})
-			);
-			// console.log(diff);
-			// todo: maybe to reload the page if error
-		} catch (error) {
-			console.log(error);
-		}
-		try {
-			setExpired(
-				creatArray.map((item, index) => {
-					let sum = ~~(
-						(today.getTime() - creatArray[index].getTime()) /
-						86400000
-					);
-					// console.log(`today is ${today}`);
-					// console.log(creatArray[index]);
-					// console.log(`${sum > 30} at ${index}`);
-					return sum > 30;
-				})
-			);
-		} catch (error) {
-			console.log(error);
-		}
-		// console.log(expired);
-	}, [data]);
+	// 	// * ---------- makeing sure that there are not any problems --------------------------------
+	// 	try {
+	// 		setDiff(
+	// 			creatArray.map((item, index) => {
+	// 				//* ~~ == Math.floor
+	// 				return ~~(
+	// 					(creatArray[index].getTime() - dateArray[index].getTime()) /
+	// 					86400000
+	// 				);
+	// 			})
+	// 		);
+	// 		// console.log(diff);
+	// 		// todo: maybe to reload the page if error
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// 	try {
+	// 		setExpired(
+	// 			creatArray.map((item, index) => {
+	// 				let sum = ~~(
+	// 					(today.getTime() - creatArray[index].getTime()) /
+	// 					86400000
+	// 				);
+	// 				// console.log(`today is ${today}`);
+	// 				// console.log(creatArray[index]);
+	// 				// console.log(`${sum > 30} at ${index}`);
+	// 				return sum > 30;
+	// 			})
+	// 		);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// 	// console.log(expired);
+	// }, [data]);
 
 	function addSelect(op) {
 		let pvals = op.map ((p)=>p.value)
@@ -454,25 +456,25 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		// console.log(index);
 		// console.log(expired[index]);
 		if (!evt.currentTarget.value == "") {
-			if (expired[index] == true) {
-				if (user.role == "2") {
-					if (evt.currentTarget.value == "") {
-						setCardataidformodal(undefined);
-					} else {
-						setCardataidformodal(evt.currentTarget.value);
-					}
-					setIscardataformopen(!iscardataformopen);
-				} else {
-					toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
-				}
-			} else {
+			// if (over30 == true) {
+			// 	if (user.role == "2") {
+			// 		if (evt.currentTarget.value == "") {
+			// 			setCardataidformodal(undefined);
+			// 		} else {
+			// 			setCardataidformodal(evt.currentTarget.value);
+			// 		}
+			// 		setIscardataformopen(!iscardataformopen);
+			// 	} else {
+			// 		toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
+			// 	}
+			// } else {
 				if (evt.currentTarget.value == "") {
 					setCardataidformodal(undefined);
 				} else {
 					setCardataidformodal(evt.currentTarget.value);
 				}
 				setIscardataformopen(!iscardataformopen);
-			}
+			// }
 		} else {
 			if (evt.currentTarget.value == "") {
 				setCardataidformodal(undefined);
@@ -510,6 +512,12 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		for (let i = 0; i < arr.length; i++) {
 			if (arr[i]._id == idnum) return arr[i].name;
 		}
+	}
+
+	function getnumday(date1,date2){
+		let difference = new Date(date1).getTime() - new Date(date2).getTime();
+		let TotalDays = Math.ceil((difference / (1000 * 3600 * 24))-1);
+		return TotalDays;
 	}
 
 	const filteruse=()=>{
@@ -1230,7 +1238,7 @@ filteruse();
 												// * ------------- added difftime --------------------------------
 
 												if (cell.column.id == "difftime") {
-													return <td>{diff[index]}</td>;
+													return <td>{getnumday(row.original.createdAt,row.original.datevent)}</td>;
 												}
 												if (cell.column.id == "tipul") {
 													if (

@@ -441,6 +441,11 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
+		if (new Date(data.datevent).getTime()> new Date().getTime()) {
+			flag = false;
+			ErrorReason += " ,תאריך לא תקין \n";
+		}
+
 		if (data.nifga == "") {
 			flag = false;
 			ErrorReason += "כמות הנפגעים ריקה \n";
