@@ -1801,7 +1801,7 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 
-												{data.magad && !data.mkabaz ? (
+												{data.magad  ? (
 													<Col
 														style={{
 															justifyContent: "right",

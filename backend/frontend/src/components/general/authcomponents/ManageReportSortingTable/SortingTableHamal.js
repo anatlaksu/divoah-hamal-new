@@ -1241,6 +1241,50 @@ filteruse();
 													return <td>{getnumday(row.original.createdAt,row.original.datevent)}</td>;
 												}
 												if (cell.column.id == "tipul") {
+													if(row.original.typevent ==="1" ||row.original.typevent ==="2" || row.original.typevent ==="3" ||row.original.typevent ==="4" || row.original.typevent ==="רקם" ){
+														let i=0;
+														let sum=0;
+														while(i<row.original.arraymkabaz.length)
+														{
+															if(row.original.arraymkabaz[i].zadik == undefined){
+																sum++;
+															}
+															i++;
+														}
+														if(sum>0 && row.original.resevent === "4" &&
+														row.original.nifga === 2)
+														  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+														  else {
+															if (row.original.resevent === "4")
+																return <td>סיבת אירוע חסרה</td>;
+															else {
+																if (row.original.nifga === 2)
+																	return <td>לא ידוע על נפגעים</td>;
+																else {
+																	if(sum>0)
+																	      return <td>צ' לא ידוע</td>;
+																	else return <td>לא</td>;
+																}
+															}
+														}
+	
+
+													}
+													else
+													if(row.original.typevent ==="7" ||row.original.typevent ==="9"){
+														if(row.original.zadik === "" && row.original.nifga === 2)
+														   return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
+														else{
+															if(row.original.zadik === "")
+															return <td>צ' לא ידוע</td>;
+															else {
+																if (row.original.nifga === 2)
+																	return <td>לא ידוע על נפגעים</td>;
+																else return <td>לא</td>;
+															}
+	
+														}
+													}else
 													if (
 														row.original.resevent === "4" &&
 														row.original.nifga === 2
