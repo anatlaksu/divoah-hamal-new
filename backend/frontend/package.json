@@ -1,48 +1,47 @@
 {
-  "name": "bazak",
-  "version": "1.0.0",
-  "private": true,
-  "homepage": "/",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "bootstrap": "4.5.0",
-    "chart.js": "^3.9.1",
-    "history": "^4.10.1",
-    "immer": "^9.0.3",
-    "react": "16.13.1",
-    "react-chartjs-2": "^3.0.3",
-    "react-circular-progressbar": "^2.0.4",
-    "react-dom": "16.13.1",
-    "react-excel-renderer": "^1.1.0",
-    "react-html-table-to-excel": "^2.0.0",
-    "react-liquid-gauge": "^0.5.1",
-    "react-router": "5.2.0",
-    "react-router-dom": "5.2.0",
-    "react-scripts": "^5.0.1",
-    "react-select": "^5.1.0",
-    "react-simple-tree-menu": "^1.1.18",
-    "react-spinners": "^0.13.3",
-    "react-table": "^7.7.0",
-    "react-toastify": "^7.0.4",
-    "react-toggle-button": "^2.2.0",
-    "reactstrap": "8.4.1",
-    "shortid": "^2.2.16",
-    "webpack": "4.42.0",
-    "xlsx": "^0.18.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+	"name": "bazak",
+	"version": "1.0.0",
+	"private": true,
+	"homepage": "/",
+	"dependencies": {
+		"axios": "file:tarballs/axios/axios-0.21.4.tgz",
+		"bootstrap": "file:tarballs/bootstrap/bootstrap-4.5.0.tgz",
+		"chart.js": "file:tarballs/chart.js/chart.js-3.9.1.tgz",
+		"history": "file:tarballs/history/history-4.10.1.tgz",
+		"immer": "file:tarballs/immer/immer-9.0.21.tgz",
+		"react": "file:tarballs/react/react-16.13.1.tgz",
+		"react-chartjs-2": "file:tarballs/react-chartjs-2/react-chartjs-2-3.3.0.tgz",
+		"react-circular-progressbar": "file:tarballs/react-circular-progressbar/react-circular-progressbar-2.1.0.tgz",
+		"react-dom": "file:tarballs/react-dom/react-dom-16.13.1.tgz",
+		"react-excel-renderer": "file:tarballs/react-excel-renderer/react-excel-renderer-1.1.0.tgz",
+		"react-html-table-to-excel": "file:tarballs/react-html-table-to-excel/react-html-table-to-excel-2.0.0.tgz",
+		"react-liquid-gauge": "file:tarballs/react-liquid-gauge/react-liquid-gauge-0.5.1.tgz",
+		"react-router": "file:tarballs/react-router/react-router-5.2.0.tgz",
+		"react-router-dom": "file:tarballs/react-router-dom/react-router-dom-5.2.0.tgz",
+		"react-scripts": "file:tarballs/react-scripts/react-scripts-5.0.1.tgz",
+		"react-select": "file:tarballs/react-select/react-select-5.7.2.tgz",
+		"react-spinners": "file:tarballs/react-spinners/react-spinners-0.13.8.tgz",
+		"react-table": "file:tarballs/react-table/react-table-7.8.0.tgz",
+		"react-toastify": "file:tarballs/react-toastify/react-toastify-7.0.4.tgz",
+		"react-toggle-button": "file:tarballs/react-toggle-button/react-toggle-button-2.2.0.tgz",
+		"reactstrap": "file:tarballs/reactstrap/reactstrap-8.4.1.tgz",
+		"shortid": "file:tarballs/shortid/shortid-2.2.16.tgz",
+		"webpack": "file:tarballs/webpack/webpack-4.42.0.tgz",
+		"xlsx": "file:tarballs/xlsx/xlsx-0.18.5.tgz"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test --env=jsdom",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	]
 }
