@@ -491,6 +491,17 @@ const Report = ({ match }) => {
 				flag = false;
 				ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
 			}
+			if (cartypesfilterarray.length == 0
+				) {
+					flag = false;
+					ErrorReason += " ,לא הוזן כלי\n";
+				}
+				for (let i = 0; i < cartypesfilterarray.length; i++) {
+					if (!cartypesfilterarray[i].mkabaz) {
+						ErrorReason += "  ,לא הוזן סוג כלי\n";
+						flag = false;
+					}
+				}		
 		}
 		if (data.typevent === "5") {
 			if (data.selneshek == "") {
@@ -529,10 +540,10 @@ const Report = ({ match }) => {
 			}
 		}
 		if (data.typevent === "7") {
-			if (data.zadik == "") {
-				flag = false;
-				ErrorReason += "  צ' ריק\n";
-			}
+			// if (data.zadik == "") {
+			// 	flag = false;
+			// 	ErrorReason += "  צ' ריק\n";
+			// }
 			// if (
 			// 	document.getElementById("mataf").options[
 			// 		document.getElementById("mataf").selectedIndex
@@ -582,10 +593,10 @@ const Report = ({ match }) => {
 			// 	flag = false;
 			// 	ErrorReason += "סוג הכלי המחולץ ריק \n";
 			// }
-			if (data.zadik == "") {
-				flag = false;
-				ErrorReason += "  צ' ריק\n";
-			}
+			// if (data.zadik == "") {
+			// 	flag = false;
+			// 	ErrorReason += "  צ' ריק\n";
+			// }
 			// if (
 			//   document.getElementById("mhalz").options[
 			//     document.getElementById("mhalz").selectedIndex
@@ -1790,7 +1801,7 @@ const Report = ({ match }) => {
 													</Col>
 												)}
 
-												{data.magad && !data.mkabaz ? (
+												{data.magad  ? (
 													<Col
 														style={{
 															justifyContent: "right",

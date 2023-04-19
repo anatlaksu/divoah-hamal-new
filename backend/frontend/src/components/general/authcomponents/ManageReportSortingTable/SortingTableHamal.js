@@ -73,6 +73,9 @@ const SortingTableHamal = ({ match }) => {
 	const [ogdasrep, setOgdasrep] = useState([]);
 	const [pikodsrep, setPikodsrep] = useState([]);
 
+	  //excel download
+	  const XLSX = require('xlsx')
+
 	const [reportDB, setReportDB] = useState([]);
 	// const [reportDBPikod, setReportDBPikod] = useState([]);
 //* get gdod
@@ -571,6 +574,117 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		console.log(data);
 	};
 
+	function FixDataAndExportToExcel() {
+		let tempdata_to_excel = [];
+		for (let i = 0; i < data.length; i++) {
+			tempdata_to_excel.push({ ...data[i] })
+		}
+	
+		for (let i = 0; i < tempdata_to_excel.length; i++) {
+		  tempdata_to_excel[i].pikodrep ? tempdata_to_excel[i].pikod_name = getname(tempdata_to_excel[i].pikodrep, pikodsrep) : tempdata_to_excel[i].pikod_name = " ";
+		  tempdata_to_excel[i].ogdarep ? tempdata_to_excel[i].ogda_name = getname(tempdata_to_excel[i].ogdarep, ogdasrep) : tempdata_to_excel[i].ogda_name = " ";
+		  tempdata_to_excel[i].hativarep ? tempdata_to_excel[i].hativa_name = getname(tempdata_to_excel[i].hativarep, hativasrep) : tempdata_to_excel[i].hativa_name = " ";
+		  tempdata_to_excel[i].gdodrep ? tempdata_to_excel[i].gdod_name = getname(tempdata_to_excel[i].gdodrep, gdodsrep) : tempdata_to_excel[i].gdod_name = " ";
+		  tempdata_to_excel[i].pirot ? tempdata_to_excel[i].pirot_event = tempdata_to_excel[i].pirot : tempdata_to_excel[i].pirot_event = " ";
+		  tempdata_to_excel[i].typevent ? tempdata_to_excel[i].type_event = tempdata_to_excel[i].typevent : tempdata_to_excel[i].type_event = " ";
+
+		//   tempdata_to_excel[i].latest_recalibration_date = tempdata_to_excel[i].latest_recalibration_date ? tempdata_to_excel[i].latest_recalibration_date.slice(0, 10).split("-").reverse().join("-") : null;
+		//   tempdata_to_excel[i].expected_repair = tempdata_to_excel[i].expected_repair ? tempdata_to_excel[i].expected_repair.slice(0, 10).split("-").reverse().join("-") : null;
+		tempdata_to_excel[i].event_date = tempdata_to_excel[i].datevent ? tempdata_to_excel[i].datevent.slice(0, 10).split("-").reverse().join("-") : null;	
+		  tempdata_to_excel[i].updatedAt_data = tempdata_to_excel[i].updatedAt ? tempdata_to_excel[i].updatedAt.slice(0, 10).split("-").reverse().join("-") : null;
+		}
+	
+		//export to excel -fix 
+		for (let i = 0; i < tempdata_to_excel.length; i++) {
+			//delete unwanted fields
+			delete tempdata_to_excel[i]._id;
+			delete tempdata_to_excel[i].pikodrep;
+			delete tempdata_to_excel[i].ogdarep;
+			delete tempdata_to_excel[i].hativarep;
+			delete tempdata_to_excel[i].gdodrep;
+			delete tempdata_to_excel[i].gdod;
+			delete tempdata_to_excel[i].pirot;
+			delete tempdata_to_excel[i].mikom;
+			delete tempdata_to_excel[i].typevent;
+			delete tempdata_to_excel[i].name;
+			delete tempdata_to_excel[i].lastname;
+			delete tempdata_to_excel[i].personalnumber;
+			delete tempdata_to_excel[i].cellphone;
+			delete tempdata_to_excel[i].mkabaz;
+			delete tempdata_to_excel[i].arraymkabaz;
+			delete tempdata_to_excel[i].zadik;
+			delete tempdata_to_excel[i].resevent;
+			delete tempdata_to_excel[i].yn;
+			delete tempdata_to_excel[i].selneshek;
+			delete tempdata_to_excel[i].whap;
+			delete tempdata_to_excel[i].amlahtype;
+			delete tempdata_to_excel[i].wnifga;
+			delete tempdata_to_excel[i].rekemtype;
+			delete tempdata_to_excel[i].mazavrekem;
+			delete tempdata_to_excel[i].dwork;
+			delete tempdata_to_excel[i].mataftype;
+			delete tempdata_to_excel[i].mholaztype;
+			delete tempdata_to_excel[i].lessons;
+			delete tempdata_to_excel[i].totalWorkHours;
+			delete tempdata_to_excel[i].totalCostWorkHours;
+			delete tempdata_to_excel[i].damageCost;
+			delete tempdata_to_excel[i].spareCost;
+			delete tempdata_to_excel[i].nifga;
+			delete tempdata_to_excel[i].hurtarray;
+			delete tempdata_to_excel[i].apitype;
+			delete tempdata_to_excel[i].__v;
+			delete tempdata_to_excel[i].datevent;
+			delete tempdata_to_excel[i].updatedAt;
+			delete tempdata_to_excel[i].createdAt;
+	  
+			//add non-existing fields - 8
+			if (!tempdata_to_excel[i].pikod_name) { tempdata_to_excel[i].pikod_name = " " }
+			if (!tempdata_to_excel[i].gdod_name) { tempdata_to_excel[i].gdod_name = " " }
+			if (!tempdata_to_excel[i].hativa_name) { tempdata_to_excel[i].hativa_name = " " }
+			if (!tempdata_to_excel[i].ogda_name) { tempdata_to_excel[i].ogda_name = " " }
+			if (!tempdata_to_excel[i].pirot_event) { tempdata_to_excel[i].pirot_event = " " }
+			if (!tempdata_to_excel[i].event_date) { tempdata_to_excel[i].event_date = " " }
+			if (!tempdata_to_excel[i].updatedAt_data) { tempdata_to_excel[i].updatedAt_data = " " }
+			// ----------------------------- סוג אירוע --------------------------------------
+			if (!tempdata_to_excel[i].type_event) { tempdata_to_excel[i].type_event = " " }
+			if (tempdata_to_excel[i].type_event==="1") { tempdata_to_excel[i].type_event = "תאונת כלי רכב" }
+			if (tempdata_to_excel[i].type_event==="2") { tempdata_to_excel[i].type_event = "התהפכות" }
+			if (tempdata_to_excel[i].type_event==="3") { tempdata_to_excel[i].type_event = "הנתקות גלגל" }
+			if (tempdata_to_excel[i].type_event==="4") { tempdata_to_excel[i].type_event = "שריפה" }
+			if (tempdata_to_excel[i].type_event==="5") { tempdata_to_excel[i].type_event = 'אירוע נשו"ת' }
+			if (tempdata_to_excel[i].type_event==="6") { tempdata_to_excel[i].type_event = 'תאונת עבודה אנשי טנ"א' }
+			if (tempdata_to_excel[i].type_event==="7") { tempdata_to_excel[i].type_event = "פריקת מטפים" }
+			if (tempdata_to_excel[i].type_event==="9") { tempdata_to_excel[i].type_event = "חילוץ" }
+			if (tempdata_to_excel[i].type_event==="10") { tempdata_to_excel[i].type_event = 'נזק לתשתיות אחזקה / הח"י' }
+			if (tempdata_to_excel[i].type_event==="11") { tempdata_to_excel[i].type_event = "אי קיום שגרת אחזקה" }
+			if (tempdata_to_excel[i].type_event==="12") { tempdata_to_excel[i].type_event = "אחר" }
+			if (tempdata_to_excel[i].type_event==="רקם") { tempdata_to_excel[i].type_event = 'רק"ם' }
+		  }
+	  
+		console.log(tempdata_to_excel)
+	
+		let EXCEL_EXTENSION = '.xlsx';
+		let worksheet = XLSX.WorkSheet;
+		let sheetName = 'סיכום דיווחים';
+	
+		const headers = {
+		  
+		   type_event:'סוג אירוע',pirot_event:'פירוט אירוע',pikod_name:'פיקוד', ogda_name: 'אוגדה', hativa_name: 'חטיבה', gdod_name: 'גדוד',
+		   updatedAt_data: 'תאריך דיווח',event_date:'תאריך אירוע'
+		};
+		tempdata_to_excel.unshift(headers); // if custom header, then make sure first row of data is custom header 
+	
+		worksheet = XLSX.utils.json_to_sheet(tempdata_to_excel, { skipHeader: true });
+	
+		const workbook = XLSX.utils.book_new();
+		const fileName = 'סיכום דיווחים' + EXCEL_EXTENSION;
+		XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+		XLSX.writeFile(workbook, fileName);
+	
+		window.location.reload();
+	  }
+	
+
 	const loadReports = () => {
 		user.role === "2"
 			? axios
@@ -1049,7 +1163,7 @@ filteruse();
 				</div>
 			</Row>
 
-			<div style={{ float: "right", paddingBottom: "5px" }}>
+			{/* <div style={{ float: "right", paddingBottom: "5px" }}>
 				<ReactHTMLTableToExcel
 					id="test-table-xls-button"
 					className="btn-green"
@@ -1059,7 +1173,12 @@ filteruse();
 					buttonText="הורד כקובץ אקסל"
 					style={{ float: "right" }}
 				/>
-			</div>
+			</div> */}
+
+			<div style={{ float: 'right', paddingBottom: '5px' }}>
+            <button className="btn-green" onClick={FixDataAndExportToExcel}>הורד כקובץ אקסל</button>
+           </div>
+
 
 			{/*//* ----- modals --------------------------------
 				//? ++ unittype={props.unittype} unitid={props.unitid} */}
@@ -1241,6 +1360,50 @@ filteruse();
 													return <td>{getnumday(row.original.createdAt,row.original.datevent)}</td>;
 												}
 												if (cell.column.id == "tipul") {
+													if(row.original.typevent ==="1" ||row.original.typevent ==="2" || row.original.typevent ==="3" ||row.original.typevent ==="4" || row.original.typevent ==="רקם" ){
+														let i=0;
+														let sum=0;
+														while(i<row.original.arraymkabaz.length)
+														{
+															if(row.original.arraymkabaz[i].zadik == undefined){
+																sum++;
+															}
+															i++;
+														}
+														if(sum>0 && row.original.resevent === "4" &&
+														row.original.nifga === 2)
+														  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+														  else {
+															if (row.original.resevent === "4")
+																return <td>סיבת אירוע חסרה</td>;
+															else {
+																if (row.original.nifga === 2)
+																	return <td>לא ידוע על נפגעים</td>;
+																else {
+																	if(sum>0)
+																	      return <td>צ' לא ידוע</td>;
+																	else return <td>לא</td>;
+																}
+															}
+														}
+	
+
+													}
+													else
+													if(row.original.typevent ==="7" ||row.original.typevent ==="9"){
+														if(row.original.zadik === "" && row.original.nifga === 2)
+														   return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
+														else{
+															if(row.original.zadik === "")
+															return <td>צ' לא ידוע</td>;
+															else {
+																if (row.original.nifga === 2)
+																	return <td>לא ידוע על נפגעים</td>;
+																else return <td>לא</td>;
+															}
+	
+														}
+													}else
 													if (
 														row.original.resevent === "4" &&
 														row.original.nifga === 2

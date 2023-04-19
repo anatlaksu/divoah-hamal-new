@@ -414,6 +414,19 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += " ,סיבת האירוע ריקה \n";
 		}
+		if (cartypesfilterarray.length == 0
+		) {
+			flag = false;
+			ErrorReason += " ,לא הוזן רק'ם\n";
+		}
+		for (let i = 0; i < cartypesfilterarray.length; i++) {
+			if (!cartypesfilterarray[i].mkabaz) {
+				ErrorReason += "  ,לא הוזן סוג רק'ם\n";
+				flag = false;
+			}
+		}
+
+
 		// if (
 		// 	document.getElementById("sel").options[
 		// 		document.getElementById("sel").selectedIndex
