@@ -482,6 +482,11 @@ const CarDataFormModal = (match) => {
 			}
 		}
 		if (data.typevent === "7") {
+			if (data.mkabaz == "") {
+				flag = false;
+				ErrorReason += "  סוג הכלי ריק\n";
+			}
+	
 			// if (data.zadik == "") {
 			// 	flag = false;
 			// 	ErrorReason += "  צ' ריק\n";
@@ -527,14 +532,19 @@ const CarDataFormModal = (match) => {
 			}
 		}
 		if (data.typevent === "9") {
-			if (
-				document.getElementById("mholaz").options[
-					document.getElementById("mholaz").selectedIndex
-				].value == "0"
-			) {
+			if (data.mkabaz == "") {
 				flag = false;
-				ErrorReason += "סוג הכלי המחולץ ריק \n";
+				ErrorReason += "  סוג הכלי ריק\n";
 			}
+	
+			// if (
+			// 	document.getElementById("mholaz").options[
+			// 		document.getElementById("mholaz").selectedIndex
+			// 	].value == "0"
+			// ) {
+			// 	flag = false;
+			// 	ErrorReason += "סוג הכלי המחולץ ריק \n";
+			// }
 			// if (data.zadik == "") {
 			// 	flag = false;
 			// 	ErrorReason += "  צ' ריק\n";
@@ -570,18 +580,23 @@ const CarDataFormModal = (match) => {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
-		// if (data.nifga == "1") {
-		// 	for (let i = 0; i < infohurtarray.length; i++) {
-		// 		if (!infohurtarray[i].dargahurt) {
-		// 			ErrorReason += "   לא הוזן דרגת פגיעה \n";
-		// 			flag = false;
-		// 		}
-		// 		if (!infohurtarray[i].mikomhurt) {
-		// 			ErrorReason += "   לא הוזן כמות ימים \n";
-		// 			flag = false;
-		// 		}
-		// 	}
-		// }
+		if (data.nifga == "1") {
+			if (infohurtarray.length == 0
+				) {
+					flag = false;
+					ErrorReason += " ,לא הוזן נפגע\n";
+				}
+			for (let i = 0; i < infohurtarray.length; i++) {
+				if (!infohurtarray[i].dargahurt) {
+					ErrorReason += "   לא הוזן דרגת פגיעה \n";
+					flag = false;
+				}
+				if (!infohurtarray[i].mikomhurt) {
+					ErrorReason += "   לא הוזן כמות ימים \n";
+					flag = false;
+				}
+			}
+		}
 
 		if (flag == true) {
 			FixUser(event);
@@ -697,18 +712,24 @@ const CarDataFormModal = (match) => {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
-		// if (data.nifga == "1") {
-		// 	for (let i = 0; i < infohurtarray.length; i++) {
-		// 		if (!infohurtarray[i].dargahurt) {
-		// 			ErrorReason += "   לא הוזן דרגת פגיעה \n";
-		// 			flag = false;
-		// 		}
-		// 		if (!infohurtarray[i].mikomhurt) {
-		// 			ErrorReason += "   לא הוזן כמות ימים \n";
-		// 			flag = false;
-		// 		}
-		// 	}
-		// }
+		if (data.nifga == "1") {
+			if (infohurtarray.length == 0
+				) {
+					flag = false;
+					ErrorReason += " ,לא הוזן נפגע\n";
+				}
+
+			for (let i = 0; i < infohurtarray.length; i++) {
+				if (!infohurtarray[i].dargahurt) {
+					ErrorReason += "   לא הוזן דרגת פגיעה \n";
+					flag = false;
+				}
+				if (!infohurtarray[i].mikomhurt) {
+					ErrorReason += "   לא הוזן כמות ימים \n";
+					flag = false;
+				}
+			}
+		}
 
 		if (flag == true) {
 			FixUser(event);
