@@ -746,9 +746,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].pikod==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -768,9 +771,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].ogda==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -790,9 +796,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].hativa==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -812,9 +821,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].gdod==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -856,9 +868,11 @@ function pikodrepmonth(arr1,arr2){
 		let sumbynum=0;
 		  for(let j=0;j<arr2.length;j++){
 			  if(arr2[j].pikodrep==arr1[i]._id){
+				if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
 			  if(new Date(arr2[j].datevent).getMonth()==m){
 				sumbynum++;
 			  }
+			}
 			}
 			}
 			arrdata[i].data[m]=sumbynum;
@@ -878,9 +892,12 @@ function ogdarepmonth(arr1,arr2){
 		let sumbynum=0;
 		  for(let j=0;j<arr2.length;j++){
 			  if(arr2[j].ogdarep==arr1[i]._id){
+				if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 			  if(new Date(arr2[j].datevent).getMonth()==m){
 				sumbynum++;
 			  }
+			}
 			}
 			}
 			arrdata[i].data[m]=sumbynum;
@@ -900,9 +917,12 @@ function hativarepmonth(arr1,arr2){
 		let sumbynum=0;
 		  for(let j=0;j<arr2.length;j++){
 			  if(arr2[j].hativarep==arr1[i]._id){
+				if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 			  if(new Date(arr2[j].datevent).getMonth()==m){
 				sumbynum++;
 			  }
+			}
 			}
 			}
 			arrdata[i].data[m]=sumbynum;
@@ -922,9 +942,12 @@ function gdodrepmonth(arr1,arr2){
 		let sumbynum=0;
 		  for(let j=0;j<arr2.length;j++){
 			  if(arr2[j].gdodrep==arr1[i]._id){
+				if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 			  if(new Date(arr2[j].datevent).getMonth()==m){
 				sumbynum++;
 			  }
+			}
 			}
 			}
 			arrdata[i].data[m]=sumbynum;
