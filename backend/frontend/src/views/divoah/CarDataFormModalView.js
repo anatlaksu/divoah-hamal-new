@@ -60,6 +60,7 @@ const CarDataFormModalView = (match) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		yndate:"",
 		wnifga: "",
 		error: false,
 		successmsg: false,
@@ -1697,21 +1698,91 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															disabled
-														/>
-													</FormGroup>
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+													disabled
+
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+													disabled
+
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)}
+
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2426,21 +2497,90 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															disabled
-														/>
-													</FormGroup>
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+													disabled
+
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+													disabled
+
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)}
 
 													<FormGroup dir="rtl">
 														<Input

@@ -1391,8 +1391,6 @@ filteruse();
 																}
 															}
 														}
-	
-
 													}
 													else
 													if(row.original.typevent ==="7" ||row.original.typevent ==="9"){

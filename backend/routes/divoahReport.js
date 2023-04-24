@@ -193,6 +193,7 @@ router.route("/add").post((req, res) => {
 	const datevent = Date.parse(req.body.datevent);
 	const mikom = req.body.mikom;
 	const nifga = Number(req.body.nifga);
+	const yndate = Number(req.body.yndate);
 	const hurtarray = req.body.hurtarray;
 	const totalWorkHours = Number(req.body.totalWorkHours);
 	const totalCostWorkHours = Number(req.body.totalCostWorkHours);
@@ -217,6 +218,7 @@ router.route("/add").post((req, res) => {
 		typevent,
 		resevent,
 		yn,
+		yndate,
 		selneshek,
 		whap,
 		amlahtype,
@@ -541,6 +543,7 @@ router.route("/update/:id").put((req, res) => {
 			request.datevent = Date.parse(req.body.datevent);
 			request.mikom = req.body.mikom;
 			request.nifga = Number(req.body.nifga);
+			request.yndate = Number(req.body.yndate);
 			request.hurtarray = req.body.hurtarray;
 			request.totalWorkHours = Number(req.body.totalWorkHours);
 			request.totalCostWorkHours = Number(req.body.totalCostWorkHours);

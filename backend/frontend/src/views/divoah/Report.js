@@ -51,6 +51,7 @@ const Report = ({ match }) => {
 		typevent: "0",
 		resevent: "0",
 		yn: "0",
+		yndate:"",
 		selneshek: "",
 		whap: "0",
 		amlahtype: "",
@@ -644,7 +645,12 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += " ,מיקום ריק \n";
 		}
+		if (data.yndate == "") {
+			flag = false;
+			ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
+		}
 
+		if (data.yndate != "") {
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
@@ -653,6 +659,7 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
+	}
 
 		if (data.nifga == "") {
 			flag = false;
@@ -710,6 +717,7 @@ const Report = ({ match }) => {
 			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
 			yn: data.yn,
+			yndate: data.yndate,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -1928,6 +1936,46 @@ const Report = ({ match }) => {
 									</FormGroup>
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === "1" ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										תאריך אירוע
 									</div>
 									<FormGroup dir="rtl">
@@ -1937,10 +1985,30 @@ const Report = ({ match }) => {
 											type="datetime-local"
 											value={data.datevent}
 											onChange={handleChange}
-											min={"1900-01-01T00:00:00"}
-											max={"2100-01-01T00:00:00"}
 										/>
 									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === "0" ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)}
 
 									<FormGroup dir="rtl">
 										<Input

@@ -71,6 +71,7 @@ const CarDataFormModal = (match) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		yndate:"",
 		wnifga: "",
 		hurtarray: [],
 		totalwork: 0,
@@ -583,7 +584,17 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,מיקום ריק \n";
 		}
+		if (data.yndate == "") {
+			flag = false;
+			ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
+		}
 
+		// if (data.yndate == "") {
+		// 	flag = false;
+		// 	ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
+		// }
+
+		if (data.yndate != "") {
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
@@ -592,6 +603,7 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
+	}
 
 		// if (data.nifga == "") {
 		// 	flag = false;
@@ -716,6 +728,13 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,מיקום ריק \n";
 		}
+
+		// if (data.yndate == "") {
+		// 	flag = false;
+		// 	ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
+		// }
+
+		if (data.yndate != "") {
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
@@ -724,6 +743,7 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
+	}
 
 		// if (data.nifga == "") {
 		// 	flag = false;
@@ -797,6 +817,7 @@ const CarDataFormModal = (match) => {
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
+			yndate:data.yndate,
 			hurtarray: infohurtarray,
 			wnifga: data.wnifga,
 			totalwork: data.totalwork,
@@ -2180,22 +2201,83 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															min={"1900-01-01T00:00:00"}
-															max={"2100-01-01T00:00:00"}
-														/>
-													</FormGroup>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)}
+
 
 													<FormGroup dir="rtl">
 														<Input
@@ -3046,22 +3128,82 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															min={"1900-01-01T00:00:00"}
-															max={"2100-01-01T00:00:00"}
-														/>
-													</FormGroup>
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="datetime-local"
+											value={data.datevent.slice(0, 21)}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)}
 
 													<FormGroup dir="rtl">
 														<Input
