@@ -473,8 +473,7 @@ const Report = ({ match }) => {
 		if (
 			data.typevent === "1" ||
 			data.typevent === "2" ||
-			data.typevent === "3" ||
-			data.typevent === "4"
+			data.typevent === "3" 
 		) {
 			if (
 				document.getElementById("res").options[
@@ -502,6 +501,25 @@ const Report = ({ match }) => {
 						flag = false;
 					}
 				}		
+		}
+		if (
+			data.typevent === "4"
+		) {
+			if (
+				document.getElementById("res").options[
+					document.getElementById("res").selectedIndex
+				].value == "0"
+			) {
+				flag = false;
+				ErrorReason += "סיבת האירוע ריקה \n";
+			}
+			if (
+				!document.getElementById("YES").checked &&
+				!document.getElementById("NO").checked
+			) {
+				flag = false;
+				ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
+			}
 		}
 		if (data.typevent === "5") {
 			if (data.selneshek == "") {
@@ -1889,7 +1907,7 @@ const Report = ({ match }) => {
 										</>
 									)}
 
-									<FormGroup dir="rtl">
+									<FormGroup dir="rtl" style={{paddingTop: "10px" }}>
 										<Input
 											placeholder="פירוט האירוע"
 											name="pirot"

@@ -1858,7 +1858,7 @@ function gdodrepmonth(arr1,arr2){
 										<CardHeader>
 											<h3 className="card-category text-center">
 												{" "}
-												מספר אירועים לפי פיקוד
+												 מספר אירועים לפי פיקוד מנמ"רי
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -1886,7 +1886,7 @@ function gdodrepmonth(arr1,arr2){
 											<h3 className="card-category text-center">
 												{" "}
 												{}
-												מספר אירועים לפי אוגדה
+												 מספר אירועים לפי אוגדה מנמ"רית
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -1905,7 +1905,7 @@ function gdodrepmonth(arr1,arr2){
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי חטיבה
+													מספר אירועים לפי חטיבה מנמ"רית
 												</h3>
 											</CardHeader>
 											<CardBody>
@@ -1925,7 +1925,7 @@ function gdodrepmonth(arr1,arr2){
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי גדוד
+													מספר אירועים לפי גדוד מנמ"רי
 												</h3>
 											</CardHeader>
 											<CardBody>
@@ -2173,7 +2173,7 @@ function gdodrepmonth(arr1,arr2){
 										<CardHeader>
 											<h3 className="card-category text-center">
 												{" "}
-												מספר אירועים לפי פיקוד
+												מספר אירועים לפי פיקוד מדווח
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -2201,7 +2201,7 @@ function gdodrepmonth(arr1,arr2){
 											<h3 className="card-category text-center">
 												{" "}
 												{}
-												מספר אירועים לפי אוגדה
+												מספר אירועים לפי אוגדה מדווחת
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -2220,7 +2220,7 @@ function gdodrepmonth(arr1,arr2){
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי חטיבה
+													מספר אירועים לפי חטיבה מדווחת
 												</h3>
 											</CardHeader>
 											<CardBody>
@@ -2240,7 +2240,7 @@ function gdodrepmonth(arr1,arr2){
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי גדוד
+													מספר אירועים לפי גדוד מדווח
 												</h3>
 											</CardHeader>
 											<CardBody>
