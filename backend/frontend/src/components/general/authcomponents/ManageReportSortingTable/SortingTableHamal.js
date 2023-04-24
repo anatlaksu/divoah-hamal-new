@@ -1357,7 +1357,12 @@ filteruse();
 												// * ------------- added difftime --------------------------------
 
 												if (cell.column.id == "difftime") {
-													return <td>{getnumday(row.original.createdAt,row.original.datevent)}</td>;
+													if(getnumday(row.original.createdAt,row.original.datevent)>30)
+													  return <td>30+</td>;
+													  else{
+														return <td>{getnumday(row.original.createdAt,row.original.datevent)}</td>;
+
+													  }
 												}
 												if (cell.column.id == "tipul") {
 													if(row.original.typevent ==="1" ||row.original.typevent ==="2" || row.original.typevent ==="3" ||row.original.typevent ==="4" || row.original.typevent ==="רקם" ){
