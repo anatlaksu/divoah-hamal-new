@@ -2273,7 +2273,22 @@ const CarDataFormModal = (match) => {
 										/>
 									</FormGroup>
 									</>
-                                      ):null}
+                                      ):(
+										<>
+										<div style={{ textAlign: "right", paddingTop: "10px" }}>
+											תאריך אירוע
+										</div>
+										<FormGroup dir="rtl">
+											<Input
+												placeholder="תאריך אירוע"
+												name="datevent"
+												value={data.datevent.slice(0, 21)}
+												type="datetime-local"
+												onChange={handleChange}
+											/>
+										</FormGroup>
+										</>
+									  )}
 
 										</>
 									)}

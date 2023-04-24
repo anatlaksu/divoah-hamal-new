@@ -615,6 +615,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 			delete tempdata_to_excel[i].zadik;
 			delete tempdata_to_excel[i].resevent;
 			delete tempdata_to_excel[i].yn;
+			delete tempdata_to_excel[i].yndate;
 			delete tempdata_to_excel[i].selneshek;
 			delete tempdata_to_excel[i].whap;
 			delete tempdata_to_excel[i].amlahtype;
@@ -1376,50 +1377,143 @@ filteruse();
 															i++;
 														}
 														if(sum>0 && row.original.resevent === "4" &&
-														row.original.nifga === 2)
-														  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+														row.original.nifga === 2 && row.original.yndate === 0)
+														  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
 														  else {
-															if (row.original.resevent === "4")
-																return <td>סיבת אירוע חסרה</td>;
-															else {
-																if (row.original.nifga === 2)
-																	return <td>לא ידוע על נפגעים</td>;
-																else {
-																	if(sum>0)
-																	      return <td>צ' לא ידוע</td>;
-																	else return <td>לא</td>;
+															if(sum>0 && row.original.resevent === "4" &&
+															row.original.nifga === 2)
+															  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+															  else {
+																if(sum>0 && row.original.resevent === "4" &&
+																row.original.yndate === 0)
+																  return <td>צ' לא ידוע, סיבת אירוע חסרה, שעת אירוע לא ידועה</td>;
+																  else {
+																	if(row.original.resevent === "4" && row.original.nifga === 2 &&
+																	row.original.yndate === 0)
+																	  return <td>סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
+																	  else {
+																		if(sum>0 && row.original.nifga === 2 &&
+																		row.original.yndate === 0)
+																		  return <td>צ' לא ידוע, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
+																		  else {
+																			if(sum>0 && row.original.yndate === 0)
+																				  return <td>צ' לא ידוע, שעת אירוע לא ידועה</td>;
+																				  else {
+																					if(sum>0 && row.original.nifga === 2)
+																						  return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
+																						  else {
+																							if(sum>0 && row.original.resevent === "4")
+																							return <td>צ' לא ידוע, סיבת אירוע חסרה</td>;
+																							else {
+																								if(row.original.nifga === 2 && row.original.resevent === "4")
+																								return <td>לא ידוע על נפגעים, סיבת אירוע חסרה</td>;
+																								else {
+																									if(row.original.yndate === 0 && row.original.resevent === "4")
+																									return <td>שעת אירוע לא ידועה, סיבת אירוע חסרה</td>;
+																									else {
+																										if(row.original.yndate === 0 && row.original.nifga === 2)
+																										return <td>שעת אירוע לא ידועה, לא ידוע על נפגעים</td>;
+																										else {
+																										  if (row.original.resevent === "4")
+																											  return <td>סיבת אירוע חסרה</td>;
+																										  else {
+																											  if (row.original.nifga === 2)
+																												  return <td>לא ידוע על נפגעים</td>;
+																											  else {
+																												  if(sum>0)
+																														return <td>צ' לא ידוע</td>;
+																												  else {
+																													if(row.original.yndate === 0)
+																													return <td>שעת אירוע לא ידועה</td>;
+																											  else return <td>לא</td>;
+
+																												  }
+																											  }
+																										  }
+																									  }
+																									  }
+																								  }
+																							  }
+																						  }
+																						}
+																				}
+																				}
+																	}
 																}
 															}
-														}
 													}
 													else
 													if(row.original.typevent ==="7" ||row.original.typevent ==="9"){
-														if(row.original.zadik === "" && row.original.nifga === 2)
-														   return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
+														if(row.original.zadik === "" && row.original.nifga === 2 && row.original.yndate === 0)
+														   return <td>צ' לא ידוע, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
 														else{
-															if(row.original.zadik === "")
-															return <td>צ' לא ידוע</td>;
-															else {
-																if (row.original.nifga === 2)
-																	return <td>לא ידוע על נפגעים</td>;
+															if(row.original.zadik === "" && row.original.nifga === 2)
+															return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
+														 else{
+															if(row.original.zadik === "" && row.original.yndate === 0)
+															return <td>צ' לא ידוע, שעת אירועה לא ידועה</td>;
+														 else{
+															if(row.original.nifga === 2 && row.original.yndate === 0)
+															return <td>לא ידוע על נפגעים, שעת אירועה לא ידועה</td>;
+														 else{
+															 if(row.original.zadik === "")
+															 return <td>צ' לא ידוע</td>;
+															 else {
+																 if (row.original.nifga === 2)
+																	 return <td>לא ידוע על נפגעים</td>;
+																 else {
+																	if (row.original.yndate === 0)
+																	return <td>שעת אירוע לא ידועה</td>;
 																else return <td>לא</td>;
-															}
-	
-														}
+
+																 }
+															 }
+														 }
+														 }
+														 }
+														 }
 													}else
 													if (
 														row.original.resevent === "4" &&
-														row.original.nifga === 2
+														row.original.nifga === 2 &&
+														row.original.yndate === 0
 													)
-														return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+														return <td>סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע אינה ידועה</td>;
 													else {
-														if (row.original.resevent === "4")
-															return <td>סיבת אירוע חסרה</td>;
-														else {
-															if (row.original.nifga === 2)
-																return <td>לא ידוע על נפגעים</td>;
-															else return <td>לא</td>;
+														if (
+															row.original.resevent === "4" &&
+															row.original.nifga === 2
+														)
+															return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+														else{
+															if (
+																row.original.resevent === "4" &&
+																row.original.yndate === 0
+															)
+																return <td>סיבת אירוע חסרה, שעת אירוע אינה ידועה</td>;
+															else{
+																if (
+																	row.original.nifga === 2 &&
+																	row.original.yndate === 0
+																)
+																	return <td>לא ידוע על נפגעים, שעת אירוע אינה ידועה</td>;
+																else{
+																if (row.original.resevent === "4")
+																	return <td>סיבת אירוע חסרה</td>;
+																else {
+																	if (row.original.nifga === 2)
+																		return <td>לא ידוע על נפגעים</td>;
+																	else {
+																		if (row.original.yndate === 0)
+																		return <td>שעת אירוע אינה ידועה</td>;
+																	    else return <td>לא</td>;
+
+																	}
+																}
+															}
 														}
+	
+													}
 													}
 												}
 											}
