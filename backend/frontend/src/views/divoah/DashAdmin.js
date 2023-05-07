@@ -27,6 +27,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
 import ToggleDarkModeButton from "../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const AdminSignInForm = (props) => {
 	const [isError, setIsError] = useState(false);
@@ -384,6 +385,23 @@ const AdminSignInForm = (props) => {
 				align: "center",
 				fullSize: true,
 			},
+			datalabels:{
+				align: 'center',
+				position: "right",
+				color: 'rgb(0, 0, 0)',
+				formatter: (value,context)=>{
+					const datapoints=context.chart.data.datasets[0].data;
+					function totalsum(total,datapoint){
+						return total+datapoint;
+					}
+					const totalvalue=datapoints.reduce(totalsum,0);
+					const percentagevalue=(value/totalvalue *100).toFixed(0);
+					if(percentagevalue !=0 )
+					  return percentagevalue +'%';
+					else
+					  return '';
+				}
+			},
 		},
 	};
 	//* on Army :
@@ -452,6 +470,7 @@ const AdminSignInForm = (props) => {
 				data: sumtypereport(labels, reportDB, eventTypeArray),
 				backgroundColor: colors.map((col)=>col),
 				borderWidth: 1,
+				render: 'percentage',
 			},
 		],
 	};
@@ -1837,16 +1856,19 @@ function gdodrepmonth(arr1,arr2){
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : (
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										)}
 									</CardBody>
@@ -1866,6 +1888,7 @@ function gdodrepmonth(arr1,arr2){
 												<Doughnut
 													data={datapikod}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											) : //* was removed
 											/*
@@ -1893,6 +1916,7 @@ function gdodrepmonth(arr1,arr2){
 											<Doughnut
 												data={dataogda}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										</CardBody>
 									</Card>
@@ -1912,6 +1936,7 @@ function gdodrepmonth(arr1,arr2){
 												<Doughnut
 													data={datahativa}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>
@@ -1932,6 +1957,7 @@ function gdodrepmonth(arr1,arr2){
 												<Doughnut
 													data={datagdod}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>
@@ -2152,16 +2178,19 @@ function gdodrepmonth(arr1,arr2){
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : !data.pikod ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : (
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										)}
 									</CardBody>
@@ -2181,6 +2210,7 @@ function gdodrepmonth(arr1,arr2){
 												<Doughnut
 													data={datapikodrep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											) : //* was removed
 											/*
@@ -2208,6 +2238,7 @@ function gdodrepmonth(arr1,arr2){
 											<Doughnut
 												data={dataogdarep}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										</CardBody>
 									</Card>
@@ -2227,6 +2258,7 @@ function gdodrepmonth(arr1,arr2){
 												<Doughnut
 													data={datahativarep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>
@@ -2247,6 +2279,7 @@ function gdodrepmonth(arr1,arr2){
 												<Doughnut
 													data={datagdodrep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>

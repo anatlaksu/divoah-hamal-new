@@ -26,6 +26,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
 import ToggleDarkModeButton from "../../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import { isAuthenticated } from "auth";
 const AdminSignInForm = (props) => {
@@ -378,6 +379,23 @@ const AdminSignInForm = (props) => {
 				position: "right",
 				align: "center",
 				fullSize: true,
+			},
+			datalabels:{
+				align: 'center',
+				position: "right",
+				color: 'rgb(0, 0, 0)',
+				formatter: (value,context)=>{
+					const datapoints=context.chart.data.datasets[0].data;
+					function totalsum(total,datapoint){
+						return total+datapoint;
+					}
+					const totalvalue=datapoints.reduce(totalsum,0);
+					const percentagevalue=(value/totalvalue *100).toFixed(0);
+					if(percentagevalue !=0 )
+					  return percentagevalue +'%';
+					else
+					  return '';
+				}
 			},
 		},
 	};
@@ -1719,16 +1737,19 @@ const AdminSignInForm = (props) => {
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : !data.ogda ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : (
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										)}
 									</CardBody>
@@ -1748,6 +1769,7 @@ const AdminSignInForm = (props) => {
 												<Doughnut
 													data={datapikod}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											) : //* was removed
 											/*
@@ -1775,6 +1797,7 @@ const AdminSignInForm = (props) => {
 											<Doughnut
 												data={dataogda}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										</CardBody>
 									</Card>
@@ -1794,6 +1817,7 @@ const AdminSignInForm = (props) => {
 												<Doughnut
 													data={datahativa}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>
@@ -1814,6 +1838,7 @@ const AdminSignInForm = (props) => {
 												<Doughnut
 													data={datagdod}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>
@@ -2014,16 +2039,19 @@ const AdminSignInForm = (props) => {
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : !data.ogda ? (
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										) : (
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										)}
 									</CardBody>
@@ -2043,6 +2071,7 @@ const AdminSignInForm = (props) => {
 												<Doughnut
 													data={datapikodrep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											) : //* was removed
 											/*
@@ -2070,6 +2099,7 @@ const AdminSignInForm = (props) => {
 											<Doughnut
 												data={dataogdarep}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
 										</CardBody>
 									</Card>
@@ -2089,6 +2119,7 @@ const AdminSignInForm = (props) => {
 												<Doughnut
 													data={datahativarep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>
@@ -2109,6 +2140,7 @@ const AdminSignInForm = (props) => {
 												<Doughnut
 													data={datagdodrep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
 											</CardBody>
 										</Card>
