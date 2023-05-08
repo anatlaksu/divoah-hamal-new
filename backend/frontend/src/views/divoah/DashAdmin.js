@@ -1052,10 +1052,15 @@ function gdodrepmonth(arr1,arr2){
 	//* ----------- is rendered --------------------------------
 
 	return (
-		<Background>
+		<Background style={{height: "80%"}}>
 			<Container
 				className="mt--8 pb-5"
-				// style={{ marginRight: "10%" }}
+				style={{
+					width: "160%",
+					overflow: "auto",
+					marginRight: "10%",
+				}}
+				// =style{{ marginRight: "10%" }}
 			>
 				<Row>
 					<div style={{ width: "100%", margin: "auto", textAlign: "right" }}>
@@ -1304,9 +1309,92 @@ function gdodrepmonth(arr1,arr2){
 					</CardHeader>
 				</Row> */}
 				{/*//todo dont let the user put todate larger then from date or make a fail safe like in divoahReport lines 340 - 374 */}
-				{data.fromdate && data.todate ? (
-					<Row>
-						<Col lg="3">
+				{manmarit ? (
+					<>
+						<Row style={{width: "120%"}}>
+						{!data.pikod ? (
+							<Col style={{width:"200px"}}>
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											{" "}
+											מספר אירועים בכל פיקוד לפי חודשים
+										</h3>
+									</CardHeader>
+									<CardBody>
+									{!data.pikod ? (
+											<Bar
+												data={databymonthpikod}
+												options={optionsBar}
+											/>
+											) :null}
+									</CardBody>
+								</Card>
+							</Col>
+							) : null}
+							{data.pikod && !data.ogda && !data.hativa ? (
+							<Col style={{width:"200px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל אוגדה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthogda}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+						) : null}
+						<>
+								{data.ogda && !data.hativa ? (
+							<Col style={{width:"200px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל חטיבה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthhativa}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+							<>
+								{data.hativa ? (
+							<Col style={{width:"200px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל גדוד לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthgdod}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+
+							{data.fromdate && data.todate ? (
+						<Col style={{width:"100px"}}>
+						<Row>
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
@@ -1346,7 +1434,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1389,7 +1477,9 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
+						</Row>
+						<Row>
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1432,7 +1522,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
@@ -1466,10 +1556,12 @@ function gdodrepmonth(arr1,arr2){
 								<CardBody></CardBody>
 							</Card>
 						</Col>
-					</Row>
+						</Row>
+						</Col>
 				) : (
-					<Row>
-						<Col lg="3">
+						<Col lg="6">
+						<Row>
+						<Col lg="6">
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
@@ -1495,7 +1587,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
+						<Col lg="6">
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1524,7 +1616,9 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
+						</Row>
+						<Row>
+						<Col lg="6">
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1553,7 +1647,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
+						<Col lg="6">
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
@@ -1566,13 +1660,13 @@ function gdodrepmonth(arr1,arr2){
 								<CardBody></CardBody>
 							</Card>
 						</Col>
-					</Row>
+						</Row>
+						</Col>
 				)}
 
-				{manmarit ? (
-					<>
-						<Row>
-							<Col lg="12">
+                        </Row>
+						<Row style={{width: "120%"}}>
+							<Col style={{width:"200px"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1841,9 +1935,7 @@ function gdodrepmonth(arr1,arr2){
 									</CardBody>
 								</Card>
 							</Col>
-						</Row>
-						<Row>
-							<Col lg="6">
+							<Col style={{width:"100px"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1875,7 +1967,7 @@ function gdodrepmonth(arr1,arr2){
 								</Card>
 							</Col>
 							{!data.pikod ? (
-								<Col lg="6">
+								<Col style={{width:"100px"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -1903,7 +1995,7 @@ function gdodrepmonth(arr1,arr2){
 								</Col>
 							) : null}
 							{data.pikod && !data.ogda && !data.hativa ? (
-								<Col lg="6">
+								<Col style={{width:"100px"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -1924,7 +2016,7 @@ function gdodrepmonth(arr1,arr2){
 							) : null}
 							<>
 								{data.ogda && !data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"100px"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -1945,7 +2037,7 @@ function gdodrepmonth(arr1,arr2){
 							</>
 							<>
 								{data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"100px"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -1964,10 +2056,14 @@ function gdodrepmonth(arr1,arr2){
 									</Col>
 								) : null}
 							</>
+
 						</Row>
-						<Row>
+					</>
+				) : (
+					<>
+					    <Row style={{width: "120%"}}>
 						{!data.pikod ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1978,7 +2074,7 @@ function gdodrepmonth(arr1,arr2){
 									<CardBody>
 									{!data.pikod ? (
 											<Bar
-												data={databymonthpikod}
+												data={databymonthpikodrep}
 												options={optionsBar}
 											/>
 											) :null}
@@ -1987,7 +2083,7 @@ function gdodrepmonth(arr1,arr2){
 							</Col>
 							) : null}
 							{data.pikod && !data.ogda && !data.hativa ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1997,7 +2093,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardHeader>
 								<CardBody>
 										<Bar
-											data={databymonthogda}
+											data={databymonthogdarep}
 											options={optionsBar}
 										/>
 								</CardBody>
@@ -2006,7 +2102,7 @@ function gdodrepmonth(arr1,arr2){
 						) : null}
 						<>
 								{data.ogda && !data.hativa ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -2016,7 +2112,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardHeader>
 								<CardBody>
 										<Bar
-											data={databymonthhativa}
+											data={databymonthhativarep}
 											options={optionsBar}
 										/>
 								</CardBody>
@@ -2026,7 +2122,7 @@ function gdodrepmonth(arr1,arr2){
 							</>
 							<>
 								{data.hativa ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -2036,7 +2132,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardHeader>
 								<CardBody>
 										<Bar
-											data={databymonthgdod}
+											data={databymonthgdodrep}
 											options={optionsBar}
 										/>
 								</CardBody>
@@ -2044,13 +2140,281 @@ function gdodrepmonth(arr1,arr2){
 						</Col>
 								) : null}
 							</>
-                        </Row>
-
-					</>
-				) : (
-					<>
+							{data.fromdate && data.todate ? (
+						<Col style={{width:"100px"}}>
 						<Row>
-							<Col lg="12">
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						</Row>
+						<Row>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ עלות שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent  == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> מספר אירועים</h3>
+								</CardHeader>
+								{data.pikod ? (
+									<h2 className="text-center">
+										{getnumevt(
+											reportDBFillter.filter(
+												(report) =>
+													new Date(report.datevent).setHours(0, 0, 0, 0) >=
+														new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+													new Date(report.datevent).setHours(0, 0, 0, 0) <=
+														new Date(data.todate).setHours(0, 0, 0, 0)
+											)
+										)}
+									</h2>
+								) : (
+									<h2 className="text-center">
+										{getnumevt(
+											reportDB.filter(
+												(report) =>
+													new Date(report.datevent).setHours(0, 0, 0, 0) >=
+														new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+													new Date(report.datevent).setHours(0, 0, 0, 0) <=
+														new Date(data.todate).setHours(0, 0, 0, 0)
+											)
+										)}
+									</h2>
+								)}
+
+								<CardBody></CardBody>
+							</Card>
+						</Col>
+						</Row>
+						</Col>
+				) : (
+						<Col lg="6">
+						<Row>
+						<Col lg="6">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="6">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						</Row>
+						<Row>
+						<Col lg="6">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ עלות שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col lg="6">
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center"> מספר אירועים</h3>
+								</CardHeader>
+								{data.pikod ? (
+									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
+								) : (
+									<h2 className="text-center">{getnumevt(reportDB)}</h2>
+								)}
+								<CardBody></CardBody>
+							</Card>
+						</Col>
+						</Row>
+						</Col>
+				)}
+                        </Row>
+						<Row style={{width: "120%"}}>
+							<Col style={{width:"200px"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -2163,10 +2527,8 @@ function gdodrepmonth(arr1,arr2){
 									</CardBody>
 								</Card>
 							</Col>
-						</Row>
-						<Row>
-							<Col lg="6">
-								<Card className="card-chart">
+							<Col style={{width:"100px"}}>
+							<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
 											{" "}
@@ -2197,7 +2559,7 @@ function gdodrepmonth(arr1,arr2){
 								</Card>
 							</Col>
 							{!data.pikod ? (
-								<Col lg="6">
+								<Col style={{width:"100px"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -2225,7 +2587,7 @@ function gdodrepmonth(arr1,arr2){
 								</Col>
 							) : null}
 							{data.pikod && !data.ogda && !data.hativa ? (
-								<Col lg="6">
+								<Col style={{width:"100px"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -2246,7 +2608,7 @@ function gdodrepmonth(arr1,arr2){
 							) : null}
 							<>
 								{data.ogda && !data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"100px"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -2267,7 +2629,7 @@ function gdodrepmonth(arr1,arr2){
 							</>
 							<>
 								{data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"100px"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -2286,87 +2648,8 @@ function gdodrepmonth(arr1,arr2){
 									</Col>
 								) : null}
 							</>
+
 						</Row>
-						<Row>
-						{!data.pikod ? (
-							<Col lg="12">
-								<Card className="card-chart">
-									<CardHeader>
-										<h3 className="card-category text-center">
-											{" "}
-											מספר אירועים בכל פיקוד לפי חודשים
-										</h3>
-									</CardHeader>
-									<CardBody>
-									{!data.pikod ? (
-											<Bar
-												data={databymonthpikodrep}
-												options={optionsBar}
-											/>
-											) :null}
-									</CardBody>
-								</Card>
-							</Col>
-							) : null}
-							{data.pikod && !data.ogda && !data.hativa ? (
-							<Col lg="12">
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל אוגדה לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthogdarep}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-						) : null}
-						<>
-								{data.ogda && !data.hativa ? (
-							<Col lg="12">
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל חטיבה לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthhativarep}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-								) : null}
-							</>
-							<>
-								{data.hativa ? (
-							<Col lg="12">
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל גדוד לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthgdodrep}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-								) : null}
-							</>
-                        </Row>
 					</>
 				)}
 			</Container>
