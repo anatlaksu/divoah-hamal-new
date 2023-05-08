@@ -1532,14 +1532,13 @@ filteruse();
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
 													{/* <Link to={`/editreport/${row.original._id}`}> */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										) : (
@@ -1555,14 +1554,13 @@ filteruse();
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
 													{/* <Link to={`/editreport/${row.original._id}`}> */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										)}
@@ -1589,7 +1587,7 @@ filteruse();
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>
@@ -1616,7 +1614,7 @@ filteruse();
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>

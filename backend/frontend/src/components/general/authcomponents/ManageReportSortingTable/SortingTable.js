@@ -461,14 +461,13 @@ const SortingTable = ({ match }) => {
 														>
 															{" "}
 															{/* {console.log(row.original.typevent)} */}
-															<button
-																className="btn-new"
+															<Button
 																id={row.index}
 																value={row.original._id}
 																onClick={Toggle}
 															>
 																עדכן
-															</button>
+															</Button>
 														</div>{" "}
 													</td>
 												) : (
@@ -483,14 +482,13 @@ const SortingTable = ({ match }) => {
 														>
 															{" "}
 															{/* {console.log(row.original.typevent)} */}
-															<button
-																className="btn-new"
+															<Button
 																id={row.index}
 																value={row.original._id}
 																onClick={Toggle}
 															>
 																עדכן
-															</button>
+															</Button>
 														</div>{" "}
 													</td>
 												)}
@@ -517,7 +515,7 @@ const SortingTable = ({ match }) => {
 															<button
 																value={row.original._id}
 																onClick={ToggleView}
-																className="btn-new-delete"
+																className="btn-new"
 															>
 																צפייה
 															</button>
@@ -543,7 +541,7 @@ const SortingTable = ({ match }) => {
 															<button
 																value={row.original._id}
 																onClick={ToggleView}
-																className="btn-new-delete"
+																className="btn-new"
 															>
 																צפייה
 															</button>
@@ -648,14 +646,13 @@ const SortingTable = ({ match }) => {
 												>
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										) : (
@@ -670,14 +667,13 @@ const SortingTable = ({ match }) => {
 												>
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										)}
@@ -704,7 +700,7 @@ const SortingTable = ({ match }) => {
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>
@@ -730,7 +726,7 @@ const SortingTable = ({ match }) => {
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>

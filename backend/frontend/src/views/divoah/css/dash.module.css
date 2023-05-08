@@ -4,7 +4,7 @@
 	flex-direction: column !important;
 	align-items: center !important;
 	padding: 6px 14px;
-	font-family: -apple-system, BlinkMacSystemFont, "Roboto", sans-serif !important;
+	/* font-family: "Rubik"; */
 	border-radius: 6px !important;
 	color: #040000 !important;
 	background: #fff !important;
@@ -14,6 +14,12 @@
 	-webkit-user-select: none !important;
 	touch-action: manipulation !important;
 	border-radius: 18px !important;
+	cursor: pointer;
+}
+
+.dashBtn:hover {
+	background-color: #9BA4B5 !important;
+	width: 195px;
 }
 
 .dashBtn:focus {
@@ -28,9 +34,9 @@
 
 .pikodCard {
 	width: 250px;
-	height: 400px;
+	height: 300px;
 	position: absolute;
-	top: 33%;
+	top: 41%;
 	left: 55.5%;
 }
 

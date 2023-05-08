@@ -1675,6 +1675,9 @@ const CarDataFormModalView = (match) => {
 */}
 														</>
 													)}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										פירוט אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -1783,6 +1786,9 @@ const CarDataFormModalView = (match) => {
 										</>
 									)}
 
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2474,6 +2480,9 @@ const CarDataFormModalView = (match) => {
 															</div>
 														</FormGroup>
 													</div>
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+														פירוט אירוע
+													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2581,6 +2590,9 @@ const CarDataFormModalView = (match) => {
 
 										</>
 									)}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input

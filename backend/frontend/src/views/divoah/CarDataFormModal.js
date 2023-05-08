@@ -2180,6 +2180,9 @@ const CarDataFormModal = (match) => {
 */}
 														</>
 													)}
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+														פירוט אירוע
+													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2292,6 +2295,9 @@ const CarDataFormModal = (match) => {
 
 										</>
 									)}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
 
 
 													<FormGroup dir="rtl">
@@ -3123,6 +3129,11 @@ const CarDataFormModal = (match) => {
 														)}
 													</div>
 
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+													פירוט אירוע
+													</div>
+
+
 													<FormGroup dir="rtl">
 														<Input
 															placeholder="פירוט האירוע"
@@ -3219,6 +3230,9 @@ const CarDataFormModal = (match) => {
 
 										</>
 									)}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input
