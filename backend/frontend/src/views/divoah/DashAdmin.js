@@ -1527,6 +1527,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
+								<CardBody>
 								{data.pikod ? (
 									<h2 className="text-center">
 										{getnumevt(
@@ -1553,15 +1554,15 @@ function gdodrepmonth(arr1,arr2){
 									</h2>
 								)}
 
-								<CardBody></CardBody>
+								</CardBody>
 							</Card>
 						</Col>
 						</Row>
 						</Col>
 				) : (
-						<Col lg="6">
+						<Col style={{width:"100px"}}>
 						<Row>
-						<Col lg="6">
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
@@ -1587,7 +1588,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="6">
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1618,7 +1619,7 @@ function gdodrepmonth(arr1,arr2){
 						</Col>
 						</Row>
 						<Row>
-						<Col lg="6">
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1647,17 +1648,18 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="6">
+						<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
+								<CardBody>
 								{data.pikod ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
 									<h2 className="text-center">{getnumevt(reportDB)}</h2>
 								)}
-								<CardBody></CardBody>
+								</CardBody>
 							</Card>
 						</Col>
 						</Row>
@@ -2276,6 +2278,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
+								<CardBody>
 								{data.pikod ? (
 									<h2 className="text-center">
 										{getnumevt(
@@ -2301,16 +2304,15 @@ function gdodrepmonth(arr1,arr2){
 										)}
 									</h2>
 								)}
-
-								<CardBody></CardBody>
+								</CardBody>
 							</Card>
 						</Col>
 						</Row>
 						</Col>
 				) : (
-						<Col lg="6">
+						<Col style={{width:"100px"}}>
 						<Row>
-						<Col lg="6">
+						<Col  style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
@@ -2336,7 +2338,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="6">
+						<Col  style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -2367,7 +2369,7 @@ function gdodrepmonth(arr1,arr2){
 						</Col>
 						</Row>
 						<Row>
-						<Col lg="6">
+						<Col  style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -2396,17 +2398,18 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="6">
+						<Col  style={{width:"100px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
+								<CardBody>
 								{data.pikod ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
 									<h2 className="text-center">{getnumevt(reportDB)}</h2>
 								)}
-								<CardBody></CardBody>
+								</CardBody>
 							</Card>
 						</Col>
 						</Row>
