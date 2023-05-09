@@ -53,6 +53,8 @@ import HistoReport from "views/divoah/Hamal/HistoReport";
 import SummarizingReport from "views/divoah/Hamal/SummarizingReport";
 import SummarizingReportRekem from "views/divoah/Hamal/SummarizingReportRekem";
 
+import pdforsimple from "views/divoah/Pdfiles/pdforsimple";
+
 ReactDOM.render(
 	<>
 		<ThemeContextWrapper>
@@ -133,7 +135,7 @@ ReactDOM.render(
 							exact
 							component={SummarizingReport}
 						/>
-												<LoggedinRoute
+						<LoggedinRoute
 							path="/summarizingreportrekem"
 							exact
 							component={SummarizingReportRekem}
@@ -171,7 +173,12 @@ ReactDOM.render(
 							exact
 							component={Odot}
 						/>
-
+						<LoggedinRoute
+							path="/pdforsimple"
+							exact
+							component={pdforsimple}
+						/>
+						
 						<Redirect
 							from="/"
 							to="/signin"

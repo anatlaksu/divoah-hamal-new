@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter, Redirect ,Link } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -2800,6 +2800,23 @@ const CarDataFormModalView = (match) => {
 												צא
 											</button>
 										</div>
+										{(data.typevent=="10" || data.typevent=="11"|| data.typevent=="12")?(
+											<div className="text-center">
+												<button
+													className="btn-new-blue mb-3"
+												>
+												<Link
+													className="text-dark"
+													style={{ fontSize: "16px" }}
+													to="/pdforsimple"
+												>
+													הדפסת דיווח
+												</Link>
+												</button>
+											</div>
+										
+										)
+										:null}
 									</Card>
 								</Row>
 							</Container>
