@@ -1366,6 +1366,7 @@ filteruse();
 													  }
 												}
 												if (cell.column.id == "tipul") {
+													const hour = row.original.datevent.substr(11, 5);
 													if(row.original.typevent ==="1" ||row.original.typevent ==="2" || row.original.typevent ==="3" ||row.original.typevent ==="4" || row.original.typevent ==="רקם" ){
 														let i=0;
 														let sum=0;
@@ -1377,7 +1378,7 @@ filteruse();
 															i++;
 														}
 														if(sum>0 && row.original.resevent === "4" &&
-														row.original.nifga === 2 && row.original.yndate === 0)
+														row.original.nifga === 2 && hour === "00:00")
 														  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
 														  else {
 															if(sum>0 && row.original.resevent === "4" &&
@@ -1385,18 +1386,18 @@ filteruse();
 															  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
 															  else {
 																if(sum>0 && row.original.resevent === "4" &&
-																row.original.yndate === 0)
+																hour === "00:00")
 																  return <td>צ' לא ידוע, סיבת אירוע חסרה, שעת אירוע לא ידועה</td>;
 																  else {
 																	if(row.original.resevent === "4" && row.original.nifga === 2 &&
-																	row.original.yndate === 0)
+																	hour === "00:00")
 																	  return <td>סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
 																	  else {
 																		if(sum>0 && row.original.nifga === 2 &&
-																		row.original.yndate === 0)
+																			hour === "00:00")
 																		  return <td>צ' לא ידוע, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
 																		  else {
-																			if(sum>0 && row.original.yndate === 0)
+																			if(sum>0 && hour === "00:00")
 																				  return <td>צ' לא ידוע, שעת אירוע לא ידועה</td>;
 																				  else {
 																					if(sum>0 && row.original.nifga === 2)
@@ -1408,10 +1409,10 @@ filteruse();
 																								if(row.original.nifga === 2 && row.original.resevent === "4")
 																								return <td>לא ידוע על נפגעים, סיבת אירוע חסרה</td>;
 																								else {
-																									if(row.original.yndate === 0 && row.original.resevent === "4")
+																									if(hour === "00:00" && row.original.resevent === "4")
 																									return <td>שעת אירוע לא ידועה, סיבת אירוע חסרה</td>;
 																									else {
-																										if(row.original.yndate === 0 && row.original.nifga === 2)
+																										if(hour === "00:00" && row.original.nifga === 2)
 																										return <td>שעת אירוע לא ידועה, לא ידוע על נפגעים</td>;
 																										else {
 																										  if (row.original.resevent === "4")
@@ -1423,7 +1424,7 @@ filteruse();
 																												  if(sum>0)
 																														return <td>צ' לא ידוע</td>;
 																												  else {
-																													if(row.original.yndate === 0)
+																													if(hour === "00:00")
 																													return <td>שעת אירוע לא ידועה</td>;
 																											  else return <td>לא</td>;
 
@@ -1444,16 +1445,16 @@ filteruse();
 													}
 													else
 													if(row.original.typevent ==="7" ||row.original.typevent ==="9"){
-														if(row.original.zadik === "" && row.original.nifga === 2 && row.original.yndate === 0)
+														if(row.original.zadik === "" && row.original.nifga === 2 && hour === "00:00")
 														   return <td>צ' לא ידוע, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
 														else{
 															if(row.original.zadik === "" && row.original.nifga === 2)
 															return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
 														 else{
-															if(row.original.zadik === "" && row.original.yndate === 0)
+															if(row.original.zadik === "" && hour === "00:00")
 															return <td>צ' לא ידוע, שעת אירועה לא ידועה</td>;
 														 else{
-															if(row.original.nifga === 2 && row.original.yndate === 0)
+															if(row.original.nifga === 2 && hour === "00:00")
 															return <td>לא ידוע על נפגעים, שעת אירועה לא ידועה</td>;
 														 else{
 															 if(row.original.zadik === "")
@@ -1462,7 +1463,7 @@ filteruse();
 																 if (row.original.nifga === 2)
 																	 return <td>לא ידוע על נפגעים</td>;
 																 else {
-																	if (row.original.yndate === 0)
+																	if (hour === "00:00")
 																	return <td>שעת אירוע לא ידועה</td>;
 																else return <td>לא</td>;
 
@@ -1476,7 +1477,7 @@ filteruse();
 													if (
 														row.original.resevent === "4" &&
 														row.original.nifga === 2 &&
-														row.original.yndate === 0
+														hour === "00:00"
 													)
 														return <td>סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע אינה ידועה</td>;
 													else {
@@ -1488,13 +1489,13 @@ filteruse();
 														else{
 															if (
 																row.original.resevent === "4" &&
-																row.original.yndate === 0
+																hour === "00:00"
 															)
 																return <td>סיבת אירוע חסרה, שעת אירוע אינה ידועה</td>;
 															else{
 																if (
 																	row.original.nifga === 2 &&
-																	row.original.yndate === 0
+																	hour === "00:00"
 																)
 																	return <td>לא ידוע על נפגעים, שעת אירוע אינה ידועה</td>;
 																else{
@@ -1504,7 +1505,7 @@ filteruse();
 																	if (row.original.nifga === 2)
 																		return <td>לא ידוע על נפגעים</td>;
 																	else {
-																		if (row.original.yndate === 0)
+																		if (hour === "00:00")
 																		return <td>שעת אירוע אינה ידועה</td>;
 																	    else return <td>לא</td>;
 

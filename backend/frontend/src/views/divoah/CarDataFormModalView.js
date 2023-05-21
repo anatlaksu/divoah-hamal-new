@@ -1561,7 +1561,7 @@ const CarDataFormModalView = (match) => {
 																			val={
 																				data.magadal ? data.magadal : undefined
 																			}
-																			disabled
+																			isDisabled={true}
 																		/>
 																	</Col>
 																)}
@@ -1701,7 +1701,7 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
-													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+													{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם ידוע על שעת האירוע
 									</div>
 									<div
@@ -1784,7 +1784,22 @@ const CarDataFormModalView = (match) => {
                                       ):null}
 
 										</>
-									)}
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										מיקום אירוע
@@ -2506,7 +2521,7 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
-													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+													{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם ידוע על שעת האירוע
 									</div>
 									<div
@@ -2589,7 +2604,22 @@ const CarDataFormModalView = (match) => {
                                       ):null}
 
 										</>
-									)}
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										מיקום אירוע
 									</div>

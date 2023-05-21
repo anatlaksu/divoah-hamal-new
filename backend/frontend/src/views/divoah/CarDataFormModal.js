@@ -589,12 +589,6 @@ const CarDataFormModal = (match) => {
 			ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
 		}
 
-		// if (data.yndate == "") {
-		// 	flag = false;
-		// 	ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
-		// }
-
-		if (data.yndate != "") {
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
@@ -603,7 +597,6 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
-	}
 
 		// if (data.nifga == "") {
 		// 	flag = false;
@@ -729,12 +722,6 @@ const CarDataFormModal = (match) => {
 			ErrorReason += " ,מיקום ריק \n";
 		}
 
-		// if (data.yndate == "") {
-		// 	flag = false;
-		// 	ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
-		// }
-
-		if (data.yndate != "") {
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
@@ -743,7 +730,6 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
-	}
 
 		// if (data.nifga == "") {
 		// 	flag = false;
@@ -2204,7 +2190,7 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
-									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+									{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם ידוע על שעת האירוע
 									</div>
 									<div
@@ -2294,7 +2280,20 @@ const CarDataFormModal = (match) => {
 									  )}
 
 										</>
-									)}
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										מיקום אירוע
 									</div>
@@ -3154,7 +3153,7 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
-													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+													{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
 										האם ידוע על שעת האירוע
 									</div>
 									<div
@@ -3229,7 +3228,20 @@ const CarDataFormModal = (match) => {
                                       ):null}
 
 										</>
-									)}
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										מיקום אירוע
 									</div>
