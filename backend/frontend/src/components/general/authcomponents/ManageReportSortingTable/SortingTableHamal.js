@@ -85,6 +85,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	const [date, setDate] = useState([]);
 	const [tyevent, setTyevent] = useState([]);
 	const [dataunit, setDataunit] = useState([]);
+	const [sinono, setSinono] = useState([]);
 
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const toggleCollapse = () => {
@@ -374,6 +375,15 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		console.log(tyevent.typevent);
 		console.log(isNaN(tyevent.typevent));
 	}
+	function handleChange4(evt) {
+		const value = evt.target.value;
+		console.log(evt.target.value);
+		console.log(evt.target.name);
+		setSinono({ ...sinono, [evt.target.name]: value });
+		console.log(sinono.typesinono);
+		console.log(isNaN(sinono.typesinono));
+	}
+
 
 	// function handleChange3(evt) {
 	// 	const value = evt.target.value;
@@ -569,8 +579,47 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		}else{
 			filter6=filter5.filter((el)=>el.gdodrep === dataunit.gdod);
 		}
-		console.log(filter6)
-		setData(filter6);
+
+		let filter7=[];//sinono filter
+		if(sinono.typesinono=="בחר" || !sinono.typesinono){
+			filter7=filter6;
+		}else{
+			if(sinono.typesinono=="1"){
+				filter7=filter6.filter((el)=>el.resevent === "4")
+			}
+			if(sinono.typesinono=="2"){
+				filter7=filter6.filter((el)=>el.datevent.substr(11, 5) === "00:00")
+			}
+			if(sinono.typesinono=="3"){
+				filter7=filter6.filter((el)=>el.nifga === 2)
+			}
+			if(sinono.typesinono=="4"){
+				for(let i=0;i<filter6.length;i++)
+				{
+					if(filter6[i].typevent ==="1" ||filter6[i].typevent ==="2" || filter6[i].typevent ==="3" ||filter6[i].typevent ==="4" || filter6[i].typevent ==="רקם" ){
+						let a=0;
+						let sum=0;
+						while(a<filter6[i].arraymkabaz.length)
+						{
+							if(filter6[i].arraymkabaz[a].zadik == undefined){
+								sum++;
+							}
+							a++;
+						}
+						if(sum>0){
+							filter7.push(filter6[i]);
+						}	
+					}else if(filter6[i].typevent ==="7" ||filter6[i].typevent ==="9"){
+						if(filter6[i].zadik === ""){
+							filter7.push(filter6[i]);
+						}
+					}
+				}
+			}
+		}
+
+		console.log(filter7)
+		setData(filter7);
 		console.log(data);
 	};
 
@@ -730,7 +779,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	useEffect(() => {
 // loadReports();
 filteruse();
-	}, [date,dataunit,tyevent]);
+	}, [date,dataunit,tyevent,sinono]);
 
 	// useEffect (() => {
 	// 			pikodsop.unshift({value: "select",label: "בחר"})
@@ -1155,6 +1204,27 @@ filteruse();
 											<option value={"11"}>אי קיום שגרת אחזקה</option>
 											<option value={"12"}>אחר</option>
 											<option value={"רקם"}>רק"ם</option>
+										</Input>
+							</Col>
+							</Row>
+
+							<Row style={{ margin: "0px" }}>
+							<Col md={4}>
+							<div style={{ textAlign: "right", paddingTop: "10px" }}>
+							האם נדרש המשך טיפול בגלל
+									</div>
+										<Input
+											placeholder="האם נדרש המשך טיפול בגלל"
+											type="select"
+											name="typesinono"
+											value={sinono.typesinono}
+											onChange={handleChange4}
+										>
+											<option value={"בחר"}>בחר</option>
+											<option value={"1"}>סיבת אירוע חסרה</option>
+											<option value={"2"}>שעת אירוע לא ידועה</option>
+											<option value={"3"}>לא ידוע על נפגעים</option>
+											<option value={"4"}>צ' לא ידוע</option>
 										</Input>
 							</Col>
 							</Row>
