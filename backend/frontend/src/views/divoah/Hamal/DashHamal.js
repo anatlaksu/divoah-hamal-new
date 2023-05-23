@@ -728,9 +728,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].ogda==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -750,9 +753,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].hativa==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -772,9 +778,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].gdod==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -809,9 +818,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].ogdarep==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -831,9 +843,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].hativarep==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -853,9 +868,12 @@ const AdminSignInForm = (props) => {
 			let sumbynum=0;
 			  for(let j=0;j<arr2.length;j++){
 				  if(arr2[j].gdodrep==arr1[i]._id){
+					if(new Date(arr2[j].datevent).getYear()== new Date().getYear()){
+
 				  if(new Date(arr2[j].datevent).getMonth()==m){
 					sumbynum++;
 				  }
+				}
 				}
 				}
 				arrdata[i].data[m]=sumbynum;
@@ -1722,7 +1740,7 @@ const AdminSignInForm = (props) => {
 										<CardHeader>
 											<h3 className="card-category text-center">
 												{" "}
-												מספר אירועים לפי פיקוד
+												מספר אירועים לפי פיקוד מנמ"רי
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -1750,7 +1768,7 @@ const AdminSignInForm = (props) => {
 											<h3 className="card-category text-center">
 												{" "}
 												{}
-												מספר אירועים לפי אוגדה
+												מספר אירועים לפי אוגדה מנמ"רית
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -1769,7 +1787,7 @@ const AdminSignInForm = (props) => {
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי חטיבה
+													מספר אירועים לפי חטיבה מנמ"רית
 												</h3>
 											</CardHeader>
 											<CardBody>
@@ -1789,7 +1807,7 @@ const AdminSignInForm = (props) => {
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי גדוד
+													מספר אירועים לפי גדוד מנמ"רי
 												</h3>
 											</CardHeader>
 											<CardBody>
@@ -2017,7 +2035,7 @@ const AdminSignInForm = (props) => {
 										<CardHeader>
 											<h3 className="card-category text-center">
 												{" "}
-												מספר אירועים לפי פיקוד
+												מספר אירועים לפי פיקוד מדווח
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -2045,7 +2063,7 @@ const AdminSignInForm = (props) => {
 											<h3 className="card-category text-center">
 												{" "}
 												{}
-												מספר אירועים לפי אוגדה
+												מספר אירועים לפי אוגדה מדווחת
 											</h3>
 										</CardHeader>
 										<CardBody>
@@ -2064,7 +2082,7 @@ const AdminSignInForm = (props) => {
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי חטיבה
+													מספר אירועים לפי חטיבה מדווחת
 												</h3>
 											</CardHeader>
 											<CardBody>
@@ -2084,7 +2102,7 @@ const AdminSignInForm = (props) => {
 											<CardHeader>
 												<h3 className="card-category text-center">
 													{" "}
-													מספר אירועים לפי גדוד
+													מספר אירועים לפי גדוד מדווח
 												</h3>
 											</CardHeader>
 											<CardBody>

@@ -50,8 +50,8 @@ export const COLUMNSSUM = [
 		Filter: ColumnFilter,
 	},
 	{
-		Header: "ימים מהדיווח",
-		Footer: "ימים מהדיווח",
+		Header: "ימים ממקרה האירוע",
+		Footer: "ימים ממקרה האירוע",
 		accessor: "difftime",
 		Filter: ColumnFilter,
 	},

@@ -461,20 +461,26 @@ const Report = ({ props }) => {
 
 		if (data.nifga == "") {
 			flag = false;
-			ErrorReason += "כמות הנפגעים ריקה \n";
+			ErrorReason += " האם יש נפגעים ריק, \n";
 		}
-	// 	if(data.nifga== "1"){
-	// 	for (let i = 0; i < infohurtarray.length; i++) {
-	// 		if (!infohurtarray[i].dargahurt) {
-	// 			ErrorReason += "   לא הוזן דרגת פגיעה \n";
-	// 			flag = false;
-	// 		}
-	// 		if (!infohurtarray[i].mikomhurt) {
-	// 			ErrorReason += "   לא הוזן כמות ימים \n";
-	// 			flag = false;
-	// 		}
-	// 	}
-	// }
+		if(data.nifga== "1"){
+			if (infohurtarray.length == 0
+				) {
+					flag = false;
+					ErrorReason += " ,לא הוזן נפגע\n";
+				}
+
+		for (let i = 0; i < infohurtarray.length; i++) {
+			if (!infohurtarray[i].dargahurt) {
+				ErrorReason += "   לא הוזן דרגת פגיעה \n";
+				flag = false;
+			}
+			if (!infohurtarray[i].mikomhurt) {
+				ErrorReason += "   לא הוזן כמות ימים \n";
+				flag = false;
+			}
+		}
+	}
 
 		if (flag == true) {
 			SendFormData(event);
