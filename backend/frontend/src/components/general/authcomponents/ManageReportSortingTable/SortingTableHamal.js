@@ -527,8 +527,8 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		}
 	}
 
-	function getnumday(date1,date2){
-		let difference = new Date(date1).getTime() - new Date(date2).getTime();
+	function getnumday(date2){
+		let difference = new Date().getTime() - new Date(date2).getTime();
 		let TotalDays = Math.ceil((difference / (1000 * 3600 * 24))-1);
 		return TotalDays;
 	}
@@ -1428,10 +1428,10 @@ filteruse();
 												// * ------------- added difftime --------------------------------
 
 												if (cell.column.id == "difftime") {
-													if(getnumday(row.original.createdAt,row.original.datevent)>30)
+													if(getnumday(row.original.datevent)>30)
 													  return <td>30+</td>;
 													  else{
-														return <td>{getnumday(row.original.createdAt,row.original.datevent)}</td>;
+														return <td>{getnumday(row.original.datevent)}</td>;
 
 													  }
 												}

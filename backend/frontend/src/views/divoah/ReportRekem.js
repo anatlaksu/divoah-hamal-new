@@ -489,10 +489,18 @@ const Report = ({ props }) => {
 			data.datevent=formattedDate;
 		}
 
-		if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		// if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		// 	flag = false;
+		// 	ErrorReason += " ,תאריך לא תקין \n";
+		// }
+
+		let datecheck= new Date(data.datevent);
+		let check= datecheck.setHours(datecheck.getHours() - 3)
+		if (new Date(check).getTime()> new Date().getTime()) {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
+
 
 		if (data.nifga == "") {
 			flag = false;
