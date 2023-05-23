@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect ,Link } from "react-router-dom";
-
+import ReactToPdf from 'react-to-pdf';
 // reactstrap components
 import {
 	// eslint-disable-next-line no-unused-vars
@@ -33,6 +33,7 @@ import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterforwach";
 import deletepic from "assets/img/delete.png";
+import Pdforsimple from "./Pdfiles/pdforsimple";
 
 const CarDataFormModalView = (match) => {
 	const [data, setData] = useState({
@@ -89,6 +90,8 @@ const CarDataFormModalView = (match) => {
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
+
+	const componentRef = React.useRef();
 
 	const getMagadals = async () => {
 		await axios
@@ -2835,15 +2838,30 @@ const CarDataFormModalView = (match) => {
 												<button
 													className="btn-new-blue mb-3"
 												>
-												<Link
+												{/* <Link
 													className="text-dark"
 													style={{ fontSize: "16px" }}
 													to="/pdforsimple"
 												>
 													הדפסת דיווח
-												</Link>
+												</Link> */}
 												</button>
 											</div>
+										// 	<div className="text-center">
+										// 		<ReactToPdf targetRef={componentRef} filename={'my-javascript-page.pdf'}>
+										// 			{({ toPdf }) => (
+										// 			<div>
+										// 				<button onClick={toPdf}>Download as PDF</button>
+										// 				{/* <div style={{ display: 'none' }}> */}
+										// 				<div ref={componentRef}>
+										// 					<Pdforsimple />
+										// 				</div>
+										// 				{/* </div> */}
+										// 			</div>
+										// 			)}
+										// 		</ReactToPdf>
+										// </div>
+
 										
 										)
 										:null}

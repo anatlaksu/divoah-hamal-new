@@ -584,10 +584,10 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,מיקום ריק \n";
 		}
-		if (data.yndate == "") {
-			flag = false;
-			ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
-		}
+		// if (data.yndate == "") {
+		// 	flag = false;
+		// 	ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
+		// }
 
 		if (!data.datevent) {
 			flag = false;

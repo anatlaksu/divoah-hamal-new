@@ -697,7 +697,7 @@ const Report = ({ props }) => {
 						lg="20"
 						md="7"
 					>
-						<Card className="shadow border-0">
+						<Card className="shadow border-0" style={{width: "800px"}}>
 							<CardBody className="px-lg-5 py-lg-5">
 								<div className="text-center text-muted mb-4">
 									<big>שליחת דיווח</big>
