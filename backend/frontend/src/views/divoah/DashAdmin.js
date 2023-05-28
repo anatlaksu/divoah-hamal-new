@@ -386,7 +386,7 @@ const AdminSignInForm = (props) => {
 				fullSize: true,
 			},
 			datalabels:{
-				align: 'center',
+				textAlign: 'center',
 				position: "right",
 				color: 'rgb(0, 0, 0)',
 				formatter: (value,context)=>{
