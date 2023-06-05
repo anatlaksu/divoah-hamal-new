@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect ,Link } from "react-router-dom";
 import ReactToPdf from 'react-to-pdf';
+import { PDFViewer, ReactPDF, PDFDownloadLink } from "@react-pdf/renderer";
 // reactstrap components
 import {
 	// eslint-disable-next-line no-unused-vars
@@ -2835,34 +2836,15 @@ const CarDataFormModalView = (match) => {
 										</div>
 										{(data.typevent=="10" || data.typevent=="11"|| data.typevent=="12")?(
 											<div className="text-center">
-												<button
-													className="btn-new-blue mb-3"
-												>
-												{/* <Link
-													className="text-dark"
-													style={{ fontSize: "16px" }}
-													to="/pdforsimple"
-												>
-													הדפסת דיווח
-												</Link> */}
-												</button>
-											</div>
-										// 	<div className="text-center">
-										// 		<ReactToPdf targetRef={componentRef} filename={'my-javascript-page.pdf'}>
-										// 			{({ toPdf }) => (
-										// 			<div>
-										// 				<button onClick={toPdf}>Download as PDF</button>
-										// 				{/* <div style={{ display: 'none' }}> */}
-										// 				<div ref={componentRef}>
-										// 					<Pdforsimple />
-										// 				</div>
-										// 				{/* </div> */}
-										// 			</div>
-										// 			)}
-										// 		</ReactToPdf>
-										// </div>
-
-										
+											<button className="btn-new-blue mb-3">
+											<PDFDownloadLink document={<Pdforsimple datareport={data}/>} fileName="11.pdf">
+											{({ blob, url, loading, error }) =>
+											  loading ? "מוריד דיווח..." : "הורדת דיווח"
+											}	
+										  </PDFDownloadLink>
+										  </button>
+										  </div>
+																		
 										)
 										:null}
 									</Card>
