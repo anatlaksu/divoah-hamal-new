@@ -309,6 +309,7 @@ const Pdfortene = ({datareport}) => {
 		fontFamily: 'Rubik',
 		textAlign: 'right',
 		direction: 'rtl',
+		textDecoration: 'underline',
 	  },
 	  text4: {
 		fontSize: 14,
@@ -317,6 +318,7 @@ const Pdfortene = ({datareport}) => {
 		textAlign: 'left',
 		direction: 'ltr',
 		marginLeft: 10,
+		textDecoration: 'underline',
 	  },
 	  text5:{
 		fontSize: 12,
@@ -348,6 +350,35 @@ const Pdfortene = ({datareport}) => {
 		backgroundColor: 'black',
 		marginTop: 2,
 	  },
+	  footer: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		height: 50,
+		fontSize: 10,
+		fontFamily: 'Rubik',
+		paddingRight: 10,
+		paddingLeft: 10,
+	  },
+	  image3: {
+		width: 40,
+		height: 40,
+		// marginLeft: 
+	  },
+	  text7:{
+		fontSize: 10,
+	    fontFamily: 'Rubik',
+		direction: 'rtl',
+		marginLeft: 170
+	  },
+	  text8:{
+		fontSize: 10,
+	    fontFamily: 'Rubik',
+		direction: 'rtl',
+		marginLeft: 140
+	  },
+
 
 	});
 	return (
@@ -448,7 +479,17 @@ const Pdfortene = ({datareport}) => {
 					</>
 				)}	
 			</View>
-			<hr style={{height: "3px" ,color:"black",backgroundColor: "black", marginTop:"300px"}}></hr>
+			<View style={styles.footer}>
+			<hr style={{height: "3px" ,color:"black",backgroundColor: "black"}}></hr>
+			<View style={styles.section3}>
+			<Text style={styles.text7}>שמור</Text>
+			<Text style={styles.text8}>פותח ע"י צוות מא"ה</Text>
+			<Image
+				src={Logo100} // Replace with the path to your image file
+				style={styles.image3}
+				/>
+			 </View>
+           </View>
 		</View>
 		</Page>
 	  </Document>
