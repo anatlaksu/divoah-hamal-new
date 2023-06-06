@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import logotene from "assets/img/logotene.png"
 import Logo100 from "assets/img/team100.png";
 
-const Pdforsimple = ({datareport}) => {
+const Pdforneshek = ({datareport}) => {
 	//* pikod data
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
@@ -418,6 +418,45 @@ const Pdforsimple = ({datareport}) => {
 				<Text style={styles.text5}></Text>	
 				<Text style={styles.text6}>{datareport.lessons} לקחים ותובנות: </Text>	
 			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text3}></Text>
+				<Text style={styles.text4}>פרטי אירוע</Text>
+			</View>
+			<View style={styles.section3}>
+			{datareport.yn == true ? (
+					<Text style={styles.text5}>האם נגרם נזק לכלי: כן</Text>	
+				):( 
+					<Text style={styles.text5}>האם נגרם נזק לכלי: לא</Text>	
+				)}
+				<Text style={styles.text6}>{datareport.selneshek}סוג נשק/תחמושת: </Text>	
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>	
+				{datareport.whap==1 ? (
+				<Text style={styles.text6}>מה התרחש: פיצוץ נשק</Text>	
+				):(
+					<>
+					{datareport.whap==2 ? (
+				    <Text style={styles.text6}>מה התרחש: פיצוץ תחמושת</Text>	
+				    ):(
+					<>
+					{datareport.whap==3 ? (
+				    <Text style={styles.text6}>מה התרחש: פליטת כדור</Text>	
+				    ):(
+					<>
+					{datareport.whap==4 ? (
+				    <Text style={styles.text6}>מה התרחש: גרימת נזק לנשק</Text>	
+				    ):(
+					<Text style={styles.text6}>מה התרחש: אחר</Text>	
+				    )}	
+					</>
+				    )}	
+					</>
+				    )}	
+					</>
+				)}	
+			</View>
+
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black", marginTop:"300px"}}></hr>
 		</View>
 		</Page>
@@ -426,61 +465,5 @@ const Pdforsimple = ({datareport}) => {
   };
   
 
-export default Pdforsimple;
+export default Pdforneshek;
 
-// const Pdforsimple = ({datareport}) => {
-
-// 	Font.register({
-// 		family: 'Rubik',
-// 		src: "http://fonts.gstatic.com/s/rubik/v3/4sMyW_teKWHB3K8Hm-Il6A.ttf" });
-// 	const styles = StyleSheet.create({
-// 	  page: {
-// 		backgroundColor: "white"
-// 	  },
-// 	  section2: {
-// 		// flexDirection: 'row',
-// 		// paddingRight: 20,
-// 		position: 'relative',
-// 		width: '100%',
-// 		height: '100%',
-//       },
-// 	  text2: {
-// 		fontFamily: 'Rubik',
-// 		fontSize: 12,
-// 		textAlign: 'right',
-// 		direction: 'rtl',
-// 		position: 'absolute',
-// 		top: 10,
-// 		left: 200,
-// 	  },
-// 	  text3: {
-// 		fontFamily: 'Rubik',
-// 		fontSize: 12,
-// 		textAlign: 'right',
-// 		direction: 'rtl',
-// 		position: 'absolute',
-// 		top: 10,
-// 		left: 450,
-// 	  },
-
-// 	});
-// 	return (
-// 	  <Document>
-// 		{/** Page defines a single page of content. */}
-		
-// 		<Page size="A4" style={styles.page}>
-// 		<View style={styles.section2}>
-//           <Text style={styles.text2}> תאריך אירוע כגג</Text>
-//           <Text style={styles.text3}>פרטי מדווח</Text>
-//         </View>
-// 		<View style={styles.section2}>
-//           <Text style={styles.text2}>{datareport.lastname} {datareport.name} תאריך אירוע כגג</Text>
-//           <Text style={styles.text3}>{datareport.personalnumber}פרטי מדווח</Text>
-//         </View>
-// 		</Page>
-// 	  </Document>
-// 	);
-//   };
-  
-
-// export default Pdforsimple;

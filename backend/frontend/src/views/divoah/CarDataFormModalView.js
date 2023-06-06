@@ -35,6 +35,11 @@ import Select from "components/general/Select/AnimatedSelect";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterforwach";
 import deletepic from "assets/img/delete.png";
 import Pdforsimple from "./Pdfiles/pdforsimple";
+import Pdforcar from "./Pdfiles/pdforcar";
+import Pdforhiloz from "./Pdfiles/pdforhiloz";
+import Pdformataf from "./Pdfiles/pdformataf";
+import Pdforneshek from "./Pdfiles/pdforneshek";
+import Pdfortene from "./Pdfiles/pdfortene";
 
 const CarDataFormModalView = (match) => {
 	const [data, setData] = useState({
@@ -2843,10 +2848,78 @@ const CarDataFormModalView = (match) => {
 											}	
 										  </PDFDownloadLink>
 										  </button>
-										  </div>
-																		
+										  </div>								
 										)
-										:null}
+										:(
+											<>
+											{(data.typevent=="1" || data.typevent=="2"|| data.typevent=="3"|| data.typevent=="4" || data.typevent=="רקם")?(
+											<div className="text-center">
+												<button className="btn-new-blue mb-3">
+													<PDFDownloadLink document={<Pdforcar datareport={data}/>} fileName="9.pdf">
+													{({ blob, url, loading, error }) =>
+													loading ? "מוריד דיווח..." : "הורדת דיווח"
+													}	
+													</PDFDownloadLink>
+												</button>
+											</div>
+											):(<>
+												{data.typevent=="5" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforneshek datareport={data}/>} fileName="11.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+												{data.typevent=="6" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdfortene datareport={data}/>} fileName="11.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+													{data.typevent=="7" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdformataf datareport={data}/>} fileName="11.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(
+												<>
+												{data.typevent=="9" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforhiloz datareport={data}/>} fileName="11.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											): null}
+
+												</>
+												)}
+
+												</>
+												)}
+												</>
+												)}
+											</>
+											)}
+											</>
+										)}
 									</Card>
 								</Row>
 							</Container>

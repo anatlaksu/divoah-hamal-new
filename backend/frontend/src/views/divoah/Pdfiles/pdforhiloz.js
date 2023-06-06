@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import logotene from "assets/img/logotene.png"
 import Logo100 from "assets/img/team100.png";
 
-const Pdforsimple = ({datareport}) => {
+const Pdforhiloz = ({datareport}) => {
 	//* pikod data
 	const [gdods, setGdods] = useState([]);
 	const [hativas, setHativas] = useState([]);
@@ -35,6 +35,53 @@ const Pdforsimple = ({datareport}) => {
 	const [hativasrep, setHativasrep] = useState([]);
 	const [ogdasrep, setOgdasrep] = useState([]);
 	const [pikodsrep, setPikodsrep] = useState([]);
+
+	const [mkabazs, setMkabazs] = useState([]);
+	const [magads, setMagads] = useState([]);
+	const [magadals, setMagadals] = useState([]);
+
+	const getMagadals = async () => {
+		await axios
+			.get(`http://localhost:8000/api/magadal`)
+			.then((response) => {
+				setMagadals(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
+	const getMagads = async (magadalid) => {
+		let tempmagadalsmagads = [];
+		if (magadalid != undefined) {
+			await axios
+				.get(`http://localhost:8000/api/magad/magadsbymagadal/${magadalid}`)
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						tempmagadalsmagads.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+			setMagads(tempmagadalsmagads);
+		}
+	};
+
+	const getMkabazs = async (magadid) => {
+		let tempmagadmkabazs = [];
+		if (magadid != undefined) {
+			await axios
+				.get(`http://localhost:8000/api/mkabaz/mkabazsbymagad/${magadid}`)
+				.then((response) => {
+					for (let j = 0; j < response.data.length; j++)
+						tempmagadmkabazs.push(response.data[j]);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+			setMkabazs(tempmagadmkabazs);
+		}
+	};
 
 		//* manmarit
 		const loadPikods = async () => {
@@ -212,6 +259,7 @@ const Pdforsimple = ({datareport}) => {
 		useEffect(() => {
 			loadPikods();
 			loadPikodsrep();	
+			getMagadals();
 		}, []);
 
 		function getname(idnum, arr) {
@@ -251,6 +299,21 @@ const Pdforsimple = ({datareport}) => {
 		setGdodsrep([]);
 		loadGdodsrep(datareport.hativarep);
 	}, [datareport.hativarep]);
+	//* ------ magdal .... --------------------------------
+	useEffect(() => {
+		setMagads([]);
+		getMagads(datareport.magadal);
+	}, [datareport.magadal]);
+
+	useEffect(() => {
+		setMkabazs([]);
+		getMkabazs(datareport.magad);
+	}, [datareport.magad]);
+
+	useEffect(() => {
+		setMkabazs([]);
+		getMkabazs();
+	}, [datareport.mkabaz]);
 
 	
 
@@ -418,6 +481,15 @@ const Pdforsimple = ({datareport}) => {
 				<Text style={styles.text5}></Text>	
 				<Text style={styles.text6}>{datareport.lessons} לקחים ותובנות: </Text>	
 			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text3}></Text>
+				<Text style={styles.text4}>פרטי אירוע</Text>
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}>{datareport.zadik}צ': </Text>	
+				<Text style={styles.text6}>{getname(datareport.mkabaz,mkabazs)}/{getname(datareport.magad,magads)}/{getname(datareport.magadal,magadals)} הכלי המחולץ: </Text>
+			</View>
+
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black", marginTop:"300px"}}></hr>
 		</View>
 		</Page>
@@ -426,61 +498,5 @@ const Pdforsimple = ({datareport}) => {
   };
   
 
-export default Pdforsimple;
+export default Pdforhiloz;
 
-// const Pdforsimple = ({datareport}) => {
-
-// 	Font.register({
-// 		family: 'Rubik',
-// 		src: "http://fonts.gstatic.com/s/rubik/v3/4sMyW_teKWHB3K8Hm-Il6A.ttf" });
-// 	const styles = StyleSheet.create({
-// 	  page: {
-// 		backgroundColor: "white"
-// 	  },
-// 	  section2: {
-// 		// flexDirection: 'row',
-// 		// paddingRight: 20,
-// 		position: 'relative',
-// 		width: '100%',
-// 		height: '100%',
-//       },
-// 	  text2: {
-// 		fontFamily: 'Rubik',
-// 		fontSize: 12,
-// 		textAlign: 'right',
-// 		direction: 'rtl',
-// 		position: 'absolute',
-// 		top: 10,
-// 		left: 200,
-// 	  },
-// 	  text3: {
-// 		fontFamily: 'Rubik',
-// 		fontSize: 12,
-// 		textAlign: 'right',
-// 		direction: 'rtl',
-// 		position: 'absolute',
-// 		top: 10,
-// 		left: 450,
-// 	  },
-
-// 	});
-// 	return (
-// 	  <Document>
-// 		{/** Page defines a single page of content. */}
-		
-// 		<Page size="A4" style={styles.page}>
-// 		<View style={styles.section2}>
-//           <Text style={styles.text2}> תאריך אירוע כגג</Text>
-//           <Text style={styles.text3}>פרטי מדווח</Text>
-//         </View>
-// 		<View style={styles.section2}>
-//           <Text style={styles.text2}>{datareport.lastname} {datareport.name} תאריך אירוע כגג</Text>
-//           <Text style={styles.text3}>{datareport.personalnumber}פרטי מדווח</Text>
-//         </View>
-// 		</Page>
-// 	  </Document>
-// 	);
-//   };
-  
-
-// export default Pdforsimple;
