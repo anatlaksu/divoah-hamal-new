@@ -390,7 +390,7 @@ const Pdforhiloz = ({datareport}) => {
 		fontFamily: 'Rubik',
 		textAlign: 'right',
 		direction: 'rtl',
-		right:200,
+		right:75,
 	  },
 	  text6:{
 		fontSize: 12,
@@ -399,6 +399,11 @@ const Pdforhiloz = ({datareport}) => {
 		textAlign: 'right',
 		direction: 'rtl',
 		marginLeft: 10,
+		overflowWrap: 'break-word',
+	  },
+	  firstTextContainer: {
+		maxWidth: 200,
+		width:200 // Set the length range for the first text
 	  },
 	  line: {
 		position: 'absolute',
@@ -469,11 +474,15 @@ const Pdforhiloz = ({datareport}) => {
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
-				<Text style={styles.text6}>{datareport.lastname} {datareport.name} שם: </Text>	
+				<View style={styles.firstTextContainer}>
+        		<Text style={styles.text6}>{datareport.lastname} {datareport.name} שם: </Text>	
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.mikom}מיקום האירוע: </Text>
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{datareport.personalnumber} :מ.א.</Text>	
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
@@ -494,11 +503,15 @@ const Pdforhiloz = ({datareport}) => {
 				)}
 				</>	
 				)}
+			<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}יחידה מדווחת: </Text>
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>	
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}יחידה מנמ"רית: </Text>
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
@@ -518,7 +531,9 @@ const Pdforhiloz = ({datareport}) => {
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.zadik}צ': </Text>	
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{getname(datareport.mkabaz,mkabazs)}/{getname(datareport.magad,magads)}/{getname(datareport.magadal,magadals)} הכלי המחולץ: </Text>
+				</View>
 			</View>
 			<View style={styles.footer}>
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black"}}></hr>

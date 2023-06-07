@@ -327,7 +327,7 @@ const Pdforneshek = ({datareport}) => {
 		fontFamily: 'Rubik',
 		textAlign: 'right',
 		direction: 'rtl',
-		right:200,
+		right:75,
 	  },
 	  text6:{
 		fontSize: 12,
@@ -336,7 +336,14 @@ const Pdforneshek = ({datareport}) => {
 		textAlign: 'right',
 		direction: 'rtl',
 		marginLeft: 10,
+		overflowWrap: 'break-word',
+
 	  },
+	  firstTextContainer: {
+		maxWidth: 200,
+		width:200 // Set the length range for the first text
+	  },
+
 	  line: {
 		position: 'absolute',
 		left: 0,
@@ -406,11 +413,15 @@ const Pdforneshek = ({datareport}) => {
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{datareport.lastname} {datareport.name} שם: </Text>	
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.mikom}מיקום האירוע: </Text>
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{datareport.personalnumber} :מ.א.</Text>	
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
@@ -431,11 +442,15 @@ const Pdforneshek = ({datareport}) => {
 				)}
 				</>	
 				)}
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}יחידה מדווחת: </Text>
+				</View>	
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>	
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}יחידה מנמ"רית: </Text>
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
@@ -459,7 +474,9 @@ const Pdforneshek = ({datareport}) => {
 				):( 
 					<Text style={styles.text5}>האם נגרם נזק לכלי: לא</Text>	
 				)}
+				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{datareport.selneshek}סוג נשק/תחמושת: </Text>	
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
