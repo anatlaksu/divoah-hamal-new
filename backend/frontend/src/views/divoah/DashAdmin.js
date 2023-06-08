@@ -387,6 +387,7 @@ const AdminSignInForm = (props) => {
 			},
 			datalabels:{
 				textAlign: 'center',
+				textFont:'Rubik',
 				position: "right",
 				color: 'rgb(0, 0, 0)',
 				formatter: (value,context)=>{
