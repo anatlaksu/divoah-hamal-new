@@ -28,6 +28,7 @@ import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
 import ToggleDarkModeButton from "../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ChartProvider from "./ChartProvider";
 
 const AdminSignInForm = (props) => {
 	const [isError, setIsError] = useState(false);
@@ -383,12 +384,20 @@ const AdminSignInForm = (props) => {
 				display: true,
 				position: "right",
 				align: "center",
-				fullSize: true,
+				fullSize: true, 	
+			},
+			labels:{
+				position:'outside',
+				textMargin: 3,
+				// render: (ctx)=>{
+				// 	if(ctx.percentage < 5){
+				// 		return ctx.percentage+'%';
+				// 	}
+				// }
 			},
 			datalabels:{
 				textAlign: 'center',
 				textFont:'Rubik',
-				position: "right",
 				color: 'rgb(0, 0, 0)',
 				formatter: (value,context)=>{
 					const datapoints=context.chart.data.datasets[0].data;
@@ -397,13 +406,18 @@ const AdminSignInForm = (props) => {
 					}
 					const totalvalue=datapoints.reduce(totalsum,0);
 					const percentagevalue=(value/totalvalue *100).toFixed(0);
-					if(percentagevalue !=0 )
+					if(percentagevalue >= 5 )
 					  return percentagevalue +'%';
 					else
 					  return '';
 				}
 			},
 		},
+		layout: {
+			padding: {
+			  left: 30, // Adjust the value according to your requirement
+			},
+		  },
 	};
 	//* on Army :
 	//! brakes after 2-3 fillter because of the size of the data
@@ -1396,7 +1410,7 @@ function gdodrepmonth(arr1,arr2){
 						<Col style={{width:"100px"}}>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -1436,7 +1450,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1481,7 +1495,7 @@ function gdodrepmonth(arr1,arr2){
 						</Row>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1524,7 +1538,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -1564,7 +1578,7 @@ function gdodrepmonth(arr1,arr2){
 						<Col style={{width:"100px"}}>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -1590,7 +1604,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1621,7 +1635,7 @@ function gdodrepmonth(arr1,arr2){
 						</Row>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1650,7 +1664,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -1938,7 +1952,9 @@ function gdodrepmonth(arr1,arr2){
 									</CardBody>
 								</Card>
 							</Col>
-							<Col style={{width:"100px"}}>
+							<Col>
+							<Row>
+							<Col style={{width:"30%"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1948,29 +1964,35 @@ function gdodrepmonth(arr1,arr2){
 									</CardHeader>
 									<CardBody>
 										{data.length == 0 ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : !data.pikod ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : (
+											<ChartProvider>
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										)}
 									</CardBody>
 								</Card>
 							</Col>
 							{!data.pikod ? (
-								<Col style={{width:"100px"}}>
+								<Col style={{width:"30%"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -1980,11 +2002,13 @@ function gdodrepmonth(arr1,arr2){
 										</CardHeader>
 										<CardBody>
 											{!data.pikod ? (
+												<ChartProvider>
 												<Doughnut
 													data={datapikod}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											) : //* was removed
 											/*
 									<Doughnut
@@ -1998,7 +2022,7 @@ function gdodrepmonth(arr1,arr2){
 								</Col>
 							) : null}
 							{data.pikod && !data.ogda && !data.hativa ? (
-								<Col style={{width:"100px"}}>
+								<Col style={{width:"30%"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -2008,18 +2032,20 @@ function gdodrepmonth(arr1,arr2){
 											</h3>
 										</CardHeader>
 										<CardBody>
+											<ChartProvider>
 											<Doughnut
 												data={dataogda}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										</CardBody>
 									</Card>
 								</Col>
 							) : null}
 							<>
 								{data.ogda && !data.hativa ? (
-									<Col style={{width:"100px"}}>
+									<Col style={{width:"30%"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -2028,11 +2054,13 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datahativa}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
@@ -2040,7 +2068,7 @@ function gdodrepmonth(arr1,arr2){
 							</>
 							<>
 								{data.hativa ? (
-									<Col style={{width:"100px"}}>
+									<Col style={{width:"30%"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -2049,17 +2077,20 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datagdod}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
 								) : null}
 							</>
-
+							</Row>
+							</Col>
 						</Row>
 					</>
 				) : (
@@ -2147,7 +2178,7 @@ function gdodrepmonth(arr1,arr2){
 						<Col style={{width:"100px"}}>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -2187,7 +2218,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2232,7 +2263,7 @@ function gdodrepmonth(arr1,arr2){
 						</Row>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2275,7 +2306,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -2314,7 +2345,7 @@ function gdodrepmonth(arr1,arr2){
 						<Col style={{width:"100px"}}>
 						<Row>
 						<Col  style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -2340,7 +2371,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col  style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2371,7 +2402,7 @@ function gdodrepmonth(arr1,arr2){
 						</Row>
 						<Row>
 						<Col  style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2400,7 +2431,7 @@ function gdodrepmonth(arr1,arr2){
 							</Card>
 						</Col>
 						<Col  style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -2531,6 +2562,8 @@ function gdodrepmonth(arr1,arr2){
 									</CardBody>
 								</Card>
 							</Col>
+							<Col>
+							<Row>
 							<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 									<CardHeader>
@@ -2541,23 +2574,29 @@ function gdodrepmonth(arr1,arr2){
 									</CardHeader>
 									<CardBody>
 										{data.length == 0 ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : !data.pikod ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : (
+											<ChartProvider>
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										)}
 									</CardBody>
 								</Card>
@@ -2573,11 +2612,13 @@ function gdodrepmonth(arr1,arr2){
 										</CardHeader>
 										<CardBody>
 											{!data.pikod ? (
+												<ChartProvider>
 												<Doughnut
 													data={datapikodrep}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											) : //* was removed
 											/*
 									<Doughnut
@@ -2601,11 +2642,13 @@ function gdodrepmonth(arr1,arr2){
 											</h3>
 										</CardHeader>
 										<CardBody>
+											<ChartProvider>
 											<Doughnut
 												data={dataogdarep}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										</CardBody>
 									</Card>
 								</Col>
@@ -2621,11 +2664,13 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datahativarep}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
@@ -2642,17 +2687,20 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datagdodrep}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
 								) : null}
 							</>
-
+							</Row>	 
+							</Col>
 						</Row>
 					</>
 				)}

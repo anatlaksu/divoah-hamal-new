@@ -27,6 +27,7 @@ import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
 import ToggleDarkModeButton from "../../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ChartProvider from "../ChartProvider";
 
 import { isAuthenticated } from "auth";
 const AdminSignInForm = (props) => {
@@ -380,6 +381,15 @@ const AdminSignInForm = (props) => {
 				align: "center",
 				fullSize: true,
 			},
+			labels:{
+				position:'outside',
+				textMargin: 3,
+				// render: (ctx)=>{
+				// 	if(ctx.percentage < 5){
+				// 		return ctx.percentage+'%';
+				// 	}
+				// }
+			},
 			datalabels:{
 				textAlign: 'center',
 				position: "right",
@@ -398,6 +408,11 @@ const AdminSignInForm = (props) => {
 				}
 			},
 		},
+			layout: {
+				padding: {
+				  left: 30, // Adjust the value according to your requirement
+				},
+			  },	
 	};
 	//* on Army :
 	//! brakes after 2-3 fillter because of the size of the data
@@ -1255,9 +1270,9 @@ const AdminSignInForm = (props) => {
 							</>
 					{data.fromdate && data.todate ? (
 						<Col style={{width:"100px"}}>
-					<Row>
+					<Row >
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -1297,7 +1312,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1342,7 +1357,7 @@ const AdminSignInForm = (props) => {
 						</Row>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1385,7 +1400,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -1423,9 +1438,9 @@ const AdminSignInForm = (props) => {
 					</Col>
 				) : (
 					<Col style={{width:"100px"}}>
-					<Row>
+					<Row >
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -1451,7 +1466,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1482,7 +1497,7 @@ const AdminSignInForm = (props) => {
 						</Row>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1511,7 +1526,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -1799,6 +1814,8 @@ const AdminSignInForm = (props) => {
 									</CardBody>
 								</Card>
 							</Col>
+							<Col>
+							<Row>
 							<Col style={{width:"100px"}}>
 							<Card className="card-chart">
 									<CardHeader>
@@ -1809,23 +1826,29 @@ const AdminSignInForm = (props) => {
 									</CardHeader>
 									<CardBody>
 										{data.length == 0 ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : !data.ogda ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : (
+											<ChartProvider>
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										)}
 									</CardBody>
 								</Card>
@@ -1841,11 +1864,13 @@ const AdminSignInForm = (props) => {
 										</CardHeader>
 										<CardBody>
 											{!data.ogda ? (
+												<ChartProvider>
 												<Doughnut
 													data={datapikod}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											) : //* was removed
 											/*
 									<Doughnut
@@ -1869,11 +1894,13 @@ const AdminSignInForm = (props) => {
 											</h3>
 										</CardHeader>
 										<CardBody>
+											<ChartProvider>
 											<Doughnut
 												data={dataogda}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										</CardBody>
 									</Card>
 								</Col>
@@ -1889,11 +1916,13 @@ const AdminSignInForm = (props) => {
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datahativa}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
@@ -1910,17 +1939,20 @@ const AdminSignInForm = (props) => {
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datagdod}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
 								) : null}
 							</>
-
+							</Row>
+							</Col>
 						</Row>
 					</>
 				) : (
@@ -1988,7 +2020,7 @@ const AdminSignInForm = (props) => {
 						<Col style={{width:"100px"}}>
 					<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -2028,7 +2060,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2073,7 +2105,7 @@ const AdminSignInForm = (props) => {
 						</Row>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2116,7 +2148,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -2156,7 +2188,7 @@ const AdminSignInForm = (props) => {
 					<Col style={{width:"100px"}}>
 					<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -2182,7 +2214,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2213,7 +2245,7 @@ const AdminSignInForm = (props) => {
 						</Row>
 						<Row>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -2242,7 +2274,7 @@ const AdminSignInForm = (props) => {
 							</Card>
 						</Col>
 						<Col style={{width:"100px"}}>
-							<Card className="card-chart">
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
@@ -2374,6 +2406,8 @@ const AdminSignInForm = (props) => {
 									</CardBody>
 								</Card>
 							</Col>
+							<Col>
+							<Row>
 							<Col style={{width:"100px"}}>
 								<Card className="card-chart">
 									<CardHeader>
@@ -2384,23 +2418,29 @@ const AdminSignInForm = (props) => {
 									</CardHeader>
 									<CardBody>
 										{data.length == 0 ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : !data.ogda ? (
+											<ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										) : (
+											<ChartProvider>
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										)}
 									</CardBody>
 								</Card>
@@ -2416,11 +2456,13 @@ const AdminSignInForm = (props) => {
 										</CardHeader>
 										<CardBody>
 											{!data.ogda ? (
+												<ChartProvider>
 												<Doughnut
 													data={datapikodrep}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											) : //* was removed
 											/*
 									<Doughnut
@@ -2444,11 +2486,13 @@ const AdminSignInForm = (props) => {
 											</h3>
 										</CardHeader>
 										<CardBody>
+											<ChartProvider>
 											<Doughnut
 												data={dataogdarep}
 												options={options}
-												plugins={[ChartDataLabels]}
+												// plugins={[ChartDataLabels]}
 											/>
+											</ChartProvider>
 										</CardBody>
 									</Card>
 								</Col>
@@ -2464,11 +2508,13 @@ const AdminSignInForm = (props) => {
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datahativarep}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
@@ -2485,17 +2531,20 @@ const AdminSignInForm = (props) => {
 												</h3>
 											</CardHeader>
 											<CardBody>
+												<ChartProvider>
 												<Doughnut
 													data={datagdodrep}
 													options={options}
-													plugins={[ChartDataLabels]}
+													// plugins={[ChartDataLabels]}
 												/>
+												</ChartProvider>
 											</CardBody>
 										</Card>
 									</Col>
 								) : null}
 							</>
-
+							</Row>
+							</Col>
 						</Row>
 					</>
 				)}
