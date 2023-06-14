@@ -36,6 +36,9 @@ const Pdforneshek = ({datareport}) => {
 	const [ogdasrep, setOgdasrep] = useState([]);
 	const [pikodsrep, setPikodsrep] = useState([]);
 
+	const [splitedText, setSplitedText] = useState([]);
+	const [splitedTextlekah, setSplitedTextlekah] = useState([]);
+
 		//* manmarit
 		const loadPikods = async () => {
 			await axios
@@ -252,7 +255,16 @@ const Pdforneshek = ({datareport}) => {
 		loadGdodsrep(datareport.hativarep);
 	}, [datareport.hativarep]);
 
-	
+	useEffect(()=>{
+		const _splitedText = datareport.pirot.split(" ");
+		setSplitedText(_splitedText)
+	 },[datareport.pirot]);
+
+	 useEffect(()=>{
+		const _splitedText = datareport.lessons.split(" ");
+		setSplitedTextlekah(_splitedText)
+	 },[datareport.lessons]);
+
 
 	Font.register({
 		family: 'Rubik',
@@ -339,6 +351,17 @@ const Pdforneshek = ({datareport}) => {
 		overflowWrap: 'break-word',
 
 	  },
+	  text9:{
+		fontSize: 12,
+		paddingTop: 5,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		marginLeft: 3,
+		overflowWrap: 'break-word',
+
+	  },
+
 	  firstTextContainer: {
 		maxWidth: 200,
 		width:200 // Set the length range for the first text
@@ -385,6 +408,12 @@ const Pdforneshek = ({datareport}) => {
 		direction: 'rtl',
 		marginLeft: 140
 	  },
+	  flexRowReverse: {
+		flexDirection: "row-reverse"
+	},
+	flexWrap: {
+		flexWrap: "wrap"
+	},
 
 
 	});
@@ -458,11 +487,40 @@ const Pdforneshek = ({datareport}) => {
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
-				<Text style={styles.text6}>{datareport.pirot} פירוט אירוע: </Text>	
+				<Text style={styles.text6}>פירוט אירוע: </Text>	
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
-				<Text style={styles.text6}>{datareport.lessons} לקחים ותובנות: </Text>	
+				<View style={[styles.flexRowReverse, styles.flexWrap]}>
+					{
+						splitedText.map((word, idx) => {
+							return (
+								<Text style={styles.text9} key={idx}>
+								{word}
+								</Text>
+							);
+						})
+					}
+				</View>
+			</View>
+
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>	
+				<Text style={styles.text6}>לקחים ותובנות: </Text>	
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>	
+				<View style={[styles.flexRowReverse, styles.flexWrap]}>
+					{
+						splitedTextlekah.map((word, idx) => {
+							return (
+								<Text style={styles.text9} key={idx}>
+								{word}
+								</Text>
+							);
+						})
+					}
+				</View>
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>

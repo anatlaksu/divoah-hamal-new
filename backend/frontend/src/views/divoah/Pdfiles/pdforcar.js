@@ -40,6 +40,9 @@ const Pdforcar = ({datareport}) => {
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
 
+	const [splitedText, setSplitedText] = useState([]);
+	const [splitedTextlekah, setSplitedTextlekah] = useState([]);
+
 	const getMagadals = async () => {
 		await axios
 			.get(`http://localhost:8000/api/magadal`)
@@ -292,6 +295,15 @@ const Pdforcar = ({datareport}) => {
 		loadGdodsrep(datareport.hativarep);
 	}, [datareport.hativarep]);
 	
+	useEffect(()=>{
+		const _splitedText = datareport.pirot.split(" ");
+		setSplitedText(_splitedText)
+	 },[datareport.pirot]);
+
+	 useEffect(()=>{
+		const _splitedText = datareport.lessons.split(" ");
+		setSplitedTextlekah(_splitedText)
+	 },[datareport.lessons]);
 
 	Font.register({
 		family: 'Rubik',
@@ -422,6 +434,22 @@ const Pdforcar = ({datareport}) => {
 		direction: 'rtl',
 		marginLeft: 140
 	  },
+	  flexRowReverse: {
+		flexDirection: "row-reverse"
+	},
+	flexWrap: {
+		flexWrap: "wrap"
+	},
+	text9:{
+		fontSize: 12,
+		paddingTop: 5,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		marginLeft: 3,
+		overflowWrap: 'break-word',
+
+	  },
 
 
 	});
@@ -495,11 +523,40 @@ const Pdforcar = ({datareport}) => {
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
-				<Text style={styles.text6}>{datareport.pirot} פירוט אירוע: </Text>	
+				<Text style={styles.text6}>פירוט אירוע: </Text>	
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
-				<Text style={styles.text6}>{datareport.lessons} לקחים ותובנות: </Text>	
+				<View style={[styles.flexRowReverse, styles.flexWrap]}>
+					{
+						splitedText.map((word, idx) => {
+							return (
+								<Text style={styles.text9} key={idx}>
+								{word}
+								</Text>
+							);
+						})
+					}
+				</View>
+			</View>
+
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>	
+				<Text style={styles.text6}>לקחים ותובנות: </Text>	
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>	
+				<View style={[styles.flexRowReverse, styles.flexWrap]}>
+					{
+						splitedTextlekah.map((word, idx) => {
+							return (
+								<Text style={styles.text9} key={idx}>
+								{word}
+								</Text>
+							);
+						})
+					}
+				</View>
 			</View>
             <View style={styles.section3}>
 				<Text style={styles.text3}></Text>
