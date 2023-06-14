@@ -356,6 +356,16 @@ const Pdforsimple = ({datareport}) => {
 		marginLeft: 10,
 		overflowWrap: 'break-word',
 	  },
+	  text16:{
+		fontSize: 11,
+		paddingTop: 5,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		marginLeft: 10,
+		overflowWrap: 'break-word',
+	  },
+
 	  line: {
 		position: 'absolute',
 		left: 0,
@@ -473,15 +483,28 @@ const Pdforsimple = ({datareport}) => {
 				</>	
 				)}
 				<View style={styles.firstTextContainer}>
-				<Text style={styles.text6}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}יחידה מדווחת: </Text>
+				<Text style={styles.text6}>יחידה מדווחת: </Text>
 				</View>	
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>
+				{/* <View style={styles.firstTextContainer}> */}
+				<Text style={styles.text16}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}</Text>
+				{/* </View> */}
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>
 				<View style={styles.firstTextContainer}>
-				<Text style={styles.text6}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}יחידה מנמ"רית: </Text>
+				<Text style={styles.text6}>יחידה מנמ"רית: </Text>
 				</View>
 			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>
+				{/* <View style={styles.firstTextContainer}> */}
+				<Text style={styles.text16}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}</Text>
+				{/* </View> */}
+			</View>
+
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
 				<Text style={styles.text4}>פירוט</Text>
@@ -543,60 +566,3 @@ const Pdforsimple = ({datareport}) => {
   
 
 export default Pdforsimple;
-
-// const Pdforsimple = ({datareport}) => {
-
-// 	Font.register({
-// 		family: 'Rubik',
-// 		src: "http://fonts.gstatic.com/s/rubik/v3/4sMyW_teKWHB3K8Hm-Il6A.ttf" });
-// 	const styles = StyleSheet.create({
-// 	  page: {
-// 		backgroundColor: "white"
-// 	  },
-// 	  section2: {
-// 		// flexDirection: 'row',
-// 		// paddingRight: 20,
-// 		position: 'relative',
-// 		width: '100%',
-// 		height: '100%',
-//       },
-// 	  text2: {
-// 		fontFamily: 'Rubik',
-// 		fontSize: 12,
-// 		textAlign: 'right',
-// 		direction: 'rtl',
-// 		position: 'absolute',
-// 		top: 10,
-// 		left: 200,
-// 	  },
-// 	  text3: {
-// 		fontFamily: 'Rubik',
-// 		fontSize: 12,
-// 		textAlign: 'right',
-// 		direction: 'rtl',
-// 		position: 'absolute',
-// 		top: 10,
-// 		left: 450,
-// 	  },
-
-// 	});
-// 	return (
-// 	  <Document>
-// 		{/** Page defines a single page of content. */}
-		
-// 		<Page size="A4" style={styles.page}>
-// 		<View style={styles.section2}>
-//           <Text style={styles.text2}> תאריך אירוע כגג</Text>
-//           <Text style={styles.text3}>פרטי מדווח</Text>
-//         </View>
-// 		<View style={styles.section2}>
-//           <Text style={styles.text2}>{datareport.lastname} {datareport.name} תאריך אירוע כגג</Text>
-//           <Text style={styles.text3}>{datareport.personalnumber}פרטי מדווח</Text>
-//         </View>
-// 		</Page>
-// 	  </Document>
-// 	);
-//   };
-  
-
-// export default Pdforsimple;

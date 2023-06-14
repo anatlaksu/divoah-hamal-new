@@ -413,6 +413,16 @@ const Pdformataf = ({datareport}) => {
 		marginLeft: 10,
 		overflowWrap: 'break-word',
 	  },
+	  text16:{
+		fontSize: 11,
+		paddingTop: 5,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		marginLeft: 10,
+		overflowWrap: 'break-word',
+	  },
+
 	  firstTextContainer: {
 		maxWidth: 200,
 		width:200 // Set the length range for the first text
@@ -532,14 +542,26 @@ const Pdformataf = ({datareport}) => {
 				</>	
 				)}
 				<View style={styles.firstTextContainer}>
-				<Text style={styles.text6}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}יחידה מדווחת: </Text>
+				<Text style={styles.text6}>יחידה מדווחת: </Text>
+				</View>	
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>
+				{/* <View style={styles.firstTextContainer}> */}
+				<Text style={styles.text16}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}</Text>
+				{/* </View> */}
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>
+				<View style={styles.firstTextContainer}>
+				<Text style={styles.text6}>יחידה מנמ"רית: </Text>
 				</View>
 			</View>
 			<View style={styles.section3}>
-				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>	
-				<View style={styles.firstTextContainer}>
-				<Text style={styles.text6}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}יחידה מנמ"רית: </Text>
-				</View>
+				<Text style={styles.text5}></Text>
+				{/* <View style={styles.firstTextContainer}> */}
+				<Text style={styles.text16}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}</Text>
+				{/* </View> */}
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
@@ -633,9 +655,16 @@ const Pdformataf = ({datareport}) => {
 			<View style={styles.section3}>
 				<Text style={styles.text5}>{datareport.zadik}צ': </Text>	
 				<View style={styles.firstTextContainer}>
-				<Text style={styles.text6}>{getname(datareport.mkabaz,mkabazs)}/{getname(datareport.magad,magads)}/{getname(datareport.magadal,magadals)} הכלי המחולץ: </Text>
+				<Text style={styles.text6}> הכלי המחולץ: </Text>
 				</View>
 			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>
+				{/* <View style={styles.firstTextContainer}> */}
+				<Text style={styles.text16}>{getname(datareport.mkabaz,mkabazs)}/{getname(datareport.magad,magads)}/{getname(datareport.magadal,magadals)}</Text>
+				{/* </View> */}
+			</View>
+
 			<View style={styles.footer}>
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black"}}></hr>
 			<View style={styles.section3}>

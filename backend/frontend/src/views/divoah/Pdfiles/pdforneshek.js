@@ -351,6 +351,16 @@ const Pdforneshek = ({datareport}) => {
 		overflowWrap: 'break-word',
 
 	  },
+	  text16:{
+		fontSize: 11,
+		paddingTop: 5,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		marginLeft: 10,
+		overflowWrap: 'break-word',
+	  },
+
 	  text9:{
 		fontSize: 12,
 		paddingTop: 5,
@@ -415,7 +425,6 @@ const Pdforneshek = ({datareport}) => {
 		flexWrap: "wrap"
 	},
 
-
 	});
 	return (
 	  <Document>
@@ -472,14 +481,26 @@ const Pdforneshek = ({datareport}) => {
 				</>	
 				)}
 				<View style={styles.firstTextContainer}>
-				<Text style={styles.text6}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}יחידה מדווחת: </Text>
+				<Text style={styles.text6}>יחידה מדווחת: </Text>
 				</View>	
 			</View>
 			<View style={styles.section3}>
-				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>	
+				<Text style={styles.text5}></Text>
+				{/* <View style={styles.firstTextContainer}> */}
+				<Text style={styles.text16}>{getname(datareport.gdodrep,gdodsrep)}/{getname(datareport.hativarep,hativasrep)}/{getname(datareport.ogdarep,ogdasrep)}/{getname(datareport.pikodrep,pikodsrep)}</Text>
+				{/* </View> */}
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>
 				<View style={styles.firstTextContainer}>
-				<Text style={styles.text6}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}יחידה מנמ"רית: </Text>
+				<Text style={styles.text6}>יחידה מנמ"רית: </Text>
 				</View>
+			</View>
+			<View style={styles.section3}>
+				<Text style={styles.text5}></Text>
+				{/* <View style={styles.firstTextContainer}> */}
+				<Text style={styles.text16}>{getname(datareport.gdod,gdods)}/{getname(datareport.hativa,hativas)}/{getname(datareport.ogda,ogdas)}/{getname(datareport.pikod,pikods)}</Text>
+				{/* </View> */}
 			</View>
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
