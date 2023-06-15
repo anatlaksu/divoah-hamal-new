@@ -494,7 +494,7 @@ const CarDataFormModalView = (match) => {
 														</Col>
 														<Col>
 														{(data.typevent=="10" || data.typevent=="11"|| data.typevent=="12")?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 											<PDFDownloadLink document={<Pdforsimple datareport={data}/>} fileName="divoahsimple.pdf">
 											{({ blob, url, loading, error }) =>
@@ -507,7 +507,7 @@ const CarDataFormModalView = (match) => {
 										:(
 											<>
 											{(data.typevent=="1" || data.typevent=="2"|| data.typevent=="3"|| data.typevent=="4" || data.typevent=="רקם")?(
-											<div className="text-center">
+											<div className="text-left">
 												<button className="btn-new-blue mb-3">
 													<PDFDownloadLink document={<Pdforcar datareport={data}/>} fileName="divoahcar.pdf">
 													{({ blob, url, loading, error }) =>
@@ -518,7 +518,7 @@ const CarDataFormModalView = (match) => {
 											</div>
 											):(<>
 												{data.typevent=="5" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 												<PDFDownloadLink document={<Pdforneshek datareport={data}/>} fileName="divoahneshek.pdf">
 												{({ blob, url, loading, error }) =>
@@ -529,7 +529,7 @@ const CarDataFormModalView = (match) => {
 										</div>
 											):(<>
 												{data.typevent=="6" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 												<PDFDownloadLink document={<Pdfortene datareport={data}/>} fileName="divoahtene.pdf">
 												{({ blob, url, loading, error }) =>
@@ -540,7 +540,7 @@ const CarDataFormModalView = (match) => {
 										</div>
 											):(<>
 													{data.typevent=="7" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 												<PDFDownloadLink document={<Pdformataf datareport={data}/>} fileName="divoahmataf.pdf">
 												{({ blob, url, loading, error }) =>
@@ -552,9 +552,9 @@ const CarDataFormModalView = (match) => {
 											):(
 												<>
 												{data.typevent=="9" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
-												<PDFDownloadLink document={<Pdforhiloz datareport={data}/>} fileName="divoahhiloz.pdf">
+												<PDFDownloadLink document={<Pdforhiloz datareport={data}/>} fileName="divoahmataf.pdf">
 												{({ blob, url, loading, error }) =>
 											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
 											}	
@@ -2111,7 +2111,7 @@ const CarDataFormModalView = (match) => {
 														</Col>
 														<Col>
 														{(data.typevent=="10" || data.typevent=="11"|| data.typevent=="12")?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 											<PDFDownloadLink document={<Pdforsimple datareport={data}/>} fileName="divoahsimple.pdf">
 											{({ blob, url, loading, error }) =>
@@ -2124,7 +2124,7 @@ const CarDataFormModalView = (match) => {
 										:(
 											<>
 											{(data.typevent=="1" || data.typevent=="2"|| data.typevent=="3"|| data.typevent=="4" || data.typevent=="רקם")?(
-											<div className="text-center">
+											<div className="text-left">
 												<button className="btn-new-blue mb-3">
 													<PDFDownloadLink document={<Pdforcar datareport={data}/>} fileName="divoahcar.pdf">
 													{({ blob, url, loading, error }) =>
@@ -2135,7 +2135,7 @@ const CarDataFormModalView = (match) => {
 											</div>
 											):(<>
 												{data.typevent=="5" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 												<PDFDownloadLink document={<Pdforneshek datareport={data}/>} fileName="divoahneshek.pdf">
 												{({ blob, url, loading, error }) =>
@@ -2146,7 +2146,7 @@ const CarDataFormModalView = (match) => {
 										</div>
 											):(<>
 												{data.typevent=="6" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 												<PDFDownloadLink document={<Pdfortene datareport={data}/>} fileName="divoahtene.pdf">
 												{({ blob, url, loading, error }) =>
@@ -2157,7 +2157,7 @@ const CarDataFormModalView = (match) => {
 										</div>
 											):(<>
 													{data.typevent=="7" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 												<PDFDownloadLink document={<Pdformataf datareport={data}/>} fileName="divoahmataf.pdf">
 												{({ blob, url, loading, error }) =>
@@ -2169,7 +2169,7 @@ const CarDataFormModalView = (match) => {
 											):(
 												<>
 												{data.typevent=="9" ?(
-											<div className="text-center">
+											<div className="text-left">
 											<button className="btn-new-blue mb-3">
 												<PDFDownloadLink document={<Pdforhiloz datareport={data}/>} fileName="divoahhiloz.pdf">
 												{({ blob, url, loading, error }) =>
