@@ -967,14 +967,13 @@ const SortingTableRekem = ({ match }) => {
 														>
 															{" "}
 															{/* {console.log(row.original.typevent)} */}
-															<button
-																className="btn-new"
+															<Button
 																id={row.index}
 																value={row.original._id}
 																onClick={Toggle}
 															>
 																עדכן
-															</button>
+															</Button>
 														</div>{" "}
 													</td>
 												) : (
@@ -989,14 +988,13 @@ const SortingTableRekem = ({ match }) => {
 														>
 															{" "}
 															{/* {console.log(row.original.typevent)} */}
-															<button
-																className="btn-new"
+															<Button
 																id={row.index}
 																value={row.original._id}
 																onClick={Toggle}
 															>
 																עדכן
-															</button>
+															</Button>
 														</div>{" "}
 													</td>
 												)}
@@ -1023,7 +1021,7 @@ const SortingTableRekem = ({ match }) => {
 															<button
 																value={row.original._id}
 																onClick={ToggleView}
-																className="btn-new-delete"
+																className="btn-new"
 															>
 																צפייה
 															</button>
@@ -1049,7 +1047,7 @@ const SortingTableRekem = ({ match }) => {
 															<button
 																value={row.original._id}
 																onClick={ToggleView}
-																className="btn-new-delete"
+																className="btn-new"
 															>
 																צפייה
 															</button>
@@ -1198,14 +1196,13 @@ const SortingTableRekem = ({ match }) => {
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
 													{/* <Link to={`/editreport/${row.original._id}`}> */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										) : (
@@ -1221,14 +1218,13 @@ const SortingTableRekem = ({ match }) => {
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
 													{/* <Link to={`/editreport/${row.original._id}`}> */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										)}
@@ -1255,7 +1251,7 @@ const SortingTableRekem = ({ match }) => {
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>
@@ -1282,7 +1278,7 @@ const SortingTableRekem = ({ match }) => {
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>

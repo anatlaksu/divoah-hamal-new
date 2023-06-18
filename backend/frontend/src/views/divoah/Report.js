@@ -34,6 +34,7 @@ const Report = ({ match }) => {
 		[...string].every((c) => "0123456789".includes(c));
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray] = useState([]);
+	const [dateTime, setDateTime] = useState("");
 
 	const [data, setData] = useState({
 		name: "",
@@ -51,6 +52,7 @@ const Report = ({ match }) => {
 		typevent: "0",
 		resevent: "0",
 		yn: "0",
+		yndate:"",
 		selneshek: "",
 		whap: "0",
 		amlahtype: "",
@@ -72,7 +74,7 @@ const Report = ({ match }) => {
 		totalCostWorkHours: "0",
 		damageCost: "0",
 		spareCost: "0",
-
+		timevent:"",
 		error: false,
 		successmsg: false,
 		loading: false,
@@ -649,10 +651,50 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
-		if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		if(!data.timevent){
+			const inputDate = new Date(data.datevent);
+			const formattedDate =
+			  inputDate.getFullYear() +
+			  "-" +
+			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
+			  "-" +
+			  ("0" + inputDate.getDate()).slice(-2) +
+			  "T" +
+			  "03:00:00";
+			console.log(formattedDate);
+			// setDateTime(formattedDate);
+			data.datevent=formattedDate;
+		}
+
+		if(data.timevent){
+			const hour = data.timevent.split(":")[0];
+			console.log(hour);
+			const hourWithOffset = (parseInt(hour, 10) + 3).toString();
+			const minute = data.timevent.split(":")[1];
+			const inputDate = new Date(data.datevent);
+			const formattedDate =
+			  inputDate.getFullYear() +
+			  "-" +
+			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
+			  "-" +
+			  ("0" + inputDate.getDate()).slice(-2) +
+			  "T" + hourWithOffset  +":"+ minute;
+			// setDateTime(formattedDate);
+			data.datevent=formattedDate;
+		}
+
+		// if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		// 	flag = false;
+		// 	ErrorReason += " ,תאריך לא תקין \n";
+		// }
+
+		let datecheck= new Date(data.datevent);
+		let check= datecheck.setHours(datecheck.getHours() - 3)
+		if (new Date(check).getTime()> new Date().getTime()) {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
+
 
 		if (data.nifga == "") {
 			flag = false;
@@ -710,6 +752,7 @@ const Report = ({ match }) => {
 			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
 			yn: data.yn,
+			yndate: data.yndate,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -863,7 +906,7 @@ const Report = ({ match }) => {
 						lg="20"
 						md="7"
 					>
-						<Card className="shadow border-0">
+						<Card className="shadow border-0"  style={{width: "800px"}}>
 							<CardBody className="px-lg-5 py-lg-5">
 								<div className="text-center text-muted mb-4">
 									<big>שליחת דיווח</big>
@@ -1934,13 +1977,26 @@ const Report = ({ match }) => {
 										<Input
 											placeholder="תאריך אירוע"
 											name="datevent"
-											type="datetime-local"
+											type="date"
 											value={data.datevent}
 											onChange={handleChange}
-											min={"1900-01-01T00:00:00"}
-											max={"2100-01-01T00:00:00"}
 										/>
 									</FormGroup>
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										שעת אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="שעת אירוע"
+											name="timevent"
+											type="time"
+											value={data.timevent}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
+
 
 									<FormGroup dir="rtl">
 										<Input

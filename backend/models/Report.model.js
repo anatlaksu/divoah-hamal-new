@@ -44,6 +44,7 @@ const ReportSchema = new mongoose.Schema(
 		damageCost: { type: Number, default: 0 },
 		spareCost: { type: Number, default: 0 },
 		nifga: { type: Number, default: 0 },
+		yndate: { type: Number, default: 0 },
 		hurtarray: { type: Array },
 	},
 	{ timestamps: true }

@@ -85,6 +85,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	const [date, setDate] = useState([]);
 	const [tyevent, setTyevent] = useState([]);
 	const [dataunit, setDataunit] = useState([]);
+	const [sinono, setSinono] = useState([]);
 
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const toggleCollapse = () => {
@@ -374,6 +375,15 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		console.log(tyevent.typevent);
 		console.log(isNaN(tyevent.typevent));
 	}
+	function handleChange4(evt) {
+		const value = evt.target.value;
+		console.log(evt.target.value);
+		console.log(evt.target.name);
+		setSinono({ ...sinono, [evt.target.name]: value });
+		console.log(sinono.typesinono);
+		console.log(isNaN(sinono.typesinono));
+	}
+
 
 	// function handleChange3(evt) {
 	// 	const value = evt.target.value;
@@ -517,8 +527,8 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		}
 	}
 
-	function getnumday(date1,date2){
-		let difference = new Date(date1).getTime() - new Date(date2).getTime();
+	function getnumday(date2){
+		let difference = new Date().getTime() - new Date(date2).getTime();
 		let TotalDays = Math.ceil((difference / (1000 * 3600 * 24))-1);
 		return TotalDays;
 	}
@@ -569,8 +579,47 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		}else{
 			filter6=filter5.filter((el)=>el.gdodrep === dataunit.gdod);
 		}
-		console.log(filter6)
-		setData(filter6);
+
+		let filter7=[];//sinono filter
+		if(sinono.typesinono=="בחר" || !sinono.typesinono){
+			filter7=filter6;
+		}else{
+			if(sinono.typesinono=="1"){
+				filter7=filter6.filter((el)=>el.resevent === "4")
+			}
+			if(sinono.typesinono=="2"){
+				filter7=filter6.filter((el)=>el.datevent.substr(11, 5) === "00:00")
+			}
+			if(sinono.typesinono=="3"){
+				filter7=filter6.filter((el)=>el.nifga === 2)
+			}
+			if(sinono.typesinono=="4"){
+				for(let i=0;i<filter6.length;i++)
+				{
+					if(filter6[i].typevent ==="1" ||filter6[i].typevent ==="2" || filter6[i].typevent ==="3" ||filter6[i].typevent ==="4" || filter6[i].typevent ==="רקם" ){
+						let a=0;
+						let sum=0;
+						while(a<filter6[i].arraymkabaz.length)
+						{
+							if(filter6[i].arraymkabaz[a].zadik == undefined){
+								sum++;
+							}
+							a++;
+						}
+						if(sum>0){
+							filter7.push(filter6[i]);
+						}	
+					}else if(filter6[i].typevent ==="7" ||filter6[i].typevent ==="9"){
+						if(filter6[i].zadik === ""){
+							filter7.push(filter6[i]);
+						}
+					}
+				}
+			}
+		}
+
+		console.log(filter7)
+		setData(filter7);
 		console.log(data);
 	};
 
@@ -615,6 +664,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 			delete tempdata_to_excel[i].zadik;
 			delete tempdata_to_excel[i].resevent;
 			delete tempdata_to_excel[i].yn;
+			delete tempdata_to_excel[i].yndate;
 			delete tempdata_to_excel[i].selneshek;
 			delete tempdata_to_excel[i].whap;
 			delete tempdata_to_excel[i].amlahtype;
@@ -729,7 +779,7 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	useEffect(() => {
 // loadReports();
 filteruse();
-	}, [date,dataunit,tyevent]);
+	}, [date,dataunit,tyevent,sinono]);
 
 	// useEffect (() => {
 	// 			pikodsop.unshift({value: "select",label: "בחר"})
@@ -1158,6 +1208,27 @@ filteruse();
 							</Col>
 							</Row>
 
+							<Row style={{ margin: "0px" }}>
+							<Col md={4}>
+							<div style={{ textAlign: "right", paddingTop: "10px" }}>
+							האם נדרש המשך טיפול בגלל
+									</div>
+										<Input
+											placeholder="האם נדרש המשך טיפול בגלל"
+											type="select"
+											name="typesinono"
+											value={sinono.typesinono}
+											onChange={handleChange4}
+										>
+											<option value={"בחר"}>בחר</option>
+											<option value={"1"}>סיבת אירוע חסרה</option>
+											<option value={"2"}>שעת אירוע לא ידועה</option>
+											<option value={"3"}>לא ידוע על נפגעים</option>
+											<option value={"4"}>צ' לא ידוע</option>
+										</Input>
+							</Col>
+							</Row>
+
 						</Card>
 					</Collapse>
 				</div>
@@ -1357,14 +1428,15 @@ filteruse();
 												// * ------------- added difftime --------------------------------
 
 												if (cell.column.id == "difftime") {
-													if(getnumday(row.original.createdAt,row.original.datevent)>30)
+													if(getnumday(row.original.datevent)>30)
 													  return <td>30+</td>;
 													  else{
-														return <td>{getnumday(row.original.createdAt,row.original.datevent)}</td>;
+														return <td>{getnumday(row.original.datevent)}</td>;
 
 													  }
 												}
 												if (cell.column.id == "tipul") {
+													const hour = row.original.datevent.substr(11, 5);
 													if(row.original.typevent ==="1" ||row.original.typevent ==="2" || row.original.typevent ==="3" ||row.original.typevent ==="4" || row.original.typevent ==="רקם" ){
 														let i=0;
 														let sum=0;
@@ -1376,52 +1448,143 @@ filteruse();
 															i++;
 														}
 														if(sum>0 && row.original.resevent === "4" &&
-														row.original.nifga === 2)
-														  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+														row.original.nifga === 2 && hour === "00:00")
+														  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
 														  else {
-															if (row.original.resevent === "4")
-																return <td>סיבת אירוע חסרה</td>;
-															else {
-																if (row.original.nifga === 2)
-																	return <td>לא ידוע על נפגעים</td>;
+															if(sum>0 && row.original.resevent === "4" &&
+															row.original.nifga === 2)
+															  return <td>צ' לא ידוע, סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+															  else {
+																if(sum>0 && row.original.resevent === "4" &&
+																hour === "00:00")
+																  return <td>צ' לא ידוע, סיבת אירוע חסרה, שעת אירוע לא ידועה</td>;
+																  else {
+																	if(row.original.resevent === "4" && row.original.nifga === 2 &&
+																	hour === "00:00")
+																	  return <td>סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
+																	  else {
+																		if(sum>0 && row.original.nifga === 2 &&
+																			hour === "00:00")
+																		  return <td>צ' לא ידוע, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
+																		  else {
+																			if(sum>0 && hour === "00:00")
+																				  return <td>צ' לא ידוע, שעת אירוע לא ידועה</td>;
+																				  else {
+																					if(sum>0 && row.original.nifga === 2)
+																						  return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
+																						  else {
+																							if(sum>0 && row.original.resevent === "4")
+																							return <td>צ' לא ידוע, סיבת אירוע חסרה</td>;
+																							else {
+																								if(row.original.nifga === 2 && row.original.resevent === "4")
+																								return <td>לא ידוע על נפגעים, סיבת אירוע חסרה</td>;
+																								else {
+																									if(hour === "00:00" && row.original.resevent === "4")
+																									return <td>שעת אירוע לא ידועה, סיבת אירוע חסרה</td>;
+																									else {
+																										if(hour === "00:00" && row.original.nifga === 2)
+																										return <td>שעת אירוע לא ידועה, לא ידוע על נפגעים</td>;
+																										else {
+																										  if (row.original.resevent === "4")
+																											  return <td>סיבת אירוע חסרה</td>;
+																										  else {
+																											  if (row.original.nifga === 2)
+																												  return <td>לא ידוע על נפגעים</td>;
+																											  else {
+																												  if(sum>0)
+																														return <td>צ' לא ידוע</td>;
+																												  else {
+																													if(hour === "00:00")
+																													return <td>שעת אירוע לא ידועה</td>;
+																											  else return <td>לא</td>;
+
+																												  }
+																											  }
+																										  }
+																									  }
+																									  }
+																								  }
+																							  }
+																						  }
+																						}
+																				}
+																				}
+																	}
+																}
+															}
+													}
+													else
+													if(row.original.typevent ==="7" ||row.original.typevent ==="9"){
+														if(row.original.zadik === "" && row.original.nifga === 2 && hour === "00:00")
+														   return <td>צ' לא ידוע, לא ידוע על נפגעים, שעת אירוע לא ידועה</td>;
+														else{
+															if(row.original.zadik === "" && row.original.nifga === 2)
+															return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
+														 else{
+															if(row.original.zadik === "" && hour === "00:00")
+															return <td>צ' לא ידוע, שעת אירועה לא ידועה</td>;
+														 else{
+															if(row.original.nifga === 2 && hour === "00:00")
+															return <td>לא ידוע על נפגעים, שעת אירועה לא ידועה</td>;
+														 else{
+															 if(row.original.zadik === "")
+															 return <td>צ' לא ידוע</td>;
+															 else {
+																 if (row.original.nifga === 2)
+																	 return <td>לא ידוע על נפגעים</td>;
+																 else {
+																	if (hour === "00:00")
+																	return <td>שעת אירוע לא ידועה</td>;
+																else return <td>לא</td>;
+
+																 }
+															 }
+														 }
+														 }
+														 }
+														 }
+													}else
+													if (
+														row.original.resevent === "4" &&
+														row.original.nifga === 2 &&
+														hour === "00:00"
+													)
+														return <td>סיבת אירוע חסרה, לא ידוע על נפגעים, שעת אירוע אינה ידועה</td>;
+													else {
+														if (
+															row.original.resevent === "4" &&
+															row.original.nifga === 2
+														)
+															return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
+														else{
+															if (
+																row.original.resevent === "4" &&
+																hour === "00:00"
+															)
+																return <td>סיבת אירוע חסרה, שעת אירוע אינה ידועה</td>;
+															else{
+																if (
+																	row.original.nifga === 2 &&
+																	hour === "00:00"
+																)
+																	return <td>לא ידוע על נפגעים, שעת אירוע אינה ידועה</td>;
+																else{
+																if (row.original.resevent === "4")
+																	return <td>סיבת אירוע חסרה</td>;
 																else {
-																	if(sum>0)
-																	      return <td>צ' לא ידוע</td>;
-																	else return <td>לא</td>;
+																	if (row.original.nifga === 2)
+																		return <td>לא ידוע על נפגעים</td>;
+																	else {
+																		if (hour === "00:00")
+																		return <td>שעת אירוע אינה ידועה</td>;
+																	    else return <td>לא</td>;
+
+																	}
 																}
 															}
 														}
 	
-
 													}
-													else
-													if(row.original.typevent ==="7" ||row.original.typevent ==="9"){
-														if(row.original.zadik === "" && row.original.nifga === 2)
-														   return <td>צ' לא ידוע, לא ידוע על נפגעים</td>;
-														else{
-															if(row.original.zadik === "")
-															return <td>צ' לא ידוע</td>;
-															else {
-																if (row.original.nifga === 2)
-																	return <td>לא ידוע על נפגעים</td>;
-																else return <td>לא</td>;
-															}
-	
-														}
-													}else
-													if (
-														row.original.resevent === "4" &&
-														row.original.nifga === 2
-													)
-														return <td>סיבת אירוע חסרה, לא ידוע על נפגעים</td>;
-													else {
-														if (row.original.resevent === "4")
-															return <td>סיבת אירוע חסרה</td>;
-														else {
-															if (row.original.nifga === 2)
-																return <td>לא ידוע על נפגעים</td>;
-															else return <td>לא</td>;
-														}
 													}
 												}
 											}
@@ -1440,14 +1603,13 @@ filteruse();
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
 													{/* <Link to={`/editreport/${row.original._id}`}> */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										) : (
@@ -1463,14 +1625,13 @@ filteruse();
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
 													{/* <Link to={`/editreport/${row.original._id}`}> */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										)}
@@ -1497,7 +1658,7 @@ filteruse();
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>
@@ -1524,7 +1685,7 @@ filteruse();
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>

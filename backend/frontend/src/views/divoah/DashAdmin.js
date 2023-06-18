@@ -27,6 +27,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
 import ToggleDarkModeButton from "../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ChartProvider from "./ChartProvider";
 
 const AdminSignInForm = (props) => {
 	const [isError, setIsError] = useState(false);
@@ -382,9 +384,44 @@ const AdminSignInForm = (props) => {
 				display: true,
 				position: "right",
 				align: "center",
-				fullSize: true,
+				fullSize: true, 	
+			},
+			// labels:{
+			// 	position:'outside',
+			// 	textMargin: 3,
+			// 	// render: (ctx)=>{
+			// 	// 	if(ctx.percentage < 5){
+			// 	// 		return ctx.percentage+'%';
+			// 	// 	}
+			// 	// }
+			// },
+			datalabels:{
+				font:{
+					size: 14,
+					weight: 'bold',
+				},
+				textAlign: 'center',
+				textFont:'Rubik',
+				color: 'rgb(0, 0, 0)',
+				formatter: (value,context)=>{
+					const datapoints=context.chart.data.datasets[0].data;
+					function totalsum(total,datapoint){
+						return total+datapoint;
+					}
+					const totalvalue=datapoints.reduce(totalsum,0);
+					const percentagevalue=(value/totalvalue *100).toFixed(0);
+					if(percentagevalue != 0 )
+					  return percentagevalue +'%';
+					else
+					  return '';
+				}
 			},
 		},
+		layout: {
+			padding: {
+			  left: 30, // Adjust the value according to your requirement
+			},
+		  },
 	};
 	//* on Army :
 	//! brakes after 2-3 fillter because of the size of the data
@@ -452,6 +489,7 @@ const AdminSignInForm = (props) => {
 				data: sumtypereport(labels, reportDB, eventTypeArray),
 				backgroundColor: colors.map((col)=>col),
 				borderWidth: 1,
+				render: 'percentage',
 			},
 		],
 	};
@@ -1033,10 +1071,17 @@ function gdodrepmonth(arr1,arr2){
 	//* ----------- is rendered --------------------------------
 
 	return (
-		<Background>
+		<Background
+		//  style={{height: "80%"}}
+		 >
 			<Container
 				className="mt--8 pb-5"
-				// style={{ marginRight: "10%" }}
+				style={{
+					// width: "70%",
+					// overflow: "auto",
+					marginRight: "10%",
+				}}
+				// =style{{ marginRight: "10%" }}
 			>
 				<Row>
 					<div style={{ width: "100%", margin: "auto", textAlign: "right" }}>
@@ -1285,10 +1330,93 @@ function gdodrepmonth(arr1,arr2){
 					</CardHeader>
 				</Row> */}
 				{/*//todo dont let the user put todate larger then from date or make a fail safe like in divoahReport lines 340 - 374 */}
-				{data.fromdate && data.todate ? (
-					<Row>
-						<Col lg="3">
+				{manmarit ? (
+					<>
+						<Row style={{width: "120%"}}>
+						{!data.pikod ? (
+							<Col style={{width:"200px"}}>
+								<Card className="card-chart">
+									<CardHeader>
+										<h3 className="card-category text-center">
+											{" "}
+											מספר אירועים בכל פיקוד לפי חודשים
+										</h3>
+									</CardHeader>
+									<CardBody>
+									{!data.pikod ? (
+											<Bar
+												data={databymonthpikod}
+												options={optionsBar}
+											/>
+											) :null}
+									</CardBody>
+								</Card>
+							</Col>
+							) : null}
+							{data.pikod && !data.ogda && !data.hativa ? (
+							<Col style={{width:"200px"}}>
 							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל אוגדה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthogda}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+						) : null}
+						<>
+								{data.ogda && !data.hativa ? (
+							<Col style={{width:"200px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל חטיבה לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthhativa}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+							<>
+								{data.hativa ? (
+							<Col style={{width:"200px"}}>
+							<Card className="card-chart">
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										מספר אירועים בכל גדוד לפי חודשים
+									</h3>
+								</CardHeader>
+								<CardBody>
+										<Bar
+											data={databymonthgdod}
+											options={optionsBar}
+										/>
+								</CardBody>
+							</Card>
+						</Col>
+								) : null}
+							</>
+
+							{data.fromdate && data.todate ? (
+						<Col style={{width:"100px"}}>
+						<Row>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -1327,8 +1455,8 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
-							<Card className="card-chart">
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1370,8 +1498,10 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
-							<Card className="card-chart">
+						</Row>
+						<Row>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1413,11 +1543,12 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
-							<Card className="card-chart">
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
+								<CardBody>
 								{data.pikod ? (
 									<h2 className="text-center">
 										{getnumevt(
@@ -1444,14 +1575,16 @@ function gdodrepmonth(arr1,arr2){
 									</h2>
 								)}
 
-								<CardBody></CardBody>
+								</CardBody>
 							</Card>
 						</Col>
-					</Row>
+						</Row>
+						</Col>
 				) : (
-					<Row>
-						<Col lg="3">
-							<Card className="card-chart">
+						<Col style={{width:"100px"}}>
+						<Row>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
@@ -1476,8 +1609,8 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
-							<Card className="card-chart">
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1505,8 +1638,10 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
-							<Card className="card-chart">
+						</Row>
+						<Row>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center">
 										{" "}
@@ -1534,26 +1669,27 @@ function gdodrepmonth(arr1,arr2){
 								</CardBody>
 							</Card>
 						</Col>
-						<Col lg="3">
-							<Card className="card-chart">
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
+								<CardBody>
 								{data.pikod ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
 									<h2 className="text-center">{getnumevt(reportDB)}</h2>
 								)}
-								<CardBody></CardBody>
+								</CardBody>
 							</Card>
 						</Col>
-					</Row>
+						</Row>
+						</Col>
 				)}
 
-				{manmarit ? (
-					<>
-						<Row>
-							<Col lg="12">
+                        </Row>
+						<Row style={{width: "120%"}}>
+							{/* <Col style={{width:"200px"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1821,10 +1957,8 @@ function gdodrepmonth(arr1,arr2){
 										</table>
 									</CardBody>
 								</Card>
-							</Col>
-						</Row>
-						<Row>
-							<Col lg="6">
+							</Col> */}
+							<Col style={{width:"30%"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1834,26 +1968,35 @@ function gdodrepmonth(arr1,arr2){
 									</CardHeader>
 									<CardBody>
 										{data.length == 0 ? (
+											// <ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											// </ChartProvider>
 										) : !data.pikod ? (
+											// <ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											// </ChartProvider>
 										) : (
+											// <ChartProvider>
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											// </ChartProvider>
 										)}
 									</CardBody>
 								</Card>
 							</Col>
 							{!data.pikod ? (
-								<Col lg="6">
+								<Col style={{width:"30%"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -1863,10 +2006,13 @@ function gdodrepmonth(arr1,arr2){
 										</CardHeader>
 										<CardBody>
 											{!data.pikod ? (
+												// <ChartProvider>
 												<Doughnut
 													data={datapikod}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
+												// </ChartProvider>
 											) : //* was removed
 											/*
 									<Doughnut
@@ -1880,7 +2026,7 @@ function gdodrepmonth(arr1,arr2){
 								</Col>
 							) : null}
 							{data.pikod && !data.ogda && !data.hativa ? (
-								<Col lg="6">
+								<Col style={{width:"30%"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -1890,17 +2036,20 @@ function gdodrepmonth(arr1,arr2){
 											</h3>
 										</CardHeader>
 										<CardBody>
+											{/* <ChartProvider> */}
 											<Doughnut
 												data={dataogda}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											{/* </ChartProvider> */}
 										</CardBody>
 									</Card>
 								</Col>
 							) : null}
 							<>
 								{data.ogda && !data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"30%"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -1909,10 +2058,13 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												{/* <ChartProvider> */}
 												<Doughnut
 													data={datahativa}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
+												{/* </ChartProvider> */}
 											</CardBody>
 										</Card>
 									</Col>
@@ -1920,7 +2072,7 @@ function gdodrepmonth(arr1,arr2){
 							</>
 							<>
 								{data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"30%"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -1929,19 +2081,25 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												{/* <ChartProvider> */}
 												<Doughnut
 													data={datagdod}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
+												{/* </ChartProvider> */}
 											</CardBody>
 										</Card>
 									</Col>
 								) : null}
 							</>
 						</Row>
-						<Row>
+					</>
+				) : (
+					<>
+					    <Row style={{width: "120%"}}>
 						{!data.pikod ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -1952,7 +2110,7 @@ function gdodrepmonth(arr1,arr2){
 									<CardBody>
 									{!data.pikod ? (
 											<Bar
-												data={databymonthpikod}
+												data={databymonthpikodrep}
 												options={optionsBar}
 											/>
 											) :null}
@@ -1961,7 +2119,7 @@ function gdodrepmonth(arr1,arr2){
 							</Col>
 							) : null}
 							{data.pikod && !data.ogda && !data.hativa ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1971,7 +2129,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardHeader>
 								<CardBody>
 										<Bar
-											data={databymonthogda}
+											data={databymonthogdarep}
 											options={optionsBar}
 										/>
 								</CardBody>
@@ -1980,7 +2138,7 @@ function gdodrepmonth(arr1,arr2){
 						) : null}
 						<>
 								{data.ogda && !data.hativa ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -1990,7 +2148,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardHeader>
 								<CardBody>
 										<Bar
-											data={databymonthhativa}
+											data={databymonthhativarep}
 											options={optionsBar}
 										/>
 								</CardBody>
@@ -2000,7 +2158,7 @@ function gdodrepmonth(arr1,arr2){
 							</>
 							<>
 								{data.hativa ? (
-							<Col lg="12">
+							<Col style={{width:"200px"}}>
 							<Card className="card-chart">
 								<CardHeader>
 									<h3 className="card-category text-center">
@@ -2010,7 +2168,7 @@ function gdodrepmonth(arr1,arr2){
 								</CardHeader>
 								<CardBody>
 										<Bar
-											data={databymonthgdod}
+											data={databymonthgdodrep}
 											options={optionsBar}
 										/>
 								</CardBody>
@@ -2018,13 +2176,282 @@ function gdodrepmonth(arr1,arr2){
 						</Col>
 								) : null}
 							</>
-                        </Row>
-
-					</>
-				) : (
-					<>
+							{data.fromdate && data.todate ? (
+						<Col style={{width:"100px"}}>
 						<Row>
-							<Col lg="12">
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						</Row>
+						<Row>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ עלות שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter(
+														(report) =>
+															new Date(report.datevent).setHours(0, 0, 0, 0) >=
+																new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+															new Date(report.datevent).setHours(0, 0, 0, 0) <=
+																new Date(data.todate).setHours(0, 0, 0, 0)
+													)
+													.filter((rep) => rep.typevent  == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center"> מספר אירועים</h3>
+								</CardHeader>
+								<CardBody>
+								{data.pikod ? (
+									<h2 className="text-center">
+										{getnumevt(
+											reportDBFillter.filter(
+												(report) =>
+													new Date(report.datevent).setHours(0, 0, 0, 0) >=
+														new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+													new Date(report.datevent).setHours(0, 0, 0, 0) <=
+														new Date(data.todate).setHours(0, 0, 0, 0)
+											)
+										)}
+									</h2>
+								) : (
+									<h2 className="text-center">
+										{getnumevt(
+											reportDB.filter(
+												(report) =>
+													new Date(report.datevent).setHours(0, 0, 0, 0) >=
+														new Date(data.fromdate).setHours(0, 0, 0, 0) &&
+													new Date(report.datevent).setHours(0, 0, 0, 0) <=
+														new Date(data.todate).setHours(0, 0, 0, 0)
+											)
+										)}
+									</h2>
+								)}
+								</CardBody>
+							</Card>
+						</Col>
+						</Row>
+						</Col>
+				) : (
+						<Col style={{width:"100px"}}>
+						<Row>
+						<Col  style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.damageCost)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col  style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						</Row>
+						<Row>
+						<Col  style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center">
+										{" "}
+										סה"כ עלות שעות עבודה
+									</h3>
+								</CardHeader>
+								<CardBody>
+									{data.pikod ? (
+										<h2 className="text-center">
+											{gettotal(
+												reportDBFillter
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									) : (
+										<h2 className="text-center">
+											{gettotal(
+												reportDB
+													.filter((rep) => rep.typevent == "רקם")
+													.map((report) => report.totalCostWorkHours)
+											)}
+										</h2>
+									)}
+								</CardBody>
+							</Card>
+						</Col>
+						<Col  style={{width:"100px"}}>
+							<Card className="card-chart" style={{height:"175px"}}>
+								<CardHeader>
+									<h3 className="card-category text-center"> מספר אירועים</h3>
+								</CardHeader>
+								<CardBody>
+								{data.pikod ? (
+									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
+								) : (
+									<h2 className="text-center">{getnumevt(reportDB)}</h2>
+								)}
+								</CardBody>
+							</Card>
+						</Col>
+						</Row>
+						</Col>
+				)}
+                        </Row>
+						<Row style={{width: "120%"}}>
+							{/* <Col style={{width:"200px"}}>
 								<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
@@ -2136,11 +2563,9 @@ function gdodrepmonth(arr1,arr2){
 										</table>
 									</CardBody>
 								</Card>
-							</Col>
-						</Row>
-						<Row>
-							<Col lg="6">
-								<Card className="card-chart">
+							</Col> */}
+							<Col style={{width:"100px"}}>
+							<Card className="card-chart">
 									<CardHeader>
 										<h3 className="card-category text-center">
 											{" "}
@@ -2149,26 +2574,35 @@ function gdodrepmonth(arr1,arr2){
 									</CardHeader>
 									<CardBody>
 										{data.length == 0 ? (
+											// <ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											// </ChartProvider>
 										) : !data.pikod ? (
+											// <ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											// </ChartProvider>
 										) : (
+											// <ChartProvider>
 											<Doughnut
 												data={dataeventFilltered}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											// </ChartProvider>
 										)}
 									</CardBody>
 								</Card>
 							</Col>
 							{!data.pikod ? (
-								<Col lg="6">
+								<Col style={{width:"100px"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -2178,10 +2612,13 @@ function gdodrepmonth(arr1,arr2){
 										</CardHeader>
 										<CardBody>
 											{!data.pikod ? (
+												// <ChartProvider>
 												<Doughnut
 													data={datapikodrep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
+												// </ChartProvider>
 											) : //* was removed
 											/*
 									<Doughnut
@@ -2195,7 +2632,7 @@ function gdodrepmonth(arr1,arr2){
 								</Col>
 							) : null}
 							{data.pikod && !data.ogda && !data.hativa ? (
-								<Col lg="6">
+								<Col style={{width:"100px"}}>
 									<Card className="card-chart">
 										<CardHeader>
 											<h3 className="card-category text-center">
@@ -2205,17 +2642,20 @@ function gdodrepmonth(arr1,arr2){
 											</h3>
 										</CardHeader>
 										<CardBody>
+											{/* <ChartProvider> */}
 											<Doughnut
 												data={dataogdarep}
 												options={options}
+												plugins={[ChartDataLabels]}
 											/>
+											{/* </ChartProvider> */}
 										</CardBody>
 									</Card>
 								</Col>
 							) : null}
 							<>
 								{data.ogda && !data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"100px"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -2224,10 +2664,13 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												{/* <ChartProvider> */}
 												<Doughnut
 													data={datahativarep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
+												{/* </ChartProvider> */}
 											</CardBody>
 										</Card>
 									</Col>
@@ -2235,7 +2678,7 @@ function gdodrepmonth(arr1,arr2){
 							</>
 							<>
 								{data.hativa ? (
-									<Col lg="6">
+									<Col style={{width:"100px"}}>
 										<Card className="card-chart">
 											<CardHeader>
 												<h3 className="card-category text-center">
@@ -2244,96 +2687,19 @@ function gdodrepmonth(arr1,arr2){
 												</h3>
 											</CardHeader>
 											<CardBody>
+												{/* <ChartProvider> */}
 												<Doughnut
 													data={datagdodrep}
 													options={options}
+													plugins={[ChartDataLabels]}
 												/>
+												{/* </ChartProvider> */}
 											</CardBody>
 										</Card>
 									</Col>
 								) : null}
 							</>
 						</Row>
-						<Row>
-						{!data.pikod ? (
-							<Col lg="12">
-								<Card className="card-chart">
-									<CardHeader>
-										<h3 className="card-category text-center">
-											{" "}
-											מספר אירועים בכל פיקוד לפי חודשים
-										</h3>
-									</CardHeader>
-									<CardBody>
-									{!data.pikod ? (
-											<Bar
-												data={databymonthpikodrep}
-												options={optionsBar}
-											/>
-											) :null}
-									</CardBody>
-								</Card>
-							</Col>
-							) : null}
-							{data.pikod && !data.ogda && !data.hativa ? (
-							<Col lg="12">
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל אוגדה לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthogdarep}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-						) : null}
-						<>
-								{data.ogda && !data.hativa ? (
-							<Col lg="12">
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל חטיבה לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthhativarep}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-								) : null}
-							</>
-							<>
-								{data.hativa ? (
-							<Col lg="12">
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל גדוד לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthgdodrep}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-								) : null}
-							</>
-                        </Row>
 					</>
 				)}
 			</Container>
