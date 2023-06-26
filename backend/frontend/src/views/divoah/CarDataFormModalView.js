@@ -42,6 +42,9 @@ import Pdforneshek from "./Pdfiles/pdforneshek";
 import Pdfortene from "./Pdfiles/pdfortene";
 import printer from "assets/img/printer.svg";
 
+import 'core-js/features/object/from-entries';
+
+
 const CarDataFormModalView = (match) => {
 	const [data, setData] = useState({
 		name: "",
@@ -76,7 +79,7 @@ const CarDataFormModalView = (match) => {
 		redirectToReferrer: false,
 		//
 	});
-
+	
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray] = useState([]);
 
