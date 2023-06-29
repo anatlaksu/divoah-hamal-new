@@ -41,7 +41,8 @@ import Pdformataf from "./Pdfiles/pdformataf";
 import Pdforneshek from "./Pdfiles/pdforneshek";
 import Pdfortene from "./Pdfiles/pdfortene";
 import printer from "assets/img/printer.svg";
-
+import FileDownload from "js-file-download";
+import download from "assets/img/download.png"
 import 'core-js/features/object/from-entries';
 
 
@@ -73,6 +74,7 @@ const CarDataFormModalView = (match) => {
 		nifga: "",
 		yndate:"",
 		wnifga: "",
+		files_id:"",
 		error: false,
 		successmsg: false,
 		loading: false,
@@ -100,6 +102,9 @@ const CarDataFormModalView = (match) => {
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
+
+	const [filesFromDB, setFilesFromDB] = useState([]);
+	const [showFile, setShowFile] = useState(1);
 
 	const componentRef = React.useRef();
 
@@ -374,6 +379,42 @@ const CarDataFormModalView = (match) => {
 		match.ToggleForModal();
 	};
 
+	const getFiles = () => {
+		axios
+		  .get(`http://localhost:8000/api/getMultipleFiles/${data.files_id}`)
+		  .then((response) => {
+			setFilesFromDB(response.data.files);
+			console.log(`files: ${response.data}`);
+			// setShowFile(2);
+		  })
+		  .catch((err) => {
+			console.log(err);
+		  });
+		}
+
+	function openFileANewWindows(filePath, fileName) {
+		// const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+		// const fileLink = document.createElement('a');
+		// fileLink.href = fileURL;
+		// const fileName = response.headers['content-disposition'].substring(22, 52);
+		// fileLink.setAttribute('download', fileName);
+		// fileLink.setAttribute('target', '_blank');
+		// document.body.appendChild(fileLink);
+		// fileLink.click();
+		// fileLink.remove();
+	
+		// e.preventDefault();
+		const urlPath = filePath;
+		const newUrlPath = urlPath.slice(8);
+		// console.log(`Frontend ${newUrlPath}`);
+		axios
+		  .get(`http://localhost:8000/api/downloadPDFFile/${newUrlPath}`, { responseType: "blob" })
+		  .then((res) => {
+			FileDownload(res.data, fileName);
+		  });
+	  }
+
+
 	const init = () => {
 		// console.log(match);
 		var reportid = match.cardataid;
@@ -394,9 +435,19 @@ const CarDataFormModalView = (match) => {
 	};
 
 	useEffect(() => {
-		if (match.isOpen == true) init();
+		if (match.isOpen == true) {
+			init();
+		}
 	}, [match.isOpen]);
 
+	useEffect(() => {
+		if(data.files_id != undefined){
+		   getFiles();
+		}else{
+			setFilesFromDB([]);
+		}
+	}, [data.files_id]);
+	
 	// * ------ manmarit --------------------------------
 	useEffect(() => {
 		setOgdas([]);
@@ -1995,8 +2046,7 @@ const CarDataFormModalView = (match) => {
 															</div>
 														</FormGroup>
 													</div>
-												</Form>
-												{data.nifga == 1 ? (
+													{data.nifga == 1 ? (
 												infohurtarray.map((p, index) => {
 																	return (
 																		<div>
@@ -2100,6 +2150,24 @@ const CarDataFormModalView = (match) => {
 																	);
 												})
 												) : null}
+
+												{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												קובץ תחקיר ביטחוני
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
+												</Form>
 											</CardBody>
 										) : (
 											<CardBody className="px-lg-5 py-lg-5">
@@ -2902,9 +2970,8 @@ const CarDataFormModalView = (match) => {
 															</div>
 														</FormGroup>
 													</div>
-												</Form>
 
-												{data.nifga == 1 ? (
+													{data.nifga == 1 ? (
 												infohurtarray.map((p, index) => {
 																	return (
 																		<div>
@@ -3008,6 +3075,25 @@ const CarDataFormModalView = (match) => {
 																	);
 												})
 												) : null}
+
+
+													{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												קובץ תחקיר ביטחוני
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
+												</Form>
 											</CardBody>
 										)}
 
