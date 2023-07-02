@@ -374,6 +374,7 @@ const AdminSignInForm = (props) => {
 	const options = {
 		//* on civil
 		responsive: true,
+		maintainAspectRatio: false,
 		plugins: {
 			legend: {
 				display: true,
@@ -1280,7 +1281,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1323,7 +1324,7 @@ const AdminSignInForm = (props) => {
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1368,7 +1369,7 @@ const AdminSignInForm = (props) => {
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1408,7 +1409,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.ogda ? (
 									<h2 className="text-center">
 										{getnumevt(
@@ -1448,7 +1449,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1477,7 +1478,7 @@ const AdminSignInForm = (props) => {
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1508,7 +1509,7 @@ const AdminSignInForm = (props) => {
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1534,7 +1535,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.ogda ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
@@ -1833,6 +1834,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										) : !data.ogda ? (
@@ -1841,6 +1843,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										) : (
@@ -1849,6 +1852,7 @@ const AdminSignInForm = (props) => {
 												data={dataeventFilltered}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										)}
@@ -1871,6 +1875,7 @@ const AdminSignInForm = (props) => {
 													data={datapikod}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
 												/>
 												// </ChartProvider>
 											) : //* was removed
@@ -1901,6 +1906,7 @@ const AdminSignInForm = (props) => {
 												data={dataogda}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											{/* </ChartProvider> */}
 										</CardBody>
@@ -1923,6 +1929,7 @@ const AdminSignInForm = (props) => {
 													data={datahativa}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>
@@ -1946,6 +1953,7 @@ const AdminSignInForm = (props) => {
 													data={datagdod}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>
@@ -2024,7 +2032,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2067,7 +2075,7 @@ const AdminSignInForm = (props) => {
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2112,7 +2120,7 @@ const AdminSignInForm = (props) => {
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2152,7 +2160,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.ogda ? (
 									<h2 className="text-center">
 										{getnumevt(
@@ -2192,7 +2200,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2221,7 +2229,7 @@ const AdminSignInForm = (props) => {
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2252,7 +2260,7 @@ const AdminSignInForm = (props) => {
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.ogda ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2278,7 +2286,7 @@ const AdminSignInForm = (props) => {
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.ogda ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
@@ -2421,6 +2429,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										) : !data.ogda ? (
@@ -2429,6 +2438,7 @@ const AdminSignInForm = (props) => {
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										) : (
@@ -2437,6 +2447,7 @@ const AdminSignInForm = (props) => {
 												data={dataeventFilltered}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										)}
@@ -2459,6 +2470,7 @@ const AdminSignInForm = (props) => {
 													data={datapikodrep}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
 												/>
 												// </ChartProvider>
 											) : //* was removed
@@ -2489,6 +2501,7 @@ const AdminSignInForm = (props) => {
 												data={dataogdarep}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											{/* </ChartProvider> */}
 										</CardBody>
@@ -2511,6 +2524,7 @@ const AdminSignInForm = (props) => {
 													data={datahativarep}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>
@@ -2534,6 +2548,7 @@ const AdminSignInForm = (props) => {
 													data={datagdodrep}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>

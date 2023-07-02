@@ -379,6 +379,9 @@ const AdminSignInForm = (props) => {
 	const options = {
 		//* on civil
 		responsive: true,
+		maintainAspectRatio: false,
+		// circumference: Math.PI,
+		// rotation: -Math.PI,
 		plugins: {
 			legend: {
 				display: true,
@@ -1420,7 +1423,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1463,7 +1466,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1508,7 +1511,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1548,7 +1551,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.pikod ? (
 									<h2 className="text-center">
 										{getnumevt(
@@ -1588,7 +1591,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1617,7 +1620,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1648,7 +1651,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -1674,7 +1677,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.pikod ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
@@ -1966,13 +1969,14 @@ function gdodrepmonth(arr1,arr2){
 											אירועים לפי סוג אירוע
 										</h3>
 									</CardHeader>
-									<CardBody>
+									<CardBody >
 										{data.length == 0 ? (
 											// <ChartProvider>
 											<Doughnut
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										) : !data.pikod ? (
@@ -1981,6 +1985,7 @@ function gdodrepmonth(arr1,arr2){
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										) : (
@@ -1989,6 +1994,7 @@ function gdodrepmonth(arr1,arr2){
 												data={dataeventFilltered}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
 										)}
@@ -2011,6 +2017,8 @@ function gdodrepmonth(arr1,arr2){
 													data={datapikod}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
+
 												/>
 												// </ChartProvider>
 											) : //* was removed
@@ -2041,6 +2049,8 @@ function gdodrepmonth(arr1,arr2){
 												data={dataogda}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
+
 											/>
 											{/* </ChartProvider> */}
 										</CardBody>
@@ -2063,6 +2073,8 @@ function gdodrepmonth(arr1,arr2){
 													data={datahativa}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
+
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>
@@ -2086,6 +2098,8 @@ function gdodrepmonth(arr1,arr2){
 													data={datagdod}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
+
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>
@@ -2184,7 +2198,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2227,7 +2241,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2272,7 +2286,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2312,7 +2326,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.pikod ? (
 									<h2 className="text-center">
 										{getnumevt(
@@ -2351,7 +2365,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2380,7 +2394,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2411,7 +2425,7 @@ function gdodrepmonth(arr1,arr2){
 										סה"כ עלות שעות עבודה
 									</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 									{data.pikod ? (
 										<h2 className="text-center">
 											{gettotal(
@@ -2437,7 +2451,7 @@ function gdodrepmonth(arr1,arr2){
 								<CardHeader>
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
-								<CardBody>
+								<CardBody style={{padding:"40px"}}>
 								{data.pikod ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
@@ -2579,6 +2593,8 @@ function gdodrepmonth(arr1,arr2){
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
+
 											/>
 											// </ChartProvider>
 										) : !data.pikod ? (
@@ -2587,6 +2603,8 @@ function gdodrepmonth(arr1,arr2){
 												data={dataevent}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
+
 											/>
 											// </ChartProvider>
 										) : (
@@ -2595,6 +2613,8 @@ function gdodrepmonth(arr1,arr2){
 												data={dataeventFilltered}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
+
 											/>
 											// </ChartProvider>
 										)}
@@ -2617,6 +2637,8 @@ function gdodrepmonth(arr1,arr2){
 													data={datapikodrep}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
+
 												/>
 												// </ChartProvider>
 											) : //* was removed
@@ -2647,6 +2669,8 @@ function gdodrepmonth(arr1,arr2){
 												data={dataogdarep}
 												options={options}
 												plugins={[ChartDataLabels]}
+												style={{width: "350px",height:"350px"}}
+
 											/>
 											{/* </ChartProvider> */}
 										</CardBody>
@@ -2669,6 +2693,8 @@ function gdodrepmonth(arr1,arr2){
 													data={datahativarep}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
+
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>
@@ -2692,6 +2718,8 @@ function gdodrepmonth(arr1,arr2){
 													data={datagdodrep}
 													options={options}
 													plugins={[ChartDataLabels]}
+													style={{width: "350px",height:"350px"}}
+
 												/>
 												{/* </ChartProvider> */}
 											</CardBody>
