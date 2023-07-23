@@ -199,6 +199,7 @@ router.route("/add").post((req, res) => {
 	const totalCostWorkHours = Number(req.body.totalCostWorkHours);
 	const damageCost = Number(req.body.damageCost);
 	const spareCost = Number(req.body.spareCost);
+	const files_id = req.body.files_id;
 
 	const newReport = new Report({
 		name,
@@ -240,6 +241,7 @@ router.route("/add").post((req, res) => {
 		totalCostWorkHours,
 		damageCost,
 		spareCost,
+		files_id,
 	});
 	const formId = newReport.save((err, form) => {
 		console.groupCollapsed("formId");
@@ -549,6 +551,7 @@ router.route("/update/:id").put((req, res) => {
 			request.totalCostWorkHours = Number(req.body.totalCostWorkHours);
 			request.damageCost = Number(req.body.damageCost);
 			request.spareCost = Number(req.body.spareCost);
+			request.files_id=req.body.files_id;
 
 			request
 				.save()

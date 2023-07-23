@@ -46,6 +46,7 @@ const ReportSchema = new mongoose.Schema(
 		nifga: { type: Number, default: 0 },
 		yndate: { type: Number, default: 0 },
 		hurtarray: { type: Array },
+		files_id:{type:String, default:""},
 	},
 	{ timestamps: true }
 );

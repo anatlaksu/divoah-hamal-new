@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
 
 // Configure Mongo
 const db = "mongodb://127.0.0.1/DivoahDB";
@@ -54,6 +55,9 @@ app.use("/api", magadalRoutes);
 app.use("/api", magadRoutes);
 app.use("/api", mkabazRoutes);
 app.use("/api", makatRoutes);
+
+const fileuploaderRoutes = require("./routes/fileuploader/fileuploader");
+app.use("/api", fileuploaderRoutes);
 
 // if(process.env.NODE_ENV === 'production'){
 //     //set static folder

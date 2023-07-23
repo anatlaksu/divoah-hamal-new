@@ -23,6 +23,8 @@ import { toast } from "react-toastify";
 // import src from "react-select/dist/declarations/src";
 import logotene from "assets/img/logotene.png"
 import Logo100 from "assets/img/team100.png";
+import 'core-js/features/object/from-entries';
+
 
 const Pdformataf = ({datareport}) => {
 	//* pikod data

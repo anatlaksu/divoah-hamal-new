@@ -33,6 +33,9 @@ import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
 import CarTypesFilterObjectRekem from "components/general/CarTypeFilter/CarTypesFilterObjectRekem";
 import deletepic from "assets/img/delete.png";
+import FileDownload from "js-file-download";
+import download from "assets/img/download.png"
+
 
 const CarDataFormModal = (match) => {
 	const digits_only = (string) =>
@@ -73,6 +76,7 @@ const CarDataFormModal = (match) => {
 		nifga: "",
 		yndate:"",
 		wnifga: "",
+		files_id:"",
 		hurtarray: [],
 		totalwork: 0,
 		totalWorkHours: 0,
@@ -104,6 +108,9 @@ const CarDataFormModal = (match) => {
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
+
+	const [filesFromDB, setFilesFromDB] = useState([]);
+	const [files, setFiles] = useState([]);
 
 	const getMagadals = async () => {
 		await axios
@@ -347,6 +354,48 @@ const CarDataFormModal = (match) => {
 		setGdodsrep(temphativasgdods);
 	};
 
+	const handleUploadFiles = (uploadFiles) => {
+		const uploaded = [...files];
+		let flag = true;
+		const ErrorReason = [];
+		let limitExceeded = false;
+		uploadFiles.some((filePush, index) => {
+		  if (uploaded.findIndex((f) => f.name === filePush.name) === -1) {
+			  uploaded.push(filePush);
+			if (flag !== true) {
+			  ErrorReason.forEach((reason) => {
+				toast.error(reason);
+				return false;
+				// setData({ ...data, loading: false, successmsg: false, error: true });
+			  });
+			} else {
+			  return true;
+			  // setData({ ...data, loading: false, successmsg: true, error: false });
+			}
+			// console.log("file name: " + data.propPrint.nameFile);
+			// setPropPrint({ ...propPrint, nameFile: filePush.name });
+			// setTextArea({ ...textArea, nameFiletxt: filePush.name });
+	
+			// if (uploaded.length === MAX_COUNT) setFileLimit(true);
+			if (uploaded.length < 0) {
+			  // alert(`You can only add a maximum of ${MAX_COUNT} files`);
+			  // setFileLimit(false);
+			  limitExceeded = false;
+			  return false;
+			}
+		  }
+		  return setFiles(uploaded);
+		});
+		if (!limitExceeded) setFiles(uploaded);
+	  };	
+
+	  const handleFileEvent = (e) => {
+		e.preventDefault();
+		const chosenFiles = Array.prototype.slice.call(e.target.files);
+		handleUploadFiles(chosenFiles);
+	  };
+
+
 	function handleChange(evt) {
 		const value = evt.target.value;
 		if (evt.target.name == "nifga") {
@@ -383,6 +432,41 @@ const CarDataFormModal = (match) => {
 			? CheckSignUpForm(event)
 			: CheckSignUpFormRekem(event);
 	};
+
+		const getFiles = () => {
+		axios
+		  .get(`http://localhost:8000/api/getMultipleFiles/${data.files_id}`)
+		  .then((response) => {
+			setFilesFromDB(response.data.files);
+			console.log(`files: ${response.data}`);
+			// setShowFile(2);
+		  })
+		  .catch((err) => {
+			console.log(err);
+		  });
+		}
+
+			function openFileANewWindows(filePath, fileName) {
+		// const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+		// const fileLink = document.createElement('a');
+		// fileLink.href = fileURL;
+		// const fileName = response.headers['content-disposition'].substring(22, 52);
+		// fileLink.setAttribute('download', fileName);
+		// fileLink.setAttribute('target', '_blank');
+		// document.body.appendChild(fileLink);
+		// fileLink.click();
+		// fileLink.remove();
+	
+		// e.preventDefault();
+		const urlPath = filePath;
+		const newUrlPath = urlPath.slice(8);
+		// console.log(`Frontend ${newUrlPath}`);
+		axios
+		  .get(`http://localhost:8000/api/downloadPDFFile/${newUrlPath}`, { responseType: "blob" })
+		  .then((res) => {
+			FileDownload(res.data, fileName);
+		  });
+	  }
 
 	const CheckSignUpForm = (event) => {
 		event.preventDefault();
@@ -770,6 +854,13 @@ const CarDataFormModal = (match) => {
 		// console.log(match);
 		console.log(match.cardataid);
 		var reportid = match.cardataid;
+		const formFilesData = new FormData();
+		Object.keys(files).forEach((key) => {
+		formFilesData.append("files", files[key]);
+		});
+		axios.post("http://localhost:8000/api/multipleFiles", formFilesData, {}).then((res) => {
+		console.log("from the file axios");
+		console.log(res.data);
 		const report = {
 			name: data.name,
 			lastname: data.lastname,
@@ -811,6 +902,7 @@ const CarDataFormModal = (match) => {
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,
 			spareCost: data.spareCost,
+			files_id:res.data,
 		};
 		// console.log(report.gdod);
 		if (!(report.gdod == "בחר")) {
@@ -830,6 +922,7 @@ const CarDataFormModal = (match) => {
 		} else {
 			toast.error("לא הוזנה יחידה מנמרית");
 		}
+	});
 	};
 
 	const init = () => {
@@ -857,6 +950,15 @@ const CarDataFormModal = (match) => {
 	useEffect(() => {
 		if (match.isOpen == true) init();
 	}, [match.isOpen]);
+
+		useEffect(() => {
+		if(data.files_id != undefined){
+		   getFiles();
+		}else{
+			setFilesFromDB([]);
+		}
+	}, [data.files_id]);
+
 
 	// * ------ manmarit --------------------------------
 	useEffect(() => {
@@ -2565,6 +2667,42 @@ const CarDataFormModal = (match) => {
 															</div>
 														</>
 													) : null}
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+									קובץ תחקיר ביטחוני
+									</div>
+										<Input
+											placeholder="העלאת קובץ"
+											type="file"
+											accept="application/pdf,
+											image/png,
+											image/jpeg,
+												application/vnd.ms-excel,
+												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+												application/vnd.ms-powerpoint, 
+												application/vnd.openxmlformats-officedocument.presentationml.presentation,
+												application/msword,
+												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+											onChange={handleFileEvent}
+										/>
+
+
+												{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												קובצי תחקיר ביטחוני קיימים
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
 													<div className="text-center">
 														<button
 															onClick={clickSubmit}
@@ -3512,6 +3650,42 @@ const CarDataFormModal = (match) => {
 															</div>
 														</>
 													) : null}
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+									קובץ תחקיר ביטחוני
+									</div>
+										<Input
+											placeholder="העלאת קובץ"
+											type="file"
+											accept="application/pdf,
+											image/png,
+											image/jpeg,
+												application/vnd.ms-excel,
+												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+												application/vnd.ms-powerpoint, 
+												application/vnd.openxmlformats-officedocument.presentationml.presentation,
+												application/msword,
+												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+											onChange={handleFileEvent}
+										/>
+
+
+												{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												 קבצי תחקיר ביטחוני קיימים
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
 
 													<div className="text-center">
 														<button
