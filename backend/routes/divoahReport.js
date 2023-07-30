@@ -502,7 +502,7 @@ router.route("/:id").get((req, res) => {
 		});
 });
 
-router.route("/:id").delete((req, res) => {
+router.route("/del/:id").delete((req, res) => {
 	Report.findByIdAndDelete(req.params.id)
 		.then(() => res.json("Report deleted."))
 		.catch((err) => res.status(400).json("Error: " + err));

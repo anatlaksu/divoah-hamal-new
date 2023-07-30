@@ -29,6 +29,7 @@ import { COLUMNSSUM } from "./ColumnsSum";
 import { GlobalFilter } from "./GlobalFilter";
 import CarDataFormModal from "views/divoah/CarDataFormModal";
 import CarDataFormModalView from "views/divoah/CarDataFormModalView";
+import CarDataFormModalDel from "views/divoah/CarDataFormModalDel";
 import axios from "axios";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { isAuthenticated } from "auth";
@@ -57,6 +58,9 @@ const SortingTableHamal = ({ match }) => {
 	//* view modal
 	const [isviewmodalopen, setisviewmodalopen] = useState(false);
 	const [viewmodalid, setViewmodalid] = useState(undefined);
+
+	const [isdelmodalopen,setisdelmodalopen]= useState(false);
+	const [delmodalid,setDelmodalid]= useState(undefined);
 
 	const [gdodsop, setGdodsop] = useState([]);
 	const [hativasop, setHativasop] = useState([]);
@@ -521,6 +525,21 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		window.location.reload();
 	}
 
+	function ToggleDelete(evt){
+		if (evt.currentTarget.value == "") {
+			setDelmodalid(undefined);
+		} else {
+			setDelmodalid(evt.currentTarget.value);
+		}
+		setisdelmodalopen(!isdelmodalopen);
+		// console.log(cardataidformodal);
+	}
+	function ToggleForModalDelete(evt) {
+		setisdelmodalopen(!isdelmodalopen);
+		window.location.reload();
+	}
+
+
 	function getname(idnum, arr) {
 		for (let i = 0; i < arr.length; i++) {
 			if (arr[i]._id == idnum) return arr[i].name;
@@ -532,6 +551,18 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		let TotalDays = Math.ceil((difference / (1000 * 3600 * 24))-1);
 		return TotalDays;
 	}
+
+	const UserDelete = (reportid)=>{
+		axios
+		  .delete(`http://localhost:8000/report/del/${reportid}`)
+		  .then((response)=>{
+			loadReports();
+			window.location.reload();
+		  })
+		  .catch((error)=> {
+		  console.log(error);
+		  });
+	};
 
 	const filteruse=()=>{
 		let beforfilter=originaldata;
@@ -1284,6 +1315,22 @@ filteruse();
 				ToggleForModal={ToggleForModalView}
 			/>
 
+			<CarDataFormModalDel
+							style={{
+								minHeight: "100%",
+								maxHeight: "100%",
+								minWidth: "60%",
+								maxWidth: "70%",
+								justifyContent: "center",
+								alignSelf: "center",
+								direction: "rtl",
+							}}
+							isOpen={isdelmodalopen}
+							cardataid={delmodalid}
+							Toggle={ToggleDelete}
+							ToggleForModal={ToggleForModalDelete}
+						/>
+		
 			<GlobalFilter
 				filter={globalFilter}
 				setFilter={setGlobalFilter}
@@ -1321,6 +1368,9 @@ filteruse();
 								))}
 								<th>עדכן</th>
 								<th>צפייה</th>
+								{user.role == "2" ?(
+							    <th>מחק</th>
+								):null}
 							</tr>
 						))}
 					</thead>
@@ -1692,6 +1742,37 @@ filteruse();
 												</div>
 											</td>
 										)}
+
+										{user.role === "2" ?(
+											<td role="cell">
+											{" "}
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												{" "}
+												{/* // ? <button
+						className="btn-new-delete"
+						onClick={() => UserDelete(row.original._id)}
+						>
+						צפייה
+						</button> */}
+												{/* <Link to={`/wachreport/${row.original._id}`}> */}
+												<button
+													value={row.original._id}
+													onClick={ToggleDelete}
+													className="btn-new-delete"
+													// onClick={()=> UserDelete(row.original._id)}
+												>
+													מחק
+												</button>
+											</div>
+										</td>
+										
+										):null}
 									</tr>
 								);
 							})}
