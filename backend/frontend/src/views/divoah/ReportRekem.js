@@ -516,18 +516,24 @@ const Report = ({ props }) => {
 		}
 
 		if(data.timevent){
-			const hour = data.timevent.split(":")[0];
-			console.log(hour);
-			const hourWithOffset = (parseInt(hour, 10) + 3).toString();
-			const minute = data.timevent.split(":")[1];
 			const inputDate = new Date(data.datevent);
+			const currentHours=parseInt(data.timevent.split(':')[0], 10);
+			const currentMinutes = parseInt(data.timevent.split(':')[1], 10);
+			let newHours = currentHours + 3;
+			if (newHours >= 24) {
+				newHours %= 24;
+				inputDate.setDate(inputDate.getDate() + 1)
+			}
+			const value1 = `${String(newHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}`;
+
+			// const minute = data.timevent.split(":")[1];
 			const formattedDate =
 			  inputDate.getFullYear() +
 			  "-" +
 			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
 			  "-" +
 			  ("0" + inputDate.getDate()).slice(-2) +
-			  "T" + hourWithOffset  +":"+ minute;
+			  "T" + value1;
 			// setDateTime(formattedDate);
 			data.datevent=formattedDate;
 		}

@@ -402,6 +402,19 @@ const Report = ({ match }) => {
 				toast.error("לא ניתן לכתוב אותיות בשדה זה");
 			}
 		}
+		// if(evt.target.name === "timevent"){
+		// 	const currentHours=parseInt(value.split(':')[0], 10);
+		// 	const currentMinutes = parseInt(value.split(':')[1], 10);
+		// 	let newHours = currentHours + 3;
+		// 	if (newHours >= 24) {
+		// 		newHours %= 24;
+		// 	}
+		// 	const value1 = `${String(newHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}`;
+		// 	setData({ ...data, [evt.target.name]: value1 });
+		// }else{
+		// 	setData({ ...data, [evt.target.name]: value });
+		// }
+
 	}
 
 	async function matafHandleChange(selectedOption, name) {
@@ -697,7 +710,7 @@ const Report = ({ match }) => {
 			ErrorReason += " ,תאריך ריק \n";
 		}
 		if(!data.timevent){
-			const inputDate = new Date(data.datevent);
+			const inputDate = new Date(data.datevent);	
 			const formattedDate =
 			  inputDate.getFullYear() +
 			  "-" +
@@ -711,19 +724,28 @@ const Report = ({ match }) => {
 			data.datevent=formattedDate;
 		}
 
+
 		if(data.timevent){
-			const hour = data.timevent.split(":")[0];
-			console.log(hour);
-			const hourWithOffset = (parseInt(hour, 10) + 3).toString();
-			const minute = data.timevent.split(":")[1];
+			// const hour = data.timevent.split(":")[0];
+			// console.log(hour);
 			const inputDate = new Date(data.datevent);
+			const currentHours=parseInt(data.timevent.split(':')[0], 10);
+			const currentMinutes = parseInt(data.timevent.split(':')[1], 10);
+			let newHours = currentHours + 3;
+			if (newHours >= 24) {
+				newHours %= 24;
+				inputDate.setDate(inputDate.getDate() + 1)
+			}
+			const value1 = `${String(newHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}`;
+
+			// const minute = data.timevent.split(":")[1];
 			const formattedDate =
 			  inputDate.getFullYear() +
 			  "-" +
 			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
 			  "-" +
 			  ("0" + inputDate.getDate()).slice(-2) +
-			  "T" + hourWithOffset  +":"+ minute;
+			  "T" + value1;
 			// setDateTime(formattedDate);
 			data.datevent=formattedDate;
 		}
@@ -830,6 +852,7 @@ const Report = ({ match }) => {
 		};
 		console.log("In the SendFormData Func");
 		console.groupCollapsed("Axios");
+		console.log(requestData.datevent);
 		if (!requestData.gdod == "") {
 			if (!requestData.gdodrep == "") {
 				axios

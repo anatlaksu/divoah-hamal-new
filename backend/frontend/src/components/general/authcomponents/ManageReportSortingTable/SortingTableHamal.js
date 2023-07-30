@@ -235,58 +235,58 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 	// ! alternative is to enter the timestamp to the database and then call it like we do with the other columns
 	// * ------ geting only on loading the difference btween the dates --------------------------------
 
-	// useEffect(() => {
-	// 	console.log(user.personalnumber);
-	// 	if (user.role == "0") {
-	// 		history.push(`/historeport`);
-	// 	}
-	// 	// console.log(data.length);
-	// 	// * ------ making the dates subtractable --------------------------------
-	// 	//* created at:
-	// 	const creatArray = data.map((item, index) => {
-	// 		return new Date(data[index].createdAt);
-	// 	});
-	// 	//* the date the incident happened:
-	// 	const dateArray = data.map((item, index) => {
-	// 		return new Date(data[index].datevent);
-	// 	});
-	// 	//* today:
-	// 	const today = new Date();
+	useEffect(() => {
+		console.log(user.personalnumber);
+		if (user.role == "0") {
+			history.push(`/historeport`);
+		}
+		// console.log(data.length);
+		// * ------ making the dates subtractable --------------------------------
+		//* created at:
+		const creatArray = data.map((item, index) => {
+			return new Date(data[index].createdAt);
+		});
+		//* the date the incident happened:
+		const dateArray = data.map((item, index) => {
+			return new Date(data[index].datevent);
+		});
+		//* today:
+		const today = new Date();
 
-	// 	// * ---------- makeing sure that there are not any problems --------------------------------
-	// 	try {
-	// 		setDiff(
-	// 			creatArray.map((item, index) => {
-	// 				//* ~~ == Math.floor
-	// 				return ~~(
-	// 					(creatArray[index].getTime() - dateArray[index].getTime()) /
-	// 					86400000
-	// 				);
-	// 			})
-	// 		);
-	// 		// console.log(diff);
-	// 		// todo: maybe to reload the page if error
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// 	try {
-	// 		setExpired(
-	// 			creatArray.map((item, index) => {
-	// 				let sum = ~~(
-	// 					(today.getTime() - creatArray[index].getTime()) /
-	// 					86400000
-	// 				);
-	// 				// console.log(`today is ${today}`);
-	// 				// console.log(creatArray[index]);
-	// 				// console.log(`${sum > 30} at ${index}`);
-	// 				return sum > 30;
-	// 			})
-	// 		);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// 	// console.log(expired);
-	// }, [data]);
+		// * ---------- makeing sure that there are not any problems --------------------------------
+		try {
+			setDiff(
+				creatArray.map((item, index) => {
+					//* ~~ == Math.floor
+					return ~~(
+						(creatArray[index].getTime() - dateArray[index].getTime()) /
+						86400000
+					);
+				})
+			);
+			// console.log(diff);
+			// todo: maybe to reload the page if error
+		} catch (error) {
+			console.log(error);
+		}
+		try {
+			setExpired(
+				creatArray.map((item, index) => {
+					let sum = ~~(
+						(today.getTime() - dateArray[index].getTime()) /
+						86400000
+					);
+					// console.log(`today is ${today}`);
+					// console.log(creatArray[index]);
+					// console.log(`${sum > 30} at ${index}`);
+					return sum > 30;
+				})
+			);
+		} catch (error) {
+			console.log(error);
+		}
+		// console.log(expired);
+	}, [data]);
 
 	function addSelect(op) {
 		let pvals = op.map ((p)=>p.value)
@@ -469,25 +469,25 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 		// console.log(index);
 		// console.log(expired[index]);
 		if (!evt.currentTarget.value == "") {
-			// if (over30 == true) {
-			// 	if (user.role == "2") {
-			// 		if (evt.currentTarget.value == "") {
-			// 			setCardataidformodal(undefined);
-			// 		} else {
-			// 			setCardataidformodal(evt.currentTarget.value);
-			// 		}
-			// 		setIscardataformopen(!iscardataformopen);
-			// 	} else {
-			// 		toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
-			// 	}
-			// } else {
+			if (expired[index] == true) {
+				if (user.role == "2") {
+					if (evt.currentTarget.value == "") {
+						setCardataidformodal(undefined);
+					} else {
+						setCardataidformodal(evt.currentTarget.value);
+					}
+					setIscardataformopen(!iscardataformopen);
+				} else {
+					toast.error("עברו שלושים ימים מאז שהדוח הוזן לא ניתן לערוך אותו");
+				}
+			} else {
 				if (evt.currentTarget.value == "") {
 					setCardataidformodal(undefined);
 				} else {
 					setCardataidformodal(evt.currentTarget.value);
 				}
 				setIscardataformopen(!iscardataformopen);
-			// }
+			}
 		} else {
 			if (evt.currentTarget.value == "") {
 				setCardataidformodal(undefined);

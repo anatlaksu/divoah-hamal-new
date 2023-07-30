@@ -416,7 +416,23 @@ const CarDataFormModal = (match) => {
 				toast.error("לא ניתן לכתוב אותיות בשדה זה");
 			}
 		}
-	}
+		if(evt.target.name === "datevent"){
+		// Input date in string format
+		const inputDateStr = value;
+
+		// Convert the string to a Date object
+		const inputDate = new Date(inputDateStr);
+
+		// Add 3 hours to the Date object
+		inputDate.setHours(inputDate.getHours() + 3);
+
+		// Convert the result back to the desired string format
+		const value1 = inputDate.toISOString();
+		setData({ ...data, [evt.target.name]: value1 });
+		}else{
+			setData({ ...data, [evt.target.name]: value });
+		}
+	};
 
 	function handleChange2(selectedOption, name) {
 		if (!(selectedOption.value == "בחר"))
@@ -677,15 +693,31 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
+
 		if (new Date(data.datevent).getTime()> new Date().getTime()) {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
 
+		// if(data.datevent){
+		// 	// Input date in string format
+		// const inputDateStr = data.datevent;
+
+		// // Convert the string to a Date object
+		// const inputDate = new Date(inputDateStr);
+
+		// // Add 3 hours to the Date object
+		// inputDate.setHours(inputDate.getHours() + 3);
+
+		// // Convert the result back to the desired string format
+		// data.datevent = inputDate.toISOString();
+		// }
+
 		// if (data.nifga == "") {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
+
 		if (data.nifga == "1") {
 			if (infohurtarray.length == 0
 				) {
