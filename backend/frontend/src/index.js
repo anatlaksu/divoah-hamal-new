@@ -44,6 +44,7 @@ import WachReportRekem from "views/authentication/WachReports/WachReportRekem";
 
 import Dash from "views/divoah/Dash";
 import DashAdmin from "views/divoah/DashAdmin";
+import DashOgda from "views/divoah/DashOgda";
 
 import Report from "views/divoah/Report";
 import ReportRekem from "views/divoah/ReportRekem";
@@ -113,6 +114,11 @@ ReactDOM.render(
 							path="/dashadmin"
 							exact
 							component={DashAdmin}
+						/>
+						<LoggedinRoute
+							path="/dashogda"
+							exact
+							component={DashOgda}
 						/>
 
 						<LoggedinRoute

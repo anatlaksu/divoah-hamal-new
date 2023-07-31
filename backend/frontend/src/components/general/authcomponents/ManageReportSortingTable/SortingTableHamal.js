@@ -781,21 +781,38 @@ const [gdodsfillter, setGdodsfillter] = useState([]);
 						console.log(error);
 						setIsError(true);
 					})
-			: axios
-					.get(`http://localhost:8000/report/pikod/${user.pikod}`)
-					.then((response) => {
-						console.log(user.pikod);
-						console.log(response.data);
-						const reports = response.data;
-
-						reports.reverse();
-						setData(reports);
-						setOriginaldata(reports)
-					})
-					.catch((error) => {
-						console.log(error);
-						setIsError(true);
-					});
+			: (user.role === "1" || user.role==="3")
+			?axios
+			.get(`http://localhost:8000/report/pikod/${user.pikod}`)
+			.then((response) => {
+				console.log(user.pikod);
+				console.log(response.data);
+				const reports = response.data;
+			
+				reports.reverse();
+				setData(reports);
+				setOriginaldata(reports)
+			})
+			.catch((error) => {
+				console.log(error);
+				setIsError(true);
+			})
+			:axios
+			.get(`http://localhost:8000/report/ogda/${user.ogda}`)
+			.then((response) => {
+				console.log(user.ogda);
+				console.log(response.data);
+				const reports = response.data;
+			
+				reports.reverse();
+				setData(reports);
+				setOriginaldata(reports)
+			})
+			.catch((error) => {
+				console.log(error);
+				setIsError(true);
+			});
+			
 	};
 
 	useEffect(() => {

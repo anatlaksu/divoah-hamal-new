@@ -155,6 +155,12 @@ router.route("/pikod/:pikod").get((req, res) => {
 		.catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/ogda/:ogda").get((req, res) => {
+	Report.find({ ogdarep: req.params.ogda })
+		.then((request) => res.json(request))
+		.catch((err) => res.status(400).json("Error: " + err));
+});
+
 router.route("/add").post((req, res) => {
 	console.groupCollapsed("add post");
 	console.log(res);
@@ -333,6 +339,35 @@ router.route("/pikod/readall/:pikod").get((req, res) => {
 		});
 });
 
+router.route("/ogda/readall/:ogda").get((req, res) => {
+	let tipulfindquerry = readtipul.slice();
+	let finalquerry = tipulfindquerry;
+	let andquery = [];
+	andquery.push({ ogda: req.params.ogda });
+	if (andquery.length != 0) {
+		let matchquerry = {
+			$match: {
+				$and: andquery,
+			},
+		};
+		// console.log(matchquerry);
+		// console.log(andquery);
+		finalquerry.push(matchquerry);
+	}
+	Report.aggregate(finalquerry)
+		.then((result) => {
+			// console.log(result);
+			if (result.length != 0) {
+				res.json(result);
+			}
+		})
+		.catch((error) => {
+			res.status(400).json("Error: " + error);
+			console.log(error);
+		});
+});
+
+
 router
 	.route("/byDate/pikod/readall/:fromdate/:todate/:pikod")
 	.get((req, res) => {
@@ -341,6 +376,76 @@ router
 		let andquery = [];
 		console.log("first check");
 		andquery.push({ pikod: req.params.pikod });
+		switch (true) {
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) <
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("second check");
+
+				andquery.push({
+					datevent: {
+						$gt: new Date(req.params.fromdate),
+						$lt: new Date(req.params.todate),
+					},
+				});
+				break;
+
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) >
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("third check");
+				andquery.push({
+					datevent: {
+						$lt: new Date(req.params.fromdate),
+						$gt: new Date(req.params.todate),
+					},
+				});
+				break;
+
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) ==
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("forth check");
+				andquery.push({
+					datevent: new Date(req.params.fromdate),
+				});
+				break;
+			default:
+				console.log("error");
+				break;
+		}
+
+		if (andquery.length != 0) {
+			let matchquerry = {
+				$match: {
+					$and: andquery,
+				},
+			};
+			// console.log(matchquerry);
+			// console.log(andquery);
+			finalquerry.push(matchquerry);
+		}
+		Report.aggregate(finalquerry)
+			.then((result) => {
+				console.log(result.length);
+				if (result.length != 0) {
+					res.json(result);
+				} else {
+					console.log("empty");
+					res.json(result);
+				}
+			})
+			.catch((error) => {
+				res.status(400).json("Error: " + error);
+				console.log(error);
+			});
+	});
+
+	router
+	.route("/byDate/ogda/readall/:fromdate/:todate/:ogda")
+	.get((req, res) => {
+		let tipulfindquerry = readtipul.slice();
+		let finalquerry = tipulfindquerry;
+		let andquery = [];
+		console.log("first check");
+		andquery.push({ ogda: req.params.ogda });
 		switch (true) {
 			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) <
 				new Date(req.params.todate).setHours(0, 0, 0, 0):

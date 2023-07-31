@@ -30,6 +30,7 @@ import Select from "components/general/Select/AnimatedSelect";
 
 const EditUserForm = ({ match }) => {
 	const [pikods, setPikods] = useState([]);
+	const [ogdas, setOgdas] = useState([]);
 
 	const loadPikods = async () => {
 		await axios
@@ -41,6 +42,20 @@ const EditUserForm = ({ match }) => {
 				console.log(error);
 			});
 	};
+
+	const loadOgdas = async () => {
+		await axios
+			.get("http://localhost:8000/api/ogda")
+			.then((response) => {
+				setOgdas(response.data);
+				console.log(response.data);
+				// setPikodsrep(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
 
 	const [data, setData] = useState({
 		name: "",
@@ -110,6 +125,7 @@ const EditUserForm = ({ match }) => {
 			lastname: data.lastname,
 			role: data.role,
 			pikod: data.pikod,
+			ogda: data.ogda,
 			validated: data.validated,
 			personalnumber: data.personalnumber,
 		};
@@ -141,6 +157,7 @@ const EditUserForm = ({ match }) => {
 	useEffect(() => {
 		init();
 		loadPikods();
+		loadOgdas();
 	}, []);
 
 	return (
@@ -203,9 +220,9 @@ const EditUserForm = ({ match }) => {
 											<option value="">הרשאה</option>
 											<option value="0">משתמש רגיל</option>
 											<option value="1">משתמש פיקוד</option>
+											<option value="4">משתמש אוגדה</option>
 											<option value="2"> מנהל מערכת</option>
 											<option value="3"> משתמש חט"ל</option>
-
 										</Input>
 									</FormGroup>
 									{data.role == "1" || data.role == "3" ? (
@@ -229,7 +246,28 @@ const EditUserForm = ({ match }) => {
 												/>
 											</FormGroup>
 										</>
-									) : null}
+									) : (data.role == "4" ?(
+										<>
+										<div style={{ textAlign: "right", paddingTop: "10px" }}>
+											אוגדה
+										</div>
+										<FormGroup
+											style={{
+												justifyContent: "right",
+												alignContent: "right",
+												textAlign: "right",
+											}}
+										>
+											<h6>אוגדה</h6>
+											<Select
+												data={ogdas}
+												handleChange2={handleChange2}
+												name={"ogda"}
+												val={data.ogda ? data.ogda : undefined}
+											/>
+										</FormGroup>
+									</>
+									):null)}
 
 									<div className="text-center">
 										<button
