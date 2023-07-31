@@ -665,6 +665,8 @@ const Report = ({ props }) => {
 							history.push(`/dashadmin`);
 						} else if (user.role == "3") {
 							history.push(`/dash`);
+						}else if (user.role == "4") {
+							history.push(`/dashogda`);
 						}
 						console.log(res.data);
 						console.groupEnd();
