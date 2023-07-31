@@ -35,6 +35,8 @@ const Report = ({ props }) => {
 	const [infohurtarray, setinfohurtarray] = useState([]);
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 
+	const [files, setFiles] = useState([]);
+
 	const [data, setData] = useState({
 		name: "",
 		lastname: "",
@@ -67,11 +69,14 @@ const Report = ({ props }) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		yndate:"",
+		files_id:"",
 		hurtarray: [],
 		totalWorkHours: "0",
 		totalCostWorkHours: "0",
 		damageCost: "0",
 		spareCost: "0",
+		timevent:"",
 
 		error: false,
 		successmsg: false,
@@ -316,7 +321,47 @@ const Report = ({ props }) => {
 		setGdodsrep(temphativasgdods);
 	};
 
+		const handleUploadFiles = (uploadFiles) => {
+		const uploaded = [...files];
+		let flag = true;
+		const ErrorReason = [];
+		let limitExceeded = false;
+		uploadFiles.some((filePush, index) => {
+		  if (uploaded.findIndex((f) => f.name === filePush.name) === -1) {
+			  uploaded.push(filePush);
+			if (flag !== true) {
+			  ErrorReason.forEach((reason) => {
+				toast.error(reason);
+				return false;
+				// setData({ ...data, loading: false, successmsg: false, error: true });
+			  });
+			} else {
+			  return true;
+			  // setData({ ...data, loading: false, successmsg: true, error: false });
+			}
+			// console.log("file name: " + data.propPrint.nameFile);
+			// setPropPrint({ ...propPrint, nameFile: filePush.name });
+			// setTextArea({ ...textArea, nameFiletxt: filePush.name });
+	
+			// if (uploaded.length === MAX_COUNT) setFileLimit(true);
+			if (uploaded.length < 0) {
+			  // alert(`You can only add a maximum of ${MAX_COUNT} files`);
+			  // setFileLimit(false);
+			  limitExceeded = false;
+			  return false;
+			}
+		  }
+		  return setFiles(uploaded);
+		});
+		if (!limitExceeded) setFiles(uploaded);
+	  };	
+
 	//* handle changes
+	const handleFileEvent = (e) => {
+		e.preventDefault();
+		const chosenFiles = Array.prototype.slice.call(e.target.files);
+		handleUploadFiles(chosenFiles);
+	  };
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -419,12 +464,12 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += " ,לא הוזן רק'ם\n";
 		}
-		for (let i = 0; i < cartypesfilterarray.length; i++) {
-			if (!cartypesfilterarray[i].mkabaz) {
-				ErrorReason += "  ,לא הוזן סוג רק'ם\n";
-				flag = false;
-			}
-		}
+		// for (let i = 0; i < cartypesfilterarray.length; i++) {
+		// 	if (!cartypesfilterarray[i].mkabaz) {
+		// 		ErrorReason += "  ,לא הוזן סוג רק'ם\n";
+		// 		flag = false;
+		// 	}
+		// }
 
 
 		// if (
@@ -450,14 +495,61 @@ const Report = ({ props }) => {
 			flag = false;
 			ErrorReason += " ,מיקום ריק \n";
 		}
+
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
-		if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		if(!data.timevent){
+			const inputDate = new Date(data.datevent);
+			const formattedDate =
+			  inputDate.getFullYear() +
+			  "-" +
+			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
+			  "-" +
+			  ("0" + inputDate.getDate()).slice(-2) +
+			  "T" +
+			  "03:00:00";
+			console.log(formattedDate);
+			// setDateTime(formattedDate);
+			data.datevent=formattedDate;
+		}
+
+		if(data.timevent){
+			const inputDate = new Date(data.datevent);
+			const currentHours=parseInt(data.timevent.split(':')[0], 10);
+			const currentMinutes = parseInt(data.timevent.split(':')[1], 10);
+			let newHours = currentHours + 3;
+			if (newHours >= 24) {
+				newHours %= 24;
+				inputDate.setDate(inputDate.getDate() + 1)
+			}
+			const value1 = `${String(newHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}`;
+
+			// const minute = data.timevent.split(":")[1];
+			const formattedDate =
+			  inputDate.getFullYear() +
+			  "-" +
+			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
+			  "-" +
+			  ("0" + inputDate.getDate()).slice(-2) +
+			  "T" + value1;
+			// setDateTime(formattedDate);
+			data.datevent=formattedDate;
+		}
+
+		// if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		// 	flag = false;
+		// 	ErrorReason += " ,תאריך לא תקין \n";
+		// }
+
+		let datecheck= new Date(data.datevent);
+		let check= datecheck.setHours(datecheck.getHours() - 3)
+		if (new Date(check).getTime()> new Date().getTime()) {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
+
 
 		if (data.nifga == "") {
 			flag = false;
@@ -498,6 +590,14 @@ const Report = ({ props }) => {
 			error: false,
 			NavigateToReferrer: false,
 		});
+		const formFilesData = new FormData();
+		Object.keys(files).forEach((key) => {
+		formFilesData.append("files", files[key]);
+		});
+		axios.post("http://localhost:8000/api/multipleFiles", formFilesData, {}).then((res) => {
+		console.log("from the file axios");
+		console.log(res.data);
+
 		const requestData = {
 			name: data.name,
 			lastname: data.lastname,
@@ -529,11 +629,14 @@ const Report = ({ props }) => {
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
+			yndate: data.yndate,
 			hurtarray: infohurtarray,
 			totalWorkHours: data.totalWorkHours,
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,
 			spareCost: data.spareCost,
+			files_id:res.data,
+
 		};
 		console.log("In the SendFormData Func");
 		console.log(requestData);
@@ -585,6 +688,8 @@ const Report = ({ props }) => {
 		} else {
 			toast.error("לא הוזנה יחידה מנמרית");
 		}
+		});
+
 	};
 
 	const initWithUserData = () => {
@@ -661,7 +766,7 @@ const Report = ({ props }) => {
 						lg="20"
 						md="7"
 					>
-						<Card className="shadow border-0">
+						<Card className="shadow border-0" style={{width: "800px"}}>
 							<CardBody className="px-lg-5 py-lg-5">
 								<div className="text-center text-muted mb-4">
 									<big>שליחת דיווח</big>
@@ -1146,6 +1251,46 @@ const Report = ({ props }) => {
 										/>
 									</FormGroup>
 
+									{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === "1" ? (
+										<>
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
 										תאריך אירוע
 									</div>
@@ -1156,10 +1301,56 @@ const Report = ({ props }) => {
 											type="datetime-local"
 											value={data.datevent}
 											onChange={handleChange}
-											min={"1900-01-01T00:00:00"}
-											max={"2100-01-01T00:00:00"}
 										/>
 									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === "0" ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)} */}
+																		<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										שעת אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="שעת אירוע"
+											name="timevent"
+											type="time"
+											value={data.timevent}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
 
 									<FormGroup dir="rtl">
 										<Input
@@ -1375,6 +1566,25 @@ const Report = ({ props }) => {
 											</div>
 										</>
 									)}
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+									קובץ תחקיר ביטחוני
+									</div>
+										<Input
+											placeholder="העלאת קובץ"
+											type="file"
+											accept="application/pdf,
+											image/png,
+											image/jpeg,
+												application/vnd.ms-excel,
+												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+												application/vnd.ms-powerpoint, 
+												application/vnd.openxmlformats-officedocument.presentationml.presentation,
+												application/msword,
+												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+											onChange={handleFileEvent}
+										/>
+
 
 									<div className="text-center">
 										<button

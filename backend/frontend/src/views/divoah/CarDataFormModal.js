@@ -33,6 +33,9 @@ import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
 import CarTypesFilterObjectRekem from "components/general/CarTypeFilter/CarTypesFilterObjectRekem";
 import deletepic from "assets/img/delete.png";
+import FileDownload from "js-file-download";
+import download from "assets/img/download.png"
+
 
 const CarDataFormModal = (match) => {
 	const digits_only = (string) =>
@@ -71,7 +74,9 @@ const CarDataFormModal = (match) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		yndate:"",
 		wnifga: "",
+		files_id:"",
 		hurtarray: [],
 		totalwork: 0,
 		totalWorkHours: 0,
@@ -103,6 +108,9 @@ const CarDataFormModal = (match) => {
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
+
+	const [filesFromDB, setFilesFromDB] = useState([]);
+	const [files, setFiles] = useState([]);
 
 	const getMagadals = async () => {
 		await axios
@@ -346,6 +354,48 @@ const CarDataFormModal = (match) => {
 		setGdodsrep(temphativasgdods);
 	};
 
+	const handleUploadFiles = (uploadFiles) => {
+		const uploaded = [...files];
+		let flag = true;
+		const ErrorReason = [];
+		let limitExceeded = false;
+		uploadFiles.some((filePush, index) => {
+		  if (uploaded.findIndex((f) => f.name === filePush.name) === -1) {
+			  uploaded.push(filePush);
+			if (flag !== true) {
+			  ErrorReason.forEach((reason) => {
+				toast.error(reason);
+				return false;
+				// setData({ ...data, loading: false, successmsg: false, error: true });
+			  });
+			} else {
+			  return true;
+			  // setData({ ...data, loading: false, successmsg: true, error: false });
+			}
+			// console.log("file name: " + data.propPrint.nameFile);
+			// setPropPrint({ ...propPrint, nameFile: filePush.name });
+			// setTextArea({ ...textArea, nameFiletxt: filePush.name });
+	
+			// if (uploaded.length === MAX_COUNT) setFileLimit(true);
+			if (uploaded.length < 0) {
+			  // alert(`You can only add a maximum of ${MAX_COUNT} files`);
+			  // setFileLimit(false);
+			  limitExceeded = false;
+			  return false;
+			}
+		  }
+		  return setFiles(uploaded);
+		});
+		if (!limitExceeded) setFiles(uploaded);
+	  };	
+
+	  const handleFileEvent = (e) => {
+		e.preventDefault();
+		const chosenFiles = Array.prototype.slice.call(e.target.files);
+		handleUploadFiles(chosenFiles);
+	  };
+
+
 	function handleChange(evt) {
 		const value = evt.target.value;
 		if (evt.target.name == "nifga") {
@@ -366,7 +416,23 @@ const CarDataFormModal = (match) => {
 				toast.error("לא ניתן לכתוב אותיות בשדה זה");
 			}
 		}
-	}
+		if(evt.target.name === "datevent"){
+		// Input date in string format
+		const inputDateStr = value;
+
+		// Convert the string to a Date object
+		const inputDate = new Date(inputDateStr);
+
+		// Add 3 hours to the Date object
+		inputDate.setHours(inputDate.getHours() + 3);
+
+		// Convert the result back to the desired string format
+		const value1 = inputDate.toISOString();
+		setData({ ...data, [evt.target.name]: value1 });
+		}else{
+			setData({ ...data, [evt.target.name]: value });
+		}
+	};
 
 	function handleChange2(selectedOption, name) {
 		if (!(selectedOption.value == "בחר"))
@@ -382,6 +448,41 @@ const CarDataFormModal = (match) => {
 			? CheckSignUpForm(event)
 			: CheckSignUpFormRekem(event);
 	};
+
+		const getFiles = () => {
+		axios
+		  .get(`http://localhost:8000/api/getMultipleFiles/${data.files_id}`)
+		  .then((response) => {
+			setFilesFromDB(response.data.files);
+			console.log(`files: ${response.data}`);
+			// setShowFile(2);
+		  })
+		  .catch((err) => {
+			console.log(err);
+		  });
+		}
+
+			function openFileANewWindows(filePath, fileName) {
+		// const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+		// const fileLink = document.createElement('a');
+		// fileLink.href = fileURL;
+		// const fileName = response.headers['content-disposition'].substring(22, 52);
+		// fileLink.setAttribute('download', fileName);
+		// fileLink.setAttribute('target', '_blank');
+		// document.body.appendChild(fileLink);
+		// fileLink.click();
+		// fileLink.remove();
+	
+		// e.preventDefault();
+		const urlPath = filePath;
+		const newUrlPath = urlPath.slice(8);
+		// console.log(`Frontend ${newUrlPath}`);
+		axios
+		  .get(`http://localhost:8000/api/downloadPDFFile/${newUrlPath}`, { responseType: "blob" })
+		  .then((res) => {
+			FileDownload(res.data, fileName);
+		  });
+	  }
 
 	const CheckSignUpForm = (event) => {
 		event.preventDefault();
@@ -411,12 +512,10 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " סוג אירוע ריק \n";
 		}
-
 		if (
 			data.typevent === "1" ||
 			data.typevent === "2" ||
-			data.typevent === "3" ||
-			data.typevent === "4"
+			data.typevent === "3" 
 		) {
 			if (
 				document.getElementById("res").options[
@@ -444,8 +543,27 @@ const CarDataFormModal = (match) => {
 						flag = false;
 					}
 				}		
-
 		}
+		if (
+			data.typevent === "4"
+		) {
+			if (
+				document.getElementById("res").options[
+					document.getElementById("res").selectedIndex
+				].value == "0"
+			) {
+				flag = false;
+				ErrorReason += "סיבת האירוע ריקה \n";
+			}
+			if (
+				!document.getElementById("YES").checked &&
+				!document.getElementById("NO").checked
+			) {
+				flag = false;
+				ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
+			}
+		}
+
 		if (data.typevent === "5") {
 			if (data.selneshek == "") {
 				flag = false;
@@ -566,20 +684,40 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,מיקום ריק \n";
 		}
+		// if (data.yndate == "") {
+		// 	flag = false;
+		// 	ErrorReason += " האם ידוע על שעת אירוע ריק,\n";
+		// }
 
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
+
 		if (new Date(data.datevent).getTime()> new Date().getTime()) {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
 
+		// if(data.datevent){
+		// 	// Input date in string format
+		// const inputDateStr = data.datevent;
+
+		// // Convert the string to a Date object
+		// const inputDate = new Date(inputDateStr);
+
+		// // Add 3 hours to the Date object
+		// inputDate.setHours(inputDate.getHours() + 3);
+
+		// // Convert the result back to the desired string format
+		// data.datevent = inputDate.toISOString();
+		// }
+
 		// if (data.nifga == "") {
 		// 	flag = false;
 		// 	ErrorReason += "כמות הנפגעים ריקה \n";
 		// }
+
 		if (data.nifga == "1") {
 			if (infohurtarray.length == 0
 				) {
@@ -699,6 +837,7 @@ const CarDataFormModal = (match) => {
 			flag = false;
 			ErrorReason += " ,מיקום ריק \n";
 		}
+
 		if (!data.datevent) {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
@@ -747,6 +886,13 @@ const CarDataFormModal = (match) => {
 		// console.log(match);
 		console.log(match.cardataid);
 		var reportid = match.cardataid;
+		const formFilesData = new FormData();
+		Object.keys(files).forEach((key) => {
+		formFilesData.append("files", files[key]);
+		});
+		axios.post("http://localhost:8000/api/multipleFiles", formFilesData, {}).then((res) => {
+		console.log("from the file axios");
+		console.log(res.data);
 		const report = {
 			name: data.name,
 			lastname: data.lastname,
@@ -780,6 +926,7 @@ const CarDataFormModal = (match) => {
 			datevent: data.datevent,
 			mikom: data.mikom,
 			nifga: data.nifga,
+			yndate:data.yndate,
 			hurtarray: infohurtarray,
 			wnifga: data.wnifga,
 			totalwork: data.totalwork,
@@ -787,6 +934,7 @@ const CarDataFormModal = (match) => {
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,
 			spareCost: data.spareCost,
+			files_id:res.data,
 		};
 		// console.log(report.gdod);
 		if (!(report.gdod == "בחר")) {
@@ -806,6 +954,7 @@ const CarDataFormModal = (match) => {
 		} else {
 			toast.error("לא הוזנה יחידה מנמרית");
 		}
+	});
 	};
 
 	const init = () => {
@@ -833,6 +982,15 @@ const CarDataFormModal = (match) => {
 	useEffect(() => {
 		if (match.isOpen == true) init();
 	}, [match.isOpen]);
+
+		useEffect(() => {
+		if(data.files_id != undefined){
+		   getFiles();
+		}else{
+			setFilesFromDB([]);
+		}
+	}, [data.files_id]);
+
 
 	// * ------ manmarit --------------------------------
 	useEffect(() => {
@@ -2142,6 +2300,9 @@ const CarDataFormModal = (match) => {
 */}
 														</>
 													)}
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+														פירוט אירוע
+													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2163,22 +2324,114 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															min={"1900-01-01T00:00:00"}
-															max={"2100-01-01T00:00:00"}
-														/>
-													</FormGroup>
+									{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+                                      ):(
+										<>
+										<div style={{ textAlign: "right", paddingTop: "10px" }}>
+											תאריך אירוע
+										</div>
+										<FormGroup dir="rtl">
+											<Input
+												placeholder="תאריך אירוע"
+												name="datevent"
+												value={data.datevent.slice(0, 21)}
+												type="datetime-local"
+												onChange={handleChange}
+											/>
+										</FormGroup>
+										</>
+									  )}
+
+										</>
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
+
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2446,6 +2699,42 @@ const CarDataFormModal = (match) => {
 															</div>
 														</>
 													) : null}
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+									קובץ תחקיר ביטחוני
+									</div>
+										<Input
+											placeholder="העלאת קובץ"
+											type="file"
+											accept="application/pdf,
+											image/png,
+											image/jpeg,
+												application/vnd.ms-excel,
+												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+												application/vnd.ms-powerpoint, 
+												application/vnd.openxmlformats-officedocument.presentationml.presentation,
+												application/msword,
+												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+											onChange={handleFileEvent}
+										/>
+
+
+												{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												קובצי תחקיר ביטחוני קיימים
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
 													<div className="text-center">
 														<button
 															onClick={clickSubmit}
@@ -3009,6 +3298,11 @@ const CarDataFormModal = (match) => {
 														)}
 													</div>
 
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+													פירוט אירוע
+													</div>
+
+
 													<FormGroup dir="rtl">
 														<Input
 															placeholder="פירוט האירוע"
@@ -3029,22 +3323,98 @@ const CarDataFormModal = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															min={"1900-01-01T00:00:00"}
-															max={"2100-01-01T00:00:00"}
-														/>
-													</FormGroup>
+													{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="datetime-local"
+											value={data.datevent.slice(0, 21)}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -3312,6 +3682,42 @@ const CarDataFormModal = (match) => {
 															</div>
 														</>
 													) : null}
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+									קובץ תחקיר ביטחוני
+									</div>
+										<Input
+											placeholder="העלאת קובץ"
+											type="file"
+											accept="application/pdf,
+											image/png,
+											image/jpeg,
+												application/vnd.ms-excel,
+												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+												application/vnd.ms-powerpoint, 
+												application/vnd.openxmlformats-officedocument.presentationml.presentation,
+												application/msword,
+												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+											onChange={handleFileEvent}
+										/>
+
+
+												{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												 קבצי תחקיר ביטחוני קיימים
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
 
 													<div className="text-center">
 														<button

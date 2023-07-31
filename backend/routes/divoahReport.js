@@ -155,6 +155,12 @@ router.route("/pikod/:pikod").get((req, res) => {
 		.catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/ogda/:ogda").get((req, res) => {
+	Report.find({ ogdarep: req.params.ogda })
+		.then((request) => res.json(request))
+		.catch((err) => res.status(400).json("Error: " + err));
+});
+
 router.route("/add").post((req, res) => {
 	console.groupCollapsed("add post");
 	console.log(res);
@@ -193,11 +199,13 @@ router.route("/add").post((req, res) => {
 	const datevent = Date.parse(req.body.datevent);
 	const mikom = req.body.mikom;
 	const nifga = Number(req.body.nifga);
+	const yndate = Number(req.body.yndate);
 	const hurtarray = req.body.hurtarray;
 	const totalWorkHours = Number(req.body.totalWorkHours);
 	const totalCostWorkHours = Number(req.body.totalCostWorkHours);
 	const damageCost = Number(req.body.damageCost);
 	const spareCost = Number(req.body.spareCost);
+	const files_id = req.body.files_id;
 
 	const newReport = new Report({
 		name,
@@ -217,6 +225,7 @@ router.route("/add").post((req, res) => {
 		typevent,
 		resevent,
 		yn,
+		yndate,
 		selneshek,
 		whap,
 		amlahtype,
@@ -238,6 +247,7 @@ router.route("/add").post((req, res) => {
 		totalCostWorkHours,
 		damageCost,
 		spareCost,
+		files_id,
 	});
 	const formId = newReport.save((err, form) => {
 		console.groupCollapsed("formId");
@@ -329,6 +339,35 @@ router.route("/pikod/readall/:pikod").get((req, res) => {
 		});
 });
 
+router.route("/ogda/readall/:ogda").get((req, res) => {
+	let tipulfindquerry = readtipul.slice();
+	let finalquerry = tipulfindquerry;
+	let andquery = [];
+	andquery.push({ ogda: req.params.ogda });
+	if (andquery.length != 0) {
+		let matchquerry = {
+			$match: {
+				$and: andquery,
+			},
+		};
+		// console.log(matchquerry);
+		// console.log(andquery);
+		finalquerry.push(matchquerry);
+	}
+	Report.aggregate(finalquerry)
+		.then((result) => {
+			// console.log(result);
+			if (result.length != 0) {
+				res.json(result);
+			}
+		})
+		.catch((error) => {
+			res.status(400).json("Error: " + error);
+			console.log(error);
+		});
+});
+
+
 router
 	.route("/byDate/pikod/readall/:fromdate/:todate/:pikod")
 	.get((req, res) => {
@@ -337,6 +376,76 @@ router
 		let andquery = [];
 		console.log("first check");
 		andquery.push({ pikod: req.params.pikod });
+		switch (true) {
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) <
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("second check");
+
+				andquery.push({
+					datevent: {
+						$gt: new Date(req.params.fromdate),
+						$lt: new Date(req.params.todate),
+					},
+				});
+				break;
+
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) >
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("third check");
+				andquery.push({
+					datevent: {
+						$lt: new Date(req.params.fromdate),
+						$gt: new Date(req.params.todate),
+					},
+				});
+				break;
+
+			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) ==
+				new Date(req.params.todate).setHours(0, 0, 0, 0):
+				// console.log("forth check");
+				andquery.push({
+					datevent: new Date(req.params.fromdate),
+				});
+				break;
+			default:
+				console.log("error");
+				break;
+		}
+
+		if (andquery.length != 0) {
+			let matchquerry = {
+				$match: {
+					$and: andquery,
+				},
+			};
+			// console.log(matchquerry);
+			// console.log(andquery);
+			finalquerry.push(matchquerry);
+		}
+		Report.aggregate(finalquerry)
+			.then((result) => {
+				console.log(result.length);
+				if (result.length != 0) {
+					res.json(result);
+				} else {
+					console.log("empty");
+					res.json(result);
+				}
+			})
+			.catch((error) => {
+				res.status(400).json("Error: " + error);
+				console.log(error);
+			});
+	});
+
+	router
+	.route("/byDate/ogda/readall/:fromdate/:todate/:ogda")
+	.get((req, res) => {
+		let tipulfindquerry = readtipul.slice();
+		let finalquerry = tipulfindquerry;
+		let andquery = [];
+		console.log("first check");
+		andquery.push({ ogda: req.params.ogda });
 		switch (true) {
 			case new Date(req.params.fromdate).setHours(0, 0, 0, 0) <
 				new Date(req.params.todate).setHours(0, 0, 0, 0):
@@ -498,7 +607,7 @@ router.route("/:id").get((req, res) => {
 		});
 });
 
-router.route("/:id").delete((req, res) => {
+router.route("/del/:id").delete((req, res) => {
 	Report.findByIdAndDelete(req.params.id)
 		.then(() => res.json("Report deleted."))
 		.catch((err) => res.status(400).json("Error: " + err));
@@ -541,11 +650,13 @@ router.route("/update/:id").put((req, res) => {
 			request.datevent = Date.parse(req.body.datevent);
 			request.mikom = req.body.mikom;
 			request.nifga = Number(req.body.nifga);
+			request.yndate = Number(req.body.yndate);
 			request.hurtarray = req.body.hurtarray;
 			request.totalWorkHours = Number(req.body.totalWorkHours);
 			request.totalCostWorkHours = Number(req.body.totalCostWorkHours);
 			request.damageCost = Number(req.body.damageCost);
 			request.spareCost = Number(req.body.spareCost);
+			request.files_id=req.body.files_id;
 
 			request
 				.save()

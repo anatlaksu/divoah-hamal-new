@@ -25,9 +25,9 @@ import { Line, Pie, Doughnut, PolarArea, Bar } from "react-chartjs-2";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Background from "components/general/Background/Background";
-import ToggleDarkModeButton from "../../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
+import ToggleDarkModeButton from "../../components/general/Navbars/BazakNavbar/ToggleDarkModeButton/ToggleDarkModeButton";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import ChartProvider from "../ChartProvider";
+import ChartProvider from "./ChartProvider";
 
 import { isAuthenticated } from "auth";
 const AdminSignInForm = (props) => {
@@ -105,28 +105,16 @@ const AdminSignInForm = (props) => {
 			});
 	};
 
-	const loadOgdas = async (pikodids) => {
-		let temppikodids = pikodids;
-		if (temppikodids != undefined && !temppikodids.isArray) {
-			temppikodids = [pikodids];
-		}
-		let temppikodsogdas = [];
-		if (temppikodids != undefined && temppikodids.length > 0) {
-			for (let i = 0; i < temppikodids.length; i++) {
-				await axios
-					.post("http://localhost:8000/api/ogda/ogdasbypikodid", {
-						pikod: temppikodids[i],
-					})
-					.then((response) => {
-						for (let j = 0; j < response.data.length; j++)
-							temppikodsogdas.push(response.data[j]);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-			}
-		}
-		setOgdas(temppikodsogdas);
+	const loadOgdas = async () => {
+		await axios
+			.get("http://localhost:8000/api/ogda")
+			.then((response) => {
+				setOgdas(response.data);
+				// console.log(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	const loadHativas = async (ogdaids) => {
@@ -179,7 +167,7 @@ const AdminSignInForm = (props) => {
 
 	const loadReports = () => {
 		axios
-			.get(`http://localhost:8000/report/pikod/readall/${user.pikod}`)
+			.get(`http://localhost:8000/report/ogda/readall/${user.ogda}`)
 			.then((res) => {
 				// console.log(res);
 				// console.log(res.data);
@@ -196,7 +184,7 @@ const AdminSignInForm = (props) => {
 		// console.log(to);
 		axios
 			.get(
-				`http://localhost:8000/report/byDate/pikod/readall/${from}/${to}/${user.pikod}`
+				`http://localhost:8000/report/byDate/ogda/readall/${from}/${to}/${user.ogda}`
 			)
 			.then((res) => {
 				// console.log(res);
@@ -328,9 +316,7 @@ const AdminSignInForm = (props) => {
 					report.filter((rp) =>
 						// unit == "pikod"
 						// 	? dataUnit.includes(rp.pikod)
-						unit == "ogda"
-							? dataUnit.includes(rp.ogda)
-							: unit == "hativa"
+						unit == "hativa"
 							? dataUnit.includes(rp.hativa)
 							: null
 					)
@@ -339,9 +325,7 @@ const AdminSignInForm = (props) => {
 					report.filter((rp) =>
 						// unit == "pikod"
 						// 	? dataUnit.includes(rp.pikodrep)
-						unit == "ogda"
-							? dataUnit.includes(rp.ogdarep)
-							: unit == "hativa"
+						unit == "hativa"
 							? dataUnit.includes(rp.hativarep)
 							: null
 					)
@@ -355,10 +339,10 @@ const AdminSignInForm = (props) => {
 				reportDBFl(reportDB, data.hativa, "hativa");
 				// console.log(data.hativa);
 				break;
-			case typeof data.ogda == "object":
-				reportDBFl(reportDB, data.ogda, "ogda");
-				// console.log(data.ogda);
-				break;
+			// case typeof data.ogda == "object":
+			// 	reportDBFl(reportDB, data.ogda, "ogda");
+			// 	// console.log(data.ogda);
+			// 	break;
 			// case typeof data.pikod == "object":
 			// 	reportDBFl(reportDB, data.pikod, "pikod");
 			// 	// console.log(data.pikod);
@@ -460,7 +444,7 @@ const AdminSignInForm = (props) => {
 	const colors=["rgb(230, 115, 136)","rgb(255, 94, 94)","rgb(255, 129, 94)","	rgb(255, 164, 94)","rgb(255, 199, 94)","rgb(255, 218, 94)","rgb(255, 235, 95)","rgb(255, 255, 94)","rgb(189, 213, 78)","rgb(118, 170, 62)","rgb(48, 128, 47)","rgb(31, 84, 83)","rgb(63, 90, 171)","rgb(94, 94, 255)","rgb(95, 79, 214)","rgb(94, 63, 171)","rgb(96, 48, 130)","rgb(121, 74, 148)","rgb(147, 104, 166)","rgb(195, 161, 201)"];
 
 	const reportEvent = reportDB.filter((report) =>
-		data.pikod.includes(report.pikod)
+		data.ogda.includes(report.ogda)
 	);
 
 	const dataevent = {
@@ -940,10 +924,11 @@ const AdminSignInForm = (props) => {
 	const initWithUserData = () => {
 		setData({
 			...data,
-			pikod: user.pikod,
+			ogda: user.ogda,
 		});
 		loadReports();
 		loadPikods();
+		loadOgdas();
 		loadGdodim();
 		// loadOgdas(pikods);
 	};
@@ -964,14 +949,13 @@ const AdminSignInForm = (props) => {
 		initWithUserData();
 	}, []);
 
-	useEffect(() => {
-		setOgdas([]);
-		loadOgdas(data.pikod);
-	}, [data.pikod]);
+	// useEffect(() => {
+	// 	setOgdas([]);
+	// 	loadOgdas(data.pikod);
+	// }, [data.pikod]);
 
 	useEffect(() => {
 		setHativas([]);
-
 		loadHativas(data.ogda);
 	}, [data.ogda]);
 
@@ -1116,57 +1100,10 @@ const AdminSignInForm = (props) => {
 
 										<Row style={{ paddingTop: "10px", marginBottom: "15px" }}>
 											<>
-												{!data.hativa ? (
+												{!data.gdod ? (
 													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>אוגדה</h6>
-														<Select
-															closeMenuOnSelect={false}
-															components={animatedComponents}
-															isMulti
-															options={ogdasop}
-															onChange={handleChange8}
-															name={"ogda"}
-															val={data.ogda ? data.ogda : undefined}
-														/>
-													</Col>
-												) : (
-													<Col
-														style={{
-															justifyContent: "right",
-															alignContent: "right",
-															textAlign: "right",
-														}}
-													>
-														<h6>אוגדה</h6>
-														<Select
-															components={animatedComponents}
-															isMulti
-															options={ogdasop}
-															onChange={handleChange8}
-															name={"ogda"}
-															val={data.ogda ? data.ogda : undefined}
-															isDisabled={true}
-															// isDisabled={
-															// 	!data.hativa
-															// 		? true
-															// 		: data.hativa.length < 1
-															// 		? false
-															// 		: true
-															// }
-														/>
-													</Col>
-												)}
-											</>
-
-											<>
-												{data.ogda && !data.gdod ? (
-													<Col
+													xs={12}
+													md={6}
 														style={{
 															justifyContent: "right",
 															alignContent: "right",
@@ -1185,6 +1122,9 @@ const AdminSignInForm = (props) => {
 													</Col>
 												) : (
 													<Col
+													xs={12}
+													md={6}
+	
 														style={{
 															justifyContent: "right",
 															alignContent: "right",
@@ -1215,24 +1155,6 @@ const AdminSignInForm = (props) => {
 				{manmarit ? (
 					<>
 						<Row style={{width: "120%"}}>
-							{data.pikod && !data.ogda && !data.hativa ? (
-							<Col style={{width:"200px"}}>
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל אוגדה לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthogda}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-						) : null}
 						<>
 								{data.ogda && !data.hativa ? (
 							<Col style={{width:"200px"}}>
@@ -1282,7 +1204,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1325,7 +1247,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1370,7 +1292,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1410,7 +1332,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-								{data.ogda ? (
+								{data.hativa ? (
 									<h2 className="text-center">
 										{getnumevt(
 											reportDBFillter.filter(
@@ -1450,7 +1372,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1479,7 +1401,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1510,7 +1432,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -1536,7 +1458,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-								{data.ogda ? (
+								{data.hativa ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
 									<h2 className="text-center">{getnumevt(reportDB)}</h2>
@@ -1837,7 +1759,7 @@ const AdminSignInForm = (props) => {
 												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
-										) : !data.ogda ? (
+										) : !data.hativa ? (
 											// <ChartProvider>
 											<Doughnut
 												data={dataevent}
@@ -1859,60 +1781,6 @@ const AdminSignInForm = (props) => {
 									</CardBody>
 								</Card>
 							</Col>
-							{!data.pikod ? (
-								<Col style={{width:"100px"}}>
-									<Card className="card-chart">
-										<CardHeader>
-											<h3 className="card-category text-center">
-												{" "}
-												מספר אירועים לפי פיקוד מנמ"רי
-											</h3>
-										</CardHeader>
-										<CardBody>
-											{!data.ogda ? (
-												// <ChartProvider>
-												<Doughnut
-													data={datapikod}
-													options={options}
-													plugins={[ChartDataLabels]}
-													style={{width: "350px",height:"350px"}}
-												/>
-												// </ChartProvider>
-											) : //* was removed
-											/*
-									<Doughnut
-										data={datapikodFilttered}
-										options={options}
-									/>
-									*/
-											null}
-										</CardBody>
-									</Card>
-								</Col>
-							) : null}
-							{data.pikod && !data.ogda && !data.hativa ? (
-								<Col style={{width:"100px"}}>
-									<Card className="card-chart">
-										<CardHeader>
-											<h3 className="card-category text-center">
-												{" "}
-												{}
-												מספר אירועים לפי אוגדה מנמ"רית
-											</h3>
-										</CardHeader>
-										<CardBody>
-											{/* <ChartProvider> */}
-											<Doughnut
-												data={dataogda}
-												options={options}
-												plugins={[ChartDataLabels]}
-												style={{width: "350px",height:"350px"}}
-											/>
-											{/* </ChartProvider> */}
-										</CardBody>
-									</Card>
-								</Col>
-							) : null}
 							<>
 								{data.ogda && !data.hativa ? (
 									<Col style={{width:"100px"}}>
@@ -1966,24 +1834,6 @@ const AdminSignInForm = (props) => {
 				) : (
 					<>
 						<Row style={{width: "120%"}}>
-							{data.pikod && !data.ogda && !data.hativa ? (
-							<Col style={{width:"200px"}}>
-							<Card className="card-chart">
-								<CardHeader>
-									<h3 className="card-category text-center">
-										{" "}
-										מספר אירועים בכל אוגדה לפי חודשים
-									</h3>
-								</CardHeader>
-								<CardBody>
-										<Bar
-											data={databymonthogdarep}
-											options={optionsBar}
-										/>
-								</CardBody>
-							</Card>
-						</Col>
-						) : null}
 						<>
 								{data.ogda && !data.hativa ? (
 							<Col style={{width:"200px"}}>
@@ -2033,7 +1883,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -2076,7 +1926,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -2121,7 +1971,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -2161,7 +2011,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-								{data.ogda ? (
+								{data.hativa ? (
 									<h2 className="text-center">
 										{getnumevt(
 											reportDBFillter.filter(
@@ -2201,7 +2051,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> סה"כ עלות נזק</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -2230,7 +2080,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -2261,7 +2111,7 @@ const AdminSignInForm = (props) => {
 									</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-									{data.ogda ? (
+									{data.hativa ? (
 										<h2 className="text-center">
 											{gettotal(
 												reportDBFillter
@@ -2287,7 +2137,7 @@ const AdminSignInForm = (props) => {
 									<h3 className="card-category text-center"> מספר אירועים</h3>
 								</CardHeader>
 								<CardBody style={{padding:"40px"}}>
-								{data.ogda ? (
+								{data.hativa ? (
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
 									<h2 className="text-center">{getnumevt(reportDB)}</h2>
@@ -2432,7 +2282,7 @@ const AdminSignInForm = (props) => {
 												style={{width: "350px",height:"350px"}}
 											/>
 											// </ChartProvider>
-										) : !data.ogda ? (
+										) : !data.hativa ? (
 											// <ChartProvider>
 											<Doughnut
 												data={dataevent}
@@ -2454,60 +2304,6 @@ const AdminSignInForm = (props) => {
 									</CardBody>
 								</Card>
 							</Col>
-							{!data.pikod ? (
-								<Col style={{width:"100px"}}>
-									<Card className="card-chart">
-										<CardHeader>
-											<h3 className="card-category text-center">
-												{" "}
-												מספר אירועים לפי פיקוד מדווח
-											</h3>
-										</CardHeader>
-										<CardBody>
-											{!data.ogda ? (
-												// <ChartProvider>
-												<Doughnut
-													data={datapikodrep}
-													options={options}
-													plugins={[ChartDataLabels]}
-													style={{width: "350px",height:"350px"}}
-												/>
-												// </ChartProvider>
-											) : //* was removed
-											/*
-									<Doughnut
-										data={datapikodFilttered}
-										options={options}
-									/>
-									*/
-											null}
-										</CardBody>
-									</Card>
-								</Col>
-							) : null}
-							{data.pikod && !data.ogda && !data.hativa ? (
-								<Col style={{width:"100px"}}>
-									<Card className="card-chart">
-										<CardHeader>
-											<h3 className="card-category text-center">
-												{" "}
-												{}
-												מספר אירועים לפי אוגדה מדווחת
-											</h3>
-										</CardHeader>
-										<CardBody>
-											{/* <ChartProvider> */}
-											<Doughnut
-												data={dataogdarep}
-												options={options}
-												plugins={[ChartDataLabels]}
-												style={{width: "350px",height:"350px"}}
-											/>
-											{/* </ChartProvider> */}
-										</CardBody>
-									</Card>
-								</Col>
-							) : null}
 							<>
 								{data.ogda && !data.hativa ? (
 									<Col style={{width:"100px"}}>

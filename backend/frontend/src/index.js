@@ -44,6 +44,7 @@ import WachReportRekem from "views/authentication/WachReports/WachReportRekem";
 
 import Dash from "views/divoah/Dash";
 import DashAdmin from "views/divoah/DashAdmin";
+import DashOgda from "views/divoah/DashOgda";
 
 import Report from "views/divoah/Report";
 import ReportRekem from "views/divoah/ReportRekem";
@@ -52,6 +53,8 @@ import Odot from "views/divoah/Hamal/Odot";
 import HistoReport from "views/divoah/Hamal/HistoReport";
 import SummarizingReport from "views/divoah/Hamal/SummarizingReport";
 import SummarizingReportRekem from "views/divoah/Hamal/SummarizingReportRekem";
+
+import pdforsimple from "views/divoah/Pdfiles/pdforsimple";
 
 ReactDOM.render(
 	<>
@@ -112,6 +115,11 @@ ReactDOM.render(
 							exact
 							component={DashAdmin}
 						/>
+						<LoggedinRoute
+							path="/dashogda"
+							exact
+							component={DashOgda}
+						/>
 
 						<LoggedinRoute
 							path="/report"
@@ -133,7 +141,7 @@ ReactDOM.render(
 							exact
 							component={SummarizingReport}
 						/>
-												<LoggedinRoute
+						<LoggedinRoute
 							path="/summarizingreportrekem"
 							exact
 							component={SummarizingReportRekem}
@@ -171,7 +179,12 @@ ReactDOM.render(
 							exact
 							component={Odot}
 						/>
-
+						<LoggedinRoute
+							path="/pdforsimple"
+							exact
+							component={pdforsimple}
+						/>
+						
 						<Redirect
 							from="/"
 							to="/signin"

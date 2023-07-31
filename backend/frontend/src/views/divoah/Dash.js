@@ -200,7 +200,7 @@ function AdminSignInForm() {
 					{/*//* ------- pikod ------------- */}
 					<Card
 						className={"shadow " + styles.pikodCard}
-						style={{ height: "400px", borderRadius: "35px" }}
+						style={{ height: "300px",borderRadius: "35px" }}
 					>
 						<img
 							src={pikodImg}
@@ -211,7 +211,7 @@ function AdminSignInForm() {
 							{" "}
 							<h2 className="text-center">
 								{" "}
-								כמות אירועים חריגים שדווחו <br /> <br /> {data.length}
+								סה"כ אירועים חריגים שדווחו<br /> <br /> {data.length}
 							</h2>
 						</CardHeader>
 					</Card>

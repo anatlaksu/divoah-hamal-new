@@ -165,6 +165,7 @@ const SortingTable = ({ match }) => {
 												if (cell.value == "1") return <td>משתמש פיקוד</td>;
 												if (cell.value == "2") return <td>מנהל מערכת</td>;
 												if (cell.value == "3") return <td>משתמש חט"ל</td>;
+												if (cell.value == "4") return <td>משתמש אוגדה</td>;
 											}
 										}
 									})}

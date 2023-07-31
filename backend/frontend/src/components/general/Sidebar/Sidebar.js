@@ -48,6 +48,7 @@ import SidebarAdmin from "components/general/Sidebar/SidebarAdmin";
 import SidebarAll from "components/general/Sidebar/SidebarAll";
 import SidebarHamal from "components/general/Sidebar/SidebarHamal";
 import SidebarHatal from "components/general/Sidebar/SidebarHatal";
+import SidebarOgda from "./SidebarOgda";
 
 import { signout } from "auth/index";
 
@@ -99,7 +100,9 @@ function Sidebar() {
 						<SidebarAdmin theme={color} />
 					) : user.role === "3" ? (
 						<SidebarHatal theme={color} />
-					) :null}
+					) :user.role === "4" ? (
+						<SidebarOgda theme={color} />
+					):null}
 
 					{/* fotter של הסייד */}
 					<div
