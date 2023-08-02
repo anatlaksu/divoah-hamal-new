@@ -258,7 +258,7 @@ const Pdforsimple = ({datareport}) => {
 
 	useEffect(()=>{
 		const _splitedText = datareport.pirot.split(" ");
-		setSplitedText(_splitedText)
+		setSplitedText(_splitedText);
 	 },[datareport.pirot]);
 
 	 useEffect(()=>{
@@ -309,12 +309,21 @@ const Pdforsimple = ({datareport}) => {
 	  },
 	  text2:{
 		fontSize: 16,
-		paddingTop: 80,
+		paddingTop: 50,
 		fontFamily: 'Rubik',
 		textAlign: 'right',
 		direction: 'rtl',
 		fontWeight: 'bold',
 	  },
+	  text21:{
+		fontSize: 14,
+		// paddingTop: 20,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		fontWeight: 'bold',
+	  },
+
 	  text3: {
 		fontSize: 14,
 		paddingTop: 10,
@@ -447,13 +456,31 @@ const Pdforsimple = ({datareport}) => {
 				style={styles.image1}
 				/>
 			</View>
+			<View style={styles.section2}>
+			<Text></Text>
+				{datareport.typevent==="10" ?(
+				<Text style={styles.text21}>נזק ךתשתיות אחזקה / הח"י</Text>
+				):(<> {datareport.typevent==="11" ?(
+					<Text style={styles.text21}>אי קיום שגרת אחזקה</Text>
+				):(
+					<Text style={styles.text21}>אחר</Text>
+				)}
+				</>)}
+				<Text></Text>
+			</View>
+
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black"}}></hr>
 			<View style={styles.section3}>
 				<Text style={styles.text3}>תאריך ומיקום אירוע</Text>
 				<Text style={styles.text4}>פרטי מדווח</Text>	
 			</View>
 			<View style={styles.section3}>
-				<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				{(new Date(datareport.datevent).getHours()===3 && new Date(datareport.datevent).getMinutes()===0)?(
+				<Text style={styles.text5}>{datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				):(
+					<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				)}
+				{/* <Text style={styles.text5}>{new Date(datareport.datevent).getMinutes()}</Text> */}
 				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{datareport.lastname} {datareport.name} שם: </Text>	
 				</View>
@@ -494,7 +521,10 @@ const Pdforsimple = ({datareport}) => {
 				{/* </View> */}
 			</View>
 			<View style={styles.section3}>
+			{datareport.nifga !== 2 ? (
 				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>
+				):null}
+				{/* <Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text> */}
 				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>יחידה מנמ"רית: </Text>
 				</View>
@@ -528,7 +558,6 @@ const Pdforsimple = ({datareport}) => {
 					}
 				</View>
 			</View>
-
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
 				<Text style={styles.text6}>לקחים ותובנות: </Text>	
@@ -547,7 +576,6 @@ const Pdforsimple = ({datareport}) => {
 					}
 				</View>
 			</View>
-
 			<View style={styles.footer}>
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black"}}></hr>
 			<View style={styles.section3}>

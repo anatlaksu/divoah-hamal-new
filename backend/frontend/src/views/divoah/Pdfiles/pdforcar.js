@@ -327,6 +327,14 @@ const Pdforcar = ({datareport}) => {
 		paddingRight: 30,
 	  },
 
+	  text21:{
+		fontSize: 14,
+		// paddingTop: 20,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		fontWeight: 'bold',
+	  },
 
 	  image1: {
 		width: 100,
@@ -482,13 +490,39 @@ const Pdforcar = ({datareport}) => {
 				style={styles.image1}
 				/>
 			</View>
+			<View style={styles.section2}>
+			<Text></Text>
+				{datareport.typevent==="1" ?(
+				<Text style={styles.text21}>תאונת כלי רכב</Text>
+				):(<> {datareport.typevent==="2" ?(
+					<Text style={styles.text21}>התהפכות</Text>
+				):(
+				<> {datareport.typevent==="3" ?(
+					<Text style={styles.text21}>הנתקות גלגל</Text>
+				):(
+				<> {datareport.typevent==="4" ?(
+					<Text style={styles.text21}>שריפה</Text>
+				):(
+					<Text style={styles.text21}>רק"ם</Text>
+				)}
+				</>				)}
+				</>	)}
+				</>)}
+				<Text></Text>
+			</View>
+
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black"}}></hr>
 			<View style={styles.section3}>
 				<Text style={styles.text3}>תאריך ומיקום אירוע</Text>
 				<Text style={styles.text4}>פרטי מדווח</Text>	
 			</View>
 			<View style={styles.section3}>
-				<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				{(new Date(datareport.datevent).getHours()===3 && new Date(datareport.datevent).getMinutes()===0)?(
+				<Text style={styles.text5}>{datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				):(
+					<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				)}
+				{/* <Text style={styles.text5}>{new Date(datareport.datevent).getMinutes()}</Text> */}
 				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>{datareport.lastname} {datareport.name} שם: </Text>	
 				</View>
@@ -529,7 +563,10 @@ const Pdforcar = ({datareport}) => {
 				{/* </View> */}
 			</View>
 			<View style={styles.section3}>
+			{datareport.nifga !== 2 ? (
 				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>
+				):null}
+				{/* <Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text> */}
 				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>יחידה מנמ"רית: </Text>
 				</View>

@@ -377,6 +377,15 @@ const Pdforhiloz = ({datareport}) => {
 		direction: 'rtl',
 
 	  },
+	  text21:{
+		fontSize: 14,
+		// paddingTop: 20,
+		fontFamily: 'Rubik',
+		textAlign: 'right',
+		direction: 'rtl',
+		fontWeight: 'bold',
+	  },
+
 	  text3: {
 		fontSize: 14,
 		paddingTop: 10,
@@ -504,15 +513,26 @@ const Pdforhiloz = ({datareport}) => {
 				style={styles.image1}
 				/>
 			</View>
+			<View style={styles.section2}>
+			<Text></Text>
+				<Text style={styles.text21}>חילוץ</Text>
+				<Text></Text>
+			</View>
+
 			<hr style={{height: "3px" ,color:"black",backgroundColor: "black"}}></hr>
 			<View style={styles.section3}>
 				<Text style={styles.text3}>תאריך ומיקום אירוע</Text>
 				<Text style={styles.text4}>פרטי מדווח</Text>	
 			</View>
 			<View style={styles.section3}>
-				<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				{(new Date(datareport.datevent).getHours()===3 && new Date(datareport.datevent).getMinutes()===0)?(
+				<Text style={styles.text5}>{datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				):(
+					<Text style={styles.text5}>{datareport.datevent.slice(11, 16)} {datareport.datevent.slice(0, 10).split("-").reverse().join("-")}תאריך אירוע: </Text>
+				)}
+				{/* <Text style={styles.text5}>{new Date(datareport.datevent).getMinutes()}</Text> */}
 				<View style={styles.firstTextContainer}>
-        		<Text style={styles.text6}>{datareport.lastname} {datareport.name} שם: </Text>	
+				<Text style={styles.text6}>{datareport.lastname} {datareport.name} שם: </Text>	
 				</View>
 			</View>
 			<View style={styles.section3}>
@@ -551,7 +571,10 @@ const Pdforhiloz = ({datareport}) => {
 				{/* </View> */}
 			</View>
 			<View style={styles.section3}>
+			{datareport.nifga !== 2 ? (
 				<Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text>
+				):null}
+				{/* <Text style={styles.text5}>{datareport.hurtarray.length}מספר נפגעים: </Text> */}
 				<View style={styles.firstTextContainer}>
 				<Text style={styles.text6}>יחידה מנמ"רית: </Text>
 				</View>
