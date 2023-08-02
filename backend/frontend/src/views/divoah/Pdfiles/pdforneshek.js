@@ -554,8 +554,7 @@ const Pdforneshek = ({datareport}) => {
 					}
 				</View>
 			</View>
-			{lekah === false? 
-			(<>
+			{splitedTextlekah[0]=="" ? null:(<>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
 				<Text style={styles.text6}>לקחים ותובנות: </Text>	
@@ -574,7 +573,7 @@ const Pdforneshek = ({datareport}) => {
 					}
 				</View>
 			</View>
-            </>):null}
+			</>)}
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
 				<Text style={styles.text4}>פרטי אירוע</Text>

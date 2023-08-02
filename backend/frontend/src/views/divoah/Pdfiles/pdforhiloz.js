@@ -608,6 +608,7 @@ const Pdforhiloz = ({datareport}) => {
 				</View>
 			</View>
 
+			{splitedTextlekah[0]=="" ? null:(<>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
 				<Text style={styles.text6}>לקחים ותובנות: </Text>	
@@ -626,6 +627,7 @@ const Pdforhiloz = ({datareport}) => {
 					}
 				</View>
 			</View>
+			</>)}
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
 				<Text style={styles.text4}>פרטי אירוע</Text>

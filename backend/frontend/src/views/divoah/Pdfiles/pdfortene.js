@@ -548,6 +548,7 @@ const Pdfortene = ({datareport}) => {
 				</View>
 			</View>
 
+			{splitedTextlekah[0]=="" ? null:(<>
 			<View style={styles.section3}>
 				<Text style={styles.text5}></Text>	
 				<Text style={styles.text6}>לקחים ותובנות: </Text>	
@@ -566,6 +567,7 @@ const Pdfortene = ({datareport}) => {
 					}
 				</View>
 			</View>
+			</>)}
 			<View style={styles.section3}>
 				<Text style={styles.text3}></Text>
 				<Text style={styles.text4}>פרטי האירוע</Text>
