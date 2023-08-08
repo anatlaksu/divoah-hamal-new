@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import { withRouter, Redirect } from "react-router-dom";
-
+import { withRouter, Redirect ,Link } from "react-router-dom";
+import ReactToPdf from 'react-to-pdf';
+import { PDFViewer, ReactPDF, PDFDownloadLink } from "@react-pdf/renderer";
 // reactstrap components
 import {
 	// eslint-disable-next-line no-unused-vars
@@ -33,6 +34,17 @@ import { toast } from "react-toastify";
 import Select from "components/general/Select/AnimatedSelect";
 import CarTypesFilterObject from "components/general/CarTypeFilter/CarTypesFilterforwach";
 import deletepic from "assets/img/delete.png";
+import Pdforsimple from "./Pdfiles/pdforsimple";
+import Pdforcar from "./Pdfiles/pdforcar";
+import Pdforhiloz from "./Pdfiles/pdforhiloz";
+import Pdformataf from "./Pdfiles/pdformataf";
+import Pdforneshek from "./Pdfiles/pdforneshek";
+import Pdfortene from "./Pdfiles/pdfortene";
+import printer from "assets/img/printer.svg";
+import FileDownload from "js-file-download";
+import download from "assets/img/download.png"
+import 'core-js/features/object/from-entries';
+
 
 const CarDataFormModalView = (match) => {
 	const [data, setData] = useState({
@@ -60,14 +72,16 @@ const CarDataFormModalView = (match) => {
 		datevent: "",
 		mikom: "",
 		nifga: "",
+		yndate:"",
 		wnifga: "",
+		files_id:"",
 		error: false,
 		successmsg: false,
 		loading: false,
 		redirectToReferrer: false,
 		//
 	});
-
+	
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray] = useState([]);
 
@@ -88,6 +102,11 @@ const CarDataFormModalView = (match) => {
 	const [mkabazs, setMkabazs] = useState([]);
 	const [magads, setMagads] = useState([]);
 	const [magadals, setMagadals] = useState([]);
+
+	const [filesFromDB, setFilesFromDB] = useState([]);
+	const [showFile, setShowFile] = useState(1);
+
+	const componentRef = React.useRef();
 
 	const getMagadals = async () => {
 		await axios
@@ -360,6 +379,42 @@ const CarDataFormModalView = (match) => {
 		match.ToggleForModal();
 	};
 
+	const getFiles = () => {
+		axios
+		  .get(`http://localhost:8000/api/getMultipleFiles/${data.files_id}`)
+		  .then((response) => {
+			setFilesFromDB(response.data.files);
+			console.log(`files: ${response.data}`);
+			// setShowFile(2);
+		  })
+		  .catch((err) => {
+			console.log(err);
+		  });
+		}
+
+	function openFileANewWindows(filePath, fileName) {
+		// const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+		// const fileLink = document.createElement('a');
+		// fileLink.href = fileURL;
+		// const fileName = response.headers['content-disposition'].substring(22, 52);
+		// fileLink.setAttribute('download', fileName);
+		// fileLink.setAttribute('target', '_blank');
+		// document.body.appendChild(fileLink);
+		// fileLink.click();
+		// fileLink.remove();
+	
+		// e.preventDefault();
+		const urlPath = filePath;
+		const newUrlPath = urlPath.slice(8);
+		// console.log(`Frontend ${newUrlPath}`);
+		axios
+		  .get(`http://localhost:8000/api/downloadPDFFile/${newUrlPath}`, { responseType: "blob" })
+		  .then((res) => {
+			FileDownload(res.data, fileName);
+		  });
+	  }
+
+
 	const init = () => {
 		// console.log(match);
 		var reportid = match.cardataid;
@@ -380,9 +435,19 @@ const CarDataFormModalView = (match) => {
 	};
 
 	useEffect(() => {
-		if (match.isOpen == true) init();
+		if (match.isOpen == true) {
+			init();
+		}
 	}, [match.isOpen]);
 
+	useEffect(() => {
+		if(data.files_id != undefined){
+		   getFiles();
+		}else{
+			setFilesFromDB([]);
+		}
+	}, [data.files_id]);
+	
 	// * ------ manmarit --------------------------------
 	useEffect(() => {
 		setOgdas([]);
@@ -476,7 +541,95 @@ const CarDataFormModalView = (match) => {
 										{data.typevent != "רקם" ? (
 											<CardBody className="px-lg-5 py-lg-5">
 												<div className="text-center text-muted mb-4">
-													<big>עדכון דיווח</big>
+													<Row>
+														<Col></Col>
+														<Col>
+														<big>צפייה דיווח</big>
+														</Col>
+														<Col>
+														{(data.typevent=="10" || data.typevent=="11"|| data.typevent=="12")?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+											<PDFDownloadLink document={<Pdforsimple datareport={data}/>} fileName="divoahsimple.pdf">
+											{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+										  </PDFDownloadLink>
+										  </button>
+										  </div>								
+										)
+										:(
+											<>
+											{(data.typevent=="1" || data.typevent=="2"|| data.typevent=="3"|| data.typevent=="4" || data.typevent=="רקם")?(
+											<div className="text-left">
+												<button className="btn-new-blue mb-3">
+													<PDFDownloadLink document={<Pdforcar datareport={data}/>} fileName="divoahcar.pdf">
+													{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+													</PDFDownloadLink>
+												</button>
+											</div>
+											):(<>
+												{data.typevent=="5" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforneshek datareport={data}/>} fileName="divoahneshek.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+												{data.typevent=="6" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdfortene datareport={data}/>} fileName="divoahtene.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+													{data.typevent=="7" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdformataf datareport={data}/>} fileName="divoahmataf.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(
+												<>
+												{data.typevent=="9" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforhiloz datareport={data}/>} fileName="divoahmataf.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											): null}
+
+												</>
+												)}
+
+												</>
+												)}
+												</>
+												)}
+											</>
+											)}
+											</>
+										)}
+														</Col>
+													</Row>
 												</div>
 												<div className="text-center text-muted mb-4">
 													<small>פרטי מדווח</small>
@@ -1560,7 +1713,7 @@ const CarDataFormModalView = (match) => {
 																			val={
 																				data.magadal ? data.magadal : undefined
 																			}
-																			disabled
+																			isDisabled={true}
 																		/>
 																	</Col>
 																)}
@@ -1674,6 +1827,9 @@ const CarDataFormModalView = (match) => {
 */}
 														</>
 													)}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										פירוט אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -1697,21 +1853,109 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															disabled
-														/>
-													</FormGroup>
+													{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+													disabled
+
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+													disabled
+
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -1802,8 +2046,7 @@ const CarDataFormModalView = (match) => {
 															</div>
 														</FormGroup>
 													</div>
-												</Form>
-												{data.nifga == 1 ? (
+													{data.nifga == 1 ? (
 												infohurtarray.map((p, index) => {
 																	return (
 																		<div>
@@ -1907,6 +2150,24 @@ const CarDataFormModalView = (match) => {
 																	);
 												})
 												) : null}
+
+												{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												קובץ תחקיר ביטחוני
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
+												</Form>
 											</CardBody>
 										) : (
 											<CardBody className="px-lg-5 py-lg-5">
@@ -1914,7 +2175,95 @@ const CarDataFormModalView = (match) => {
 													<big>צפייה בדיווח</big>
 												</div>
 												<div className="text-center text-muted mb-4">
-													<small>פרטי מדווח</small>
+												<Row>
+														<Col></Col>
+														<Col>
+														<big>צפייה דיווח</big>
+														</Col>
+														<Col>
+														{(data.typevent=="10" || data.typevent=="11"|| data.typevent=="12")?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+											<PDFDownloadLink document={<Pdforsimple datareport={data}/>} fileName="divoahsimple.pdf">
+											{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+										  </PDFDownloadLink>
+										  </button>
+										  </div>								
+										)
+										:(
+											<>
+											{(data.typevent=="1" || data.typevent=="2"|| data.typevent=="3"|| data.typevent=="4" || data.typevent=="רקם")?(
+											<div className="text-left">
+												<button className="btn-new-blue mb-3">
+													<PDFDownloadLink document={<Pdforcar datareport={data}/>} fileName="divoahcar.pdf">
+													{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+													</PDFDownloadLink>
+												</button>
+											</div>
+											):(<>
+												{data.typevent=="5" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforneshek datareport={data}/>} fileName="divoahneshek.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+												{data.typevent=="6" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdfortene datareport={data}/>} fileName="divoahtene.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+													{data.typevent=="7" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdformataf datareport={data}/>} fileName="divoahmataf.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(
+												<>
+												{data.typevent=="9" ?(
+											<div className="text-left">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforhiloz datareport={data}/>} fileName="divoahhiloz.pdf">
+												{({ blob, url, loading, error }) =>
+											  loading ? "..." : (<img height={20} width={20} src={printer}></img>)
+											}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											): null}
+
+												</>
+												)}
+
+												</>
+												)}
+												</>
+												)}
+											</>
+											)}
+											</>
+										)}
+														</Col>
+													</Row>
 												</div>
 												<Form role="form">
 													<FormGroup dir="rtl">
@@ -2403,6 +2752,9 @@ const CarDataFormModalView = (match) => {
 															</div>
 														</FormGroup>
 													</div>
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+														פירוט אירוע
+													</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2426,21 +2778,108 @@ const CarDataFormModalView = (match) => {
 														/>
 													</FormGroup>
 
-													<div
-														style={{ textAlign: "right", paddingTop: "10px" }}
-													>
-														תאריך אירוע
-													</div>
-													<FormGroup dir="rtl">
-														<Input
-															placeholder="תאריך אירוע"
-															name="datevent"
-															type="datetime-local"
-															value={data.datevent.slice(0, 21)}
-															onChange={handleChange}
-															disabled
-														/>
-													</FormGroup>
+													{/* <div style={{ textAlign: "right", paddingTop: "10px" }}>
+										האם ידוע על שעת האירוע
+									</div>
+									<div
+										className="mb-2"
+										style={{ textAlign: "right" }}
+									>
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 1}
+													name="yndate"
+													type="radio"
+													value="1"
+													onChange={handleChange}
+													disabled
+
+												/>
+												כן
+											</div>
+										</FormGroup>
+
+										<FormGroup
+											check
+											inline
+										>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												<Input
+													checked={data.yndate == 0}
+													name="yndate"
+													type="radio"
+													value="0"
+													onChange={handleChange}
+													disabled
+
+												/>
+												לא
+											</div>
+										</FormGroup>
+									</div>
+
+									{data.yndate === 1 ? (
+										<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+									):(
+										<>
+										{data.yndate === 0 ? (
+											<>
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											type="date"
+											value={data.datevent.slice(0, 10)}
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+									</>
+                                      ):null}
+
+										</>
+									)} */}
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										תאריך אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="תאריך אירוע"
+											name="datevent"
+											value={data.datevent.slice(0, 21)}
+											type="datetime-local"
+											onChange={handleChange}
+											disabled
+
+										/>
+									</FormGroup>
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										מיקום אירוע
+									</div>
 
 													<FormGroup dir="rtl">
 														<Input
@@ -2531,9 +2970,8 @@ const CarDataFormModalView = (match) => {
 															</div>
 														</FormGroup>
 													</div>
-												</Form>
 
-												{data.nifga == 1 ? (
+													{data.nifga == 1 ? (
 												infohurtarray.map((p, index) => {
 																	return (
 																		<div>
@@ -2637,6 +3075,25 @@ const CarDataFormModalView = (match) => {
 																	);
 												})
 												) : null}
+
+
+													{(filesFromDB && filesFromDB.length>0)? (
+													<>
+												<div style={{ textAlign: "right", paddingTop: "10px" }}>
+												קובץ תחקיר ביטחוני
+												</div>
+											   {filesFromDB.map((file, index) => (
+												<div style={{ textAlign: "right"}}>
+													קובץ {index+1}:
+												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
+													<img height={20} width={20} src={download} ></img>
+												</button>
+												</div>))}
+												</>
+												):null
+											   }
+
+												</Form>
 											</CardBody>
 										)}
 
@@ -2648,6 +3105,87 @@ const CarDataFormModalView = (match) => {
 												צא
 											</button>
 										</div>
+										{/* {(data.typevent=="10" || data.typevent=="11"|| data.typevent=="12")?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+											<PDFDownloadLink document={<Pdforsimple datareport={data}/>} fileName="1.pdf">
+											{({ blob, url, loading, error }) =>
+											  loading ? "מוריד דיווח..." : "הורדת דיווח"
+											}	
+										  </PDFDownloadLink>
+										  </button>
+										  </div>								
+										)
+										:(
+											<>
+											{(data.typevent=="1" || data.typevent=="2"|| data.typevent=="3"|| data.typevent=="4" || data.typevent=="רקם")?(
+											<div className="text-center">
+												<button className="btn-new-blue mb-3">
+													<PDFDownloadLink document={<Pdforcar datareport={data}/>} fileName="c.pdf">
+													{({ blob, url, loading, error }) =>
+													loading ? "מוריד דיווח..." : "הורדת דיווח"
+													}	
+													</PDFDownloadLink>
+												</button>
+											</div>
+											):(<>
+												{data.typevent=="5" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforneshek datareport={data}/>} fileName="4.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+												{data.typevent=="6" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdfortene datareport={data}/>} fileName="7.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(<>
+													{data.typevent=="7" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdformataf datareport={data}/>} fileName="2.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											):(
+												<>
+												{data.typevent=="9" ?(
+											<div className="text-center">
+											<button className="btn-new-blue mb-3">
+												<PDFDownloadLink document={<Pdforhiloz datareport={data}/>} fileName="h.pdf">
+												{({ blob, url, loading, error }) =>
+												loading ? "מוריד דיווח..." : "הורדת דיווח"
+												}	
+												</PDFDownloadLink>
+											</button>
+										</div>
+											): null}
+
+												</>
+												)}
+
+												</>
+												)}
+												</>
+												)}
+											</>
+											)}
+											</>
+										)} */}
 									</Card>
 								</Row>
 							</Container>

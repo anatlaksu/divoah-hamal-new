@@ -47,6 +47,9 @@ const SortingTable = ({ match }) => {
 	const [viewmodalid, setViewmodalid] = useState(undefined);
 
 	const [date, setDate] = useState([]);
+	const [tyevent, setTyevent] = useState([]);
+
+	const [originaldata, setOriginaldata] = useState([])
 
 	const [collapseOpen, setcollapseOpen] = React.useState(false);
 	const toggleCollapse = () => {
@@ -124,24 +127,6 @@ const SortingTable = ({ match }) => {
 		console.log(expired);
 	}, [data]);
 
-	useEffect(() => {
-		axios
-			.get(
-				`http://localhost:8000/report/requestByPersonalnumber/${user.personalnumber}`
-			)
-			.then((response) => {
-				// console.log(response.data);
-				// setData(response.data);
-				const reports = response.data;
-				reports.reverse();
-				// console.log(reports);
-				setData(reports);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
-
 	function handleChange(evt) {
 		const value = evt.target.value;
 		console.log(evt.target.value);
@@ -150,6 +135,15 @@ const SortingTable = ({ match }) => {
 		console.log(new Date(date.fromdate).setHours(0, 0, 0, 0));
 		console.log(date.todate);
 	}
+	function handleChange2(evt) {
+		const value = evt.target.value;
+		console.log(evt.target.value);
+		console.log(evt.target.name);
+		setTyevent({ ...tyevent, [evt.target.name]: value });
+		console.log(tyevent.typevent);
+		console.log(isNaN(tyevent.typevent));
+	}
+
 
 	//* modal
 	function Toggle(evt) {
@@ -199,6 +193,57 @@ const SortingTable = ({ match }) => {
 		setisviewmodalopen(!isviewmodalopen);
 		window.location.reload();
 	}
+
+	const filteruse=()=>{
+		let beforfilter=originaldata;
+		let filter1=[]; //date filterwev                                                                                                                                                                               
+		if(date.fromdate && date.todate){
+			filter1=beforfilter.filter((el)=> new Date(el.datevent).setHours(0, 0, 0, 0) >=
+			new Date(date.fromdate).setHours(0, 0, 0, 0) &&
+		    new Date(el.datevent).setHours(0, 0, 0, 0) <=
+			new Date(date.todate).setHours(0, 0, 0, 0));
+		}else{
+			filter1=beforfilter;
+		}
+
+		let filter2=[]; //type event filter
+		if(tyevent.typevent== "בחר" || tyevent.typevent== undefined){
+		  filter2=filter1;
+		}else{
+			filter2=filter1.filter((el)=>el.typevent === tyevent.typevent);
+		}
+
+		console.log(filter2);
+		setData(filter2);
+		console.log(data);
+	};
+
+	useEffect(() => {
+		axios
+			.get(
+				`http://localhost:8000/report/requestByPersonalnumber/${user.personalnumber}`
+			)
+			.then((response) => {
+				// console.log(response.data);
+				// setData(response.data);
+				const reports = response.data;
+				reports.reverse();
+				// console.log(reports);
+				setData(reports);
+				setOriginaldata(reports);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
+
+
+
+	useEffect(() => {
+		// loadReports();
+		filteruse();
+			}, [date,tyevent]);
+		
 
 	const {
 		getTableProps,
@@ -311,6 +356,34 @@ const SortingTable = ({ match }) => {
 									</Row>
 								</Col>
 							</Row>
+							<Row style={{ margin: "0px" }}>
+							<Col md={4}>
+							<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										סוג אירוע
+									</div>
+										<Input
+											placeholder="סוג אירוע"
+											type="select"
+											name="typevent"
+											value={tyevent.typevent}
+											onChange={handleChange2}
+										>
+											<option value={"בחר"}>בחר</option>
+											<option value={"1"}>תאונת כלי רכב</option>
+											<option value={"2"}>התהפכות</option>
+											<option value={"3"}>הנתקות גלגל</option>
+											<option value={"4"}>שריפה</option>
+											<option value={"5"}>אירוע נשו"ת</option>
+											<option value={"6"}>תאונת עבודה אנשי טנ"א</option>
+											<option value={"7"}>פריקת מטפים</option>
+											<option value={"9"}>חילוץ</option>
+											<option value={"10"}>נזק לתשתיות אחזקה / הח"י</option>
+											<option value={"11"}>אי קיום שגרת אחזקה</option>
+											<option value={"12"}>אחר</option>
+											<option value={"רקם"}>רק"ם</option>
+										</Input>
+							</Col>
+							</Row>
 						</Card>
 					</Collapse>
 				</div>
@@ -356,207 +429,7 @@ const SortingTable = ({ match }) => {
 							</tr>
 						))}
 					</thead>
-					{date.fromdate && date.todate ? (
-						<>
-							<tbody {...getTableBodyProps()}>
-								{page
-									.filter(
-										(row) =>
-											new Date(row.original.datevent).setHours(0, 0, 0, 0) >=
-												new Date(date.fromdate).setHours(0, 0, 0, 0) &&
-											new Date(row.original.datevent).setHours(0, 0, 0, 0) <=
-												new Date(date.todate).setHours(0, 0, 0, 0)
-									)
-									.map((row, index) => {
-										prepareRow(row);
-										return (
-											<tr {...row.getRowProps()}>
-												{row.cells.map((cell) => {
-													if (
-														cell.column.id != "typevent" &&
-														cell.column.id != "pirot" &&
-														cell.column.id != "createdAt" &&
-														cell.column.id != "datevent"
-													) {
-														return (
-															<td {...cell.getCellProps()}>
-																{cell.render("Cell")}
-															</td>
-														);
-													} else {
-														if (cell.column.id == "typevent") {
-															if (cell.value == "1")
-																return <td>תאונת כלי רכב</td>;
-															if (cell.value == "2") return <td>התהפכות</td>;
-															if (cell.value == "3")
-																return <td>הנתקות גלגל</td>;
-															if (cell.value == "4") return <td>שריפה</td>;
-															if (cell.value == "5")
-																return <td>אירוע נשו"ת</td>;
-															if (cell.value == "6")
-																return <td>תאונת עבודה אנשי טנ"א</td>;
-															if (cell.value == "7")
-																return <td>פריקת מטפים</td>;
-															if (cell.value == "9") return <td>חילוץ</td>;
-															if (cell.value == "10")
-																return <td>נזק לתשתיות אחזקה / הח"י</td>;
-															if (cell.value == "11")
-																return <td>אי קיום שגרת אחזקה</td>;
-															if (cell.value == "12") return <td>אחר</td>;
-															if (cell.value == "רקם") return <td>רק"ם</td>;
-														}
-														if (cell.column.id == "pirot") {
-															return (
-																<td>
-																	<div
-																		style={{
-																			width: "100%",
-																			height: "40px",
-																			margin: "0",
-																			padding: "0",
-																			overflow: "auto",
-																		}}
-																	>
-																		{cell.value}
-																	</div>
-																</td>
-															);
-														}
-
-														if (cell.column.id == "createdAt") {
-															return (
-																<td>
-																	{cell.value
-																		.slice(0, 10)
-																		.split("-")
-																		.reverse()
-																		.join("-")}
-																</td>
-															);
-														}
-
-														if (cell.column.id == "datevent") {
-															return (
-																<td>
-																	{cell.value
-																		.slice(0, 10)
-																		.split("-")
-																		.reverse()
-																		.join("-")}
-																</td>
-															);
-														}
-													}
-												})}
-
-												{row.original.typevent != "רקם" ? (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* {console.log(row.original.typevent)} */}
-															<button
-																className="btn-new"
-																id={row.index}
-																value={row.original._id}
-																onClick={Toggle}
-															>
-																עדכן
-															</button>
-														</div>{" "}
-													</td>
-												) : (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* {console.log(row.original.typevent)} */}
-															<button
-																className="btn-new"
-																id={row.index}
-																value={row.original._id}
-																onClick={Toggle}
-															>
-																עדכן
-															</button>
-														</div>{" "}
-													</td>
-												)}
-
-												{/* // ? row.original._id=user._id*/}
-												{/*//* -------- view report --------------- */}
-												{row.original.typevent != "רקם" ? (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-															<button
-																value={row.original._id}
-																onClick={ToggleView}
-																className="btn-new-delete"
-															>
-																צפייה
-															</button>
-														</div>
-													</td>
-												) : (
-													<td role="cell">
-														{" "}
-														<div
-															style={{
-																display: "flex",
-																alignItems: "center",
-																justifyContent: "center",
-															}}
-														>
-															{" "}
-															{/* // ? <button
-                        className="btn-new-delete"
-                        onClick={() => UserDelete(row.original._id)}
-                      >
-                        צפייה
-                      </button> */}
-															<button
-																value={row.original._id}
-																onClick={ToggleView}
-																className="btn-new-delete"
-															>
-																צפייה
-															</button>
-														</div>
-													</td>
-												)}
-											</tr>
-										);
-									})}
-							</tbody>
-						</>
-					) : (
-						<tbody {...getTableBodyProps()}>
+					<tbody {...getTableBodyProps()}>
 							{page.map((row, index) => {
 								prepareRow(row);
 								return (
@@ -648,14 +521,13 @@ const SortingTable = ({ match }) => {
 												>
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										) : (
@@ -670,14 +542,13 @@ const SortingTable = ({ match }) => {
 												>
 													{" "}
 													{/* {console.log(row.original.typevent)} */}
-													<button
-														className="btn-new"
+													<Button
 														id={row.index}
 														value={row.original._id}
 														onClick={Toggle}
 													>
 														עדכן
-													</button>
+													</Button>
 												</div>{" "}
 											</td>
 										)}
@@ -704,7 +575,7 @@ const SortingTable = ({ match }) => {
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>
@@ -730,7 +601,7 @@ const SortingTable = ({ match }) => {
 													<button
 														value={row.original._id}
 														onClick={ToggleView}
-														className="btn-new-delete"
+														className="btn-new"
 													>
 														צפייה
 													</button>
@@ -741,7 +612,6 @@ const SortingTable = ({ match }) => {
 								);
 							})}
 						</tbody>
-					)}
 				</table>
 				<div className="pagination">
 					<button

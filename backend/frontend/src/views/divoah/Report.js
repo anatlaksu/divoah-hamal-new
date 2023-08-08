@@ -34,6 +34,10 @@ const Report = ({ match }) => {
 		[...string].every((c) => "0123456789".includes(c));
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 	const [infohurtarray, setinfohurtarray] = useState([]);
+	const [dateTime, setDateTime] = useState("");
+
+	const [propPrint, setPropPrint] = useState([]);
+	const [files, setFiles] = useState([]);
 
 	const [data, setData] = useState({
 		name: "",
@@ -51,6 +55,7 @@ const Report = ({ match }) => {
 		typevent: "0",
 		resevent: "0",
 		yn: "0",
+		yndate:"",
 		selneshek: "",
 		whap: "0",
 		amlahtype: "",
@@ -72,7 +77,8 @@ const Report = ({ match }) => {
 		totalCostWorkHours: "0",
 		damageCost: "0",
 		spareCost: "0",
-
+		timevent:"",
+		files_id:"",
 		error: false,
 		successmsg: false,
 		loading: false,
@@ -333,7 +339,48 @@ const Report = ({ match }) => {
 		setGdodsrep(temphativasgdods);
 	};
 
+	const handleUploadFiles = (uploadFiles) => {
+		const uploaded = [...files];
+		let flag = true;
+		const ErrorReason = [];
+		let limitExceeded = false;
+		uploadFiles.some((filePush, index) => {
+		  if (uploaded.findIndex((f) => f.name === filePush.name) === -1) {
+			  uploaded.push(filePush);
+			if (flag !== true) {
+			  ErrorReason.forEach((reason) => {
+				toast.error(reason);
+				return false;
+				// setData({ ...data, loading: false, successmsg: false, error: true });
+			  });
+			} else {
+			  return true;
+			  // setData({ ...data, loading: false, successmsg: true, error: false });
+			}
+			// console.log("file name: " + data.propPrint.nameFile);
+			// setPropPrint({ ...propPrint, nameFile: filePush.name });
+			// setTextArea({ ...textArea, nameFiletxt: filePush.name });
+	
+			// if (uploaded.length === MAX_COUNT) setFileLimit(true);
+			if (uploaded.length < 0) {
+			  // alert(`You can only add a maximum of ${MAX_COUNT} files`);
+			  // setFileLimit(false);
+			  limitExceeded = false;
+			  return false;
+			}
+		  }
+		  return setFiles(uploaded);
+		});
+		if (!limitExceeded) setFiles(uploaded);
+	  };	
+
 	//* handle changes
+
+	const handleFileEvent = (e) => {
+		e.preventDefault();
+		const chosenFiles = Array.prototype.slice.call(e.target.files);
+		handleUploadFiles(chosenFiles);
+	  };
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -473,8 +520,7 @@ const Report = ({ match }) => {
 		if (
 			data.typevent === "1" ||
 			data.typevent === "2" ||
-			data.typevent === "3" ||
-			data.typevent === "4"
+			data.typevent === "3" 
 		) {
 			if (
 				document.getElementById("res").options[
@@ -502,6 +548,25 @@ const Report = ({ match }) => {
 						flag = false;
 					}
 				}		
+		}
+		if (
+			data.typevent === "4"
+		) {
+			if (
+				document.getElementById("res").options[
+					document.getElementById("res").selectedIndex
+				].value == "0"
+			) {
+				flag = false;
+				ErrorReason += "סיבת האירוע ריקה \n";
+			}
+			if (
+				!document.getElementById("YES").checked &&
+				!document.getElementById("NO").checked
+			) {
+				flag = false;
+				ErrorReason += " ,אם נגרם נזק לכלי ריק \n";
+			}
 		}
 		if (data.typevent === "5") {
 			if (data.selneshek == "") {
@@ -631,10 +696,50 @@ const Report = ({ match }) => {
 			flag = false;
 			ErrorReason += " ,תאריך ריק \n";
 		}
-		if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		if(!data.timevent){
+			const inputDate = new Date(data.datevent);
+			const formattedDate =
+			  inputDate.getFullYear() +
+			  "-" +
+			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
+			  "-" +
+			  ("0" + inputDate.getDate()).slice(-2) +
+			  "T" +
+			  "03:00:00";
+			console.log(formattedDate);
+			// setDateTime(formattedDate);
+			data.datevent=formattedDate;
+		}
+
+		if(data.timevent){
+			const hour = data.timevent.split(":")[0];
+			console.log(hour);
+			const hourWithOffset = (parseInt(hour, 10) + 3).toString();
+			const minute = data.timevent.split(":")[1];
+			const inputDate = new Date(data.datevent);
+			const formattedDate =
+			  inputDate.getFullYear() +
+			  "-" +
+			  ("0" + (inputDate.getMonth() + 1)).slice(-2) +
+			  "-" +
+			  ("0" + inputDate.getDate()).slice(-2) +
+			  "T" + hourWithOffset  +":"+ minute;
+			// setDateTime(formattedDate);
+			data.datevent=formattedDate;
+		}
+
+		// if (new Date(data.datevent).getTime()> new Date().getTime()) {
+		// 	flag = false;
+		// 	ErrorReason += " ,תאריך לא תקין \n";
+		// }
+
+		let datecheck= new Date(data.datevent);
+		let check= datecheck.setHours(datecheck.getHours() - 3)
+		if (new Date(check).getTime()> new Date().getTime()) {
 			flag = false;
 			ErrorReason += " ,תאריך לא תקין \n";
 		}
+
 
 		if (data.nifga == "") {
 			flag = false;
@@ -674,6 +779,13 @@ const Report = ({ match }) => {
 			error: false,
 			NavigateToReferrer: false,
 		});
+		const formFilesData = new FormData();
+		Object.keys(files).forEach((key) => {
+		formFilesData.append("files", files[key]);
+		});
+		axios.post("http://localhost:8000/api/multipleFiles", formFilesData, {}).then((res) => {
+		console.log("from the file axios");
+		console.log(res.data);
 		const requestData = {
 			name: data.name,
 			lastname: data.lastname,
@@ -692,6 +804,7 @@ const Report = ({ match }) => {
 			arraymkabaz: cartypesfilterarray,
 			zadik: data.zadik,
 			yn: data.yn,
+			yndate: data.yndate,
 			selneshek: data.selneshek,
 			whap: data.whap,
 			amlahtype: data.amlahtype,
@@ -713,6 +826,7 @@ const Report = ({ match }) => {
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,
 			spareCost: data.spareCost,
+			files_id:res.data,
 		};
 		console.log("In the SendFormData Func");
 		console.groupCollapsed("Axios");
@@ -762,6 +876,7 @@ const Report = ({ match }) => {
 		} else {
 			toast.error("לא הוזנה יחידה מנמרית");
 		}
+		});
 	};
 
 	const initWithUserData = () => {
@@ -845,7 +960,7 @@ const Report = ({ match }) => {
 						lg="20"
 						md="7"
 					>
-						<Card className="shadow border-0">
+						<Card className="shadow border-0"  style={{width: "800px"}}>
 							<CardBody className="px-lg-5 py-lg-5">
 								<div className="text-center text-muted mb-4">
 									<big>שליחת דיווח</big>
@@ -1889,7 +2004,7 @@ const Report = ({ match }) => {
 										</>
 									)}
 
-									<FormGroup dir="rtl">
+									<FormGroup dir="rtl" style={{paddingTop: "10px" }}>
 										<Input
 											placeholder="פירוט האירוע"
 											name="pirot"
@@ -1916,13 +2031,26 @@ const Report = ({ match }) => {
 										<Input
 											placeholder="תאריך אירוע"
 											name="datevent"
-											type="datetime-local"
+											type="date"
 											value={data.datevent}
 											onChange={handleChange}
-											min={"1900-01-01T00:00:00"}
-											max={"2100-01-01T00:00:00"}
 										/>
 									</FormGroup>
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+										שעת אירוע
+									</div>
+									<FormGroup dir="rtl">
+										<Input
+											placeholder="שעת אירוע"
+											name="timevent"
+											type="time"
+											value={data.timevent}
+											onChange={handleChange}
+										/>
+									</FormGroup>
+
+
 
 									<FormGroup dir="rtl">
 										<Input
@@ -2138,6 +2266,24 @@ const Report = ({ match }) => {
 											</div>
 										</>
 									)}
+
+									<div style={{ textAlign: "right", paddingTop: "10px" }}>
+									קובץ תחקיר ביטחוני
+									</div>
+										<Input
+											placeholder="העלאת קובץ"
+											type="file"
+											accept="application/pdf,
+											image/png,
+											image/jpeg,
+												application/vnd.ms-excel,
+												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+												application/vnd.ms-powerpoint, 
+												application/vnd.openxmlformats-officedocument.presentationml.presentation,
+												application/msword,
+												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+											onChange={handleFileEvent}
+										/>
 
 									<div className="text-center">
 										<button

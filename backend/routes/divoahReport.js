@@ -193,11 +193,13 @@ router.route("/add").post((req, res) => {
 	const datevent = Date.parse(req.body.datevent);
 	const mikom = req.body.mikom;
 	const nifga = Number(req.body.nifga);
+	const yndate = Number(req.body.yndate);
 	const hurtarray = req.body.hurtarray;
 	const totalWorkHours = Number(req.body.totalWorkHours);
 	const totalCostWorkHours = Number(req.body.totalCostWorkHours);
 	const damageCost = Number(req.body.damageCost);
 	const spareCost = Number(req.body.spareCost);
+	const files_id = req.body.files_id;
 
 	const newReport = new Report({
 		name,
@@ -217,6 +219,7 @@ router.route("/add").post((req, res) => {
 		typevent,
 		resevent,
 		yn,
+		yndate,
 		selneshek,
 		whap,
 		amlahtype,
@@ -238,6 +241,7 @@ router.route("/add").post((req, res) => {
 		totalCostWorkHours,
 		damageCost,
 		spareCost,
+		files_id,
 	});
 	const formId = newReport.save((err, form) => {
 		console.groupCollapsed("formId");
@@ -541,11 +545,13 @@ router.route("/update/:id").put((req, res) => {
 			request.datevent = Date.parse(req.body.datevent);
 			request.mikom = req.body.mikom;
 			request.nifga = Number(req.body.nifga);
+			request.yndate = Number(req.body.yndate);
 			request.hurtarray = req.body.hurtarray;
 			request.totalWorkHours = Number(req.body.totalWorkHours);
 			request.totalCostWorkHours = Number(req.body.totalCostWorkHours);
 			request.damageCost = Number(req.body.damageCost);
 			request.spareCost = Number(req.body.spareCost);
+			request.files_id=req.body.files_id;
 
 			request
 				.save()
