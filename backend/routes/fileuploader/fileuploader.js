@@ -1,38 +1,18 @@
-"use strict";
-const express = require("express");
-const router = express.Router();
-const { upload } = require("../../helpers/filehelper");
-const SingleFile = require("../../models/fileuploader/singleFile");
-const {
-  singleFileUpload,
-  multipleFileUpload,
-  getallSingleFiles,
-  getallMultipleFiles,
-//   downloadFile,
-  downloadPDFFile,
-  getallMultipleFilesByID,
-  deleteMultiFiles,
-//   showFiles,
-  // uploadToraHeilitVolumes,
-} = require("../../controllers/fileuploader/fileuploader");
+'use strict';
+const express = require('express');
+const router = express.Router()
+const {upload} = require('../../helpers/filehelper');
+const {singleFileUpload, multipleFileUpload,
+     getallSingleFiles, getallMultipleFiles, downloadFile,getallFiles,findfile} = require('../../controllers/fileuploader/fileuploader');
 
-router.post("/singleFile", upload.single("file"), singleFileUpload);
-router.post("/multipleFiles", upload.array("files"), multipleFileUpload);
-router.get("/getSingleFiles", getallSingleFiles);
-router.get("/getMultipleFiles", getallMultipleFiles);
-router.get("/getMultipleFiles/:id", getallMultipleFilesByID);
-// router.get("/downloadFile/:id", downloadFile);
-router.get("/downloadPDFFile/:id", downloadPDFFile);
-
-router.delete("/deleteMultiFiles/:id", deleteMultiFiles);
-
-// router.get("/showFiles", showFiles);
-
-// router.route("/singleFile").post((req, res) => {
-//     upload.single('file');
-//     singleFileUpload();
-// })
+router.post('/singleFile', upload.single('file'), singleFileUpload);
+router.post('/multipleFiles', upload.array('files'), multipleFileUpload);
+router.get('/getSingleFiles', getallSingleFiles);
+router.get('/getMultipleFiles', getallMultipleFiles);
+router.get('/downloadFile', downloadFile);
+router.get('/getfile', getallFiles);
+router.get('/file/:id', findfile);
 //new
-// router.get("/downloadFilePikod", downloadFilePikod);
 
-module.exports = router;
+
+module.exports = router

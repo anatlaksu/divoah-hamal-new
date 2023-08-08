@@ -57,15 +57,15 @@ app.use("/api", mkabazRoutes);
 app.use("/api", makatRoutes);
 
 const fileuploaderRoutes = require("./routes/fileuploader/fileuploader");
-app.use("/api", fileuploaderRoutes);
+app.use('/api', fileuploaderRoutes)
 
-// if(process.env.NODE_ENV === 'production'){
-//     //set static folder
-//     app.use(express.static('frontend/build'));
-//     app.get('*', (req,res)=>{
-//       res.sendFile(path.resolve(__dirname,'frontend', 'build', 'index.html'));
-//     });
-//   }
+if(process.env.NODE_ENV === 'production'){
+    //set static folder
+    app.use(express.static('frontend/build'));
+    app.get('*', (req,res)=>{
+      res.sendFile(path.resolve(__dirname,'frontend', 'build', 'index.html'));
+    });
+  }
 
 //
 const ReportRouter = require("./routes/divoahReport");

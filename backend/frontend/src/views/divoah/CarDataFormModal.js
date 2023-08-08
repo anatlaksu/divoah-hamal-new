@@ -35,7 +35,7 @@ import CarTypesFilterObjectRekem from "components/general/CarTypeFilter/CarTypes
 import deletepic from "assets/img/delete.png";
 import FileDownload from "js-file-download";
 import download from "assets/img/download.png"
-
+import { singleFileUpload } from "data/api";
 
 const CarDataFormModal = (match) => {
 	const digits_only = (string) =>
@@ -76,7 +76,6 @@ const CarDataFormModal = (match) => {
 		nifga: "",
 		yndate:"",
 		wnifga: "",
-		files_id:"",
 		hurtarray: [],
 		totalwork: 0,
 		totalWorkHours: 0,
@@ -111,6 +110,13 @@ const CarDataFormModal = (match) => {
 
 	const [filesFromDB, setFilesFromDB] = useState([]);
 	const [files, setFiles] = useState([]);
+
+	const [isfile,setisfile]=useState();
+
+	const [singleFile, setSingleFile] = useState("");
+	const SingleFileChange = (e) => {
+		setSingleFile(e.target.files[0]);
+	  };    
 
 	const getMagadals = async () => {
 		await axios
@@ -886,13 +892,6 @@ const CarDataFormModal = (match) => {
 		// console.log(match);
 		console.log(match.cardataid);
 		var reportid = match.cardataid;
-		const formFilesData = new FormData();
-		Object.keys(files).forEach((key) => {
-		formFilesData.append("files", files[key]);
-		});
-		axios.post("http://localhost:8000/api/multipleFiles", formFilesData, {}).then((res) => {
-		console.log("from the file axios");
-		console.log(res.data);
 		const report = {
 			name: data.name,
 			lastname: data.lastname,
@@ -934,7 +933,6 @@ const CarDataFormModal = (match) => {
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,
 			spareCost: data.spareCost,
-			files_id:res.data,
 		};
 		// console.log(report.gdod);
 		if (!(report.gdod == "בחר")) {
@@ -942,6 +940,13 @@ const CarDataFormModal = (match) => {
 				axios
 					.put(`http://localhost:8000/report/update/${reportid}`, report)
 					.then((response) => {
+						setData({
+							...data,
+							loading: false,
+							error: false,
+							successmsg: true,
+						});
+						UploadFile(response.data);
 						toast.success(`הדיווח עודכן בהצלחה`);
 						match.ToggleForModal();
 					})
@@ -954,8 +959,13 @@ const CarDataFormModal = (match) => {
 		} else {
 			toast.error("לא הוזנה יחידה מנמרית");
 		}
-	});
 	};
+
+	const UploadFile = async (filenameindb) => {
+		const formData = new FormData();
+		formData.append("file", singleFile);
+		await singleFileUpload(formData, "report", filenameindb);
+	};	
 
 	const init = () => {
 		// console.log(match);
@@ -974,6 +984,23 @@ const CarDataFormModal = (match) => {
 			.catch((error) => {
 				console.log(error);
 			});
+			axios
+			.get(`http://localhost:8000/api/file/${reportid}`)
+			.then((response) => {
+				let tempcardata = response.data;
+				console.log(tempcardata);
+				if(tempcardata.fileName){
+					console.log("כן");
+					setisfile("true");
+				}else{
+					console.log("לא")
+					setisfile("false")
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+			console.log(isfile);
 		loadPikods();
 		loadPikodsrep();
 		getMagadals();
@@ -2700,40 +2727,24 @@ const CarDataFormModal = (match) => {
 														</>
 													) : null}
 
-									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-									קובץ תחקיר ביטחוני
-									</div>
-										<Input
-											placeholder="העלאת קובץ"
-											type="file"
-											accept="application/pdf,
-											image/png,
-											image/jpeg,
-												application/vnd.ms-excel,
-												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
-												application/vnd.ms-powerpoint, 
-												application/vnd.openxmlformats-officedocument.presentationml.presentation,
-												application/msword,
-												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-											onChange={handleFileEvent}
-										/>
+													<div style={{ textAlign: "right", paddingTop: "10px" }}>
+													קובץ תחקיר בטיחות
+													</div>
+													<Input
+														type="file"
+														name="documentUpload"
+														// value={document.documentUpload}
+														onChange={(e) => SingleFileChange(e)}
+													></Input>
 
-
-												{(filesFromDB && filesFromDB.length>0)? (
-													<>
+												{isfile=== "true" ? 
 												<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												קובצי תחקיר ביטחוני קיימים
+												 קובץ תחקיר בטיחות שצורף: 
+												<a href={"http://localhost:8000/api/downloadFile?collec=report&id=" + data._id} target="_blank">
+												<img height={20} width={20} src={download}></img>
+												</a>
 												</div>
-											   {filesFromDB.map((file, index) => (
-												<div style={{ textAlign: "right"}}>
-													קובץ {index+1}:
-												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
-													<img height={20} width={20} src={download} ></img>
-												</button>
-												</div>))}
-												</>
-												):null
-											   }
+												:null}
 
 													<div className="text-center">
 														<button
@@ -3683,41 +3694,24 @@ const CarDataFormModal = (match) => {
 														</>
 													) : null}
 
-									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-									קובץ תחקיר ביטחוני
-									</div>
-										<Input
-											placeholder="העלאת קובץ"
-											type="file"
-											accept="application/pdf,
-											image/png,
-											image/jpeg,
-												application/vnd.ms-excel,
-												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
-												application/vnd.ms-powerpoint, 
-												application/vnd.openxmlformats-officedocument.presentationml.presentation,
-												application/msword,
-												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-											onChange={handleFileEvent}
-										/>
+											<div style={{ textAlign: "right", paddingTop: "10px" }}>
+											קובץ תחקיר בטיחות
+											</div>
+											<Input
+												type="file"
+												name="documentUpload"
+												// value={document.documentUpload}
+												onChange={(e) => SingleFileChange(e)}
+											></Input>
 
-
-												{(filesFromDB && filesFromDB.length>0)? (
-													<>
+												{isfile=== "true" ? 
 												<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												 קבצי תחקיר ביטחוני קיימים
+												 קובץ תחקיר בטיחות שצורף: 
+												<a href={"http://localhost:8000/api/downloadFile?collec=report&id=" + data._id} target="_blank">
+												<img height={20} width={20} src={download}></img>
+												</a>
 												</div>
-											   {filesFromDB.map((file, index) => (
-												<div style={{ textAlign: "right"}}>
-													קובץ {index+1}:
-												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
-													<img height={20} width={20} src={download} ></img>
-												</button>
-												</div>))}
-												</>
-												):null
-											   }
-
+												:null}
 
 													<div className="text-center">
 														<button

@@ -27,6 +27,7 @@ import Select from "components/general/Select/AnimatedSelect";
 import deletepic from "assets/img/delete.png";
 import CarTypesFilterObjectRekem from "components/general/CarTypeFilter/CarTypesFilterObjectRekem";
 import Background from "components/general/Background/Background";
+import { singleFileUpload } from "data/api";
 
 const Report = ({ props }) => {
 	const { user } = isAuthenticated();
@@ -35,7 +36,10 @@ const Report = ({ props }) => {
 	const [infohurtarray, setinfohurtarray] = useState([]);
 	const [cartypesfilterarray, setCartypesfilterarray] = useState([]);
 
-	const [files, setFiles] = useState([]);
+	const [singleFile, setSingleFile] = useState("");
+	const SingleFileChange = (e) => {
+	  setSingleFile(e.target.files[0]);
+	};  
 
 	const [data, setData] = useState({
 		name: "",
@@ -70,7 +74,6 @@ const Report = ({ props }) => {
 		mikom: "",
 		nifga: "",
 		yndate:"",
-		files_id:"",
 		hurtarray: [],
 		totalWorkHours: "0",
 		totalCostWorkHours: "0",
@@ -321,47 +324,47 @@ const Report = ({ props }) => {
 		setGdodsrep(temphativasgdods);
 	};
 
-		const handleUploadFiles = (uploadFiles) => {
-		const uploaded = [...files];
-		let flag = true;
-		const ErrorReason = [];
-		let limitExceeded = false;
-		uploadFiles.some((filePush, index) => {
-		  if (uploaded.findIndex((f) => f.name === filePush.name) === -1) {
-			  uploaded.push(filePush);
-			if (flag !== true) {
-			  ErrorReason.forEach((reason) => {
-				toast.error(reason);
-				return false;
-				// setData({ ...data, loading: false, successmsg: false, error: true });
-			  });
-			} else {
-			  return true;
-			  // setData({ ...data, loading: false, successmsg: true, error: false });
-			}
-			// console.log("file name: " + data.propPrint.nameFile);
-			// setPropPrint({ ...propPrint, nameFile: filePush.name });
-			// setTextArea({ ...textArea, nameFiletxt: filePush.name });
+	// 	const handleUploadFiles = (uploadFiles) => {
+	// 	const uploaded = [...files];
+	// 	let flag = true;
+	// 	const ErrorReason = [];
+	// 	let limitExceeded = false;
+	// 	uploadFiles.some((filePush, index) => {
+	// 	  if (uploaded.findIndex((f) => f.name === filePush.name) === -1) {
+	// 		  uploaded.push(filePush);
+	// 		if (flag !== true) {
+	// 		  ErrorReason.forEach((reason) => {
+	// 			toast.error(reason);
+	// 			return false;
+	// 			// setData({ ...data, loading: false, successmsg: false, error: true });
+	// 		  });
+	// 		} else {
+	// 		  return true;
+	// 		  // setData({ ...data, loading: false, successmsg: true, error: false });
+	// 		}
+	// 		// console.log("file name: " + data.propPrint.nameFile);
+	// 		// setPropPrint({ ...propPrint, nameFile: filePush.name });
+	// 		// setTextArea({ ...textArea, nameFiletxt: filePush.name });
 	
-			// if (uploaded.length === MAX_COUNT) setFileLimit(true);
-			if (uploaded.length < 0) {
-			  // alert(`You can only add a maximum of ${MAX_COUNT} files`);
-			  // setFileLimit(false);
-			  limitExceeded = false;
-			  return false;
-			}
-		  }
-		  return setFiles(uploaded);
-		});
-		if (!limitExceeded) setFiles(uploaded);
-	  };	
+	// 		// if (uploaded.length === MAX_COUNT) setFileLimit(true);
+	// 		if (uploaded.length < 0) {
+	// 		  // alert(`You can only add a maximum of ${MAX_COUNT} files`);
+	// 		  // setFileLimit(false);
+	// 		  limitExceeded = false;
+	// 		  return false;
+	// 		}
+	// 	  }
+	// 	  return setFiles(uploaded);
+	// 	});
+	// 	if (!limitExceeded) setFiles(uploaded);
+	//   };	
 
-	//* handle changes
-	const handleFileEvent = (e) => {
-		e.preventDefault();
-		const chosenFiles = Array.prototype.slice.call(e.target.files);
-		handleUploadFiles(chosenFiles);
-	  };
+	// //* handle changes
+	// const handleFileEvent = (e) => {
+	// 	e.preventDefault();
+	// 	const chosenFiles = Array.prototype.slice.call(e.target.files);
+	// 	handleUploadFiles(chosenFiles);
+	//   };
 
 	function handleChange(evt) {
 		const value = evt.target.value;
@@ -590,14 +593,6 @@ const Report = ({ props }) => {
 			error: false,
 			NavigateToReferrer: false,
 		});
-		const formFilesData = new FormData();
-		Object.keys(files).forEach((key) => {
-		formFilesData.append("files", files[key]);
-		});
-		axios.post("http://localhost:8000/api/multipleFiles", formFilesData, {}).then((res) => {
-		console.log("from the file axios");
-		console.log(res.data);
-
 		const requestData = {
 			name: data.name,
 			lastname: data.lastname,
@@ -635,7 +630,6 @@ const Report = ({ props }) => {
 			totalCostWorkHours: data.totalCostWorkHours,
 			damageCost: data.damageCost,
 			spareCost: data.spareCost,
-			files_id:res.data,
 
 		};
 		console.log("In the SendFormData Func");
@@ -656,6 +650,7 @@ const Report = ({ props }) => {
 							error: false,
 							successmsg: true,
 						});
+						UploadFile(res.data);
 						toast.success(` הדיווח נשלח בהצלחה`);
 						if (user.role == "0") {
 							history.push(`/dash`);
@@ -690,9 +685,14 @@ const Report = ({ props }) => {
 		} else {
 			toast.error("לא הוזנה יחידה מנמרית");
 		}
-		});
 
 	};
+
+	const UploadFile = async (filenameindb) => {
+		const formData = new FormData();
+		formData.append("file", singleFile);
+		await singleFileUpload(formData, "report", filenameindb);
+	  };	
 
 	const initWithUserData = () => {
 		setData({
@@ -1570,23 +1570,14 @@ const Report = ({ props }) => {
 									)}
 
 									<div style={{ textAlign: "right", paddingTop: "10px" }}>
-									קובץ תחקיר ביטחוני
+									קובץ תחקיר בטיחות
 									</div>
-										<Input
-											placeholder="העלאת קובץ"
-											type="file"
-											accept="application/pdf,
-											image/png,
-											image/jpeg,
-												application/vnd.ms-excel,
-												application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
-												application/vnd.ms-powerpoint, 
-												application/vnd.openxmlformats-officedocument.presentationml.presentation,
-												application/msword,
-												application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-											onChange={handleFileEvent}
-										/>
-
+									<Input
+										type="file"
+										name="documentUpload"
+										// value={document.documentUpload}
+										onChange={(e) => SingleFileChange(e)}
+									></Input>
 
 									<div className="text-center">
 										<button

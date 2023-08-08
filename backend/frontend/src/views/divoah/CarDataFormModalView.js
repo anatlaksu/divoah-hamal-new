@@ -74,7 +74,6 @@ const CarDataFormModalView = (match) => {
 		nifga: "",
 		yndate:"",
 		wnifga: "",
-		files_id:"",
 		error: false,
 		successmsg: false,
 		loading: false,
@@ -104,8 +103,9 @@ const CarDataFormModalView = (match) => {
 	const [magadals, setMagadals] = useState([]);
 
 	const [filesFromDB, setFilesFromDB] = useState([]);
-	const [showFile, setShowFile] = useState(1);
+	const [showFile, setShowFile] = useState([]);
 
+	const [isfile,setisfile]=useState();
 	const componentRef = React.useRef();
 
 	const getMagadals = async () => {
@@ -379,18 +379,18 @@ const CarDataFormModalView = (match) => {
 		match.ToggleForModal();
 	};
 
-	const getFiles = () => {
-		axios
-		  .get(`http://localhost:8000/api/getMultipleFiles/${data.files_id}`)
-		  .then((response) => {
-			setFilesFromDB(response.data.files);
-			console.log(`files: ${response.data}`);
-			// setShowFile(2);
-		  })
-		  .catch((err) => {
-			console.log(err);
-		  });
-		}
+	// const getFiles = () => {
+	// 	axios
+	// 	  .get(`http://localhost:8000/api/getMultipleFiles/${data.files_id}`)
+	// 	  .then((response) => {
+	// 		setFilesFromDB(response.data.files);
+	// 		console.log(`files: ${response.data}`);
+	// 		// setShowFile(2);
+	// 	  })
+	// 	  .catch((err) => {
+	// 		console.log(err);
+	// 	  });
+	// 	}
 
 	function openFileANewWindows(filePath, fileName) {
 		// const fileURL = window.URL.createObjectURL(new Blob([response.data]));
@@ -422,6 +422,7 @@ const CarDataFormModalView = (match) => {
 			.get(`http://localhost:8000/report/${reportid}`)
 			.then((response) => {
 				let tempcardata = response.data[0];
+				console.log(tempcardata);
 				setData(tempcardata);
 				setCartypesfilterarray(tempcardata.arraymkabaz);
 				setinfohurtarray(tempcardata.hurtarray);
@@ -429,10 +430,28 @@ const CarDataFormModalView = (match) => {
 			.catch((error) => {
 				console.log(error);
 			});
+			axios
+			.get(`http://localhost:8000/api/file/${reportid}`)
+			.then((response) => {
+				let tempcardata = response.data;
+				console.log(tempcardata);
+				if(tempcardata.fileName){
+					console.log("כן");
+					setisfile("true");
+				}else{
+					console.log("לא")
+					setisfile("false")
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+			console.log(isfile);
 		loadPikods();
 		loadPikodsrep();
 		getMagadals();
 	};
+
 
 	useEffect(() => {
 		if (match.isOpen == true) {
@@ -440,14 +459,7 @@ const CarDataFormModalView = (match) => {
 		}
 	}, [match.isOpen]);
 
-	useEffect(() => {
-		if(data.files_id != undefined){
-		   getFiles();
-		}else{
-			setFilesFromDB([]);
-		}
-	}, [data.files_id]);
-	
+
 	// * ------ manmarit --------------------------------
 	useEffect(() => {
 		setOgdas([]);
@@ -2151,21 +2163,14 @@ const CarDataFormModalView = (match) => {
 												})
 												) : null}
 
-												{(filesFromDB && filesFromDB.length>0)? (
-													<>
+												{isfile=== "true" ? 
 												<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												קובץ תחקיר ביטחוני
+												 קובץ תחקיר בטיחות שצורף: 
+												<a href={"http://localhost:8000/api/downloadFile?collec=report&id=" + data._id} target="_blank">
+												<img height={20} width={20} src={download}></img>
+												</a>
 												</div>
-											   {filesFromDB.map((file, index) => (
-												<div style={{ textAlign: "right"}}>
-													קובץ {index+1}:
-												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
-													<img height={20} width={20} src={download} ></img>
-												</button>
-												</div>))}
-												</>
-												):null
-											   }
+												:null}
 
 												</Form>
 											</CardBody>
@@ -3077,21 +3082,14 @@ const CarDataFormModalView = (match) => {
 												) : null}
 
 
-													{(filesFromDB && filesFromDB.length>0)? (
-													<>
+												{isfile=== "true" ? 
 												<div style={{ textAlign: "right", paddingTop: "10px" }}>
-												קובץ תחקיר ביטחוני
+												 קובץ תחקיר בטיחות שצורף: 
+												<a href={"http://localhost:8000/api/downloadFile?collec=report&id=" + data._id} target="_blank">
+												<img height={20} width={20} src={download}></img>
+												</a>
 												</div>
-											   {filesFromDB.map((file, index) => (
-												<div style={{ textAlign: "right"}}>
-													קובץ {index+1}:
-												<button className="btn-new-blue mb-3" onClick={() => openFileANewWindows(file.filePath, file.fileName)}>
-													<img height={20} width={20} src={download} ></img>
-												</button>
-												</div>))}
-												</>
-												):null
-											   }
+												:null}
 
 												</Form>
 											</CardBody>

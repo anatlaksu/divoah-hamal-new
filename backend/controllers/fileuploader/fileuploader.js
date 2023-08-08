@@ -1,20 +1,19 @@
 "use strict";
 const SingleFile = require("../../models/fileuploader/singleFile");
-const MultipleFile = require("../../models/fileuploader/multipleFile");
-const { request } = require("http");
+const MultipleFile = require("../../models/fileuploader/multiplefile");
 //new
 // const Pikod = require("../../models/units/pikod");
 // const Assessment = require("../../models/assessment/assessment");
 
 //moves the $file to $dir2
-const moveFile = (file, dir2, newName) => {
+var moveFile = (file, dir2, newName) => {
   //include the fs, path modules
-  const fs = require("fs");
-  const path = require("path");
+  var fs = require("fs");
+  var path = require("path");
 
   //gets file name and adds it to dir2
-  const f = newName + path.extname(file);
-  const dest = path.resolve(dir2, f);
+  var f = newName + path.extname(file);
+  var dest = path.resolve(dir2, f);
 
   if (!fs.existsSync(dir2)) fs.mkdirSync(dir2);
   fs.rename(file, dest, (err) => {
@@ -22,6 +21,16 @@ const moveFile = (file, dir2, newName) => {
     else console.log("Successfully moved");
   });
 };
+
+
+ const findfile = async(req,res)=>{
+  try {
+    const file = await SingleFile.findOne().where({listing_id:req.params.id})
+    res.status(200).send(file);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+ }
 
 const singleFileUpload = async (req, res, next) => {
   if (req.file) {
@@ -31,13 +40,13 @@ const singleFileUpload = async (req, res, next) => {
     try {
       fs.readdirSync("./uploads/" + req.body.collection).forEach((file) => {
         if (file.startsWith(req.body.id)) {
-          console.log("הקבצים בארכיון");
+          console.log("File exists! moving to archive");
           moveFile(
             "./uploads/" +
-              req.body.collection +
-              "/" +
-              req.body.id +
-              path.extname(file),
+            req.body.collection +
+            "/" +
+            req.body.id +
+            path.extname(file),
             "./uploads/archive/" + req.body.collection,
             req.body.id + "#" + Math.random() * (100000000000000 - 0) + 0
           );
@@ -61,22 +70,23 @@ const singleFileUpload = async (req, res, next) => {
         "./uploads/" + req.body.collection,
         req.body.id
       );
-      res.status(201).send("הקובץ הועלה בהצלחה");
+      res.status(201).send("File Uploaded Successfully");
     } catch (error) {
       res.status(400).send(error.message);
     }
     // console.log("1")
-    console.log(req.body);
+    // console.log(req.body)
     // console.log("2")
     // console.log(req.file)
-  } else {
+  }
+  else{
     res.status(201).send("לא נשלח קובץ - הקובץ לא נשמר");
   }
 };
 
 const multipleFileUpload = async (req, res, next) => {
   try {
-    const filesArray = [];
+    let filesArray = [];
     req.files.forEach((element) => {
       const file = {
         fileName: element.originalname,
@@ -92,37 +102,7 @@ const multipleFileUpload = async (req, res, next) => {
       item_id: req.body.item_id,
     });
     await multipleFiles.save();
-    res.status(201).send(multipleFiles._id);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-};
-const deleteMultiFiles = async (req, res, next) => {
-  const fs = require("fs");
-  // const fileName = req.params.name;
-  const directoryPath = "./";
-
-  try {
-    MultipleFile.findById(req.params.id).then((request) => {
-      request.files.map((file) => {
-        var filePath = directoryPath + file.filePath;
-        if (filePath !== undefined || filePath) {
-          fs.unlinkSync(directoryPath + file.filePath);
-        }
-        if (filePath === undefined || !filePath) {
-          console.log("undifinded");
-        }
-      });
-    });
-  } catch (error) {
-    res.status(500).send("Could not delete the file. " + error);
-  }
-  try {
-    // router.route("/:id").delete((req, res) => {
-    MultipleFile.findByIdAndDelete(req.params.id)
-      .then(() => res.json("MultipleFile deleted."))
-      .catch((err) => res.status(400).json("Error: " + err));
-    // });
+    res.status(201).send("Files Uploaded Successfully");
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -137,18 +117,15 @@ const getallSingleFiles = async (req, res, next) => {
   }
 };
 
+const getallFiles = async (req, res, next) => {
+  SingleFile.find()
+  .then(orders => res.json(orders))
+  .catch(err => res.status(400).json('Error: ' + err));
+};
+
 const getallMultipleFiles = async (req, res, next) => {
   try {
     const files = await MultipleFile.find();
-    res.status(200).send(files);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-};
-
-const getallMultipleFilesByID = async (req, res, next) => {
-  try {
-    const files = await MultipleFile.findById(req.params.id);
     res.status(200).send(files);
   } catch (error) {
     res.status(400).send(error.message);
@@ -172,7 +149,7 @@ const downloadFile = async (req, res, next) => {
   const id = req.query.id;
   const folder = "uploads/" + col;
   const fs = require("fs");
-  const path = require("path");
+  var path = require("path");
   var ext;
   fs.readdirSync(folder).forEach((file) => {
     if (file.startsWith(id)) {
@@ -185,128 +162,43 @@ const downloadFile = async (req, res, next) => {
     res.status(400).send(error.message);
   }
 };
-const downloadPDFFile = async (req, res, next) => {
-  const urlPath = req.params.id;
-  console.log(`Backend ${urlPath}`);
-  try {
-    res.download(`uploads/${urlPath}`);
-    // res.download('uploads/' + req.params.filePath);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
 
-  // const cors = require("cors");
-  // const fs = require("fs");
-  // const files = await MultipleFile.findById(req.params.id);
-  // const fName = files.fileName;
-  // const fPath = files.filePath;
-  // const fType = files.fileType;
-  // cors({
-  //     exposedHeaders: ['Content-Disposition'],
-  // }),
-  //     async => {
-  //         try {
-  //             const fileName = fName;
-  //             const fileURL = fPath;
-  //             const stream = fs.createReadStream(fileURL);
-  //             res.set({
-  //                 'Content-Disposition': `attachment; filename='${fileName}'`,
-  //                 'Content-Type': fType,
-  //             });
-  //             stream.pipe(res);
-  //         } catch (e) {
-  //             console.error(e)
-  //             res.status(400).end();
-  //         }
-  //     };
-
-  // MultipleFile.find({ files: req.params.files }, (err, data) => {
-  //     if (err) {
-  //         console.log(err);
-  //     }
-  //     else {
-  //         const file = __dirname + data[0].filePath;
-  //         res.status(200).send(file);
-  //     }
-  // })
-  // const col = req.query.collec;
-  // const id = req.query.id;
-  // const folder = req.query.filePath;
-  // const fs = require("fs");
-  // const path = require("path");
-  // var ext;
-  // fs.readdirSync(folder).forEach((file) => {
-  //     if (file.startsWith(id)) {
-  // ext = path.extname(file);
-  //     }
-  // });
-  // try {
-  //     res.status(200).send(ext);
-  //     // res.download("uploads/" + col + "/" + id + ext);
-  // } catch (error) {
-  //     res.status(400).send(error.message);
-  // }
-};
-// const showFiles = async (req, res, next) => {
-//   // const urlPath = req.params.id;
-//   // console.log(`Backend ${urlPath}`);
+// const downloadFilePikod = async (req, res, next) => {
+//   const col = req.query.collec;
+//   const id = req.query.id;
+//   const folder = "uploads/" + col;
 //   const fs = require("fs");
-//   const storeFiles = [];
+//   var path = require("path");
+//   var ext;
+
+//   let tempstr = "הערכת מצב"
+
+//   let assessment = await Assessment.findOne().where({ _id: id })
+//   if (!assessment || !assessment.pikod) {
+
+//   }
+//   else {
+//     let pikod = await Pikod.findOne().where({ _id: assessment.pikod })
+//     if (!pikod) {
+
+//     }
+//     else {
+//       tempstr += " " + pikod.name;
+//     }
+//   }
+
+//   fs.readdirSync(folder).forEach((file) => {
+//     if (file.startsWith(id)) {
+//       ext = path.extname(file);
+//     }
+//   });
 //   try {
-//     fs.readdir(`ToraHeilitFiles/`, function (err, files) {
-//       //handling error
-//       if (err) {
-//         return console.log("Unable to scan directory: " + err);
-//       }
-//       //listing all files using forEach
-//       files.forEach(function (file) {
-//         // Do whatever you want to do with the file
-//         console.log(file);
-//         // return res.status(201).send(file);
-//         storeFiles.push(file);
-//         // res.download(file);
-//       });
-//       return res
-//         .status(304)
-//         .send(JSON.stringify({ toraHeilitFiles: storeFiles }));
-//     });
-//     // res.download('uploads/' + req.params.filePath);
+//     //download + rename
+//     res.download("uploads/" + col + "/" + id + ext, tempstr + ext);
 //   } catch (error) {
 //     res.status(400).send(error.message);
 //   }
 // };
-
-const downloadFilePikod = async (req, res, next) => {
-  // const col = req.query.collec;
-  // const id = req.query.id;
-  // const folder = "uploads/" + col;
-  // const fs = require("fs");
-  // const path = require("path");
-  // var ext;
-  // let tempstr = "הערכת מצב"
-  // let assessment = await Assessment.findOne().where({ _id: id })
-  // if (!assessment || !assessment.pikod) {
-  // }
-  // else {
-  //     let pikod = await Pikod.findOne().where({ _id: assessment.pikod })
-  //     if (!pikod) {
-  //     }
-  //     else {
-  //         tempstr += " " + pikod.name;
-  //     }
-  // }
-  // fs.readdirSync(folder).forEach((file) => {
-  //     if (file.startsWith(id)) {
-  //         ext = path.extname(file);
-  //     }
-  // });
-  // try {
-  //     //download + rename
-  //     res.download("uploads/" + col + "/" + id + ext, tempstr + ext);
-  // } catch (error) {
-  //     res.status(400).send(error.message);
-  // }
-};
 
 module.exports = {
   singleFileUpload,
@@ -314,10 +206,7 @@ module.exports = {
   getallSingleFiles,
   getallMultipleFiles,
   downloadFile,
-  downloadPDFFile,
-  getallMultipleFilesByID,
-  // showFiles,
-  deleteMultiFiles,
+  getallFiles,
+  findfile,
   //
-  // downloadFilePikod
 };
