@@ -3082,6 +3082,7 @@ const CarDataFormModalView = (match) => {
 												) : null}
 
 
+
 												{isfile=== "true" ? 
 												<div style={{ textAlign: "right", paddingTop: "10px" }}>
 												 קובץ תחקיר בטיחות שצורף: 
