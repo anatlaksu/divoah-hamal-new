@@ -178,6 +178,7 @@ const AdminSignInForm = (props) => {
 	};
 
 	const loadReports = () => {
+		manmarit ?
 		axios
 			.get(`http://localhost:8000/report/pikod/readall/${user.pikod}`)
 			.then((res) => {
@@ -187,13 +188,25 @@ const AdminSignInForm = (props) => {
 				console.log(reports);
 				reports.reverse();
 				setReportDB(reports);
-			});
+			})
+		:
+		axios
+		.get(`http://localhost:8000/report/pikodrep/readall/${user.pikod}`)
+		.then((res) => {
+			// console.log(res);
+			// console.log(res.data);
+			const reports = res.data;
+			console.log(reports);
+			reports.reverse();
+			setReportDB(reports);
+		});
 	};
 
 	const loadReportsByDate = (from, to) => {
 		// console.log("try by date");
 		// console.log(from);
 		// console.log(to);
+		manmarit?
 		axios
 			.get(
 				`http://localhost:8000/report/byDate/pikod/readall/${from}/${to}/${user.pikod}`
@@ -208,7 +221,24 @@ const AdminSignInForm = (props) => {
 				if (reportDBFillter.length == 0) {
 					setReportDFillter(reports);
 				}
-			});
+			})
+	    :
+		axios
+		.get(
+			`http://localhost:8000/report/byDate/pikodrep/readall/${from}/${to}/${user.pikod}`
+		)
+		.then((res) => {
+			// console.log(res);
+			// console.log("by date");
+			// console.log(res.data);
+			const reports = res.data;
+			reports.reverse();
+			setReportDB(reports);
+			if (reportDBFillter.length == 0) {
+				setReportDFillter(reports);
+			}
+		});
+
 	};
 
 	function handleChange2(selectedOption, name) {
@@ -326,9 +356,7 @@ const AdminSignInForm = (props) => {
 		manmarit
 			? setReportDFillter(
 					report.filter((rp) =>
-						// unit == "pikod"
-						// 	? dataUnit.includes(rp.pikod)
-						unit == "ogda"
+				unit == "ogda"
 							? dataUnit.includes(rp.ogda)
 							: unit == "hativa"
 							? dataUnit.includes(rp.hativa)
@@ -337,9 +365,7 @@ const AdminSignInForm = (props) => {
 			  )
 			: setReportDFillter(
 					report.filter((rp) =>
-						// unit == "pikod"
-						// 	? dataUnit.includes(rp.pikodrep)
-						unit == "ogda"
+				unit == "ogda"
 							? dataUnit.includes(rp.ogdarep)
 							: unit == "hativa"
 							? dataUnit.includes(rp.hativarep)
@@ -353,16 +379,14 @@ const AdminSignInForm = (props) => {
 			//* the order is important - must be from the lowest level to the highest
 			case typeof data.hativa == "object": //? checks if the the array exists
 				reportDBFl(reportDB, data.hativa, "hativa");
-				// console.log(data.hativa);
+				console.log(data.hativa);
+				console.log(reportDB);
 				break;
 			case typeof data.ogda == "object":
 				reportDBFl(reportDB, data.ogda, "ogda");
-				// console.log(data.ogda);
+				console.log(data.ogda);
+				console.log(reportDB);
 				break;
-			// case typeof data.pikod == "object":
-			// 	reportDBFl(reportDB, data.pikod, "pikod");
-			// 	// console.log(data.pikod);
-			// 	break;
 
 			default:
 				setReportDFillter(reportDB);
@@ -468,7 +492,7 @@ const AdminSignInForm = (props) => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumtypereport(labels, reportEvent, eventTypeArray),
+				data: sumtypereport(labels, reportDB, eventTypeArray),
 				backgroundColor: colors.map((col)=>col),
 				borderWidth: 1,
 			},
@@ -952,7 +976,7 @@ const AdminSignInForm = (props) => {
 		data.fromdate && data.todate
 			? loadReportsByDate(data.fromdate, data.todate)
 			: loadReports();
-	}, [data]);
+	}, [data, manmarit]);
 
 	// useEffect(() => {
 	// 	data.fromdate && data.todate
@@ -2291,7 +2315,7 @@ const AdminSignInForm = (props) => {
 									<h2 className="text-center">{getnumevt(reportDBFillter)}</h2>
 								) : (
 									<h2 className="text-center">{getnumevt(reportDB)}</h2>
-								)}
+								)} 
 								</CardBody>
 							</Card>
 						</Col>

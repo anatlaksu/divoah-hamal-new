@@ -166,6 +166,7 @@ const AdminSignInForm = (props) => {
 	};
 
 	const loadReports = () => {
+		manmarit ?
 		axios
 			.get(`http://localhost:8000/report/ogda/readall/${user.ogda}`)
 			.then((res) => {
@@ -175,13 +176,25 @@ const AdminSignInForm = (props) => {
 				console.log(reports);
 				reports.reverse();
 				setReportDB(reports);
-			});
+			})
+		:
+		axios
+		.get(`http://localhost:8000/report/ogdarep/readall/${user.ogda}`)
+		.then((res) => {
+			// console.log(res);
+			// console.log(res.data);
+			const reports = res.data;
+			console.log(reports);
+			reports.reverse();
+			setReportDB(reports);
+		});
 	};
 
 	const loadReportsByDate = (from, to) => {
 		// console.log("try by date");
 		// console.log(from);
 		// console.log(to);
+		manmarit ?
 		axios
 			.get(
 				`http://localhost:8000/report/byDate/ogda/readall/${from}/${to}/${user.ogda}`
@@ -196,7 +209,23 @@ const AdminSignInForm = (props) => {
 				if (reportDBFillter.length == 0) {
 					setReportDFillter(reports);
 				}
-			});
+			})
+		:
+		axios
+		.get(
+			`http://localhost:8000/report/byDate/ogdarep/readall/${from}/${to}/${user.ogda}`
+		)
+		.then((res) => {
+			// console.log(res);
+			// console.log("by date");
+			// console.log(res.data);
+			const reports = res.data;
+			reports.reverse();
+			setReportDB(reports);
+			if (reportDBFillter.length == 0) {
+				setReportDFillter(reports);
+			}
+		});
 	};
 
 	function handleChange2(selectedOption, name) {
@@ -452,7 +481,7 @@ const AdminSignInForm = (props) => {
 		datasets: [
 			{
 				label: "# of Votes",
-				data: sumtypereport(labels, reportEvent, eventTypeArray),
+				data: sumtypereport(labels, reportDB, eventTypeArray),
 				backgroundColor: colors.map((col)=>col),
 				borderWidth: 1,
 			},
@@ -937,7 +966,7 @@ const AdminSignInForm = (props) => {
 		data.fromdate && data.todate
 			? loadReportsByDate(data.fromdate, data.todate)
 			: loadReports();
-	}, [data]);
+	}, [data, manmarit]);
 
 	// useEffect(() => {
 	// 	data.fromdate && data.todate
